@@ -1,0 +1,150 @@
+import React, { useState, useEffect } from 'react';
+import { Table, Copy, Check, FileCode } from 'lucide-react';
+
+export const HtmlTableGenerator: React.FC = () => {
+  const [rows, setRows] = useState(3);
+  const [cols, setCols] = useState(3);
+  const [header, setHeader] = useState(true);
+  const [border, setBorder] = useState(true);
+  const [width, setWidth] = useState(100);
+  const [output, setOutput] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    generateTable();
+  }, [rows, cols, header, border, width]);
+
+  const generateTable = () => {
+    let html = `<table style="width: ${width}%; border-collapse: collapse;${border ? ' border: 1px solid #ccc;' : ''}">\n`;
+    
+    // Header
+    if (header) {
+        html += `  <thead>\n    <tr>\n`;
+        for (let i = 0; i < cols; i++) {
+            html += `      <th style="${border ? 'border: 1px solid #ccc; ' : ''}padding: 8px;">Header ${i+1}</th>\n`;
+        }
+        html += `    </tr>\n  </thead>\n`;
+    }
+
+    // Body
+    html += `  <tbody>\n`;
+    for (let r = 0; r < rows; r++) {
+        html += `    <tr>\n`;
+        for (let c = 0; c < cols; c++) {
+            html += `      <td style="${border ? 'border: 1px solid #ccc; ' : ''}padding: 8px;">Row ${r+1} Col ${c+1}</td>\n`;
+        }
+        html += `    </tr>\n`;
+    }
+    html += `  </tbody>\n</table>`;
+    
+    setOutput(html);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+        <div className="p-6 border-b border-gray-100 flex items-center space-x-3 bg-slate-50/50">
+           <div className="p-2 bg-blue-100 text-primary rounded-lg">
+              <Table size={24} />
+           </div>
+           <div>
+              <h1 className="text-2xl font-bold text-slate-800">HTML Table Generator</h1>
+              <p className="text-sm text-slate-500">Quickly generate HTML table tags and styles</p>
+           </div>
+        </div>
+
+        <div className="flex-1 overflow-hidden grid md:grid-cols-[300px,1fr]">
+           {/* Controls - Sidebar */}
+           <div className="p-6 bg-slate-50 border-r border-gray-200 overflow-y-auto">
+              <div className="space-y-8">
+                <div>
+                    <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                        <span>Rows</span>
+                        <span className="text-primary">{rows}</span>
+                    </label>
+                    <input 
+                    type="range" 
+                    min="1" 
+                    max="20" 
+                    value={rows} 
+                    onChange={(e) => setRows(parseInt(e.target.value))}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                    />
+                </div>
+                
+                <div>
+                    <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                        <span>Columns</span>
+                        <span className="text-primary">{cols}</span>
+                    </label>
+                    <input 
+                    type="range" 
+                    min="1" 
+                    max="10" 
+                    value={cols} 
+                    onChange={(e) => setCols(parseInt(e.target.value))}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                    />
+                </div>
+
+                <div>
+                    <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                        <span>Width</span>
+                        <span className="text-primary">{width}%</span>
+                    </label>
+                    <input 
+                    type="range" 
+                    min="1" 
+                    max="100" 
+                    value={width} 
+                    onChange={(e) => setWidth(parseInt(e.target.value))}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                    />
+                </div>
+
+                <div className="space-y-4 pt-4 border-t border-gray-200">
+                    <label className="flex items-center p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition-colors">
+                        <input type="checkbox" checked={header} onChange={(e) => setHeader(e.target.checked)} className="w-5 h-5 text-primary rounded focus:ring-primary/50 border-gray-300" />
+                        <span className="ml-3 text-sm text-slate-700 font-medium">Include Header</span>
+                    </label>
+                    <label className="flex items-center p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition-colors">
+                        <input type="checkbox" checked={border} onChange={(e) => setBorder(e.target.checked)} className="w-5 h-5 text-primary rounded focus:ring-primary/50 border-gray-300" />
+                        <span className="ml-3 text-sm text-slate-700 font-medium">Add Borders</span>
+                    </label>
+                </div>
+              </div>
+           </div>
+
+           {/* Output */}
+           <div className="p-6 flex flex-col h-full bg-white overflow-hidden">
+              <div className="flex justify-between items-center mb-3">
+                 <label className="text-sm font-bold text-slate-700 flex items-center">
+                    <FileCode size={18} className="mr-2 text-primary" /> Generated Code
+                 </label>
+                 <button 
+                    onClick={handleCopy}
+                    className={`text-xs flex items-center px-3 py-1.5 rounded-lg transition-colors font-medium border ${copied ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white text-slate-600 border-gray-200 hover:border-primary hover:text-primary'}`}
+                 >
+                    {copied ? <Check size={14} className="mr-1" /> : <Copy size={14} className="mr-1" />}
+                    {copied ? 'Copied' : 'Copy HTML'}
+                 </button>
+              </div>
+              <div className="flex-1 relative rounded-xl border border-gray-800 bg-[#1e293b] overflow-hidden shadow-md">
+                <textarea 
+                    readOnly
+                    value={output}
+                    className="w-full h-full p-4 bg-[#1e293b] text-gray-50 font-mono text-sm resize-none outline-none leading-relaxed"
+                />
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
