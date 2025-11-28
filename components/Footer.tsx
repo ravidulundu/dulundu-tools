@@ -69,8 +69,15 @@ export const Footer: React.FC = () => {
                         <h4 className="font-bold text-slate-900 dark:text-white mb-6">Support</h4>
                         <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
                             <li>
-                                <a href="https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-400 rounded-lg hover:bg-pink-100 dark:hover:bg-pink-900/30 transition-colors font-medium text-xs">
-                                    <Heart size={14} className="mr-2 fill-current" /> Sponsor Project
+                                <a
+                                    href="https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    data-umami-event="Donate Footer Click"
+                                    className="inline-flex items-center space-x-2 bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors text-sm"
+                                >
+                                    <Heart size={16} className="text-red-400 fill-red-400" />
+                                    <span>Donate via Stripe</span>
                                 </a>
                             </li>
                             <li className="pt-2"><Link to="/coming-soon" className="hover:text-primary dark:hover:text-primary transition-colors">Contact Us</Link></li>

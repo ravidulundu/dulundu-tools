@@ -78,10 +78,11 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
                         href="https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hidden md:flex items-center space-x-2 px-3 py-2 bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 hover:bg-pink-100 dark:hover:bg-pink-900/40 rounded-lg transition-all text-sm font-bold mr-2 border border-pink-100 dark:border-pink-900/50"
+                        data-umami-event="Donate Header Click"
+                        className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-sm"
                         title="Support the project"
                     >
-                        <Heart size={16} className="fill-current" />
+                        <Heart size={16} className="fill-white/20" />
                         <span>Sponsor</span>
                     </a>
 
