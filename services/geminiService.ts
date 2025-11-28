@@ -67,7 +67,7 @@ export const generateCodeHelp = async (prompt: string, language: string = 'javas
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-1.5-flash',
       contents: `You are an expert developer assistant. The user needs help with ${language}. 
       
       Task: ${prompt}
@@ -90,7 +90,7 @@ export const paraphraseText = async (text: string, tone: string = 'professional'
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-1.5-flash',
       contents: `You are an expert writer. Paraphrase the following text to be more ${tone}. Keep the meaning the same but improve clarity and flow.
       
       Text: "${text}"
