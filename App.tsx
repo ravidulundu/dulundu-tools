@@ -2,9 +2,10 @@
 
 
 import React, { Suspense } from 'react';
-import { HashRouter, useRoutes } from 'react-router-dom';
+import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Loading } from './components/Loading';
+import { SeoManager } from './components/SeoManager';
 import { routes } from './routes';
 
 const AppRoutes = () => {
@@ -14,13 +15,14 @@ const AppRoutes = () => {
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Layout>
+        <SeoManager />
         <Suspense fallback={<Loading />}>
           <AppRoutes />
         </Suspense>
       </Layout>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
