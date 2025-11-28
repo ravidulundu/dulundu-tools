@@ -31,6 +31,21 @@ We offer **100+ tools** across various categories:
 *   **Encoders/Decoders:** URL, HTML Entities, JWT Decoder, Gzip...
 *   **AI Assistant:** Smart code debugging and explanation powered by Google Gemini.
 *   **And much more:** Regex Tester, Diff Viewer, Cron Generator, Chmod Calculator...
+*   **Chrome Extension:** Access all tools directly from your browser toolbar with smart clipboard detection and context menu integration.
+
+## 🧩 Chrome Extension
+
+Dulundu.tools is now available as a powerful Chrome Extension!
+
+<img src="extension/public/icons/icon128.png" align="right" width="100" alt="Extension Icon">
+
+**Key Features:**
+*   **Spotlight Search:** Press `Cmd/Ctrl+Shift+K` (or click the icon) to instantly search and launch tools.
+*   **Smart Clipboard:** The extension automatically detects content in your clipboard (JSON, Base64, Timestamp) and suggests the right tool.
+*   **Context Menu:** Right-click on any selected text on any website to Format JSON, Decode Base64, or Convert Timestamps instantly.
+*   **Dashboard:** View your IP, current Unix timestamp, recent tools, and favorites in one place.
+
+[**Download Extension**](https://dulundu.tools/extension/dulundu-tools-extension-v1.zip) (Manual Installation)
 
 ## 🌟 Why Dulundu.tools?
 
