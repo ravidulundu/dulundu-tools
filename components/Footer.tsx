@@ -73,7 +73,7 @@ export const Footer: React.FC = () => {
                                     href="https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    data-umami-event="Donate Footer Click"
+                                    onClick={() => window.umami?.track('Donate Footer Click')}
                                     className="inline-flex items-center space-x-2 bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors text-sm"
                                 >
                                     <Heart size={16} className="text-red-400 fill-red-400" />
