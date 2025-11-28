@@ -1,13 +1,21 @@
+<div align="center">
+
 # Dulundu.tools - The Ultimate Developer Utilities Suite 🛠️
 
 <img src="public/favicon.svg" alt="Dulundu.tools Logo" width="120" />
 
+<br/>
+
 [![Donate via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=for-the-badge&logo=paypal)](https://paypal.me/ravidulundu)
+
+<br/>
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+</div>
 
 **Dulundu.tools** is a comprehensive, free, and open-source collection of developer utilities designed to speed up your daily workflow. Whether you need to format JSON, convert images, generate UUIDs, or debug code with AI, Dulundu.tools has you covered—all in one beautiful, ad-free interface.
 
