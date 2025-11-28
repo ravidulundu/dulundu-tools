@@ -78,7 +78,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
                         href="https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00"
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => (window as any).umami?.track('Donate Header Click')}
+                        onClick={() => window.umami?.track('Donate Header Click')}
                         className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-sm"
                         title="Support the project"
                     >

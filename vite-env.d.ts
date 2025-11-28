@@ -14,7 +14,10 @@ interface ImportMeta {
 declare global {
     interface Window {
         umami?: {
-            track: (event: string | ((props: any) => any), data?: Record<string, any>) => void;
+            track: {
+                (event: string, data?: Record<string, any>): void;
+                (callback: (props: any) => any): void;
+            };
         };
     }
 }
