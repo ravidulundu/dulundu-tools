@@ -3,39 +3,66 @@ import { GoogleGenAI } from "@google/genai";
 const apiKey = process.env.API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
 
-// Rate Limiting Configuration
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const MAX_REQUESTS_PER_WINDOW = 5; // 5 requests per minute
+// Security Configuration
+const BURST_LIMIT = 5; // Max requests allowed in the window
+const BURST_WINDOW = 60 * 1000; // 1 minute window
+const STORAGE_KEY = 'ai_security_context';
 
-const checkRateLimit = (): boolean => {
+const checkRateLimit = (): { allowed: boolean; error?: string } => {
   const now = Date.now();
-  const storageKey = 'ai_rate_limit';
 
   try {
-    const data = JSON.parse(localStorage.getItem(storageKey) || '{}');
-    const { count = 0, startTime = now } = data;
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    let { blockedUntil = 0, minuteStart = now, minuteCount = 0 } = data;
 
-    if (now - startTime > RATE_LIMIT_WINDOW) {
-      // Reset window
-      localStorage.setItem(storageKey, JSON.stringify({ count: 1, startTime: now }));
-      return true;
+    // 1. Check if currently blocked
+    if (blockedUntil && now < blockedUntil) {
+      const releaseDate = new Date(blockedUntil).toLocaleTimeString();
+      return {
+        allowed: false,
+        error: `⛔ Abuse detected. You are blocked from using AI features until tomorrow.`
+      };
     }
 
-    if (count >= MAX_REQUESTS_PER_WINDOW) {
-      return false;
+    // 2. Reset window if 1 minute has passed
+    if (now - minuteStart > BURST_WINDOW) {
+      minuteStart = now;
+      minuteCount = 0;
     }
 
-    localStorage.setItem(storageKey, JSON.stringify({ count: count + 1, startTime }));
-    return true;
+    // 3. Increment count
+    minuteCount++;
+
+    // 4. Check for abuse (Exceeded limit within window)
+    if (minuteCount > BURST_LIMIT) {
+      // Block until midnight (next day)
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      blockedUntil = tomorrow.getTime();
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ blockedUntil, minuteStart, minuteCount }));
+
+      return {
+        allowed: false,
+        error: `⛔ Abuse detected. You sent too many requests too quickly. Access revoked until ${tomorrow.toLocaleDateString()}.`
+      };
+    }
+
+    // 5. Save state
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ blockedUntil, minuteStart, minuteCount }));
+    return { allowed: true };
+
   } catch (e) {
-    // Fallback if localStorage fails
-    return true;
+    // Fallback if localStorage fails (e.g. private mode restrictions)
+    return { allowed: true };
   }
 };
 
 export const generateCodeHelp = async (prompt: string, language: string = 'javascript'): Promise<string> => {
-  if (!checkRateLimit()) {
-    return "⚠️ Rate limit exceeded. You can make 5 requests per minute. Please wait a moment.";
+  const securityCheck = checkRateLimit();
+  if (!securityCheck.allowed) {
+    return securityCheck.error || "Access denied.";
   }
 
   try {
@@ -56,8 +83,9 @@ export const generateCodeHelp = async (prompt: string, language: string = 'javas
 };
 
 export const paraphraseText = async (text: string, tone: string = 'professional'): Promise<string> => {
-  if (!checkRateLimit()) {
-    return "⚠️ Rate limit exceeded. You can make 5 requests per minute. Please wait a moment.";
+  const securityCheck = checkRateLimit();
+  if (!securityCheck.allowed) {
+    return securityCheck.error || "Access denied.";
   }
 
   try {
