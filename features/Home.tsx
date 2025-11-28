@@ -228,7 +228,7 @@ export const Home: React.FC = () => {
                         <div className="flex space-x-2">
                             <button
                                 onClick={() => setActiveCategory('All')}
-                                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${activeCategory === 'All'
+                                className={`flex-shrink-0 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${activeCategory === 'All'
                                     ? 'bg-primary text-white shadow-lg shadow-primary/20'
                                     : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700'
                                     }`}
@@ -239,7 +239,7 @@ export const Home: React.FC = () => {
                                 <button
                                     key={category}
                                     onClick={() => setActiveCategory(category)}
-                                    className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${activeCategory === category
+                                    className={`flex-shrink-0 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${activeCategory === category
                                         ? 'bg-primary text-white shadow-lg shadow-primary/20'
                                         : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700'
                                         }`}
@@ -251,15 +251,17 @@ export const Home: React.FC = () => {
                     </div>
 
                     {/* Main Content Area */}
-                    <main className="flex-1 min-w-0">
+                    <main className="flex-1 min-w-0 px-2 lg:px-0">
                         {/* Popular Section (Only on 'All' view) */}
                         {isDirectoryView && (
                             <section className="mb-10 animate-fade-in">
-                                <div className="flex items-center space-x-3 mb-6">
+                                <div className="flex items-center justify-center lg:justify-start space-x-3 mb-6">
                                     <div className="p-2 bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 rounded-lg">
                                         <TrendingUp size={20} />
                                     </div>
-                                    <h2 className="text-xl font-bold text-slate-800 dark:text-white">Popular Tools</h2>
+                                    <div className="text-center lg:text-left">
+                                        <h2 className="text-xl font-bold text-slate-800 dark:text-white">Popular Tools</h2>
+                                    </div>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                                     {popularTools.map(tool => (
@@ -271,14 +273,16 @@ export const Home: React.FC = () => {
 
                         {/* Filtered Tools Grid */}
                         <section className="animate-fade-in">
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center space-x-3">
+                            <div className="flex flex-col lg:flex-row items-center justify-between mb-6 gap-4 lg:gap-0">
+                                <div className="flex items-center justify-center lg:justify-start space-x-3">
                                     <div className="p-2 bg-blue-100 dark:bg-blue-900/20 text-primary rounded-lg">
                                         {activeCategory === 'All' ? <Grid size={20} /> : <Zap size={20} />}
                                     </div>
-                                    <h2 className="text-xl font-bold text-slate-800 dark:text-white">
-                                        {activeCategory === 'All' ? 'All Tools' : activeCategory}
-                                    </h2>
+                                    <div className="text-center lg:text-left">
+                                        <h2 className="text-xl font-bold text-slate-800 dark:text-white">
+                                            {activeCategory === 'All' ? 'All Tools' : activeCategory}
+                                        </h2>
+                                    </div>
                                     <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-md text-xs font-bold">
                                         {filteredTools.length}
                                     </span>
