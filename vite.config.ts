@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, '.'),
         vm: path.resolve(__dirname, 'mocks/vm.js'),
+        crypto: path.resolve(__dirname, 'node_modules/crypto-browserify'),
       }
     },
     build: {
