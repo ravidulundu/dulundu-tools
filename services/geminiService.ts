@@ -1,8 +1,3 @@
-import { GoogleGenAI } from "@google/genai";
-
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-const ai = new GoogleGenAI({ apiKey });
-
 // Security Configuration
 const BURST_LIMIT = 5; // Max requests allowed in the window
 const BURST_WINDOW = 60 * 1000; // 1 minute window
@@ -60,55 +55,57 @@ const checkRateLimit = (): { allowed: boolean; error?: string } => {
 };
 
 export const generateCodeHelp = async (prompt: string, language: string = 'javascript'): Promise<string> => {
-  if (!apiKey) {
-    return "Configuration Error: VITE_GEMINI_API_KEY is missing. Please check your environment variables.";
-  }
-
   const securityCheck = checkRateLimit();
   if (!securityCheck.allowed) {
     return securityCheck.error || "Access denied.";
   }
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
-      contents: `You are an expert developer assistant. The user needs help with ${language}. 
-      
-      Task: ${prompt}
-      
-      Provide a clean, well-commented code solution or explanation. If generating code, wrap it in markdown code blocks. Keep the text concise.`,
+    const response = await fetch('/api/ai/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt, language }),
     });
 
-    return response.text || "No response generated.";
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to generate code');
+    }
+
+    const data = await response.json();
+    return data.text;
   } catch (error) {
-    console.error("Gemini API Error:", error);
+    console.error("AI Service Error:", error);
     return `Error: ${error instanceof Error ? error.message : String(error)}`;
   }
 };
 
 export const paraphraseText = async (text: string, tone: string = 'professional'): Promise<string> => {
-  if (!apiKey) {
-    return "Configuration Error: VITE_GEMINI_API_KEY is missing. Please check your environment variables.";
-  }
-
   const securityCheck = checkRateLimit();
   if (!securityCheck.allowed) {
     return securityCheck.error || "Access denied.";
   }
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
-      contents: `You are an expert writer. Paraphrase the following text to be more ${tone}. Keep the meaning the same but improve clarity and flow.
-      
-      Text: "${text}"
-      
-      Output only the paraphrased text.`,
+    const response = await fetch('/api/ai/paraphrase', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text, tone }),
     });
 
-    return response.text || "No response generated.";
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to paraphrase text');
+    }
+
+    const data = await response.json();
+    return data.text;
   } catch (error) {
-    console.error("Gemini API Error:", error);
+    console.error("AI Service Error:", error);
     return `Error: ${error instanceof Error ? error.message : String(error)}`;
   }
 };
