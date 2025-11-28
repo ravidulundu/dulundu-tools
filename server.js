@@ -42,7 +42,10 @@ app.post('/api/ai/generate', async (req, res) => {
       Provide a clean, well-commented code solution or explanation. If generating code, wrap it in markdown code blocks. Keep the text concise.`,
         });
 
-        res.json({ text: response.text() });
+        const generatedText = response.text ? (typeof response.text === 'function' ? response.text() : response.text) :
+            (response.candidates?.[0]?.content?.parts?.[0]?.text || "No response text found.");
+
+        res.json({ text: generatedText });
     } catch (error) {
         console.error('AI Error:', error);
         res.status(500).json({
@@ -68,7 +71,10 @@ app.post('/api/ai/paraphrase', async (req, res) => {
       Output only the paraphrased text.`,
         });
 
-        res.json({ text: response.text() });
+        const generatedText = response.text ? (typeof response.text === 'function' ? response.text() : response.text) :
+            (response.candidates?.[0]?.content?.parts?.[0]?.text || "No response text found.");
+
+        res.json({ text: generatedText });
     } catch (error) {
         console.error('AI Error:', error);
         res.status(500).json({
