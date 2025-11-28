@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyA91cVvYdqHeZoDn-5Zzo_Ki3eap3Lp32o';
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
 
 // Security Configuration
@@ -60,6 +60,10 @@ const checkRateLimit = (): { allowed: boolean; error?: string } => {
 };
 
 export const generateCodeHelp = async (prompt: string, language: string = 'javascript'): Promise<string> => {
+  if (!apiKey) {
+    return "Configuration Error: VITE_GEMINI_API_KEY is missing. Please check your environment variables.";
+  }
+
   const securityCheck = checkRateLimit();
   if (!securityCheck.allowed) {
     return securityCheck.error || "Access denied.";
@@ -83,6 +87,10 @@ export const generateCodeHelp = async (prompt: string, language: string = 'javas
 };
 
 export const paraphraseText = async (text: string, tone: string = 'professional'): Promise<string> => {
+  if (!apiKey) {
+    return "Configuration Error: VITE_GEMINI_API_KEY is missing. Please check your environment variables.";
+  }
+
   const securityCheck = checkRateLimit();
   if (!securityCheck.allowed) {
     return securityCheck.error || "Access denied.";
