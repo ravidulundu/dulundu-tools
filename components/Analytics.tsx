@@ -27,9 +27,9 @@ export const Analytics = () => {
 
     // Track page views on route change
     useEffect(() => {
-        if (window.umami) {
+        if ((window as any).umami) {
             // Manually track page view with new URL
-            window.umami.track((props) => ({ ...props, url: location.pathname }));
+            (window as any).umami.track((props: any) => ({ ...props, url: location.pathname }));
         }
     }, [location]);
 
