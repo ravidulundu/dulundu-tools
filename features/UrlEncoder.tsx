@@ -10,6 +10,32 @@ export const UrlEncoder: React.FC = () => {
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
   const [copied, setCopied] = useState(false);
 
+  // Check for input in URL hash (from extension)
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.includes('input=')) {
+      try {
+        const params = new URLSearchParams(hash.substring(1));
+        const inputParam = params.get('input');
+        if (inputParam) {
+          const decoded = decodeURIComponent(inputParam);
+          setInput(decoded);
+          // Default to encode, but if it looks encoded, maybe decode?
+          // For now, let's just set input and process as encode (default)
+          // Or we could check if decodeURIComponent(decoded) !== decoded
+          if (decodeURIComponent(decoded) !== decoded) {
+            setMode('decode');
+            process(decoded, 'decode');
+          } else {
+            process(decoded, 'encode');
+          }
+
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      } catch (e) { }
+    }
+  }, []);
+
   const process = (text: string, currentMode: 'encode' | 'decode') => {
     try {
       if (!text) {

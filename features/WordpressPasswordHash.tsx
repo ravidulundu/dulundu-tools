@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Lock, RefreshCw, Copy, Check } from 'lucide-react';
+import { Lock, RefreshCw, Copy, Check, Trash2 } from 'lucide-react';
 import bcrypt from 'bcryptjs';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const WordpressPasswordHash: React.FC = () => {
     const [password, setPassword] = useState('');
@@ -31,62 +34,78 @@ export const WordpressPasswordHash: React.FC = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handleClear = () => {
+        setPassword('');
+        setHash('');
+        setCopied(false);
+    };
+
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 text-primary rounded-lg">
-                            <Lock size={24} />
-                        </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-slate-800">WordPress Password Hash</h1>
-                            <p className="text-sm text-slate-500">Generate secure password hashes for WordPress database</p>
-                        </div>
-                    </div>
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+                <ToolHeader
+                    icon={Lock}
+                    title="WordPress Password Hash"
+                    description="Generate secure password hashes for WordPress database"
+                />
+
+                {/* Toolbar */}
+                <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+                    <button
+                        onClick={generateHash}
+                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+                    >
+                        <RefreshCw size={16} className="mr-1.5" />
+                        Generate Hash
+                    </button>
+
+                    <button
+                        onClick={handleClear}
+                        className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Clear All"
+                    >
+                        <Trash2 size={20} />
+                    </button>
                 </div>
 
-                <div className="p-8">
-                    <div className="max-w-xl mx-auto space-y-6">
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">Password</label>
-                            <input
-                                type="text"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-slate-900"
-                                placeholder="Enter password..."
+                {/* Editor Area */}
+                <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+                    <div className="grid md:grid-cols-2 gap-4 h-full">
+
+                        <CodeEditor
+                            value={password}
+                            onChange={setPassword}
+                            label="Password"
+                            placeholder="Enter password..."
+                            theme="light"
+                        />
+
+                        <div className="flex flex-col h-full">
+                            <CodeEditor
+                                value={hash}
+                                label="Generated Hash (Bcrypt / Modern WP)"
+                                placeholder="Hash will appear here..."
+                                readOnly
+                                theme="dark"
+                                actions={
+                                    hash && (
+                                        <ActionButton
+                                            icon={copied ? Check : Copy}
+                                            label={copied ? 'Copied' : 'Copy'}
+                                            onClick={handleCopy}
+                                            variant={copied ? 'success' : 'primary'}
+                                        />
+                                    )
+                                }
                             />
-                        </div>
-
-                        <button
-                            onClick={generateHash}
-                            className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 transition-colors font-bold shadow-lg flex items-center justify-center"
-                        >
-                            <RefreshCw size={20} className="mr-2" /> Generate Hash
-                        </button>
-
-                        {hash && (
-                            <div className="bg-slate-50 p-6 rounded-xl border border-gray-200 animate-fade-in">
-                                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Generated Hash (Bcrypt / Modern WP)</label>
-                                <div className="relative">
-                                    <div className="p-4 bg-white border border-gray-200 rounded-lg font-mono text-sm break-all text-slate-800">
-                                        {hash}
-                                    </div>
-                                    <button
-                                        onClick={handleCopy}
-                                        className="absolute top-2 right-2 p-2 bg-slate-100 hover:bg-slate-200 rounded-md text-slate-600 transition-colors"
-                                        title="Copy"
-                                    >
-                                        {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-                                    </button>
-                                </div>
-                                <p className="mt-3 text-xs text-slate-400">
+                            {hash && (
+                                <p className="mt-2 text-xs text-slate-500 px-1">
                                     Note: This generates a standard Bcrypt hash ($2y$...), which is fully supported by modern WordPress versions.
                                     Legacy WordPress sites might use MD5-based Phpass ($P$...), but Bcrypt is recommended for security.
                                 </p>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

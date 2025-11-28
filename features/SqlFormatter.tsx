@@ -9,14 +9,33 @@ export const SqlFormatter: React.FC = () => {
   const [output, setOutput] = useState('');
   const [copied, setCopied] = useState(false);
 
-  const formatSql = () => {
-    if (!input.trim()) {
+  // Check for input in URL hash (from extension)
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.includes('input=')) {
+      try {
+        const params = new URLSearchParams(hash.substring(1));
+        const inputParam = params.get('input');
+        if (inputParam) {
+          const decoded = decodeURIComponent(inputParam);
+          setInput(decoded);
+          formatSql(decoded);
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      } catch (e) { }
+    }
+  }, []);
+
+  const formatSql = (textOverride?: string) => {
+    const textToFormat = typeof textOverride === 'string' ? textOverride : input;
+
+    if (!textToFormat.trim()) {
       setOutput('');
       return;
     }
 
     // Basic SQL formatting logic (Regex based)
-    let sql = input
+    let sql = textToFormat
       .replace(/\s+/g, ' ')
       .replace(/"/g, '""'); // basic cleanup
 
@@ -78,7 +97,7 @@ export const SqlFormatter: React.FC = () => {
             <Trash2 size={16} className="md:mr-2" /> <span className="hidden md:inline">Clear</span>
           </button>
           <button
-            onClick={formatSql}
+            onClick={() => formatSql()}
             className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md flex items-center"
           >
             <Play size={16} className="md:mr-2" /> <span className="hidden md:inline">Format</span>

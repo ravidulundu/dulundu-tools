@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { FileSpreadsheet, Download, ArrowRight, Trash2 } from 'lucide-react';
+import { FileSpreadsheet, Download, Trash2 } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
 
 export const CsvToExcel: React.FC = () => {
     const [input, setInput] = useState('');
@@ -18,46 +20,50 @@ export const CsvToExcel: React.FC = () => {
         document.body.removeChild(link);
     };
 
-    return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 text-primary rounded-lg">
-                            <FileSpreadsheet size={24} />
-                        </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-slate-800">CSV to Excel</h1>
-                            <p className="text-sm text-slate-500">Convert and download CSV data for Excel</p>
-                        </div>
-                    </div>
+    const handleClear = () => {
+        setInput('');
+    };
 
+    return (
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+                <ToolHeader
+                    icon={FileSpreadsheet}
+                    title="CSV to Excel"
+                    description="Convert and download CSV data for Excel"
+                />
+
+                {/* Toolbar */}
+                <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
                     <button
                         onClick={downloadCSV}
-                        className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md flex items-center"
+                        disabled={!input.trim()}
+                        className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md flex items-center disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                     >
                         Download .CSV <Download size={16} className="ml-2" />
                     </button>
+
+                    <button
+                        onClick={handleClear}
+                        className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Clear All"
+                    >
+                        <Trash2 size={20} />
+                    </button>
                 </div>
 
-                <div className="p-6">
-                    <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-2">
-                            <label className="text-sm font-medium text-slate-700">CSV Input</label>
-                            <button
-                                onClick={() => setInput('')}
-                                className="text-xs text-red-500 hover:text-red-600 flex items-center"
-                            >
-                                <Trash2 size={12} className="mr-1" /> Clear
-                            </button>
-                        </div>
-                        <textarea
+                {/* Content Area */}
+                <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+                    <div className="h-full flex flex-col">
+                        <CodeEditor
                             value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            className="w-full h-[400px] p-4 font-mono text-sm bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all resize-none text-slate-900"
+                            onChange={setInput}
+                            label="CSV Input"
                             placeholder="Paste your CSV data here..."
+                            theme="light"
                         />
-                        <p className="mt-4 text-sm text-slate-500">
+                        <p className="mt-4 text-xs text-slate-500 text-center">
                             Note: Excel can open .csv files directly. This tool ensures your data is ready for download as a compatible CSV file.
                         </p>
                     </div>

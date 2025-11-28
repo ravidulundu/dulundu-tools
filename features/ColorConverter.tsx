@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Palette, Copy, Check, RefreshCw } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const ColorConverter: React.FC = () => {
   const [hex, setHex] = useState('#3b82f6');
@@ -40,74 +42,98 @@ export const ColorConverter: React.FC = () => {
     setTimeout(() => setCopied(''), 2000);
   };
 
+  const handleReset = () => {
+    setHex('#3b82f6');
+    setRgb('rgb(59, 130, 246)');
+  };
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex items-center space-x-3 bg-slate-50/50">
-          <div className="p-2 bg-blue-100 text-primary rounded-lg">
-            <Palette size={24} />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-slate-800">Color Converter</h1>
-            <p className="text-sm text-slate-500">Convert between HEX and RGB formats</p>
-          </div>
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+        <ToolHeader
+          icon={Palette}
+          title="Color Converter"
+          description="Convert between HEX and RGB formats"
+        />
+
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
+          <button
+            onClick={handleReset}
+            className="flex items-center space-x-2 px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-sm font-medium hover:bg-slate-100 text-slate-600 transition-colors"
+          >
+            <RefreshCw size={16} /> <span>Reset Default</span>
+          </button>
         </div>
 
-        <div className="p-8">
-          <div className="flex flex-col md:flex-row gap-8">
+        {/* Content Area */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex items-center justify-center">
+          <div className="max-w-4xl w-full flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+
             {/* Color Preview */}
             <div className="flex flex-col items-center justify-center space-y-4">
-              <div 
-                className="w-48 h-48 rounded-full shadow-inner border-4 border-white ring-1 ring-gray-200"
-                style={{ backgroundColor: hex }}
-              ></div>
-              <p className="font-mono text-slate-500 text-sm">Preview</p>
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                <div
+                  className="relative w-48 h-48 md:w-64 md:h-64 rounded-full shadow-lg border-8 border-white ring-1 ring-gray-100 transition-all transform group-hover:scale-105"
+                  style={{ backgroundColor: hex }}
+                ></div>
+              </div>
+              <p className="font-mono text-slate-500 text-sm font-medium bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">Preview</p>
             </div>
 
             {/* Inputs */}
-            <div className="flex-1 space-y-6">
+            <div className="flex-1 w-full space-y-6 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">HEX Color</label>
-                <div className="relative">
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">HEX Color</label>
+                <div className="relative group">
                   <input
                     type="text"
                     value={hex}
                     onChange={handleHexChange}
-                    className="w-full p-4 pl-12 border border-gray-200 rounded-xl font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none uppercase bg-white text-slate-800"
+                    className="w-full p-4 pl-12 border border-gray-200 rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none uppercase bg-slate-50 text-slate-800 transition-all"
                     maxLength={7}
                   />
-                  <div 
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border border-gray-200"
+                  <div
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border border-gray-300 shadow-sm"
                     style={{ backgroundColor: hex }}
                   ></div>
-                  <button 
-                    onClick={() => copyToClipboard(hex, 'hex')}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary transition-colors"
-                  >
-                    {copied === 'hex' ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
-                  </button>
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                    <ActionButton
+                      icon={copied === 'hex' ? Check : Copy}
+                      label={copied === 'hex' ? 'Copied' : 'Copy'}
+                      onClick={() => copyToClipboard(hex, 'hex')}
+                      variant={copied === 'hex' ? 'success' : 'ghost'}
+                      size="sm"
+                    />
+                  </div>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">RGB Color</label>
-                <div className="relative">
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">RGB Color</label>
+                <div className="relative group">
                   <input
                     type="text"
                     value={rgb}
                     onChange={(e) => handleRgbChange(e.target.value)}
-                    className="w-full p-4 border border-gray-200 rounded-xl font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white text-slate-800"
+                    className="w-full p-4 border border-gray-200 rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-slate-50 text-slate-800 transition-all"
                     placeholder="rgb(0, 0, 0)"
                   />
-                  <button 
-                    onClick={() => copyToClipboard(rgb, 'rgb')}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary transition-colors"
-                  >
-                    {copied === 'rgb' ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
-                  </button>
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                    <ActionButton
+                      icon={copied === 'rgb' ? Check : Copy}
+                      label={copied === 'rgb' ? 'Copied' : 'Copy'}
+                      onClick={() => copyToClipboard(rgb, 'rgb')}
+                      variant={copied === 'rgb' ? 'success' : 'ghost'}
+                      size="sm"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>

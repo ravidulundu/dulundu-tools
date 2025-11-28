@@ -1,90 +1,98 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowRightLeft, Copy, Check, Trash2 } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const ListComparator: React.FC = () => {
-  const [listA, setListA] = useState('Apple\nBanana\nCherry\nDate');
-  const [listB, setListB] = useState('Banana\nDate\nElderberry\nFig');
-  
-  const [aOnly, setAOnly] = useState<string[]>([]);
-  const [bOnly, setBOnly] = useState<string[]>([]);
-  const [intersection, setIntersection] = useState<string[]>([]);
-  const [union, setUnion] = useState<string[]>([]);
+   const [listA, setListA] = useState('Apple\nBanana\nCherry\nDate');
+   const [listB, setListB] = useState('Banana\nDate\nElderberry\nFig');
 
-  useEffect(() => {
-    compare();
-  }, [listA, listB]);
+   const [aOnly, setAOnly] = useState<string[]>([]);
+   const [bOnly, setBOnly] = useState<string[]>([]);
+   const [intersection, setIntersection] = useState<string[]>([]);
+   const [union, setUnion] = useState<string[]>([]);
 
-  const compare = () => {
-    const setA = new Set(listA.split('\n').map(s => s.trim()).filter(Boolean));
-    const setB = new Set(listB.split('\n').map(s => s.trim()).filter(Boolean));
+   useEffect(() => {
+      compare();
+   }, [listA, listB]);
 
-    const intersectionRes = [...setA].filter(x => setB.has(x));
-    const aOnlyRes = [...setA].filter(x => !setB.has(x));
-    const bOnlyRes = [...setB].filter(x => !setA.has(x));
-    const unionRes = Array.from(new Set([...setA, ...setB]));
+   const compare = () => {
+      const setA = new Set(listA.split('\n').map(s => s.trim()).filter(Boolean));
+      const setB = new Set(listB.split('\n').map(s => s.trim()).filter(Boolean));
 
-    setIntersection(intersectionRes.sort());
-    setAOnly(aOnlyRes.sort());
-    setBOnly(bOnlyRes.sort());
-    setUnion(unionRes.sort());
-  };
+      const intersectionRes = [...setA].filter(x => setB.has(x));
+      const aOnlyRes = [...setA].filter(x => !setB.has(x));
+      const bOnlyRes = [...setB].filter(x => !setA.has(x));
+      const unionRes = Array.from(new Set([...setA, ...setB]));
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-           <div className="flex items-center space-x-3">
-             <div className="p-2 bg-purple-100 text-purple-600 rounded-lg">
-                <ArrowRightLeft size={24} />
-             </div>
-             <div>
-                <h1 className="text-2xl font-bold text-slate-800">List Comparator</h1>
-                <p className="text-sm text-slate-500">Compare two lists (Intersection, Union, Difference)</p>
-             </div>
-           </div>
-           <button onClick={() => {setListA(''); setListB('')}} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-              <Trash2 size={20} />
-           </button>
-        </div>
+      setIntersection(intersectionRes.sort());
+      setAOnly(aOnlyRes.sort());
+      setBOnly(bOnlyRes.sort());
+      setUnion(unionRes.sort());
+   };
 
-        <div className="flex-1 overflow-hidden grid md:grid-cols-3">
-            {/* Inputs Column */}
-            <div className="col-span-1 p-6 border-r border-gray-200 bg-slate-50 flex flex-col gap-4 overflow-y-auto">
-                <div className="flex-1 flex flex-col min-h-[200px]">
-                    <label className="text-sm font-bold text-slate-700 mb-2">List A</label>
-                    <textarea 
-                      value={listA} onChange={e => setListA(e.target.value)}
-                      className="flex-1 w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
-                      placeholder="One item per line..."
-                    />
-                </div>
-                <div className="flex-1 flex flex-col min-h-[200px]">
-                    <label className="text-sm font-bold text-slate-700 mb-2">List B</label>
-                    <textarea 
-                      value={listB} onChange={e => setListB(e.target.value)}
-                      className="flex-1 w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
-                      placeholder="One item per line..."
-                    />
-                </div>
+   const handleClear = () => {
+      setListA('');
+      setListB('');
+   };
+
+   return (
+      <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+            <ToolHeader
+               icon={ArrowRightLeft}
+               title="List Comparator"
+               description="Compare two lists (Intersection, Union, Difference)"
+            />
+
+            {/* Toolbar */}
+            <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
+               <button onClick={handleClear} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Clear All">
+                  <Trash2 size={20} />
+               </button>
             </div>
 
-            {/* Results Column */}
-            <div className="col-span-2 p-6 overflow-y-auto bg-white">
-                <div className="grid grid-cols-2 gap-6 h-full">
-                    <ResultBox title="A ∩ B (Intersection)" count={intersection.length} data={intersection} color="bg-blue-50 border-blue-200 text-blue-800" />
-                    <ResultBox title="A ∪ B (Union)" count={union.length} data={union} color="bg-slate-50 border-gray-200 text-slate-800" />
-                    <ResultBox title="A Only (A - B)" count={aOnly.length} data={aOnly} color="bg-orange-50 border-orange-200 text-orange-800" />
-                    <ResultBox title="B Only (B - A)" count={bOnly.length} data={bOnly} color="bg-green-50 border-green-200 text-green-800" />
-                </div>
+            <div className="flex-1 overflow-hidden grid md:grid-cols-3">
+               {/* Inputs Column */}
+               <div className="col-span-1 p-4 md:p-6 border-r border-gray-200 bg-slate-50 flex flex-col gap-4 overflow-y-auto">
+                  <div className="flex-1 flex flex-col min-h-[200px]">
+                     <CodeEditor
+                        value={listA}
+                        onChange={setListA}
+                        label="List A"
+                        placeholder="One item per line..."
+                        theme="light"
+                     />
+                  </div>
+                  <div className="flex-1 flex flex-col min-h-[200px]">
+                     <CodeEditor
+                        value={listB}
+                        onChange={setListB}
+                        label="List B"
+                        placeholder="One item per line..."
+                        theme="light"
+                     />
+                  </div>
+               </div>
+
+               {/* Results Column */}
+               <div className="col-span-2 p-4 md:p-6 overflow-y-auto bg-white">
+                  <div className="grid grid-cols-2 gap-4 h-full">
+                     <ResultBox title="A ∩ B (Intersection)" count={intersection.length} data={intersection} />
+                     <ResultBox title="A ∪ B (Union)" count={union.length} data={union} />
+                     <ResultBox title="A Only (A - B)" count={aOnly.length} data={aOnly} />
+                     <ResultBox title="B Only (B - A)" count={bOnly.length} data={bOnly} />
+                  </div>
+               </div>
             </div>
-        </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 };
 
-const ResultBox: React.FC<{title: string, count: number, data: string[], color: string}> = ({title, count, data, color}) => {
+const ResultBox: React.FC<{ title: string, count: number, data: string[] }> = ({ title, count, data }) => {
    const [copied, setCopied] = useState(false);
    const handleCopy = () => {
       navigator.clipboard.writeText(data.join('\n'));
@@ -93,17 +101,23 @@ const ResultBox: React.FC<{title: string, count: number, data: string[], color: 
    };
 
    return (
-      <div className={`rounded-xl border flex flex-col overflow-hidden ${color}`}>
-         <div className="p-3 border-b border-inherit flex justify-between items-center bg-white/50">
-            <span className="font-bold text-sm">{title} <span className="opacity-60 ml-1">({count})</span></span>
-            <button onClick={handleCopy} className="p-1.5 hover:bg-white rounded-lg transition-colors">
-               {copied ? <Check size={14} /> : <Copy size={14} />}
-            </button>
-         </div>
-         <textarea 
-            readOnly 
-            value={data.join('\n')} 
-            className="flex-1 w-full p-3 bg-transparent resize-none outline-none text-sm font-mono leading-relaxed"
+      <div className="flex flex-col h-full min-h-[200px]">
+         <CodeEditor
+            value={data.join('\n')}
+            label={`${title} (${count})`}
+            readOnly
+            theme="dark"
+            actions={
+               data.length > 0 && (
+                  <ActionButton
+                     icon={copied ? Check : Copy}
+                     label={copied ? 'Copied' : 'Copy'}
+                     onClick={handleCopy}
+                     variant={copied ? 'success' : 'primary'}
+                     size="sm"
+                  />
+               )
+            }
          />
       </div>
    );

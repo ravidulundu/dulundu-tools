@@ -76,8 +76,8 @@ export const CodeFormatter: React.FC = () => {
 
             <ToolHeader
                icon={getIcon()}
-               title="Code Beautifier"
-               description="Format and indent messy code"
+               title="HTML/CSS/JS Beautifier"
+               description="Format and indent messy HTML, CSS, and JavaScript code"
             />
 
             {/* Toolbar */}

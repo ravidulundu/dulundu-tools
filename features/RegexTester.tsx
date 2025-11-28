@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
-import { Regex, Flag, CheckCircle, XCircle } from 'lucide-react';
+import { Regex, Flag, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
 
 export const RegexTester: React.FC = () => {
    const [pattern, setPattern] = useState('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
@@ -76,8 +78,8 @@ export const RegexTester: React.FC = () => {
    };
 
    return (
-      <div className="max-w-6xl mx-auto px-4 py-8">
-         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
             <ToolHeader
                icon={Regex}
@@ -85,107 +87,107 @@ export const RegexTester: React.FC = () => {
                description="Test and debug regular expressions (JS flavor)"
             />
 
-            <div className="p-6">
-               {/* Controls */}
-               <div className="bg-slate-50 p-6 rounded-xl border border-gray-200 mb-8">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Regular Expression</label>
-                  <div className="flex items-center gap-2 mb-4">
-                     <div className="flex-1 flex items-center bg-white border border-gray-300 rounded-lg px-3 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary">
-                        <span className="text-slate-400 font-mono text-lg">/</span>
-                        <input
-                           type="text"
-                           value={pattern}
-                           onChange={(e) => setPattern(e.target.value)}
-                           className="flex-1 p-3 bg-transparent outline-none font-mono text-slate-800"
-                           placeholder="Enter regex pattern..."
-                        />
-                        <span className="text-slate-400 font-mono text-lg">/</span>
-                        <input
-                           type="text"
-                           value={flags}
-                           onChange={(e) => setFlags(e.target.value)}
-                           className="w-16 p-3 bg-transparent outline-none font-mono text-slate-600 font-bold"
-                           placeholder="gims"
-                        />
-                     </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                     {[
-                        { char: 'g', label: 'Global' },
-                        { char: 'i', label: 'Insensitive' },
-                        { char: 'm', label: 'Multiline' },
-                        { char: 's', label: 'Single Line' },
-                        { char: 'u', label: 'Unicode' },
-                     ].map(f => (
-                        <button
-                           key={f.char}
-                           onClick={() => toggleFlag(f.char)}
-                           className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all flex items-center ${flags.includes(f.char) ? 'bg-blue-100 text-primary border-blue-200' : 'bg-white text-slate-500 border-gray-200 hover:border-gray-300'}`}
-                        >
-                           {flags.includes(f.char) ? <CheckCircle size={14} className="mr-1" /> : <Flag size={14} className="mr-1" />}
-                           {f.label} ({f.char})
-                        </button>
-                     ))}
-                  </div>
-
-                  {error && (
-                     <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-lg border border-red-100 flex items-center text-sm font-medium">
-                        <XCircle size={16} className="mr-2" /> {error}
-                     </div>
-                  )}
-               </div>
-
-               <div className="grid lg:grid-cols-2 gap-8">
-                  {/* Input Text */}
-                  <div className="flex flex-col h-96">
-                     <label className="block text-sm font-bold text-slate-700 mb-2">Test String</label>
-                     <textarea
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        className="flex-1 w-full p-4 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm leading-relaxed resize-none shadow-sm"
-                        placeholder="Enter text to match against..."
+            {/* Toolbar */}
+            <div className="p-3 bg-white border-b border-gray-100 flex flex-col gap-3">
+               <div className="flex items-center gap-2">
+                  <div className="flex-1 flex items-center bg-white border border-gray-300 rounded-lg px-3 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+                     <span className="text-slate-400 font-mono text-lg select-none">/</span>
+                     <input
+                        type="text"
+                        value={pattern}
+                        onChange={(e) => setPattern(e.target.value)}
+                        className="flex-1 p-2 bg-transparent outline-none font-mono text-slate-800 text-sm"
+                        placeholder="Enter regex pattern..."
+                     />
+                     <span className="text-slate-400 font-mono text-lg select-none">/</span>
+                     <input
+                        type="text"
+                        value={flags}
+                        onChange={(e) => setFlags(e.target.value)}
+                        className="w-12 p-2 bg-transparent outline-none font-mono text-slate-600 font-bold text-sm"
+                        placeholder="gims"
                      />
                   </div>
+               </div>
+
+               <div className="flex flex-wrap gap-2">
+                  {[
+                     { char: 'g', label: 'Global' },
+                     { char: 'i', label: 'Insensitive' },
+                     { char: 'm', label: 'Multiline' },
+                     { char: 's', label: 'Single Line' },
+                     { char: 'u', label: 'Unicode' },
+                  ].map(f => (
+                     <button
+                        key={f.char}
+                        onClick={() => toggleFlag(f.char)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all flex items-center ${flags.includes(f.char) ? 'bg-blue-100 text-primary border-blue-200' : 'bg-white text-slate-500 border-gray-200 hover:border-gray-300'}`}
+                     >
+                        {flags.includes(f.char) ? <CheckCircle size={14} className="mr-1" /> : <Flag size={14} className="mr-1" />}
+                        {f.label} ({f.char})
+                     </button>
+                  ))}
+               </div>
+
+               {error && (
+                  <div className="flex items-center text-red-600 text-sm font-medium bg-red-50 px-3 py-2 rounded-lg border border-red-100 animate-in fade-in slide-in-from-top-1">
+                     <AlertCircle size={16} className="mr-2 flex-shrink-0" />
+                     <span className="truncate">{error}</span>
+                  </div>
+               )}
+            </div>
+
+            {/* Editor Area */}
+            <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+               <div className="grid md:grid-cols-2 gap-4 h-full">
+
+                  {/* Input Text */}
+                  <CodeEditor
+                     value={text}
+                     onChange={setText}
+                     label="Test String"
+                     placeholder="Enter text to match against..."
+                     theme="light"
+                  />
 
                   {/* Match Results */}
-                  <div className="flex flex-col h-96">
+                  <div className="flex flex-col h-full overflow-hidden">
                      <div className="flex justify-between items-center mb-2">
                         <label className="block text-sm font-bold text-slate-700">Matches ({matches.length})</label>
                      </div>
                      <div className="flex-1 bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col shadow-sm">
-                        <div className="p-4 bg-slate-50 border-b border-gray-100 h-1/2 overflow-y-auto font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-500">
+                        <div className="p-4 bg-slate-50 border-b border-gray-100 h-1/2 overflow-y-auto font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-500 custom-scrollbar">
                            {highlightText()}
                         </div>
-                        <div className="flex-1 overflow-y-auto bg-white p-2">
+                        <div className="flex-1 overflow-y-auto bg-white p-0 custom-scrollbar">
                            {matches.length === 0 ? (
                               <div className="h-full flex items-center justify-center text-slate-400 text-sm italic">
                                  No matches found
                               </div>
                            ) : (
-                              <table className="w-full text-sm text-left">
-                                 <thead className="bg-white text-slate-500 sticky top-0">
+                              <table className="w-full text-sm text-left border-collapse">
+                                 <thead className="bg-white text-slate-500 sticky top-0 z-10 shadow-sm">
                                     <tr>
-                                       <th className="p-2 font-medium">#</th>
-                                       <th className="p-2 font-medium">Match</th>
-                                       <th className="p-2 font-medium">Index</th>
-                                       <th className="p-2 font-medium">Groups</th>
+                                       <th className="p-3 font-medium border-b border-gray-100 w-12 text-center">#</th>
+                                       <th className="p-3 font-medium border-b border-gray-100">Match</th>
+                                       <th className="p-3 font-medium border-b border-gray-100 w-20">Index</th>
+                                       <th className="p-3 font-medium border-b border-gray-100">Groups</th>
                                     </tr>
                                  </thead>
                                  <tbody className="divide-y divide-gray-100">
                                     {matches.map((m, i) => (
-                                       <tr key={i} className="hover:bg-blue-50/50">
-                                          <td className="p-2 text-slate-400">{i + 1}</td>
-                                          <td className="p-2 font-mono font-bold text-slate-700">{m.value}</td>
-                                          <td className="p-2 text-slate-500">{m.index}</td>
-                                          <td className="p-2 text-slate-500">
+                                       <tr key={i} className="hover:bg-blue-50/50 transition-colors group">
+                                          <td className="p-3 text-slate-400 text-center font-mono text-xs">{i + 1}</td>
+                                          <td className="p-3 font-mono font-bold text-slate-700 break-all">{m.value}</td>
+                                          <td className="p-3 text-slate-500 font-mono text-xs">{m.index}</td>
+                                          <td className="p-3 text-slate-500">
                                              {m.groups && m.groups.length > 0 ? (
                                                 <span className="flex flex-wrap gap-1">
                                                    {m.groups.map((g: string, gi: number) => (
-                                                      <span key={gi} className="px-1.5 py-0.5 bg-gray-100 rounded text-xs border border-gray-200">{g}</span>
+                                                      <span key={gi} className="px-1.5 py-0.5 bg-gray-100 rounded text-xs border border-gray-200 font-mono text-slate-600">{g}</span>
                                                    ))}
                                                 </span>
-                                             ) : '-'}
+                                             ) : <span className="text-slate-300">-</span>}
                                           </td>
                                        </tr>
                                     ))}

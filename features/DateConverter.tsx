@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, RefreshCw } from 'lucide-react';
+import { Calendar, Clock, RefreshCw, ArrowRight } from 'lucide-react';
 import { ToolHeader } from '../components/common/ToolHeader';
 
 export const DateConverter: React.FC = () => {
@@ -9,6 +9,25 @@ export const DateConverter: React.FC = () => {
   const [utc, setUtc] = useState('');
 
   useEffect(() => {
+    // Check for input in URL hash (from extension)
+    const hash = window.location.hash;
+    if (hash.includes('input=')) {
+      try {
+        const params = new URLSearchParams(hash.substring(1));
+        const inputParam = params.get('input');
+        if (inputParam) {
+          const decoded = decodeURIComponent(inputParam);
+          // Try to parse as number (timestamp)
+          const ts = parseInt(decoded);
+          if (!isNaN(ts)) {
+            handleTsChange(decoded); // Reuse existing logic
+            window.history.replaceState(null, '', window.location.pathname);
+            return; // Skip default updateFromTs
+          }
+        }
+      } catch (e) { }
+    }
+
     updateFromTs(timestamp);
   }, []);
 
@@ -45,8 +64,8 @@ export const DateConverter: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
         <ToolHeader
           icon={Calendar}
@@ -54,83 +73,81 @@ export const DateConverter: React.FC = () => {
           description="Convert between Unix Timestamps and Human Dates"
         />
 
-        <div className="p-3 border-b border-gray-100 flex justify-end">
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
           <button
             onClick={setToNow}
-            className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium hover:bg-slate-50 text-slate-600 transition-colors"
+            className="flex items-center space-x-2 px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-sm font-medium hover:bg-slate-100 text-slate-600 transition-colors"
           >
-            <Clock size={16} /> <span>Now</span>
+            <Clock size={16} /> <span>Set to Now</span>
           </button>
         </div>
 
-        <div className="p-8 space-y-8">
-          <div className="grid md:grid-cols-2 gap-8">
+        {/* Content Area */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+          <div className="max-w-4xl mx-auto space-y-6">
 
-            {/* Epoch Input */}
-            <div className="bg-slate-50 p-6 rounded-xl border border-gray-200">
-              <label className="block text-sm font-bold text-slate-700 mb-2">Unix Timestamp (Seconds)</label>
-              <div className="flex gap-2">
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Epoch Input */}
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide">Unix Timestamp (Seconds)</label>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={timestamp}
+                    onChange={(e) => handleTsChange(e.target.value)}
+                    className="flex-1 p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg text-slate-800"
+                  />
+                </div>
+                <p className="text-xs text-slate-400 mt-2">Supports seconds or milliseconds (auto-detected)</p>
+              </div>
+
+              {/* ISO Input */}
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide">ISO 8601 Date</label>
                 <input
-                  type="number"
-                  value={timestamp}
-                  onChange={(e) => handleTsChange(e.target.value)}
-                  className="flex-1 p-3 bg-white border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg"
+                  type="text"
+                  value={iso}
+                  onChange={(e) => handleIsoChange(e.target.value)}
+                  className="w-full p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg text-slate-800"
+                  placeholder="YYYY-MM-DDTHH:mm:ss.sssZ"
                 />
-                <button
-                  onClick={() => updateFromTs(timestamp)}
-                  className="p-3 bg-primary text-white rounded-lg hover:bg-blue-600"
-                >
-                  <RefreshCw size={20} />
-                </button>
-              </div>
-              <p className="text-xs text-slate-500 mt-2">Supports seconds or milliseconds (auto-detected)</p>
-            </div>
-
-            {/* ISO Input */}
-            <div className="bg-slate-50 p-6 rounded-xl border border-gray-200">
-              <label className="block text-sm font-bold text-slate-700 mb-2">ISO 8601 Date</label>
-              <input
-                type="text"
-                value={iso}
-                onChange={(e) => handleIsoChange(e.target.value)}
-                className="w-full p-3 bg-white border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg"
-                placeholder="YYYY-MM-DDTHH:mm:ss.sssZ"
-              />
-              <p className="text-xs text-slate-500 mt-2">Standard exchange format</p>
-            </div>
-
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-            <div className="p-4 bg-slate-50 border-b border-gray-200 font-bold text-slate-700">Converted Results</div>
-            <div className="divide-y divide-gray-100">
-              <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50">
-                <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">Local Time</span>
-                <span className="font-mono text-slate-800 font-bold text-lg">{local}</span>
-              </div>
-              <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50">
-                <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">UTC / GMT</span>
-                <span className="font-mono text-slate-800 font-bold text-lg">{utc}</span>
-              </div>
-              <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50">
-                <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">Unix Timestamp (Milliseconds)</span>
-                <span className="font-mono text-slate-800 font-bold text-lg">{timestamp * 1000}</span>
-              </div>
-              <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50">
-                <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">Relative</span>
-                <span className="font-mono text-slate-800 font-bold text-lg">
-                  {(() => {
-                    const diff = Date.now() - (timestamp * 1000);
-                    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-                    if (Math.abs(diff) < 1000) return 'Just now';
-                    if (Math.abs(diff) < 60000) return rtf.format(-Math.round(diff / 1000), 'seconds');
-                    if (Math.abs(diff) < 3600000) return rtf.format(-Math.round(diff / 60000), 'minutes');
-                    if (Math.abs(diff) < 86400000) return rtf.format(-Math.round(diff / 3600000), 'hours');
-                    return rtf.format(-Math.round(diff / 86400000), 'days');
-                  })()}
-                </span>
+                <p className="text-xs text-slate-400 mt-2">Standard exchange format</p>
               </div>
             </div>
+
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+              <div className="p-4 bg-slate-50 border-b border-gray-200 font-bold text-slate-700 text-sm uppercase tracking-wide">Converted Results</div>
+              <div className="divide-y divide-gray-100">
+                <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50 transition-colors">
+                  <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">Local Time</span>
+                  <span className="font-mono text-slate-800 font-bold text-lg">{local}</span>
+                </div>
+                <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50 transition-colors">
+                  <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">UTC / GMT</span>
+                  <span className="font-mono text-slate-800 font-bold text-lg">{utc}</span>
+                </div>
+                <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50 transition-colors">
+                  <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">Unix Timestamp (Milliseconds)</span>
+                  <span className="font-mono text-slate-800 font-bold text-lg">{timestamp * 1000}</span>
+                </div>
+                <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50 transition-colors">
+                  <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">Relative</span>
+                  <span className="font-mono text-slate-800 font-bold text-lg">
+                    {(() => {
+                      const diff = Date.now() - (timestamp * 1000);
+                      const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+                      if (Math.abs(diff) < 1000) return 'Just now';
+                      if (Math.abs(diff) < 60000) return rtf.format(-Math.round(diff / 1000), 'seconds');
+                      if (Math.abs(diff) < 3600000) return rtf.format(-Math.round(diff / 60000), 'minutes');
+                      if (Math.abs(diff) < 86400000) return rtf.format(-Math.round(diff / 3600000), 'hours');
+                      return rtf.format(-Math.round(diff / 86400000), 'days');
+                    })()}
+                  </span>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

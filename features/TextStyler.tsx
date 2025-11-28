@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Type, Copy, Check } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
 
 export const TextStyler: React.FC = () => {
    const [text, setText] = useState('Dulundu.tools');
@@ -22,20 +23,17 @@ export const TextStyler: React.FC = () => {
    };
 
    return (
-      <div className="max-w-4xl mx-auto px-4 py-8">
-         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-6 border-b border-gray-100 flex items-center space-x-3 bg-slate-50/50">
-               <div className="p-2 bg-blue-100 text-primary rounded-lg">
-                  <Type size={24} />
-               </div>
-               <div>
-                  <h1 className="text-2xl font-bold text-slate-800">Text Styler</h1>
-                  <p className="text-sm text-slate-500">Generate fancy Unicode text for social media</p>
-               </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
-            <div className="p-6">
-               <div className="mb-8">
+            <ToolHeader
+               icon={Type}
+               title="Text Styler"
+               description="Generate fancy Unicode text for social media"
+            />
+
+            <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col">
+               <div className="mb-6">
                   <input
                      type="text"
                      value={text}
@@ -45,25 +43,27 @@ export const TextStyler: React.FC = () => {
                   />
                </div>
 
-               <div className="grid gap-4">
-                  {styles.map((style, index) => {
-                     const styledText = style.transform(text || 'Sample Text');
-                     return (
-                        <div key={style.name} className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:border-primary/50 hover:shadow-sm transition-all group">
-                           <div>
-                              <p className="text-xs text-slate-400 font-medium uppercase mb-1">{style.name}</p>
-                              <p className="text-lg text-slate-800 font-medium break-all">{styledText}</p>
+               <div className="flex-1 overflow-y-auto custom-scrollbar">
+                  <div className="grid gap-4">
+                     {styles.map((style, index) => {
+                        const styledText = style.transform(text || 'Sample Text');
+                        return (
+                           <div key={style.name} className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:border-primary/50 hover:shadow-sm transition-all group">
+                              <div>
+                                 <p className="text-xs text-slate-400 font-medium uppercase mb-1">{style.name}</p>
+                                 <p className="text-lg text-slate-800 font-medium break-all">{styledText}</p>
+                              </div>
+                              <button
+                                 onClick={() => handleCopy(styledText, index)}
+                                 className="p-2 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-lg transition-colors"
+                                 title="Copy"
+                              >
+                                 {copiedIndex === index ? <Check size={20} className="text-green-500" /> : <Copy size={20} />}
+                              </button>
                            </div>
-                           <button
-                              onClick={() => handleCopy(styledText, index)}
-                              className="p-2 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-lg transition-colors"
-                              title="Copy"
-                           >
-                              {copiedIndex === index ? <Check size={20} className="text-green-500" /> : <Copy size={20} />}
-                           </button>
-                        </div>
-                     );
-                  })}
+                        );
+                     })}
+                  </div>
                </div>
             </div>
          </div>

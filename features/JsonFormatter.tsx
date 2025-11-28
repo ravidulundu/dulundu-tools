@@ -11,6 +11,28 @@ export const JsonFormatter: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Check for input in URL hash (from extension)
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.includes('input=')) {
+      try {
+        const params = new URLSearchParams(hash.substring(1)); // remove #
+        const inputParam = params.get('input');
+        if (inputParam) {
+          const decoded = decodeURIComponent(inputParam);
+          setInput(decoded);
+          // Optional: Auto-process if valid
+          try { JSON.parse(decoded); setTimeout(() => processJson('beautify'), 100); } catch (e) { }
+
+          // Clean URL
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      } catch (e) {
+        console.error('Failed to parse input from URL', e);
+      }
+    }
+  }, []);
+
   const processJson = (mode: 'beautify' | 'minify') => {
     if (!input.trim()) {
       setOutput('');

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Code, Eye, Copy, Check, RotateCcw } from 'lucide-react';
+import { Code, Eye, RotateCcw } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const HtmlEditor: React.FC = () => {
     const [html, setHtml] = useState('<div class="card">\n  <h1>Hello World</h1>\n  <p>Start editing to see changes instantly!</p>\n  <button>Click Me</button>\n</div>');
@@ -22,60 +25,69 @@ export const HtmlEditor: React.FC = () => {
     }, [html, css]);
 
     return (
-        <div className="h-[calc(100vh-100px)] flex flex-col">
-            <div className="bg-slate-50/50 border-b border-gray-200 p-4 flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-blue-100 text-primary rounded-lg shadow-sm">
-                        <Code size={20} />
-                    </div>
-                    <div>
-                        <h1 className="text-xl font-bold text-slate-800">Real-time HTML Editor</h1>
-                        <p className="text-xs text-slate-500">Live preview for HTML & CSS</p>
-                    </div>
-                </div>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
-            <div className="flex-1 grid grid-cols-2 h-full overflow-hidden">
-                {/* Editors */}
-                <div className="flex flex-col border-r border-gray-200 bg-slate-50">
-                    <div className="flex-1 flex flex-col min-h-0 border-b border-gray-200">
-                        <div className="px-4 py-2 bg-slate-100 border-b border-gray-200 text-xs font-bold text-slate-500 uppercase flex justify-between items-center">
-                            <span>HTML</span>
-                            <button onClick={() => setHtml('')} title="Clear HTML"><RotateCcw size={12} /></button>
-                        </div>
-                        <textarea
-                            value={html}
-                            onChange={(e) => setHtml(e.target.value)}
-                            className="flex-1 p-4 font-mono text-sm bg-white outline-none resize-none text-slate-900"
-                            spellCheck={false}
-                        />
-                    </div>
-                    <div className="flex-1 flex flex-col min-h-0">
-                        <div className="px-4 py-2 bg-slate-100 border-b border-gray-200 text-xs font-bold text-slate-500 uppercase flex justify-between items-center">
-                            <span>CSS</span>
-                            <button onClick={() => setCss('')} title="Clear CSS"><RotateCcw size={12} /></button>
-                        </div>
-                        <textarea
-                            value={css}
-                            onChange={(e) => setCss(e.target.value)}
-                            className="flex-1 p-4 font-mono text-sm bg-white outline-none resize-none text-slate-900"
-                            spellCheck={false}
-                        />
-                    </div>
-                </div>
+                <ToolHeader
+                    icon={Code}
+                    title="Real-time HTML Editor"
+                    description="Live preview for HTML & CSS"
+                />
 
-                {/* Preview */}
-                <div className="flex flex-col bg-white">
-                    <div className="px-4 py-2 bg-slate-100 border-b border-gray-200 text-xs font-bold text-slate-500 uppercase flex items-center">
-                        <Eye size={14} className="mr-2" /> Preview
+                <div className="flex-1 grid md:grid-cols-2 h-full overflow-hidden">
+                    {/* Editors */}
+                    <div className="flex flex-col border-r border-gray-200 bg-slate-50 h-full overflow-hidden">
+                        <div className="flex-1 flex flex-col min-h-0 border-b border-gray-200">
+                            <CodeEditor
+                                value={html}
+                                onChange={setHtml}
+                                label="HTML"
+                                placeholder="Enter HTML..."
+                                theme="light"
+                                actions={
+                                    <ActionButton
+                                        icon={RotateCcw}
+                                        label="Clear"
+                                        onClick={() => setHtml('')}
+                                        variant="secondary"
+                                        size="sm"
+                                    />
+                                }
+                            />
+                        </div>
+                        <div className="flex-1 flex flex-col min-h-0">
+                            <CodeEditor
+                                value={css}
+                                onChange={setCss}
+                                label="CSS"
+                                placeholder="Enter CSS..."
+                                theme="light"
+                                actions={
+                                    <ActionButton
+                                        icon={RotateCcw}
+                                        label="Clear"
+                                        onClick={() => setCss('')}
+                                        variant="secondary"
+                                        size="sm"
+                                    />
+                                }
+                            />
+                        </div>
                     </div>
-                    <div className="flex-1 bg-white relative">
-                        <iframe
-                            srcDoc={srcDoc}
-                            title="preview"
-                            sandbox="allow-scripts"
-                            className="absolute inset-0 w-full h-full border-none"
-                        />
+
+                    {/* Preview */}
+                    <div className="flex flex-col bg-white h-full overflow-hidden">
+                        <div className="px-4 py-2 bg-slate-100 border-b border-gray-200 text-xs font-bold text-slate-500 uppercase flex items-center">
+                            <Eye size={14} className="mr-2" /> Preview
+                        </div>
+                        <div className="flex-1 bg-white relative">
+                            <iframe
+                                srcDoc={srcDoc}
+                                title="preview"
+                                sandbox="allow-scripts"
+                                className="absolute inset-0 w-full h-full border-none"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

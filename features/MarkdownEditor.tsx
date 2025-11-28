@@ -1,7 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { FileText, Eye, Code, Copy, Check } from 'lucide-react';
 import { marked } from 'marked';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const MarkdownEditor: React.FC = () => {
   const [markdown, setMarkdown] = useState('# Hello World\n\nThis is a **Markdown** editor.\n\n- List item 1\n- List item 2\n\n```javascript\nconsole.log("Code block");\n```');
@@ -11,7 +13,6 @@ export const MarkdownEditor: React.FC = () => {
   useEffect(() => {
     try {
       const rawHtml = marked.parse(markdown);
-      // marked.parse can return a Promise in some versions/configs, check if it's a string
       if (typeof rawHtml === 'string') {
         setHtml(rawHtml);
       } else {
@@ -31,51 +32,46 @@ export const MarkdownEditor: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-        {/* Header */}
-        <div className="p-4 md:p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-           <div className="flex items-center space-x-3">
-             <div className="p-2 bg-slate-800 text-white rounded-lg">
-                <FileText size={24} />
-             </div>
-             <div>
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800">Markdown Editor</h1>
-                <p className="text-xs md:text-sm text-slate-500">Write Markdown and see live HTML preview</p>
-             </div>
-           </div>
-           
-           <button 
-             onClick={handleCopy}
-             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center border ${copied ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white text-slate-600 border-gray-200 hover:border-primary hover:text-primary'}`}
-           >
-              {copied ? <Check size={16} className="mr-2" /> : <Copy size={16} className="mr-2" />}
-              Copy HTML
-           </button>
-        </div>
+
+        <ToolHeader
+          icon={FileText}
+          title="Markdown Editor"
+          description="Write Markdown and see live HTML preview"
+        />
 
         {/* Editor Split View */}
         <div className="flex-1 overflow-hidden grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
-           {/* Markdown Input */}
-           <div className="flex flex-col h-full min-h-[300px] bg-slate-50">
-              <div className="p-3 border-b border-gray-200 flex items-center text-slate-500 text-xs font-bold uppercase tracking-wider bg-slate-100">
-                 <Code size={14} className="mr-2" /> Markdown Input
-              </div>
-              <textarea 
-                value={markdown}
-                onChange={(e) => setMarkdown(e.target.value)}
-                className="flex-1 w-full p-6 bg-slate-50 text-slate-800 font-mono text-sm outline-none resize-none leading-relaxed"
-                placeholder="# Type markdown here..."
-              />
-           </div>
+          {/* Markdown Input */}
+          <div className="flex flex-col h-full min-h-[300px] bg-slate-50 p-4 md:p-0">
+            <CodeEditor
+              value={markdown}
+              onChange={setMarkdown}
+              label="Markdown Input"
+              placeholder="# Type markdown here..."
+              language="markdown"
+              theme="light"
+              className="h-full border-none"
+            />
+          </div>
 
-           {/* Preview */}
-           <div className="flex flex-col h-full min-h-[300px] bg-white">
-              <div className="p-3 border-b border-gray-200 flex items-center text-slate-500 text-xs font-bold uppercase tracking-wider bg-white">
-                 <Eye size={14} className="mr-2" /> Live Preview
+          {/* Preview */}
+          <div className="flex flex-col h-full min-h-[300px] bg-white">
+            <div className="p-3 border-b border-gray-200 flex items-center justify-between text-slate-500 text-xs font-bold uppercase tracking-wider bg-white">
+              <div className="flex items-center">
+                <Eye size={14} className="mr-2" /> Live Preview
               </div>
-              <div className="flex-1 p-6 overflow-y-auto prose prose-slate prose-sm max-w-none">
-                  <div dangerouslySetInnerHTML={{ __html: html }} />
-              </div>
-           </div>
+              <ActionButton
+                icon={copied ? Check : Copy}
+                label={copied ? 'Copied HTML' : 'Copy HTML'}
+                onClick={handleCopy}
+                variant={copied ? 'success' : 'secondary'}
+                size="sm"
+              />
+            </div>
+            <div className="flex-1 p-6 overflow-y-auto prose prose-slate prose-sm max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: html }} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

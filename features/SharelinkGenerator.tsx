@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Share2, Link as LinkIcon, Copy, Check, Trash2 } from 'lucide-react';
+import { Share2, Link as LinkIcon, Copy, Check, Trash2, ExternalLink } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const SharelinkGenerator: React.FC = () => {
     const [url, setUrl] = useState('');
@@ -47,113 +50,111 @@ export const SharelinkGenerator: React.FC = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handleClear = () => {
+        setUrl('');
+        setText('');
+        setGeneratedLink('');
+    };
+
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 text-primary rounded-lg">
-                            <Share2 size={24} />
-                        </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-slate-800">Share Link Generator</h1>
-                            <p className="text-sm text-slate-500">Create custom share links for social media</p>
-                        </div>
-                    </div>
-                </div>
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
-                <div className="p-8 grid md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">Platform</label>
-                            <div className="grid grid-cols-3 gap-2">
-                                {['twitter', 'facebook', 'linkedin', 'whatsapp', 'telegram', 'reddit', 'email'].map(p => (
-                                    <button
-                                        key={p}
-                                        onClick={() => { setPlatform(p); setGeneratedLink(''); }}
-                                        className={`px-3 py-2 rounded-lg text-sm font-medium capitalize transition-all border ${platform === p
-                                            ? 'bg-primary text-white border-primary shadow-md'
-                                            : 'bg-white text-slate-600 border-gray-200 hover:border-primary'
-                                            }`}
-                                    >
-                                        {p}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                <ToolHeader
+                    icon={Share2}
+                    title="Share Link Generator"
+                    description="Create custom share links for social media"
+                />
 
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <label className="block text-sm font-bold text-slate-700">URL to Share</label>
-                                <button
-                                    onClick={() => setUrl('')}
-                                    className="text-xs text-red-500 hover:text-red-600 flex items-center"
-                                >
-                                    <Trash2 size={12} className="mr-1" /> Clear
-                                </button>
-                            </div>
-                            <input
-                                type="text"
-                                value={url}
-                                onChange={(e) => setUrl(e.target.value)}
-                                className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-slate-900"
-                                placeholder="https://example.com"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">Message / Title (Optional)</label>
-                            <textarea
-                                value={text}
-                                onChange={(e) => setText(e.target.value)}
-                                className="w-full p-3 h-24 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-slate-900"
-                                placeholder="Check this out!"
-                            />
-                        </div>
-
-                        <button
-                            onClick={generateLink}
-                            className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 transition-colors font-bold shadow-lg"
-                        >
-                            Generate Link
-                        </button>
-                    </div>
-
-                    <div className="bg-slate-50 rounded-xl p-6 border border-gray-200 flex flex-col">
-                        <label className="block text-sm font-bold text-slate-700 mb-4">Generated Link</label>
-
-                        {generatedLink ? (
-                            <div className="space-y-4 flex-1">
-                                <div className="relative">
-                                    <textarea
-                                        readOnly
-                                        value={generatedLink}
-                                        className="w-full h-32 p-4 pr-12 bg-white border border-gray-200 rounded-xl text-sm text-slate-600 outline-none resize-none"
-                                    />
-                                    <button
-                                        onClick={handleCopy}
-                                        className="absolute top-2 right-2 p-2 bg-slate-100 hover:bg-slate-200 rounded-md text-slate-600 transition-colors"
-                                        title="Copy"
-                                    >
-                                        {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-                                    </button>
+                <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+                    <div className="grid md:grid-cols-2 gap-6 h-full">
+                        {/* Input Area */}
+                        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit overflow-y-auto max-h-full">
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-700 mb-2">Platform</label>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {['twitter', 'facebook', 'linkedin', 'whatsapp', 'telegram', 'reddit', 'email'].map(p => (
+                                            <button
+                                                key={p}
+                                                onClick={() => { setPlatform(p); setGeneratedLink(''); }}
+                                                className={`px-3 py-2 rounded-lg text-xs font-bold capitalize transition-all border ${platform === p
+                                                    ? 'bg-primary text-white border-primary shadow-md'
+                                                    : 'bg-slate-50 text-slate-600 border-gray-200 hover:border-primary hover:bg-white'
+                                                    }`}
+                                            >
+                                                {p}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
 
-                                <a
-                                    href={generatedLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block w-full py-3 text-center bg-white border border-gray-200 text-primary rounded-xl hover:bg-blue-50 transition-colors font-bold shadow-sm"
+                                <div>
+                                    <div className="flex items-center justify-between mb-2">
+                                        <label className="block text-sm font-bold text-slate-700">URL to Share</label>
+                                        <button
+                                            onClick={handleClear}
+                                            className="text-xs text-red-500 hover:text-red-600 flex items-center"
+                                        >
+                                            <Trash2 size={12} className="mr-1" /> Clear
+                                        </button>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={url}
+                                        onChange={(e) => setUrl(e.target.value)}
+                                        className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-slate-900 bg-slate-50"
+                                        placeholder="https://example.com"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-700 mb-2">Message / Title (Optional)</label>
+                                    <textarea
+                                        value={text}
+                                        onChange={(e) => setText(e.target.value)}
+                                        className="w-full p-3 h-24 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-slate-900 bg-slate-50"
+                                        placeholder="Check this out!"
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={generateLink}
+                                    className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 transition-colors font-bold shadow-md flex items-center justify-center"
                                 >
-                                    Test Link <LinkIcon size={16} className="inline ml-1" />
-                                </a>
+                                    <Share2 size={18} className="mr-2" /> Generate Link
+                                </button>
                             </div>
-                        ) : (
-                            <div className="flex-1 flex flex-col items-center justify-center text-slate-400">
-                                <Share2 size={48} className="mb-4 opacity-20" />
-                                <p>Fill the form to generate a link</p>
-                            </div>
-                        )}
+                        </div>
+
+                        {/* Output Area */}
+                        <div className="flex flex-col h-full">
+                            <CodeEditor
+                                value={generatedLink}
+                                label="Generated Link"
+                                placeholder="Your share link will appear here..."
+                                readOnly
+                                theme="dark"
+                                actions={
+                                    generatedLink && (
+                                        <>
+                                            <ActionButton
+                                                icon={ExternalLink}
+                                                label="Test Link"
+                                                onClick={() => window.open(generatedLink, '_blank')}
+                                                variant="secondary"
+                                            />
+                                            <ActionButton
+                                                icon={copied ? Check : Copy}
+                                                label={copied ? 'Copied' : 'Copy'}
+                                                onClick={handleCopy}
+                                                variant={copied ? 'success' : 'primary'}
+                                            />
+                                        </>
+                                    )
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

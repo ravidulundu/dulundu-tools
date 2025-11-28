@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Minimize2, ArrowRight, Copy, Check, Trash2 } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const LuaMinifier: React.FC = () => {
     const [input, setInput] = useState('-- Example Lua Code\nfunction factorial(n)\n    if n == 0 then\n        return 1\n    else\n        return n * factorial(n - 1)\n    end\nend\n\nprint(factorial(5))');
@@ -8,25 +11,6 @@ export const LuaMinifier: React.FC = () => {
 
     const minifyLua = (code: string) => {
         let minified = code;
-
-        // Remove comments (-- ...)
-        minified = minified.replace(/--.*$/gm, '');
-
-        // Remove block comments (--[[ ... ]]) - basic support
-        minified = minified.replace(/--\[\[[\s\S]*?\]\]/g, '');
-
-        // Replace multiple spaces/tabs with single space
-        minified = minified.replace(/\s+/g, ' ');
-
-        // Remove spaces around operators
-        minified = minified.replace(/\s*([=+\-*/%^#<>~,(){}])\s*/g, '$1');
-
-        // Fix potential issues where spaces are needed (e.g. "return 1")
-        // This is a very basic heuristic re-insertion of spaces for keywords
-        const keywords = ['and', 'break', 'do', 'else', 'elseif', 'end', 'false', 'for', 'function', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat', 'return', 'then', 'true', 'until', 'while'];
-
-        // This is tricky with regex only. A safer "safe minify" is just removing comments and newlines.
-        // Let's stick to a safer approach: Remove comments, normalize whitespace, remove newlines where safe.
 
         // Reset
         minified = code;
@@ -53,66 +37,71 @@ export const LuaMinifier: React.FC = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 text-primary rounded-lg">
-                            <Minimize2 size={24} />
-                        </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-slate-800">Lua Minifier</h1>
-                            <p className="text-sm text-slate-500">Compress Lua scripts to reduce size</p>
-                        </div>
-                    </div>
+    const handleClear = () => {
+        setInput('');
+        setOutput('');
+        setCopied(false);
+    };
 
+    return (
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+                <ToolHeader
+                    icon={Minimize2}
+                    title="Lua Minifier"
+                    description="Compress Lua scripts to reduce size"
+                />
+
+                {/* Toolbar */}
+                <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
                     <button
                         onClick={handleMinify}
-                        className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md flex items-center"
+                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
                     >
-                        Minify <ArrowRight size={16} className="ml-2" />
+                        Minify <ArrowRight size={16} className="ml-1.5" />
+                    </button>
+
+                    <button
+                        onClick={handleClear}
+                        className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Clear All"
+                    >
+                        <Trash2 size={20} />
                     </button>
                 </div>
 
-                <div className="p-6 grid md:grid-cols-2 gap-6">
-                    <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-2">
-                            <label className="text-sm font-medium text-slate-700">Lua Input</label>
-                            <button
-                                onClick={() => setInput('')}
-                                className="text-xs text-red-500 hover:text-red-600 flex items-center"
-                            >
-                                <Trash2 size={12} className="mr-1" /> Clear
-                            </button>
-                        </div>
-                        <textarea
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            className="flex-1 w-full p-4 font-mono text-sm bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all resize-none text-slate-900 min-h-[300px]"
-                            placeholder="Paste Lua code here..."
-                        />
-                    </div>
+                {/* Editor Area */}
+                <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+                    <div className="grid md:grid-cols-2 gap-4 h-full">
 
-                    <div className="flex flex-col h-full">
-                        <label className="block text-sm font-medium text-slate-700 mb-2">Minified Output</label>
-                        <div className="relative flex-1">
-                            <textarea
-                                readOnly
-                                value={output}
-                                className="w-full h-full p-4 font-mono text-sm bg-[#1e293b] text-gray-50 border border-slate-700 rounded-xl resize-none outline-none min-h-[300px]"
-                                placeholder="Result will appear here..."
-                            />
-                            {output && (
-                                <button
-                                    onClick={handleCopy}
-                                    className="absolute top-4 right-4 p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"
-                                    title="Copy"
-                                >
-                                    {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-                                </button>
-                            )}
-                        </div>
+                        <CodeEditor
+                            value={input}
+                            onChange={setInput}
+                            label="Lua Input"
+                            placeholder="Paste Lua code here..."
+                            language="lua"
+                            theme="light"
+                        />
+
+                        <CodeEditor
+                            value={output}
+                            label="Minified Output"
+                            placeholder="Result will appear here..."
+                            readOnly
+                            language="lua"
+                            theme="dark"
+                            actions={
+                                output && (
+                                    <ActionButton
+                                        icon={copied ? Check : Copy}
+                                        label={copied ? 'Copied' : 'Copy'}
+                                        onClick={handleCopy}
+                                        variant={copied ? 'success' : 'primary'}
+                                    />
+                                )
+                            }
+                        />
                     </div>
                 </div>
             </div>

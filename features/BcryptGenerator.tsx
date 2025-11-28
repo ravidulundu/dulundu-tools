@@ -1,7 +1,9 @@
-
 import React, { useState } from 'react';
-import { Lock, RefreshCw, Check, AlertTriangle } from 'lucide-react';
+import { Lock, RefreshCw, Check, AlertTriangle, Copy, Trash2 } from 'lucide-react';
 import bcrypt from 'bcryptjs';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const BcryptGenerator: React.FC = () => {
   const [password, setPassword] = useState('');
@@ -10,125 +12,163 @@ export const BcryptGenerator: React.FC = () => {
   const [compareHash, setCompareHash] = useState('');
   const [matchResult, setMatchResult] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const generateHash = () => {
     if (!password) return;
     setLoading(true);
     // Use timeout to allow UI update before blocking sync operation
     setTimeout(() => {
-        try {
-            const salt = bcrypt.genSaltSync(rounds);
-            const h = bcrypt.hashSync(password, salt);
-            setHash(h);
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setLoading(false);
-        }
+      try {
+        const salt = bcrypt.genSaltSync(rounds);
+        const h = bcrypt.hashSync(password, salt);
+        setHash(h);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
     }, 50);
   };
 
   const checkMatch = () => {
-      if (!password || !compareHash) {
-          setMatchResult(null);
-          return;
-      }
-      const isMatch = bcrypt.compareSync(password, compareHash);
-      setMatchResult(isMatch);
+    if (!password || !compareHash) {
+      setMatchResult(null);
+      return;
+    }
+    const isMatch = bcrypt.compareSync(password, compareHash);
+    setMatchResult(isMatch);
+  };
+
+  const handleCopy = () => {
+    if (!hash) return;
+    navigator.clipboard.writeText(hash);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleClear = () => {
+    setPassword('');
+    setHash('');
+    setCompareHash('');
+    setMatchResult(null);
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-           <div className="flex items-center space-x-3">
-             <div className="p-2 bg-red-100 text-red-600 rounded-lg">
-                <Lock size={24} />
-             </div>
-             <div>
-                <h1 className="text-2xl font-bold text-slate-800">Bcrypt Generator</h1>
-                <p className="text-sm text-slate-500">Hash and verify passwords securely</p>
-             </div>
-           </div>
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+        <ToolHeader
+          icon={Lock}
+          title="Bcrypt Generator"
+          description="Hash and verify passwords securely"
+          iconBgColor="bg-red-100"
+          iconColor="text-red-600"
+        />
+
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={generateHash}
+              disabled={loading || !password}
+              className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors font-medium disabled:opacity-50 text-sm flex items-center"
+            >
+              {loading ? <RefreshCw className="animate-spin mr-1.5" size={16} /> : <RefreshCw className="mr-1.5" size={16} />}
+              {loading ? 'Hashing...' : 'Hash Password'}
+            </button>
+
+            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
+              <label className="text-xs font-bold text-slate-500 uppercase">Rounds:</label>
+              <input
+                type="number"
+                min="4" max="15"
+                value={rounds}
+                onChange={(e) => setRounds(parseInt(e.target.value))}
+                className="w-12 bg-transparent text-sm font-bold text-slate-700 outline-none text-center"
+              />
+            </div>
+          </div>
+
+          <button
+            onClick={handleClear}
+            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            title="Clear All"
+          >
+            <Trash2 size={20} />
+          </button>
         </div>
 
-        <div className="p-8 space-y-8">
-           {/* Generator */}
-           <div className="bg-slate-50 p-6 rounded-xl border border-gray-200">
-               <h3 className="font-bold text-slate-800 mb-4 flex items-center">
-                   <RefreshCw size={18} className="mr-2 text-primary" /> Generate Hash
-               </h3>
-               <div className="grid md:grid-cols-[1fr,150px] gap-4 mb-4">
-                   <div>
-                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Password</label>
-                       <input 
-                         type="text" 
-                         value={password} 
-                         onChange={(e) => setPassword(e.target.value)}
-                         className="w-full p-3 bg-white border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                         placeholder="Enter plaintext password..."
-                       />
-                   </div>
-                   <div>
-                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Salt Rounds</label>
-                       <input 
-                         type="number" 
-                         min="4" max="15"
-                         value={rounds} 
-                         onChange={(e) => setRounds(parseInt(e.target.value))}
-                         className="w-full p-3 bg-white border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                       />
-                   </div>
-               </div>
-               
-               <button 
-                 onClick={generateHash}
-                 disabled={loading || !password}
-                 className="px-6 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors font-bold disabled:opacity-50 mb-6"
-               >
-                 {loading ? 'Hashing...' : 'Hash Password'}
-               </button>
+        {/* Content Area */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+          <div className="max-w-4xl mx-auto space-y-6">
 
-               {hash && (
-                   <div className="bg-white p-4 rounded-lg border border-gray-200 break-all font-mono text-sm text-slate-700 shadow-inner">
-                       {hash}
-                   </div>
-               )}
-           </div>
+            {/* Generator Section */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <CodeEditor
+                value={password}
+                onChange={setPassword}
+                label="Plaintext Password"
+                placeholder="Enter password..."
+                theme="light"
+              />
 
-           {/* Verifier */}
-           <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-               <h3 className="font-bold text-slate-800 mb-4 flex items-center">
-                   <Check size={18} className="mr-2 text-green-600" /> Verify Hash
-               </h3>
-               <div className="space-y-4">
-                   <div>
-                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Hash to check</label>
-                       <input 
-                         type="text" 
-                         value={compareHash} 
-                         onChange={(e) => setCompareHash(e.target.value)}
-                         className="w-full p-3 bg-slate-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm"
-                         placeholder="$2a$10$..."
-                       />
-                   </div>
-                   
-                   <button 
-                     onClick={checkMatch}
-                     disabled={!password || !compareHash}
-                     className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-bold disabled:opacity-50"
-                   >
-                     Compare with Password
-                   </button>
+              <CodeEditor
+                value={hash}
+                label="Generated Hash"
+                placeholder="Hash will appear here..."
+                readOnly
+                theme="dark"
+                actions={
+                  hash && (
+                    <ActionButton
+                      icon={copied ? Check : Copy}
+                      label={copied ? 'Copied' : 'Copy'}
+                      onClick={handleCopy}
+                      variant={copied ? 'success' : 'primary'}
+                    />
+                  )
+                }
+              />
+            </div>
 
-                   {matchResult !== null && (
-                       <div className={`mt-4 p-4 rounded-lg flex items-center font-bold ${matchResult ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                           {matchResult ? <Check size={20} className="mr-2" /> : <AlertTriangle size={20} className="mr-2" />}
-                           {matchResult ? 'Match! The password is correct.' : 'Do not match.'}
-                       </div>
-                   )}
-               </div>
-           </div>
+            {/* Verifier Section */}
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mt-6">
+              <h3 className="font-bold text-slate-800 mb-4 flex items-center border-b border-gray-100 pb-2">
+                <Check size={18} className="mr-2 text-green-600" /> Verify Hash
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Hash to check</label>
+                  <input
+                    type="text"
+                    value={compareHash}
+                    onChange={(e) => setCompareHash(e.target.value)}
+                    className="w-full p-3 bg-slate-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm"
+                    placeholder="$2a$10$..."
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={checkMatch}
+                    disabled={!password || !compareHash}
+                    className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium disabled:opacity-50 text-sm"
+                  >
+                    Compare with Password
+                  </button>
+
+                  {matchResult !== null && (
+                    <div className={`px-4 py-2 rounded-lg flex items-center font-bold text-sm animate-in fade-in slide-in-from-right-2 ${matchResult ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                      {matchResult ? <Check size={18} className="mr-2" /> : <AlertTriangle size={18} className="mr-2" />}
+                      {matchResult ? 'Match! Valid Password.' : 'Do NOT Match.'}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>

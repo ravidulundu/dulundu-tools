@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Copy, Check } from 'lucide-react';
+import { ShieldCheck, Copy, Check, Trash2 } from 'lucide-react';
 import { ToolHeader } from '../components/common/ToolHeader';
 import { CodeEditor } from '../components/common/CodeEditor';
 import { ActionButton } from '../components/common/ActionButton';
@@ -44,9 +44,14 @@ export const HashGenerator: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleClear = () => {
+    setInput('');
+    setHash('');
+  };
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
         <ToolHeader
           icon={ShieldCheck}
@@ -54,16 +59,16 @@ export const HashGenerator: React.FC = () => {
           description="Generate secure SHA hashes from text"
         />
 
-        <div className="p-8">
-          {/* Algorithm Selector */}
-          <div className="flex flex-wrap gap-2 mb-8 justify-center">
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+          <div className="flex bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
             {['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'].map(a => (
               <button
                 key={a}
                 onClick={() => handleAlgoChange(a)}
-                className={`px-6 py-2 rounded-full font-medium transition-all ${algo === a
-                    ? 'bg-primary text-white shadow-md shadow-blue-500/30'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${algo === a
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
                   }`}
               >
                 {a}
@@ -71,8 +76,19 @@ export const HashGenerator: React.FC = () => {
             ))}
           </div>
 
-          {/* Input */}
-          <div className="mb-6">
+          <button
+            onClick={handleClear}
+            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            title="Clear All"
+          >
+            <Trash2 size={20} />
+          </button>
+        </div>
+
+        {/* Editor Area */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+          <div className="grid md:grid-cols-2 gap-4 h-full">
+
             <CodeEditor
               value={input}
               onChange={handleInputChange}
@@ -80,26 +96,25 @@ export const HashGenerator: React.FC = () => {
               placeholder="Enter text to hash..."
               theme="light"
             />
-          </div>
 
-          {/* Output */}
-          <CodeEditor
-            value={hash}
-            label="Hash Output"
-            placeholder="Hash will appear here..."
-            readOnly
-            theme="dark"
-            actions={
-              hash && !hash.startsWith('Error') && (
-                <ActionButton
-                  icon={copied ? Check : Copy}
-                  label={copied ? 'Copied' : 'Copy'}
-                  onClick={handleCopy}
-                  variant={copied ? 'success' : 'primary'}
-                />
-              )
-            }
-          />
+            <CodeEditor
+              value={hash}
+              label="Hash Output"
+              placeholder="Hash will appear here..."
+              readOnly
+              theme="dark"
+              actions={
+                hash && !hash.startsWith('Error') && (
+                  <ActionButton
+                    icon={copied ? Check : Copy}
+                    label={copied ? 'Copied' : 'Copy'}
+                    onClick={handleCopy}
+                    variant={copied ? 'success' : 'primary'}
+                  />
+                )
+              }
+            />
+          </div>
         </div>
       </div>
     </div>

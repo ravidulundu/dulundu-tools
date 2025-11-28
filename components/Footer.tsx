@@ -69,7 +69,7 @@ export const Footer: React.FC = () => {
                         <h4 className="font-bold text-slate-900 dark:text-white mb-6">Support</h4>
                         <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
                             <li>
-                                <a href="https://paypal.me/ravidulundu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-400 rounded-lg hover:bg-pink-100 dark:hover:bg-pink-900/30 transition-colors font-medium text-xs">
+                                <a href="https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-400 rounded-lg hover:bg-pink-100 dark:hover:bg-pink-900/30 transition-colors font-medium text-xs">
                                     <Heart size={14} className="mr-2 fill-current" /> Sponsor Project
                                 </a>
                             </li>

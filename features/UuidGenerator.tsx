@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Shuffle, RefreshCw, Copy, Check } from 'lucide-react';
+import { Shuffle, RefreshCw, Copy, Check, Trash2 } from 'lucide-react';
 import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
 import { ActionButton } from '../components/common/ActionButton';
 
 export const UuidGenerator: React.FC = () => {
@@ -36,14 +37,19 @@ export const UuidGenerator: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleClear = () => {
+    setUuids([]);
+    setCopied(false);
+  };
+
   // Generate on first load
   React.useEffect(() => {
     if (uuids.length === 0) handleGenerate();
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
         <ToolHeader
           icon={Shuffle}
@@ -51,51 +57,59 @@ export const UuidGenerator: React.FC = () => {
           description="Generate Version 4 UUIDs (Universally Unique Identifiers)"
         />
 
-        <div className="p-8">
-          <div className="flex flex-col md:flex-row items-end md:items-center gap-4 mb-8">
-            <div className="flex-1 w-full">
-              <label className="block text-sm font-bold text-slate-700 mb-2">Quantity (1-100)</label>
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center bg-slate-50 border border-gray-200 rounded-lg px-3 py-1">
+              <span className="text-sm text-slate-500 font-medium mr-2">Count:</span>
               <input
                 type="number"
                 min="1"
                 max="100"
                 value={count}
                 onChange={(e) => setCount(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
-                className="w-full p-3 bg-white text-slate-900 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                className="w-16 bg-transparent font-bold text-slate-700 outline-none text-center"
               />
             </div>
+
             <button
               onClick={handleGenerate}
-              className="w-full md:w-auto px-6 py-3 bg-primary text-white rounded-xl hover:bg-blue-600 transition-colors flex items-center justify-center font-bold shadow-sm hover:shadow-md"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
             >
-              <RefreshCw size={20} className="mr-2" />
-              Generate UUIDs
+              <RefreshCw size={16} className="mr-1.5" />
+              Generate
             </button>
           </div>
 
-          <div className="relative group">
-            <div className="absolute top-4 right-4 z-10">
-              <ActionButton
-                icon={copied ? Check : Copy}
-                label={copied ? 'Copied' : 'Copy All'}
-                onClick={handleCopy}
-                variant={copied ? 'success' : 'primary'}
-                size="sm"
-              />
-            </div>
-            <div className="relative rounded-xl border border-gray-800 bg-[#1e293b] overflow-hidden shadow-md">
-              <div className="absolute top-0 left-0 right-0 h-8 bg-slate-800 border-b border-slate-700 flex items-center px-4 space-x-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
-              </div>
-              <textarea
-                readOnly
-                value={uuids.join('\n')}
-                className="w-full h-96 p-6 pt-12 bg-[#1e293b] font-mono text-gray-50 text-base leading-relaxed resize-none outline-none"
-                spellCheck={false}
-              />
-            </div>
+          <button
+            onClick={handleClear}
+            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            title="Clear All"
+          >
+            <Trash2 size={20} />
+          </button>
+        </div>
+
+        {/* Editor Area */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+          <div className="h-full">
+            <CodeEditor
+              value={uuids.join('\n')}
+              label={`Generated UUIDs (${uuids.length})`}
+              placeholder="UUIDs will appear here..."
+              readOnly
+              theme="dark"
+              actions={
+                uuids.length > 0 && (
+                  <ActionButton
+                    icon={copied ? Check : Copy}
+                    label={copied ? 'Copied' : 'Copy All'}
+                    onClick={handleCopy}
+                    variant={copied ? 'success' : 'primary'}
+                  />
+                )
+              }
+            />
           </div>
         </div>
       </div>

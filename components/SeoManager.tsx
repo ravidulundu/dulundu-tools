@@ -15,7 +15,7 @@ export const SeoManager: React.FC = () => {
             <SEO
                 title={currentTool.name}
                 description={currentTool.description}
-                keywords={`${currentTool.name}, ${currentTool.category}, developer tools, online utility`}
+                keywords={currentTool.tags?.join(', ') || `${currentTool.name}, ${currentTool.category}, developer tools, online utility`}
             />
         );
     }

@@ -1,5 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Image as ImageIcon, Upload, Copy, Check } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const ImageToAscii: React.FC = () => {
     const [ascii, setAscii] = useState('');
@@ -66,57 +69,56 @@ export const ImageToAscii: React.FC = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 text-primary rounded-lg">
-                            <ImageIcon size={24} />
-                        </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-slate-800">Image to ASCII</h1>
-                            <p className="text-sm text-slate-500">Convert images to text art</p>
-                        </div>
-                    </div>
-                </div>
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
-                <div className="p-8">
-                    <div className="flex flex-col items-center justify-center mb-8">
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            onChange={handleFileChange}
-                            accept="image/*"
-                            className="hidden"
-                        />
-                        <button
-                            onClick={() => fileInputRef.current?.click()}
-                            className="px-8 py-4 border-2 border-dashed border-primary/30 bg-blue-50 text-primary rounded-xl hover:bg-blue-100 transition-colors flex flex-col items-center"
-                        >
-                            <Upload size={32} className="mb-2" />
-                            <span className="font-bold">Upload Image</span>
-                            <span className="text-xs opacity-70">JPG, PNG, GIF supported</span>
-                        </button>
-                    </div>
+                <ToolHeader
+                    icon={ImageIcon}
+                    title="Image to ASCII"
+                    description="Convert images to text art"
+                />
 
-                    {ascii && (
-                        <div className="relative">
-                            <textarea
-                                readOnly
-                                value={ascii}
-                                className="w-full h-[500px] p-4 font-mono text-[10px] leading-[10px] bg-black text-green-400 rounded-xl resize-none outline-none whitespace-pre overflow-auto"
+                <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+                    <div className="max-w-4xl mx-auto space-y-6 h-full flex flex-col">
+                        <div className="flex flex-col items-center justify-center">
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                accept="image/*"
+                                className="hidden"
                             />
                             <button
-                                onClick={handleCopy}
-                                className="absolute top-4 right-4 p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"
-                                title="Copy"
+                                onClick={() => fileInputRef.current?.click()}
+                                className="px-8 py-4 border-2 border-dashed border-primary/30 bg-white text-primary rounded-xl hover:bg-blue-50 transition-colors flex flex-col items-center w-full max-w-md"
                             >
-                                {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
+                                <Upload size={32} className="mb-2" />
+                                <span className="font-bold">Upload Image</span>
+                                <span className="text-xs opacity-70">JPG, PNG, GIF supported</span>
                             </button>
                         </div>
-                    )}
 
-                    <canvas ref={canvasRef} className="hidden" />
+                        {ascii && (
+                            <div className="flex-1 min-h-0">
+                                <CodeEditor
+                                    value={ascii}
+                                    label="ASCII Output"
+                                    readOnly
+                                    theme="dark"
+                                    actions={
+                                        <ActionButton
+                                            icon={copied ? Check : Copy}
+                                            label={copied ? 'Copied' : 'Copy'}
+                                            onClick={handleCopy}
+                                            variant={copied ? 'success' : 'primary'}
+                                        />
+                                    }
+                                />
+                            </div>
+                        )}
+
+                        <canvas ref={canvasRef} className="hidden" />
+                    </div>
                 </div>
             </div>
         </div>

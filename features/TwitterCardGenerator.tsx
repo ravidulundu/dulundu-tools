@@ -1,6 +1,8 @@
-
 import React, { useState } from 'react';
 import { Twitter, Copy, Check, Eye } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const TwitterCardGenerator: React.FC = () => {
    const [type, setType] = useState('summary_large_image');
@@ -31,107 +33,107 @@ export const TwitterCardGenerator: React.FC = () => {
    };
 
    return (
-      <div className="max-w-6xl mx-auto px-4 py-8">
-         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-6 border-b border-gray-100 flex items-center space-x-3 bg-slate-50/50">
-               <div className="p-2 bg-blue-100 text-primary rounded-lg">
-                  <Twitter size={24} />
-               </div>
-               <div>
-                  <h1 className="text-2xl font-bold text-slate-800">Twitter Card Generator</h1>
-                  <p className="text-sm text-slate-500">Create meta tags for social media previews</p>
-               </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
-            <div className="grid lg:grid-cols-2">
-               {/* Form */}
-               <div className="p-6 space-y-6 border-r border-gray-100">
-                  <div>
-                     <label className="block text-sm font-bold text-slate-700 mb-2">Card Type</label>
-                     <select
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                        className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                     >
-                        <option value="summary">Summary</option>
-                        <option value="summary_large_image">Summary Large Image</option>
-                        <option value="app">App</option>
-                     </select>
-                  </div>
-                  <div>
-                     <label className="block text-sm font-bold text-slate-700 mb-2">Site Username</label>
-                     <input
-                        type="text" value={site} onChange={(e) => setSite(e.target.value)}
-                        className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                     />
-                  </div>
-                  <div>
-                     <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
-                     <input
-                        type="text" value={title} onChange={(e) => setTitle(e.target.value)}
-                        className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                     />
-                  </div>
-                  <div>
-                     <label className="block text-sm font-bold text-slate-700 mb-2">Description</label>
-                     <textarea
-                        value={desc} onChange={(e) => setDesc(e.target.value)}
-                        className="w-full p-3 h-24 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
-                        maxLength={200}
-                     />
-                     <p className="text-xs text-right text-slate-400 mt-1">{desc.length}/200</p>
-                  </div>
-                  <div>
-                     <label className="block text-sm font-bold text-slate-700 mb-2">Image URL</label>
-                     <input
-                        type="text" value={image} onChange={(e) => setImage(e.target.value)}
-                        className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                     />
-                  </div>
-               </div>
+            <ToolHeader
+               icon={Twitter}
+               title="Twitter Card Generator"
+               description="Create meta tags for social media previews"
+               iconBgColor="bg-blue-100"
+               iconColor="text-blue-500"
+            />
 
-               {/* Preview & Code */}
-               <div className="bg-slate-50 p-6 flex flex-col gap-8">
-
-                  <div>
-                     <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center">
-                        <Eye size={16} className="mr-2" /> Live Preview
-                     </h3>
-
-                     {/* Card Preview Container */}
-                     <div className="max-w-md mx-auto bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-                        {type === 'summary_large_image' && (
-                           <div className="h-48 bg-gray-100 bg-cover bg-center" style={{ backgroundImage: `url(${image})` }}></div>
-                        )}
-                        <div className={`p-4 ${type === 'summary' ? 'flex items-start' : ''}`}>
-                           {type === 'summary' && (
-                              <div className="w-24 h-24 bg-gray-100 rounded-lg bg-cover bg-center mr-4 flex-shrink-0" style={{ backgroundImage: `url(${image})` }}></div>
-                           )}
-                           <div>
-                              <h4 className="font-bold text-slate-900 leading-tight mb-1">{title}</h4>
-                              <p className="text-sm text-slate-600 line-clamp-2 mb-2">{desc}</p>
-                              <p className="text-xs text-slate-400">{site.replace('@', '')}.com</p>
-                           </div>
+            <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+               <div className="grid lg:grid-cols-2 gap-6 h-full">
+                  {/* Form */}
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit overflow-y-auto max-h-full">
+                     <div className="space-y-6">
+                        <div>
+                           <label className="block text-sm font-bold text-slate-700 mb-2">Card Type</label>
+                           <select
+                              value={type}
+                              onChange={(e) => setType(e.target.value)}
+                              className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                           >
+                              <option value="summary">Summary</option>
+                              <option value="summary_large_image">Summary Large Image</option>
+                              <option value="app">App</option>
+                           </select>
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-slate-700 mb-2">Site Username</label>
+                           <input
+                              type="text" value={site} onChange={(e) => setSite(e.target.value)}
+                              className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                           />
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
+                           <input
+                              type="text" value={title} onChange={(e) => setTitle(e.target.value)}
+                              className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                           />
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-slate-700 mb-2">Description</label>
+                           <textarea
+                              value={desc} onChange={(e) => setDesc(e.target.value)}
+                              className="w-full p-3 h-24 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+                              maxLength={200}
+                           />
+                           <p className="text-xs text-right text-slate-400 mt-1">{desc.length}/200</p>
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-slate-700 mb-2">Image URL</label>
+                           <input
+                              type="text" value={image} onChange={(e) => setImage(e.target.value)}
+                              className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                           />
                         </div>
                      </div>
                   </div>
 
-                  <div className="flex-1 flex flex-col">
-                     <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wide">Generated Meta Tags</h3>
-                        <button
-                           onClick={handleCopy}
-                           className="text-xs flex items-center px-2 py-1 rounded bg-white border border-gray-200 hover:border-primary hover:text-primary transition-colors font-medium"
-                        >
-                           {copied ? <Check size={12} className="mr-1" /> : <Copy size={12} className="mr-1" />}
-                           {copied ? 'Copied' : 'Copy Code'}
-                        </button>
+                  {/* Preview & Code */}
+                  <div className="flex flex-col h-full gap-6 overflow-hidden">
+                     <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex-shrink-0">
+                        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center">
+                           <Eye size={16} className="mr-2" /> Live Preview
+                        </h3>
+
+                        {/* Card Preview Container */}
+                        <div className="max-w-md mx-auto bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                           {type === 'summary_large_image' && (
+                              <div className="h-48 bg-gray-100 bg-cover bg-center" style={{ backgroundImage: `url(${image})` }}></div>
+                           )}
+                           <div className={`p-4 ${type === 'summary' ? 'flex items-start' : ''}`}>
+                              {type === 'summary' && (
+                                 <div className="w-24 h-24 bg-gray-100 rounded-lg bg-cover bg-center mr-4 flex-shrink-0" style={{ backgroundImage: `url(${image})` }}></div>
+                              )}
+                              <div>
+                                 <h4 className="font-bold text-slate-900 leading-tight mb-1">{title}</h4>
+                                 <p className="text-sm text-slate-600 line-clamp-2 mb-2">{desc}</p>
+                                 <p className="text-xs text-slate-400">{site.replace('@', '')}.com</p>
+                              </div>
+                           </div>
+                        </div>
                      </div>
-                     <div className="flex-1 relative rounded-xl border border-gray-300 bg-white overflow-hidden shadow-inner">
-                        <textarea
-                           readOnly
+
+                     <div className="flex-1 flex flex-col min-h-0">
+                        <CodeEditor
                            value={metaTags}
-                           className="w-full h-full p-4 font-mono text-xs text-slate-600 resize-none outline-none leading-relaxed"
+                           label="Generated Meta Tags"
+                           readOnly
+                           language="html"
+                           theme="dark"
+                           actions={
+                              <ActionButton
+                                 icon={copied ? Check : Copy}
+                                 label={copied ? 'Copied' : 'Copy Code'}
+                                 onClick={handleCopy}
+                                 variant={copied ? 'success' : 'primary'}
+                              />
+                           }
                         />
                      </div>
                   </div>

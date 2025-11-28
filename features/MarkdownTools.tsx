@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { FileText, ArrowLeftRight, Copy, Check, Code } from 'lucide-react';
+import { FileText, ArrowLeftRight, Copy, Check, Code, Trash2 } from 'lucide-react';
 import { marked } from 'marked';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const MarkdownTools: React.FC = () => {
   const [input, setInput] = useState('# Hello World\n\nThis is **Markdown** text.');
@@ -39,7 +42,11 @@ export const MarkdownTools: React.FC = () => {
       try {
         const html = marked.parse(input);
         // marked.parse can return a Promise in some versions, but usually string in sync mode
-        setOutput(html as string);
+        if (typeof html === 'string') {
+          setOutput(html);
+        } else {
+          (html as Promise<string>).then(res => setOutput(res));
+        }
       } catch (e) {
         setOutput('Error converting Markdown');
       }
@@ -60,71 +67,75 @@ export const MarkdownTools: React.FC = () => {
     setOutput('');
   };
 
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-blue-100 text-primary rounded-lg">
-              <FileText size={24} />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-slate-800">Markdown Converter</h1>
-              <p className="text-sm text-slate-500">Convert between Markdown and HTML</p>
-            </div>
-          </div>
+  const handleClear = () => {
+    setInput('');
+    setOutput('');
+  };
 
-          <div className="flex items-center space-x-3">
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+        <ToolHeader
+          icon={FileText}
+          title="Markdown Converter"
+          description="Convert between Markdown and HTML"
+        />
+
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+          <div className="flex items-center gap-2">
             <button
               onClick={toggleMode}
-              className="text-sm text-slate-600 hover:text-primary font-medium flex items-center px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+              className="flex items-center px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors text-sm font-medium"
             >
-              <ArrowLeftRight size={14} className="mr-2" />
-              Switch Mode
+              <ArrowLeftRight size={16} className="mr-2" />
+              {mode === 'md-to-html' ? 'Markdown → HTML' : 'HTML → Markdown'}
             </button>
+          </div>
+          <div className="flex items-center gap-2">
             <button
               onClick={handleConvert}
-              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md flex items-center"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
             >
               Convert <Code size={16} className="ml-2" />
+            </button>
+            <button onClick={handleClear} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Clear All">
+              <Trash2 size={20} />
             </button>
           </div>
         </div>
 
-        <div className="p-6 grid md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              {mode === 'md-to-html' ? 'Markdown Input' : 'HTML Input'}
-            </label>
-            <textarea
+        {/* Editor Area */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+          <div className="grid md:grid-cols-2 gap-4 h-full">
+            <CodeEditor
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="w-full h-[500px] p-4 font-mono text-sm bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all resize-none text-slate-900"
+              onChange={setInput}
+              label={mode === 'md-to-html' ? 'Markdown Input' : 'HTML Input'}
               placeholder={mode === 'md-to-html' ? "# Type markdown here..." : "<div>Type HTML here...</div>"}
+              language={mode === 'md-to-html' ? 'markdown' : 'html'}
+              theme="light"
             />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              {mode === 'md-to-html' ? 'HTML Output' : 'Markdown Output'}
-            </label>
-            <div className="relative h-[500px]">
-              <textarea
-                readOnly
-                value={output}
-                className="w-full h-full p-4 font-mono text-sm bg-[#1e293b] text-gray-50 border border-slate-700 rounded-xl resize-none outline-none"
-                placeholder="Result will appear here..."
-              />
-              {output && (
-                <button
-                  onClick={handleCopy}
-                  className="absolute top-4 right-4 p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"
-                  title="Copy"
-                >
-                  {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-                </button>
-              )}
-            </div>
+            <CodeEditor
+              value={output}
+              label={mode === 'md-to-html' ? 'HTML Output' : 'Markdown Output'}
+              placeholder="Result will appear here..."
+              readOnly
+              language={mode === 'md-to-html' ? 'html' : 'markdown'}
+              theme="dark"
+              actions={
+                output && (
+                  <ActionButton
+                    icon={copied ? Check : Copy}
+                    label={copied ? 'Copied' : 'Copy'}
+                    onClick={handleCopy}
+                    variant={copied ? 'success' : 'primary'}
+                  />
+                )
+              }
+            />
           </div>
         </div>
       </div>

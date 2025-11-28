@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Shield, Copy, Check, Trash2 } from 'lucide-react';
 import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
 import { ActionButton } from '../components/common/ActionButton';
 
 export const JwtDecoder: React.FC = () => {
@@ -61,14 +62,14 @@ export const JwtDecoder: React.FC = () => {
           icon={Shield}
           title="JWT Decoder"
           description="Decode JSON Web Tokens (Header & Payload)"
-          iconBgColor="bg-purple-100"
-          iconColor="text-purple-600"
         />
 
-        <div className="p-3 border-b border-gray-100 flex justify-end">
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
           <button
             onClick={handleClear}
             className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            title="Clear All"
           >
             <Trash2 size={20} />
           </button>
@@ -79,65 +80,60 @@ export const JwtDecoder: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-4 h-full">
 
             {/* Input */}
-            <div className="flex flex-col h-full min-h-[300px]">
-              <label className="block text-sm font-bold text-slate-700 mb-2">Encoded Token</label>
-              <div className={`flex-1 relative rounded-xl border transition-all shadow-inner overflow-hidden ${error ? 'border-red-300 ring-4 ring-red-50' : 'border-gray-300 focus-within:ring-2 focus-within:ring-purple-500/20 focus-within:border-purple-500'}`}>
-                <textarea
-                  value={token}
-                  onChange={(e) => decode(e.target.value)}
-                  className="w-full h-full p-4 bg-white font-mono text-sm text-slate-800 outline-none resize-none leading-relaxed break-all"
-                  placeholder="Paste JWT here (eyJ...)"
-                  spellCheck={false}
-                />
-              </div>
+            <div className="flex flex-col h-full">
+              <CodeEditor
+                value={token}
+                onChange={decode}
+                label="Encoded Token"
+                placeholder="Paste JWT here (eyJ...)"
+                theme="light"
+              />
               {error && <p className="mt-2 text-xs text-red-500 font-bold">{error}</p>}
             </div>
 
             {/* Output */}
-            <div className="flex flex-col h-full min-h-[300px] overflow-hidden gap-4">
-
+            <div className="flex flex-col h-full gap-4">
               {/* Header */}
-              <div className="flex-1 flex flex-col min-h-0">
-                <div className="flex justify-between items-center mb-1">
-                  <label className="block text-xs font-bold text-slate-500 uppercase">Header</label>
-                  <ActionButton
-                    icon={copied === 'header' ? Check : Copy}
-                    label="Copy"
-                    onClick={() => handleCopy(header, 'header')}
-                    variant={copied === 'header' ? 'success' : 'secondary'}
-                    size="sm"
-                  />
-                </div>
-                <div className="flex-1 relative rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm">
-                  <textarea
-                    readOnly
-                    value={header}
-                    className="w-full h-full p-3 font-mono text-xs text-purple-700 resize-none outline-none"
-                  />
-                </div>
+              <div className="flex-1 min-h-0">
+                <CodeEditor
+                  value={header}
+                  label="Header"
+                  readOnly
+                  theme="dark"
+                  actions={
+                    header && (
+                      <ActionButton
+                        icon={copied === 'header' ? Check : Copy}
+                        label="Copy"
+                        onClick={() => handleCopy(header, 'header')}
+                        variant={copied === 'header' ? 'success' : 'primary'}
+                        size="sm"
+                      />
+                    )
+                  }
+                />
               </div>
 
               {/* Payload */}
-              <div className="flex-[2] flex flex-col min-h-0">
-                <div className="flex justify-between items-center mb-1">
-                  <label className="block text-xs font-bold text-slate-500 uppercase">Payload</label>
-                  <ActionButton
-                    icon={copied === 'payload' ? Check : Copy}
-                    label="Copy"
-                    onClick={() => handleCopy(payload, 'payload')}
-                    variant={copied === 'payload' ? 'success' : 'secondary'}
-                    size="sm"
-                  />
-                </div>
-                <div className="flex-1 relative rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm">
-                  <textarea
-                    readOnly
-                    value={payload}
-                    className="w-full h-full p-3 font-mono text-xs text-blue-700 resize-none outline-none"
-                  />
-                </div>
+              <div className="flex-[2] min-h-0">
+                <CodeEditor
+                  value={payload}
+                  label="Payload"
+                  readOnly
+                  theme="dark"
+                  actions={
+                    payload && (
+                      <ActionButton
+                        icon={copied === 'payload' ? Check : Copy}
+                        label="Copy"
+                        onClick={() => handleCopy(payload, 'payload')}
+                        variant={copied === 'payload' ? 'success' : 'primary'}
+                        size="sm"
+                      />
+                    )
+                  }
+                />
               </div>
-
             </div>
           </div>
         </div>

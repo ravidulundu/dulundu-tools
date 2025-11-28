@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { FileText, RefreshCw, Copy, Check } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const LoremGenerator: React.FC = () => {
   const [paragraphs, setParagraphs] = useState(3);
@@ -18,8 +21,8 @@ export const LoremGenerator: React.FC = () => {
   const generateLorem = () => {
     let result = [];
     for (let i = 0; i < paragraphs; i++) {
-        const text = LOREM_TEXT[i % LOREM_TEXT.length]; 
-        result.push(text);
+      const text = LOREM_TEXT[i % LOREM_TEXT.length];
+      result.push(text);
     }
     setOutput(result.join('\n\n'));
     setCopied(false);
@@ -36,59 +39,53 @@ export const LoremGenerator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex items-center space-x-3 bg-slate-50/50">
-           <div className="p-2 bg-blue-100 text-primary rounded-lg">
-              <FileText size={24} />
-           </div>
-           <div>
-              <h1 className="text-2xl font-bold text-slate-800">Lorem Ipsum Generator</h1>
-              <p className="text-sm text-slate-500">Generate placeholder text for your designs</p>
-           </div>
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+        <ToolHeader
+          icon={FileText}
+          title="Lorem Ipsum Generator"
+          description="Generate placeholder text for your designs"
+        />
+
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+          <div className="flex-1 max-w-md flex items-center gap-4">
+            <label className="text-sm font-medium text-slate-700 whitespace-nowrap">Paragraphs: {paragraphs}</label>
+            <input
+              type="range"
+              min="1"
+              max="20"
+              value={paragraphs}
+              onChange={(e) => setParagraphs(parseInt(e.target.value))}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+            />
+          </div>
+          <button
+            onClick={generateLorem}
+            className="px-4 py-2 bg-white border border-gray-300 text-slate-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center font-medium shadow-sm text-sm"
+          >
+            <RefreshCw size={16} className="mr-2" />
+            Regenerate
+          </button>
         </div>
 
-        <div className="p-8">
-          <div className="flex flex-col md:flex-row items-end md:items-center gap-4 mb-8">
-             <div className="flex-1 w-full">
-               <label className="block text-sm font-medium text-slate-700 mb-2">Number of Paragraphs (1-20)</label>
-               <input 
-                 type="range" 
-                 min="1" 
-                 max="20" 
-                 value={paragraphs} 
-                 onChange={(e) => setParagraphs(parseInt(e.target.value))}
-                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
-               />
-               <div className="text-center mt-2 font-bold text-primary">{paragraphs} Paragraphs</div>
-             </div>
-             <button 
-               onClick={generateLorem} 
-               className="w-full md:w-auto px-6 py-3 bg-white border border-gray-300 text-slate-700 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center font-medium shadow-sm"
-             >
-               <RefreshCw size={20} className="mr-2" />
-               Regenerate
-             </button>
-          </div>
-
-          <div className="relative group">
-             <div className="absolute top-4 right-4">
-                <button 
-                  onClick={handleCopy} 
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all shadow-sm ${copied ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-slate-700 text-slate-300 border border-slate-600 hover:text-white'}`}
-                >
-                  {copied ? <Check size={16} /> : <Copy size={16} />}
-                  <span>{copied ? 'Copied' : 'Copy'}</span>
-                </button>
-             </div>
-             <div className="relative rounded-xl border border-gray-800 bg-[#1e293b] overflow-hidden shadow-md">
-                <textarea 
-                    readOnly
-                    value={output}
-                    className="w-full h-96 p-6 bg-[#1e293b] text-gray-50 text-base leading-relaxed resize-none outline-none font-sans"
-                />
-             </div>
-          </div>
+        {/* Editor Area */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+          <CodeEditor
+            value={output}
+            label="Generated Text"
+            readOnly
+            theme="dark"
+            actions={
+              <ActionButton
+                icon={copied ? Check : Copy}
+                label={copied ? 'Copied' : 'Copy'}
+                onClick={handleCopy}
+                variant={copied ? 'success' : 'primary'}
+              />
+            }
+          />
         </div>
       </div>
     </div>

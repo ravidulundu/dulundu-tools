@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Globe, RefreshCw, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
 
 export const MirrorOnline: React.FC = () => {
     const [url, setUrl] = useState('');
@@ -31,46 +32,55 @@ export const MirrorOnline: React.FC = () => {
     };
 
     return (
-        <div className="max-w-2xl mx-auto px-4 py-8">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden text-center p-8">
-                <div className="inline-block p-4 bg-blue-50 text-primary rounded-full mb-6">
-                    <Globe size={40} />
-                </div>
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
-                <h1 className="text-3xl font-bold text-slate-800 mb-2">Is It Down?</h1>
-                <p className="text-slate-500 mb-8">Check if a website is online or offline.</p>
+                <ToolHeader
+                    icon={Globe}
+                    title="Website Status Checker"
+                    description="Check if a website is online or offline"
+                />
 
-                <div className="flex gap-2 mb-8">
-                    <input
-                        type="text"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder="example.com"
-                        className="flex-1 p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-slate-900"
-                        onKeyDown={(e) => e.key === 'Enter' && checkStatus()}
-                    />
-                    <button
-                        onClick={checkStatus}
-                        disabled={status === 'checking' || !url}
-                        className="px-6 py-4 bg-primary text-white rounded-xl hover:bg-blue-600 disabled:opacity-50 transition-colors font-bold shadow-md flex items-center"
-                    >
-                        {status === 'checking' ? <RefreshCw size={20} className="animate-spin" /> : 'Check'}
-                    </button>
-                </div>
+                <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30 flex flex-col items-center justify-center">
+                    <div className="max-w-xl w-full space-y-8">
 
-                {status !== 'idle' && status !== 'checking' && (
-                    <div className={`p-6 rounded-xl border flex items-center justify-center space-x-3 animate-fade-in ${status === 'up' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'
-                        }`}>
-                        {status === 'up' ? <CheckCircle size={24} /> : <XCircle size={24} />}
-                        <span className="font-bold text-lg">{message}</span>
+                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                            <label className="block text-sm font-medium text-slate-700 mb-2">Website URL</label>
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={url}
+                                    onChange={(e) => setUrl(e.target.value)}
+                                    placeholder="example.com"
+                                    className="flex-1 p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-slate-900"
+                                    onKeyDown={(e) => e.key === 'Enter' && checkStatus()}
+                                />
+                                <button
+                                    onClick={checkStatus}
+                                    disabled={status === 'checking' || !url}
+                                    className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-blue-600 disabled:opacity-50 transition-colors font-bold shadow-sm flex items-center"
+                                >
+                                    {status === 'checking' ? <RefreshCw size={20} className="animate-spin" /> : 'Check'}
+                                </button>
+                            </div>
+
+                            {status !== 'idle' && status !== 'checking' && (
+                                <div className={`mt-6 p-4 rounded-xl border flex items-center justify-center space-x-3 animate-in fade-in slide-in-from-top-2 ${status === 'up' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'
+                                    }`}>
+                                    {status === 'up' ? <CheckCircle size={24} /> : <XCircle size={24} />}
+                                    <span className="font-bold text-lg">{message}</span>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 flex items-start">
+                            <AlertCircle size={20} className="text-blue-600 mr-3 mt-0.5 shrink-0" />
+                            <p className="text-sm text-blue-800">
+                                <strong>Note:</strong> This tool performs a client-side check from your browser. Some websites might block these requests or appear down due to browser security policies (CORS) or ad blockers.
+                            </p>
+                        </div>
+
                     </div>
-                )}
-
-                <div className="mt-6 text-xs text-slate-400 flex items-start justify-center">
-                    <AlertCircle size={14} className="mr-1 mt-0.5 shrink-0" />
-                    <span className="max-w-xs text-left">
-                        Note: This tool performs a client-side check. Some websites might block these requests or appear down due to browser security policies (CORS).
-                    </span>
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Lock, RefreshCw, Copy, Check } from 'lucide-react';
 import { ToolHeader } from '../components/common/ToolHeader';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const PasswordGenerator: React.FC = () => {
   const [password, setPassword] = useState('');
@@ -40,7 +41,7 @@ export const PasswordGenerator: React.FC = () => {
 
   React.useEffect(() => {
     generatePassword();
-  }, []);
+  }, [length, options]);
 
   const toggleOption = (key: keyof typeof options) => {
     setOptions(prev => ({ ...prev, [key]: !prev[key] }));
@@ -54,8 +55,8 @@ export const PasswordGenerator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
 
         <ToolHeader
           icon={Lock}
@@ -63,67 +64,77 @@ export const PasswordGenerator: React.FC = () => {
           description="Create strong, secure random passwords"
         />
 
-        <div className="p-8">
-          <div className="relative mb-8">
-            <input
-              type="text"
-              value={password}
-              readOnly
-              className="w-full p-6 pr-20 bg-white border-2 border-slate-200 rounded-2xl text-2xl font-mono text-center text-slate-800 outline-none focus:border-primary/50 transition-all tracking-wider shadow-sm"
-            />
-            <button
-              onClick={handleCopy}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white border border-gray-200 rounded-xl text-slate-500 hover:text-primary hover:border-primary/30 transition-all shadow-sm"
-              title="Copy Password"
-            >
-              {copied ? <Check size={24} className="text-green-500" /> : <Copy size={24} />}
-            </button>
-          </div>
+        {/* Toolbar */}
+        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+          <button
+            onClick={generatePassword}
+            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+          >
+            <RefreshCw size={16} className="mr-1.5" />
+            Generate New Password
+          </button>
+        </div>
 
-          <div className="bg-slate-50 rounded-xl p-6 border border-gray-100">
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <label className="font-semibold text-slate-700">Password Length</label>
-                <span className="text-primary font-bold bg-blue-50 px-2 py-0.5 rounded text-sm">{length} characters</span>
+        {/* Content Area */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col items-center justify-center">
+          <div className="max-w-3xl w-full flex flex-col gap-8">
+
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl blur-xl transition-all group-hover:blur-2xl"></div>
+              <div className="relative bg-white p-8 md:p-12 rounded-2xl border border-gray-200 shadow-sm text-center">
+                <div className="text-4xl md:text-5xl font-mono font-bold text-slate-800 break-all tracking-wider mb-2">{password}</div>
+                <p className="text-slate-400 text-sm font-medium">Strength: Strong</p>
+
+                <div className="absolute top-4 right-4">
+                  <ActionButton
+                    icon={copied ? Check : Copy}
+                    label={copied ? 'Copied' : 'Copy'}
+                    onClick={handleCopy}
+                    variant={copied ? 'success' : 'secondary'}
+                    size="sm"
+                  />
+                </div>
               </div>
-              <input
-                type="range"
-                min="4"
-                max="64"
-                value={length}
-                onChange={(e) => setLength(parseInt(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
-              />
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              {[
-                { key: 'uppercase', label: 'Uppercase', ex: 'ABC' },
-                { key: 'lowercase', label: 'Lowercase', ex: 'abc' },
-                { key: 'numbers', label: 'Numbers', ex: '123' },
-                { key: 'symbols', label: 'Symbols', ex: '@#$' },
-              ].map((opt) => (
-                <button
-                  key={opt.key}
-                  onClick={() => toggleOption(opt.key as any)}
-                  className={`flex flex-col items-center justify-center p-4 rounded-xl border transition-all ${options[opt.key as keyof typeof options]
-                      ? 'bg-blue-50 border-blue-200 text-primary'
-                      : 'bg-white border-gray-200 text-slate-400'
-                    }`}
-                >
-                  <span className="font-semibold">{opt.label}</span>
-                  <span className="text-xs opacity-70 mt-1">({opt.ex})</span>
-                </button>
-              ))}
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="mb-8">
+                <div className="flex justify-between items-center mb-3">
+                  <label className="font-bold text-slate-700">Password Length</label>
+                  <span className="text-primary font-bold bg-blue-50 px-3 py-1 rounded-lg text-sm">{length} characters</span>
+                </div>
+                <input
+                  type="range"
+                  min="4"
+                  max="64"
+                  value={length}
+                  onChange={(e) => setLength(parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-600"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { key: 'uppercase', label: 'Uppercase', ex: 'ABC' },
+                  { key: 'lowercase', label: 'Lowercase', ex: 'abc' },
+                  { key: 'numbers', label: 'Numbers', ex: '123' },
+                  { key: 'symbols', label: 'Symbols', ex: '@#$' },
+                ].map((opt) => (
+                  <button
+                    key={opt.key}
+                    onClick={() => toggleOption(opt.key as any)}
+                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${options[opt.key as keyof typeof options]
+                      ? 'bg-blue-50 border-primary/30 text-primary shadow-sm'
+                      : 'bg-white border-gray-100 text-slate-400 hover:border-gray-200'
+                      }`}
+                  >
+                    <span className="font-bold text-sm">{opt.label}</span>
+                    <span className="text-xs opacity-60 mt-1 font-mono">({opt.ex})</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <button
-              onClick={generatePassword}
-              className="w-full py-4 bg-primary text-white rounded-xl text-lg font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20 flex items-center justify-center"
-            >
-              <RefreshCw size={24} className="mr-2" />
-              Generate New Password
-            </button>
           </div>
         </div>
       </div>

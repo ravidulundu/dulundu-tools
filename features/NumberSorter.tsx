@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { ListOrdered, ArrowDownUp, Copy, Check, Trash2 } from 'lucide-react';
+import { ToolHeader } from '../components/common/ToolHeader';
+import { CodeEditor } from '../components/common/CodeEditor';
+import { ActionButton } from '../components/common/ActionButton';
 
 export const NumberSorter: React.FC = () => {
     const [input, setInput] = useState('');
@@ -9,7 +12,7 @@ export const NumberSorter: React.FC = () => {
     const [copied, setCopied] = useState(false);
 
     const handleSort = () => {
-        if (!input.trim()) return;
+        if (!input.trim()) { setOutput(''); return; }
 
         // Split by delimiter (comma, newline, space)
         let separator = delimiter;
@@ -44,107 +47,95 @@ export const NumberSorter: React.FC = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handleClear = () => {
+        setInput('');
+        setOutput('');
+    };
+
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 text-primary rounded-lg">
-                            <ListOrdered size={24} />
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+
+                <ToolHeader
+                    icon={ListOrdered}
+                    title="Number Sorter"
+                    description="Sort lists of numbers instantly"
+                />
+
+                {/* Toolbar */}
+                <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                        <div className="flex items-center space-x-2 bg-slate-50 p-1 rounded-lg border border-gray-200">
+                            <span className="text-xs font-medium text-slate-500 pl-2">Delimiter:</span>
+                            <select
+                                value={delimiter}
+                                onChange={(e) => setDelimiter(e.target.value)}
+                                className="bg-transparent text-sm font-medium text-slate-700 outline-none cursor-pointer"
+                            >
+                                <option value="auto">Auto Detect</option>
+                                <option value=",">Comma (,)</option>
+                                <option value="\n">New Line</option>
+                                <option value=" ">Space</option>
+                            </select>
                         </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-slate-800">Number Sorter</h1>
-                            <p className="text-sm text-slate-500">Sort lists of numbers instantly</p>
+
+                        <div className="flex bg-slate-100 p-1 rounded-lg border border-gray-200">
+                            <button
+                                onClick={() => setOrder('asc')}
+                                className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${order === 'asc' ? 'bg-white shadow text-primary' : 'text-slate-500 hover:text-slate-700'}`}
+                            >
+                                Ascending
+                            </button>
+                            <button
+                                onClick={() => setOrder('desc')}
+                                className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${order === 'desc' ? 'bg-white shadow text-primary' : 'text-slate-500 hover:text-slate-700'}`}
+                            >
+                                Descending
+                            </button>
                         </div>
                     </div>
 
-                    <button
-                        onClick={handleSort}
-                        className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md flex items-center"
-                    >
-                        Sort Numbers <ArrowDownUp size={16} className="ml-2" />
-                    </button>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={handleSort}
+                            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+                        >
+                            Sort <ArrowDownUp size={16} className="ml-1.5" />
+                        </button>
+                        <button onClick={handleClear} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Clear All">
+                            <Trash2 size={20} />
+                        </button>
+                    </div>
                 </div>
 
-                <div className="p-6 grid md:grid-cols-2 gap-6">
-                    <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-2">
-                            <label className="text-sm font-medium text-slate-700">Input Numbers</label>
-                            <div className="flex space-x-2">
-                                <button
-                                    onClick={() => setInput('10, 5, 8, 1, 3, 99, 24, 7')}
-                                    className="text-xs text-blue-600 hover:text-blue-700 font-medium"
-                                >
-                                    Sample
-                                </button>
-                                <button
-                                    onClick={() => setInput('')}
-                                    className="text-xs text-red-500 hover:text-red-600 flex items-center"
-                                >
-                                    <Trash2 size={12} className="mr-1" /> Clear
-                                </button>
-                            </div>
-                        </div>
-                        <textarea
+                {/* Editor Area */}
+                <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+                    <div className="grid md:grid-cols-2 gap-4 h-full">
+                        <CodeEditor
                             value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            className="flex-1 w-full p-4 font-mono text-sm bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all resize-none text-slate-900 min-h-[300px]"
+                            onChange={setInput}
+                            label="Input Numbers"
                             placeholder="Enter numbers separated by commas, spaces, or new lines...&#10;Example:&#10;10, 5, 8, 1, 3"
+                            theme="light"
                         />
 
-                        <div className="mt-4 grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Delimiter</label>
-                                <select
-                                    value={delimiter}
-                                    onChange={(e) => setDelimiter(e.target.value)}
-                                    className="w-full p-2 bg-slate-50 border border-gray-200 rounded-lg text-sm outline-none focus:border-primary"
-                                >
-                                    <option value="auto">Auto Detect</option>
-                                    <option value=",">Comma (,)</option>
-                                    <option value="\n">New Line</option>
-                                    <option value=" ">Space</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Order</label>
-                                <div className="flex bg-slate-100 p-1 rounded-lg">
-                                    <button
-                                        onClick={() => setOrder('asc')}
-                                        className={`flex-1 py-1 text-xs font-medium rounded-md transition-all ${order === 'asc' ? 'bg-white shadow text-primary' : 'text-slate-500 hover:text-slate-700'}`}
-                                    >
-                                        Ascending
-                                    </button>
-                                    <button
-                                        onClick={() => setOrder('desc')}
-                                        className={`flex-1 py-1 text-xs font-medium rounded-md transition-all ${order === 'desc' ? 'bg-white shadow text-primary' : 'text-slate-500 hover:text-slate-700'}`}
-                                    >
-                                        Descending
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col h-full">
-                        <label className="block text-sm font-medium text-slate-700 mb-2">Sorted Output</label>
-                        <div className="relative flex-1">
-                            <textarea
-                                readOnly
-                                value={output}
-                                className="w-full h-full p-4 font-mono text-sm bg-[#1e293b] text-gray-50 border border-slate-700 rounded-xl resize-none outline-none min-h-[300px]"
-                                placeholder="Sorted result will appear here..."
-                            />
-                            {output && (
-                                <button
-                                    onClick={handleCopy}
-                                    className="absolute top-4 right-4 p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"
-                                    title="Copy"
-                                >
-                                    {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-                                </button>
-                            )}
-                        </div>
+                        <CodeEditor
+                            value={output}
+                            label="Sorted Output"
+                            placeholder="Sorted result will appear here..."
+                            readOnly
+                            theme="dark"
+                            actions={
+                                output && (
+                                    <ActionButton
+                                        icon={copied ? Check : Copy}
+                                        label={copied ? 'Copied' : 'Copy'}
+                                        onClick={handleCopy}
+                                        variant={copied ? 'success' : 'primary'}
+                                    />
+                                )
+                            }
+                        />
                     </div>
                 </div>
             </div>
