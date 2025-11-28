@@ -34,6 +34,16 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+            'ui-vendor': ['lucide-react'],
+            'utils-vendor': ['ua-parser-js', 'marked', 'js-yaml'],
+            'crypto-vendor': ['crypto-browserify', 'bcryptjs'],
+          }
+        }
+      }
     }
   };
 });

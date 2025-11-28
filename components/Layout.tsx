@@ -29,7 +29,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-900 transition-colors duration-200">
       <Header darkMode={darkMode} toggleTheme={toggleTheme} />
 
-      <main className="flex-grow">
+      <main className="flex-grow min-h-[80vh]">
         {children}
       </main>
 
