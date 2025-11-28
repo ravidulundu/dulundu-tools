@@ -174,6 +174,4 @@ export const ALL_TOOLS: ToolDef[] = [
   { id: 'mirror', name: 'Is It Down?', description: 'Check website status.', category: ToolCategory.NETWORK, path: '/mirror-online', icon: Wifi, isNew: true },
   { id: 'word-html', name: 'Word to HTML', description: 'Convert Word doc to HTML.', category: ToolCategory.HTML, path: '/word-to-html', icon: FileText, isNew: true },
   { id: 'share-link', name: 'Share Link Gen', description: 'Create social share links.', category: ToolCategory.TWITTER, path: '/sharelink-generator', icon: LinkIcon, isNew: true },
-
-  { id: 'other', name: 'Other Tools', description: 'Miscellaneous tools.', category: ToolCategory.OTHER, path: '/other', icon: Box },
 ];
