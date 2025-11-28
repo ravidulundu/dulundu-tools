@@ -10,8 +10,8 @@ declare global {
 
 export const Analytics = () => {
     useEffect(() => {
-        // Get environment variables
-        const websiteId = import.meta.env.VITE_UMAMI_WEBSITE_ID;
+        // Get environment variables or use hardcoded fallback
+        const websiteId = import.meta.env.VITE_UMAMI_WEBSITE_ID || '94e0c723-8fbe-40d6-b072-2b258febac8c';
         const scriptUrl = import.meta.env.VITE_UMAMI_SCRIPT_URL || 'https://stats.dulundu.tools/script.js';
 
         // Check if Umami is configured and not already loaded
