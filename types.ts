@@ -55,4 +55,5 @@ export interface ToolDef {
   icon: LucideIcon;
   popular?: boolean;
   isNew?: boolean;
+  tags?: string[]; // Additional keywords for better search
 }

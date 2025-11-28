@@ -27,8 +27,12 @@ export const Home: React.FC = () => {
     // Filter tools based on search and category
     const filteredTools = useMemo(() => {
         return ALL_TOOLS.filter(tool => {
-            const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                tool.description.toLowerCase().includes(searchTerm.toLowerCase());
+            const searchLower = searchTerm.toLowerCase();
+            const matchesSearch =
+                tool.name.toLowerCase().includes(searchLower) ||
+                tool.description.toLowerCase().includes(searchLower) ||
+                tool.category.toLowerCase().includes(searchLower) ||
+                tool.tags?.some(tag => tag.toLowerCase().includes(searchLower));
             const matchesCategory = activeCategory === 'All' || tool.category === activeCategory;
             return matchesSearch && matchesCategory;
         });
@@ -37,9 +41,11 @@ export const Home: React.FC = () => {
     // Global search suggestions for dropdown
     const searchSuggestions = useMemo(() => {
         if (!searchTerm.trim()) return [];
+        const searchLower = searchTerm.toLowerCase();
         return ALL_TOOLS.filter(tool =>
-            tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+            tool.name.toLowerCase().includes(searchLower) ||
+            tool.description.toLowerCase().includes(searchLower) ||
+            tool.tags?.some(tag => tag.toLowerCase().includes(searchLower))
         );
     }, [searchTerm]);
 
