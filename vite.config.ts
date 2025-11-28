@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       nodePolyfills({
-        include: ['buffer', 'crypto', 'stream', 'util', 'events', 'vm'],
+        include: ['buffer', 'crypto', 'stream', 'util', 'events'],
         globals: {
           Buffer: true,
           global: true,
@@ -28,6 +28,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
+        vm: path.resolve(__dirname, 'mocks/vm.js'),
       }
     },
     build: {
