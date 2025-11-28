@@ -27,8 +27,6 @@ export const Analytics = () => {
             script.setAttribute('data-auto-track', 'true');
 
             document.head.appendChild(script);
-
-            console.log('Umami Analytics initialized');
         }
     }, []);
 
