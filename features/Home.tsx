@@ -102,6 +102,25 @@ export const Home: React.FC = () => {
                 title="Dulundu Tools - Ultimate Developer Utilities Collection"
                 description="Access 100+ free developer tools including JSON Formatter, Base64 Converter, SQL Beautifier, AI Code Helper, and more. Fast, secure, and client-side."
                 keywords="developer tools, json formatter, base64 converter, sql beautifier, ai code helper, web tools, online utilities, free dev tools"
+                structuredData={{
+                    "@context": "https://schema.org",
+                    "@type": "SoftwareApplication",
+                    "name": "Dulundu Tools",
+                    "applicationCategory": "DeveloperApplication",
+                    "operatingSystem": "Web Browser",
+                    "url": "https://dulundu.tools",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "0",
+                        "priceCurrency": "USD"
+                    },
+                    "description": "A comprehensive suite of free developer utilities including AI Code Helper, JSON Formatter, and 100+ other tools.",
+                    "featureList": "AI Code Assistant, JSON Formatter, Base64 Converter, SQL Beautifier, Regex Tester",
+                    "author": {
+                        "@type": "Person",
+                        "name": "Ravi Dulundu"
+                    }
+                }}
             />
 
             {/* Hero Section */}
@@ -180,8 +199,8 @@ export const Home: React.FC = () => {
                             <button
                                 onClick={() => { setActiveCategory('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${activeCategory === 'All'
-                                        ? 'bg-primary text-white shadow-md shadow-primary/20'
-                                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                                    ? 'bg-primary text-white shadow-md shadow-primary/20'
+                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                                     }`}
                             >
                                 <span className="flex items-center"><Grid size={16} className="mr-2.5" /> All Tools</span>
@@ -193,8 +212,8 @@ export const Home: React.FC = () => {
                                     key={category}
                                     onClick={() => { setActiveCategory(category); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${activeCategory === category
-                                            ? 'bg-primary text-white shadow-md shadow-primary/20'
-                                            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                                        ? 'bg-primary text-white shadow-md shadow-primary/20'
+                                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                                         }`}
                                 >
                                     <span>{category}</span>
@@ -210,8 +229,8 @@ export const Home: React.FC = () => {
                             <button
                                 onClick={() => setActiveCategory('All')}
                                 className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${activeCategory === 'All'
-                                        ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700'
+                                    ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700'
                                     }`}
                             >
                                 All Tools
@@ -221,8 +240,8 @@ export const Home: React.FC = () => {
                                     key={category}
                                     onClick={() => setActiveCategory(category)}
                                     className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${activeCategory === category
-                                            ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                                            : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700'
+                                        ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700'
                                         }`}
                                 >
                                     {category}

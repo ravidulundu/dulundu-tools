@@ -10,7 +10,16 @@ interface SEOProps {
     ogType?: string;
 }
 
-export const SEO: React.FC<SEOProps> = (props) => {
+export const SEO: React.FC<SEOProps & { structuredData?: any }> = ({ structuredData, ...props }) => {
     useSeo(props);
+
+    if (structuredData) {
+        return (
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+            />
+        );
+    }
     return null;
 };
