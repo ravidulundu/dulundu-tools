@@ -40,22 +40,32 @@ import {
   Table,
   Type,
   Wand2,
-  Wifi
+  Wifi,
+  GitCompare,
+  Fingerprint,
+  CalendarClock,
+  Split,
+  FileDigit,
+  FileCode2,
+  Terminal,
+  Layers,
+  Box,
+  FileSpreadsheet
 } from 'lucide-react';
 
 export const ALL_TOOLS: ToolDef[] = [
   // --- ESSENTIAL DEVELOPER TOOLS ---
   { id: 'json-formatter', name: 'JSON Formatter', description: 'Beautify, minify and validate JSON.', category: ToolCategory.JSON, path: '/json-formatter', icon: FileJson, popular: true, tags: ['json', 'format', 'beautify', 'minify', 'validate', 'pretty print'] },
   { id: 'base64-converter', name: 'Base64 Converter', description: 'Encode and decode Base64 strings.', category: ToolCategory.CONVERTER, path: '/base64-converter', icon: Binary, popular: true, tags: ['base64', 'encode', 'decode', 'converter', 'encoding'] },
-  { id: 'jwt-decoder', name: 'JWT Decoder', description: 'Decode JSON Web Tokens.', category: ToolCategory.DEV, path: '/jwt-decoder', icon: Shield, popular: true, tags: ['jwt', 'token', 'decode', 'auth', 'authentication', 'security'] },
+  { id: 'jwt-decoder', name: 'JWT Decoder', description: 'Decode JSON Web Tokens.', category: ToolCategory.DEV, path: '/jwt-decoder', icon: ShieldCheck, popular: true, tags: ['jwt', 'token', 'decode', 'auth', 'authentication', 'security'] },
   { id: 'regex-tester', name: 'Regex Tester', description: 'Test regular expressions.', category: ToolCategory.DEV, path: '/regex-tester', icon: Regex, isNew: true, popular: true, tags: ['regex', 'regexp', 'regular expression', 'pattern', 'match', 'test'] },
-  { id: 'diff', name: 'Text Diff', description: 'Compare two text files.', category: ToolCategory.STRING, path: '/diff-viewer', icon: ArrowRightLeft, popular: true, tags: ['diff', 'compare', 'difference', 'merge', 'text comparison'] },
+  { id: 'diff', name: 'Text Diff', description: 'Compare two text files.', category: ToolCategory.STRING, path: '/diff-viewer', icon: GitCompare, popular: true, tags: ['diff', 'compare', 'difference', 'merge', 'text comparison'] },
   // Note: MD5/SHA are provided as utility tools, not for security purposes
   { id: 'hash-gen', name: 'Hash Generator', description: 'Generate MD5, SHA256 hashes.', category: ToolCategory.CRYPTO, path: '/hash-generator', icon: Hash, popular: true, tags: ['hash', 'md5', 'sha', 'sha256', 'checksum', 'crypto'] },
-  { id: 'uuid-gen', name: 'UUID Generator', description: 'Generate Version 4 UUIDs.', category: ToolCategory.RANDOM, path: '/uuid-generator', icon: Shuffle, popular: true, tags: ['uuid', 'guid', 'unique id', 'random', 'identifier'] },
+  { id: 'uuid-gen', name: 'UUID Generator', description: 'Generate Version 4 UUIDs.', category: ToolCategory.RANDOM, path: '/uuid-generator', icon: Fingerprint, popular: true, tags: ['uuid', 'guid', 'unique id', 'random', 'identifier'] },
   { id: 'code-formatter', name: 'Code Beautifier', description: 'Format HTML, CSS, and JS.', category: ToolCategory.FORMATTER, path: '/code-formatter', icon: Wand2, popular: true, tags: ['code', 'format', 'beautify', 'html', 'css', 'js', 'javascript', 'prettier'] },
   { id: 'url-encoder', name: 'URL Encoder', description: 'Encode/Decode URLs.', category: ToolCategory.ENCODE, path: '/url-encoder', icon: LinkIcon, popular: true, tags: ['url', 'encode', 'decode', 'uri', 'link', 'percent encoding'] },
-  { id: 'date-converter', name: 'Date Converter', description: 'Epoch & ISO date conversion.', category: ToolCategory.DEV, path: '/date-converter', icon: Calendar, isNew: true, popular: true, tags: ['date', 'epoch', 'unix', 'timestamp', 'iso', 'time'] },
+  { id: 'date-converter', name: 'Date Converter', description: 'Epoch & ISO date conversion.', category: ToolCategory.DEV, path: '/date-converter', icon: CalendarClock, isNew: true, popular: true, tags: ['date', 'epoch', 'unix', 'timestamp', 'iso', 'time'] },
   { id: 'sql-format', name: 'SQL Formatter', description: 'Format and beautify SQL queries.', category: ToolCategory.SQL, path: '/sql-formatter', icon: Database, popular: true, tags: ['sql', 'format', 'query', 'database', 'beautify'] },
   { id: 'password-gen', name: 'Password Gen', description: 'Generate secure passwords.', category: ToolCategory.RANDOM, path: '/password-generator', icon: Lock, popular: true, tags: ['password', 'generate', 'random', 'secure', 'strong password'] },
 
@@ -74,21 +84,21 @@ export const ALL_TOOLS: ToolDef[] = [
   { id: 'slug-gen', name: 'Slug Generator', description: 'URL-friendly text slug.', category: ToolCategory.STRING, path: '/slug-generator', icon: LinkIcon, isNew: true },
 
   // --- BATCH 6 ---
-  { id: 'list-comp', name: 'List Comparator', description: 'Diff lists (Union, Intersection).', category: ToolCategory.STRING, path: '/list-comparator', icon: ArrowRightLeft, isNew: true },
+  { id: 'list-comp', name: 'List Comparator', description: 'Diff lists (Union, Intersection).', category: ToolCategory.STRING, path: '/list-comparator', icon: Split, isNew: true },
   { id: 'case-conv', name: 'Case Converter', description: 'Camel, Snake, Kebab case.', category: ToolCategory.STRING, path: '/case-converter', icon: Type, isNew: true },
   { id: 'ua-parser', name: 'User Agent Parser', description: 'Decode browser User Agent.', category: ToolCategory.DEV, path: '/ua-parser', icon: Monitor, isNew: true },
 
   // --- BATCH 4 & 5 ---
   { id: 'gzip', name: 'GZip Compressor', description: 'Compress text to GZip Base64.', category: ToolCategory.COMPRESSION, path: '/gzip-compressor', icon: Archive },
   { id: 'qrcode', name: 'QR Code Gen', description: 'Generate QR Codes.', category: ToolCategory.HTML_GEN, path: '/qrcode-generator', icon: QrCode },
-  { id: 'chmod', name: 'Chmod Calculator', description: 'Linux permissions calculator.', category: ToolCategory.DEV, path: '/chmod-calculator', icon: Lock },
+  { id: 'chmod', name: 'Chmod Calculator', description: 'Linux permissions calculator.', category: ToolCategory.DEV, path: '/chmod-calculator', icon: Terminal },
   { id: 'cron', name: 'Cron Generator', description: 'Create cron schedule strings.', category: ToolCategory.DEV, path: '/cron-generator', icon: Clock },
 
   // --- PREVIOUSLY ADDED ---
   { id: 'xml-json', name: 'XML <> JSON', description: 'Convert XML to JSON and back.', category: ToolCategory.XML, path: '/xml-json-converter', icon: ArrowRightLeft },
   { id: 'dns-lookup', name: 'DNS Lookup', description: 'Find DNS records (A, MX, NS).', category: ToolCategory.NETWORK, path: '/dns-lookup', icon: Globe },
-  { id: 'pojo', name: 'POJO Generator', description: 'Generate Java classes from JSON.', category: ToolCategory.POJO, path: '/pojo-generator', icon: FileCode },
-  { id: 'utf8-conv', name: 'UTF8 Converter', description: 'Text to Hex/Binary bytes.', category: ToolCategory.UTF, path: '/utf8-converter', icon: Type },
+  { id: 'pojo', name: 'POJO Generator', description: 'Generate Java classes from JSON.', category: ToolCategory.POJO, path: '/pojo-generator', icon: FileCode2 },
+  { id: 'utf8-conv', name: 'UTF8 Converter', description: 'Text to Hex/Binary bytes.', category: ToolCategory.UTF, path: '/utf8-converter', icon: Binary },
   { id: 'csv-xml', name: 'CSV to XML', description: 'Convert CSV to XML.', category: ToolCategory.CSV, path: '/csv-to-xml', icon: Table },
   { id: 'csv-json-t', name: 'CSV to JSON', description: 'Convert CSV to JSON format.', category: ToolCategory.CSV, path: '/csv-converter', icon: Table },
   { id: 'css-unit', name: 'CSS Unit Converter', description: 'Convert PX, REM, EM, %.', category: ToolCategory.CSS_UNIT, path: '/css-unit-converter', icon: Ruler },
@@ -159,12 +169,12 @@ export const ALL_TOOLS: ToolDef[] = [
   { id: 'php-fmt', name: 'PHP Formatter', description: 'Beautify PHP code.', category: ToolCategory.FORMATTER, path: '/php-formatter', icon: Code2, isNew: true },
   { id: 'wp-hash', name: 'WP Password Hash', description: 'Generate WordPress hashes.', category: ToolCategory.CRYPTO, path: '/wordpress-password-hash', icon: Lock, isNew: true },
   { id: 'img-ascii', name: 'Image to ASCII', description: 'Convert image to text art.', category: ToolCategory.IMAGE_CONVERTER, path: '/image-to-ascii', icon: Image, isNew: true },
-  { id: 'excel-view', name: 'Excel Viewer', description: 'View CSV/Excel data.', category: ToolCategory.CSV, path: '/excel-viewer', icon: Table, isNew: true },
-  { id: 'csv-excel', name: 'CSV to Excel', description: 'Convert CSV to Excel.', category: ToolCategory.CSV, path: '/csv-to-excel', icon: FileText, isNew: true },
-  { id: 'paraphrase', name: 'Paraphrasing Tool', description: 'Rewrite text with AI.', category: ToolCategory.AI, path: '/paraphrasing-tool', icon: Type, isNew: true },
+  { id: 'excel-view', name: 'Excel Viewer', description: 'View CSV/Excel data.', category: ToolCategory.CSV, path: '/excel-viewer', icon: FileSpreadsheet, isNew: true },
+  { id: 'csv-excel', name: 'CSV to Excel', description: 'Convert CSV to Excel.', category: ToolCategory.CSV, path: '/csv-to-excel', icon: FileSpreadsheet, isNew: true },
+  { id: 'paraphrase', name: 'Paraphrasing Tool', description: 'Rewrite text with AI.', category: ToolCategory.AI, path: '/paraphrasing-tool', icon: BrainCircuit, isNew: true },
   { id: 'mirror', name: 'Is It Down?', description: 'Check website status.', category: ToolCategory.NETWORK, path: '/mirror-online', icon: Wifi, isNew: true },
   { id: 'word-html', name: 'Word to HTML', description: 'Convert Word doc to HTML.', category: ToolCategory.HTML, path: '/word-to-html', icon: FileText, isNew: true },
   { id: 'share-link', name: 'Share Link Gen', description: 'Create social share links.', category: ToolCategory.TWITTER, path: '/sharelink-generator', icon: LinkIcon, isNew: true },
 
-  { id: 'other', name: 'Other Tools', description: 'Miscellaneous tools.', category: ToolCategory.OTHER, path: '/other', icon: Archive },
+  { id: 'other', name: 'Other Tools', description: 'Miscellaneous tools.', category: ToolCategory.OTHER, path: '/other', icon: Box },
 ];
