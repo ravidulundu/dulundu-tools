@@ -4,7 +4,7 @@ export const Analytics = () => {
     useEffect(() => {
         // Get environment variables
         const websiteId = import.meta.env.VITE_UMAMI_WEBSITE_ID;
-        const scriptUrl = import.meta.env.VITE_UMAMI_SCRIPT_URL || 'https://analytics.umami.is/script.js';
+        const scriptUrl = import.meta.env.VITE_UMAMI_SCRIPT_URL || 'https://stats.dulundu.tools/script.js';
 
         // Check if Umami is configured and not already loaded
         if (websiteId && !document.getElementById('umami-script')) {
