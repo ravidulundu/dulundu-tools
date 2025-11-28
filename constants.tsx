@@ -48,7 +48,6 @@ import {
   FileDigit,
   FileCode2,
   Terminal,
-  Layers,
   Box,
   FileSpreadsheet
 } from 'lucide-react';

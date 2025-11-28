@@ -5,6 +5,8 @@ import { ALL_TOOLS } from '../constants';
 import { ToolCard } from '../components/ToolCard';
 import { CategoryCard } from '../components/CategoryCard';
 
+import { SEO } from '../components/SEO';
+
 export const Home: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchTerm, setSearchTerm] = useState('');
@@ -96,6 +98,12 @@ export const Home: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors duration-200 pb-20">
+            <SEO
+                title="Dulundu Tools - Ultimate Developer Utilities Collection"
+                description="Access 100+ free developer tools including JSON Formatter, Base64 Converter, SQL Beautifier, AI Code Helper, and more. Fast, secure, and client-side."
+                keywords="developer tools, json formatter, base64 converter, sql beautifier, ai code helper, web tools, online utilities, free dev tools"
+            />
+
             {/* Hero Section */}
             <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 relative overflow-hidden z-20 transition-colors duration-200">
                 {/* Simple Grid Background */}
