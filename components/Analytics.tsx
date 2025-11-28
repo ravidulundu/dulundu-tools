@@ -1,14 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-declare global {
-    interface Window {
-        umami?: {
-            track: (payload: (props: any) => any) => void;
-        };
-    }
-}
-
 export const Analytics = () => {
     const location = useLocation();
 
