@@ -34,7 +34,7 @@ app.post('/api/ai/generate', async (req, res) => {
         const { prompt, language } = req.body;
 
         const response = await ai.models.generateContent({
-            model: 'gemini-pro',
+            model: 'gemini-2.5-flash',
             contents: `You are an expert developer assistant. The user needs help with ${language || 'code'}. 
       
       Task: ${prompt}
@@ -60,7 +60,7 @@ app.post('/api/ai/paraphrase', async (req, res) => {
         const { text, tone } = req.body;
 
         const response = await ai.models.generateContent({
-            model: 'gemini-pro',
+            model: 'gemini-2.5-flash',
             contents: `You are an expert writer. Paraphrase the following text to be more ${tone || 'professional'}. Keep the meaning the same but improve clarity and flow.
       
       Text: "${text}"
