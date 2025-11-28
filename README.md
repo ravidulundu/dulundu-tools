@@ -6,7 +6,7 @@
 
 <br/>
 
-[![Donate via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=for-the-badge&logo=paypal)](https://paypal.me/ravidulundu)
+[![Donate via Stripe](https://img.shields.io/badge/Donate-Stripe-violet.svg?style=for-the-badge&logo=stripe)](https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00)
 
 <br/>
 
@@ -90,7 +90,7 @@ Contributions are welcome! If you have an idea for a new tool or want to improve
 
 If you find these tools useful, please consider supporting the development. Your donations help keep the project alive, ad-free, and constantly updated!
 
-[![Donate via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=for-the-badge&logo=paypal)](https://paypal.me/ravidulundu)
+[![Donate via Stripe](https://img.shields.io/badge/Donate-Stripe-violet.svg?style=for-the-badge&logo=stripe)](https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00)
 
 ## 📄 License
 
