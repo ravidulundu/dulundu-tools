@@ -41,6 +41,7 @@ export default defineConfig(({ mode }) => {
             'ui-vendor': ['lucide-react'],
             'utils-vendor': ['ua-parser-js', 'marked', 'js-yaml'],
             'crypto-vendor': ['crypto-browserify', 'bcryptjs'],
+            'layout': ['./components/Header', './components/Footer', './components/Layout'],
           }
         }
       }

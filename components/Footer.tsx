@@ -84,7 +84,7 @@ export const Footer: React.FC = () => {
                     <p>&copy; {new Date().getFullYear()} Dulundu.tools. Open Source Project.</p>
                     <div className="flex items-center space-x-6 mt-4 md:mt-0">
                         <span className="flex items-center">
-                            Made with <Heart size={14} className="mx-1 text-red-500 fill-current animate-pulse" /> by Developers
+                            Made with <span className="inline-flex items-center justify-center w-4 h-4 mx-1"><Heart size={14} className="text-red-500 fill-current animate-pulse" /></span> by Developers
                         </span>
                     </div>
                 </div>
