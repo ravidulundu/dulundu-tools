@@ -104,6 +104,7 @@ const SharelinkGenerator = lazyLoad(() => import('./features/SharelinkGenerator'
 
 // Home Component
 const Home = lazyLoad(() => import('./features/Home'), 'Home');
+const NotFound = lazyLoad(() => import('./features/NotFound'), 'NotFound');
 
 export const routes = [
     { path: '/', element: <Home /> },
@@ -184,5 +185,5 @@ export const routes = [
     { path: '/word-to-html', element: <WordToHtml /> },
     { path: '/sharelink-generator', element: <SharelinkGenerator /> },
     { path: '/coming-soon', element: <ComingSoon /> },
-    { path: '*', element: <ComingSoon /> },
+    { path: '*', element: <NotFound /> },
 ];
