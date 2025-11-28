@@ -42,6 +42,7 @@ export default defineConfig(({ mode }) => {
             'utils-vendor': ['ua-parser-js', 'marked', 'js-yaml'],
             'crypto-vendor': ['crypto-browserify', 'bcryptjs'],
             'layout': ['./components/Header', './components/Footer', './components/Layout'],
+            'data': ['./constants'],
           }
         }
       }
