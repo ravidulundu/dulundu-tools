@@ -1,11 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Code2, Search, Menu, Sun, Moon, Github, MessageSquare, ChevronDown, Grid, X } from 'lucide-react';
+import { Code2, Search, Menu, Sun, Moon, Github, MessageSquare, ChevronDown, Grid, X, Heart } from 'lucide-react';
 import { ALL_TOOLS } from '../constants';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') === 'dark' ||
@@ -123,13 +124,20 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             })}
 
             {/* Developer Tools Mega Menu */}
-            <div className="relative group px-4 py-2 cursor-pointer">
-              <span className="text-sm font-medium flex items-center text-slate-600 dark:text-slate-400 group-hover:text-primary dark:group-hover:text-primary transition-colors">
-                Developer Tools <ChevronDown size={14} className="ml-1 opacity-70 group-hover:translate-y-0.5 transition-transform" />
+            <div
+              className="relative px-4 py-2 cursor-pointer"
+              onMouseEnter={() => setMegaMenuOpen(true)}
+              onMouseLeave={() => setMegaMenuOpen(false)}
+            >
+              <span className="text-sm font-medium flex items-center text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+                Developer Tools <ChevronDown size={14} className={`ml-1 opacity-70 transition-transform ${megaMenuOpen ? 'rotate-180' : ''}`} />
               </span>
 
               {/* Mega Menu Dropdown */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-[900px] bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-100 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-6 z-50">
+              <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-[900px] bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-100 dark:border-slate-700 transition-all duration-200 transform p-6 z-50 ${megaMenuOpen
+                ? 'opacity-100 visible translate-y-0'
+                : 'opacity-0 invisible translate-y-2'
+                }`}>
                 {/* Invisible bridge to prevent menu from closing when moving mouse from nav to menu */}
                 <div className="absolute -top-4 left-0 w-full h-4"></div>
 
@@ -138,7 +146,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     <Grid size={18} className="mr-2 text-primary" />
                     All Categories
                   </h3>
-                  <Link to="/" className="text-xs font-semibold text-primary hover:underline">View Full Directory &rarr;</Link>
+                  <Link
+                    to="/"
+                    className="text-xs font-semibold text-primary hover:underline"
+                    onClick={() => setMegaMenuOpen(false)}
+                  >
+                    View Full Directory &rarr;
+                  </Link>
                 </div>
                 <div className="grid grid-cols-4 gap-8">
                   {menuColumns.map((column, colIndex) => (
@@ -149,6 +163,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                           to={categoryToPath[category] || '/'}
                           className="text-[13px] text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 px-2 py-1.5 rounded-lg transition-colors truncate block"
                           title={category}
+                          onClick={() => setMegaMenuOpen(false)}
                         >
                           {category}
                         </Link>
@@ -162,6 +177,18 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
           {/* Right: Actions (4 Icons: Github, Discord, Chat, Sun) */}
           <div className="flex items-center space-x-3 shrink-0">
+
+            {/* Donate Button (Desktop) */}
+            <a
+              href="https://paypal.me/ravidulundu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center space-x-2 px-3 py-2 bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 hover:bg-pink-100 dark:hover:bg-pink-900/40 rounded-lg transition-all text-sm font-bold mr-2 border border-pink-100 dark:border-pink-900/50"
+              title="Support the project"
+            >
+              <Heart size={16} className="fill-current" />
+              <span>Sponsor</span>
+            </a>
 
             {/* Github */}
             <a
@@ -246,6 +273,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   </Link>
                 ))}
               </div>
+
+              {/* Mobile Donate */}
+              <div className="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700">
+                <a
+                  href="https://paypal.me/ravidulundu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-full px-4 py-3 bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 rounded-xl font-bold hover:bg-pink-100 transition-colors"
+                >
+                  <Heart size={18} className="mr-2 fill-current" />
+                  Sponsor Project
+                </a>
+              </div>
             </div>
           </div>
         )}
@@ -290,6 +330,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <div>
               <h4 className="font-semibold text-slate-800 dark:text-white mb-4">Support</h4>
               <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                <li>
+                  <a href="https://paypal.me/ravidulundu" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 dark:hover:text-pink-400 flex items-center font-medium text-pink-600 dark:text-pink-400">
+                    <Heart size={14} className="mr-1.5 fill-current" /> Donate
+                  </a>
+                </li>
                 <li><Link to="/coming-soon" className="hover:text-primary dark:hover:text-primary">Contact Us</Link></li>
                 <li><Link to="/coming-soon" className="hover:text-primary dark:hover:text-primary">Report Bug</Link></li>
                 <li><Link to="/coming-soon" className="hover:text-primary dark:hover:text-primary">Privacy Policy</Link></li>
