@@ -5,6 +5,7 @@ interface ToolHeaderProps {
     icon: LucideIcon;
     title: string;
     description: string;
+    actions?: React.ReactNode;
     iconBgColor?: string;
     iconColor?: string;
 }
@@ -13,20 +14,20 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
     icon: Icon,
     title,
     description,
-    iconBgColor = 'bg-blue-100',
-    iconColor = 'text-primary',
+    actions,
 }) => {
     return (
-        <div className="p-4 md:p-6 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-            <div className="flex items-center space-x-3">
-                <div className={`p-2 ${iconBgColor} ${iconColor} rounded-lg`}>
-                    <Icon size={24} />
+        <div className="mb-8">
+            <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-3">
+                    <div className="p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+                        <Icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <h1 className="text-2xl font-bold text-slate-800">{title}</h1>
                 </div>
-                <div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{title}</h1>
-                    <p className="text-xs md:text-sm text-slate-500">{description}</p>
-                </div>
+                {actions && <div>{actions}</div>}
             </div>
+            <p className="text-slate-500 ml-[60px]">{description}</p>
         </div>
     );
 };

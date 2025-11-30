@@ -5,7 +5,7 @@ interface ActionButtonProps {
     icon: LucideIcon;
     label: string;
     onClick: () => void;
-    variant?: 'primary' | 'secondary' | 'success' | 'danger';
+    variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'ghost';
     size?: 'sm' | 'md';
     disabled?: boolean;
 }
@@ -27,6 +27,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         secondary: 'bg-white border-gray-200 text-slate-600 hover:bg-gray-50',
         success: 'bg-green-50 text-green-700 border-green-200',
         danger: 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100',
+        ghost: 'bg-transparent border-transparent text-slate-500 hover:bg-slate-100',
     };
 
     const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : '';

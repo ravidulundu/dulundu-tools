@@ -101,6 +101,7 @@ const ParaphrasingTool = lazyLoad(() => import('./features/ParaphrasingTool'), '
 const MirrorOnline = lazyLoad(() => import('./features/MirrorOnline'), 'MirrorOnline');
 const WordToHtml = lazyLoad(() => import('./features/WordToHtml'), 'WordToHtml');
 const SharelinkGenerator = lazyLoad(() => import('./features/SharelinkGenerator'), 'SharelinkGenerator');
+const ReadmeGenerator = lazyLoad(() => import('./features/ReadmeGenerator/index'), 'ReadmeGenerator');
 
 // Home Component
 const Home = lazyLoad(() => import('./features/Home'), 'Home');
@@ -184,6 +185,7 @@ export const routes = [
     { path: '/mirror-online', element: <MirrorOnline /> },
     { path: '/word-to-html', element: <WordToHtml /> },
     { path: '/sharelink-generator', element: <SharelinkGenerator /> },
+    { path: '/readme-generator', element: <ReadmeGenerator /> },
     { path: '/coming-soon', element: <ComingSoon /> },
     { path: '*', element: <NotFound /> },
 ];

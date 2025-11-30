@@ -7,6 +7,7 @@ import { Analytics } from './components/Analytics';
 import { Layout } from './components/Layout';
 import { Loading } from './components/Loading';
 import { SeoManager } from './components/SeoManager';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { routes } from './routes';
 
 const AppRoutes = () => {
@@ -16,15 +17,17 @@ const AppRoutes = () => {
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Analytics />
-        <SeoManager />
-        <Suspense fallback={<Loading />}>
-          <AppRoutes />
-        </Suspense>
-      </Layout>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Layout>
+          <Analytics />
+          <SeoManager />
+          <Suspense fallback={<Loading />}>
+            <AppRoutes />
+          </Suspense>
+        </Layout>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 

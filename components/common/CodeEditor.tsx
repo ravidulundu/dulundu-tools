@@ -4,10 +4,12 @@ interface CodeEditorProps {
     value: string;
     onChange?: (value: string) => void;
     placeholder?: string;
-    label?: string;
+    label?: React.ReactNode;
     readOnly?: boolean;
     theme?: 'light' | 'dark';
     actions?: React.ReactNode;
+    language?: string;
+    className?: string;
 }
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({
@@ -18,6 +20,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     readOnly = false,
     theme = readOnly ? 'dark' : 'light',
     actions,
+    language,
+    className,
 }) => {
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (onChange) {

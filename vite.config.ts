@@ -29,6 +29,8 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, '.'),
         vm: path.resolve(__dirname, 'mocks/vm.js'),
         crypto: path.resolve(__dirname, 'node_modules/crypto-browserify'),
+        react: path.resolve(__dirname, 'node_modules/react'),
+        'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
       }
     },
     build: {
@@ -36,15 +38,14 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            'ui-vendor': ['lucide-react'],
-            'utils-vendor': ['ua-parser-js', 'marked', 'js-yaml'],
-            'crypto-vendor': ['crypto-browserify', 'bcryptjs'],
-            'layout': ['./components/Header', './components/Footer', './components/Layout'],
-            'data': ['./constants'],
+            vendor: ['react', 'react-dom', 'react-router-dom'],
+            ui: ['@uiw/react-md-editor', 'lucide-react'],
+            utils: ['bcryptjs', 'js-yaml', 'marked', 'ua-parser-js']
           }
         }
       }
     }
   };
 });
+
+// Trigger restart

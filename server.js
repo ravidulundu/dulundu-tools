@@ -13,9 +13,43 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust the first proxy (Dokploy/Traefik/Nginx)
+// This is required for rate limiting to work correctly behind a reverse proxy
+app.set('trust proxy', 1);
+
+import rateLimit from 'express-rate-limit';
+
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173', // Vite dev server default
+    'https://dulundu.tools',
+    'https://www.dulundu.tools'
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
 app.use(express.json());
+
+// Rate Limiter for AI endpoints
+const aiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP, please try again after 15 minutes',
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
 
 // Serve static files from the dist directory
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -25,7 +59,7 @@ const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
 const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 // API Route for AI
-app.post('/api/ai/generate', async (req, res) => {
+app.post('/api/ai/generate', aiLimiter, async (req, res) => {
     try {
         if (!ai) {
             throw new Error('Server misconfiguration: API Key missing');
@@ -54,7 +88,7 @@ app.post('/api/ai/generate', async (req, res) => {
     }
 });
 
-app.post('/api/ai/paraphrase', async (req, res) => {
+app.post('/api/ai/paraphrase', aiLimiter, async (req, res) => {
     try {
         if (!ai) {
             throw new Error('Server misconfiguration: API Key missing');

@@ -1,85 +1,97 @@
-import React, { useState } from 'react';
-import { Database, Copy, Check, Trash2, Play } from 'lucide-react';
-import { ToolHeader } from '../components/common/ToolHeader';
-import { CodeEditor } from '../components/common/CodeEditor';
-import { ActionButton } from '../components/common/ActionButton';
+import React from "react";
+import { Database, Copy, Check, Trash2, Play } from "lucide-react";
+import { ToolHeader } from "../components/common/ToolHeader";
+import { CodeEditor } from "../components/common/CodeEditor";
+import { ActionButton } from "../components/common/ActionButton";
+import { useToolLogic } from "../hooks/useToolLogic";
 
 export const SqlFormatter: React.FC = () => {
-  const [input, setInput] = useState('');
-  const [output, setOutput] = useState('');
-  const [copied, setCopied] = useState(false);
+  const {
+    input,
+    setInput,
+    output,
+    setOutput,
+    copied,
+    handleCopy,
+    handleClear,
+  } = useToolLogic();
 
   // Check for input in URL hash (from extension)
   React.useEffect(() => {
     const hash = window.location.hash;
-    if (hash.includes('input=')) {
+    if (hash.includes("input=")) {
       try {
         const params = new URLSearchParams(hash.substring(1));
-        const inputParam = params.get('input');
+        const inputParam = params.get("input");
         if (inputParam) {
           const decoded = decodeURIComponent(inputParam);
           setInput(decoded);
           formatSql(decoded);
-          window.history.replaceState(null, '', window.location.pathname);
+          window.history.replaceState(null, "", window.location.pathname);
         }
-      } catch (e) { }
+      } catch (e) {}
     }
-  }, []);
+  }, [setInput]);
 
   const formatSql = (textOverride?: string) => {
-    const textToFormat = typeof textOverride === 'string' ? textOverride : input;
+    const textToFormat =
+      typeof textOverride === "string" ? textOverride : input;
 
     if (!textToFormat.trim()) {
-      setOutput('');
+      setOutput("");
       return;
     }
 
     // Basic SQL formatting logic (Regex based)
-    let sql = textToFormat
-      .replace(/\s+/g, ' ')
-      .replace(/"/g, '""'); // basic cleanup
+    let sql = textToFormat.replace(/\s+/g, " ").replace(/"/g, '""'); // basic cleanup
 
     const keywords = [
-      "SELECT", "FROM", "WHERE", "AND", "OR", "GROUP BY", "ORDER BY",
-      "HAVING", "LIMIT", "INSERT INTO", "VALUES", "UPDATE", "SET",
-      "DELETE FROM", "JOIN", "LEFT JOIN", "RIGHT JOIN", "INNER JOIN",
-      "UNION", "UNION ALL", "CREATE TABLE", "DROP TABLE", "ALTER TABLE"
+      "SELECT",
+      "FROM",
+      "WHERE",
+      "AND",
+      "OR",
+      "GROUP BY",
+      "ORDER BY",
+      "HAVING",
+      "LIMIT",
+      "INSERT INTO",
+      "VALUES",
+      "UPDATE",
+      "SET",
+      "DELETE FROM",
+      "JOIN",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "INNER JOIN",
+      "UNION",
+      "UNION ALL",
+      "CREATE TABLE",
+      "DROP TABLE",
+      "ALTER TABLE",
     ];
 
     // Simple indentation
-    keywords.forEach(kw => {
-      const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+    keywords.forEach((kw) => {
+      const regex = new RegExp(`\\b${kw}\\b`, "gi");
       sql = sql.replace(regex, `\n${kw}`);
     });
 
     // Fix first line newline
-    sql = sql.replace(/^\n/, '');
+    sql = sql.replace(/^\n/, "");
 
     // Indent sub-parts (like after SELECT)
-    sql = sql.replace(/,/g, ',\n  ');
+    sql = sql.replace(/,/g, ",\n  ");
 
     // Parentheses indentation
-    sql = sql.replace(/\(/g, '(\n  ').replace(/\)/g, '\n)');
+    sql = sql.replace(/\(/g, "(\n  ").replace(/\)/g, "\n)");
 
     setOutput(sql);
-  };
-
-  const handleCopy = () => {
-    if (!output) return;
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleClear = () => {
-    setInput('');
-    setOutput('');
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={Database}
           title="SQL Formatter"
@@ -94,20 +106,21 @@ export const SqlFormatter: React.FC = () => {
             onClick={handleClear}
             className="px-3 py-2 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-lg hover:bg-red-50 transition-colors flex items-center shadow-sm"
           >
-            <Trash2 size={16} className="md:mr-2" /> <span className="hidden md:inline">Clear</span>
+            <Trash2 size={16} className="md:mr-2" />{" "}
+            <span className="hidden md:inline">Clear</span>
           </button>
           <button
             onClick={() => formatSql()}
             className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md flex items-center"
           >
-            <Play size={16} className="md:mr-2" /> <span className="hidden md:inline">Format</span>
+            <Play size={16} className="md:mr-2" />{" "}
+            <span className="hidden md:inline">Format</span>
           </button>
         </div>
 
         {/* Editor Area */}
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
-
             <CodeEditor
               value={input}
               onChange={setInput}
@@ -126,14 +139,13 @@ export const SqlFormatter: React.FC = () => {
                 output && (
                   <ActionButton
                     icon={copied ? Check : Copy}
-                    label={copied ? 'Copied' : 'Copy'}
+                    label={copied ? "Copied" : "Copy"}
                     onClick={handleCopy}
-                    variant={copied ? 'success' : 'primary'}
+                    variant={copied ? "success" : "primary"}
                   />
                 )
               }
             />
-
           </div>
         </div>
       </div>

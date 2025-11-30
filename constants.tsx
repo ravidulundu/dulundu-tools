@@ -174,4 +174,5 @@ export const ALL_TOOLS: ToolDef[] = [
   { id: 'mirror', name: 'Is It Down?', description: 'Check website status.', category: ToolCategory.NETWORK, path: '/mirror-online', icon: Wifi, isNew: true },
   { id: 'word-html', name: 'Word to HTML', description: 'Convert Word doc to HTML.', category: ToolCategory.HTML, path: '/word-to-html', icon: FileText, isNew: true },
   { id: 'share-link', name: 'Share Link Gen', description: 'Create social share links.', category: ToolCategory.TWITTER, path: '/sharelink-generator', icon: LinkIcon, isNew: true },
+  { id: 'readme-gen', name: 'Readme Generator', description: 'Create professional READMEs.', category: ToolCategory.EDITOR, path: '/readme-generator', icon: FileText, isNew: true, popular: true, tags: ['readme', 'generator', 'markdown', 'documentation'] },
 ];
