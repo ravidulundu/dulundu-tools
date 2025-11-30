@@ -6,6 +6,7 @@ import { useTheme } from "../../contexts/ThemeContext";
 import MDEditor from "@uiw/react-md-editor";
 import "./MDEditor.css";
 import { SEO } from "../../components/SEO";
+import { HelpCircle } from "lucide-react";
 
 // Extended Section interface to track inclusion state
 interface ExtendedSection extends Section {
@@ -228,10 +229,20 @@ export const ReadmeGenerator = () => {
       <div className="flex-1 flex">
         {/* Left: Markdown Editor Only */}
         <div className="w-1/2 bg-gray-50 dark:bg-slate-900 h-full flex flex-col border-r border-gray-200 dark:border-gray-800">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900 flex justify-between items-center">
             <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wide">
               Markdown Editor
             </h2>
+            <a
+              href="https://www.markdownguide.org/basic-syntax/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+              title="View Markdown Syntax Guide"
+            >
+              <HelpCircle size={14} />
+              Syntax Guide
+            </a>
           </div>
           <div className="flex-1 overflow-hidden">
             <div
