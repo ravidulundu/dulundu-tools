@@ -21,11 +21,15 @@ import rateLimit from 'express-rate-limit';
 
 // Middleware
 const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:5173', // Vite dev server default
     'https://dulundu.tools',
     'https://www.dulundu.tools'
 ];
+
+// Only allow localhost in development
+if (process.env.NODE_ENV !== 'production') {
+    allowedOrigins.push('http://localhost:3000');
+    allowedOrigins.push('http://localhost:5173');
+}
 
 app.use(cors({
     origin: function (origin, callback) {
