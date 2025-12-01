@@ -8,6 +8,27 @@
     <!-- Preconnects (Earliest possible connection) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload critical fonts to eliminate render blocking -->
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://stats.dulundu.tools" />
+    <link rel="dns-prefetch" href="https://aistudiocdn.com" />
+
     <link rel="preconnect" href="https://stats.dulundu.tools" crossorigin />
     <link rel="preconnect" href="https://aistudiocdn.com" crossorigin />
 
@@ -27,13 +48,16 @@
       />
     </noscript>
 
-    <!-- Analytics -->
+    <!-- Analytics ---->
     <style>
       body {
         font-family: "Inter", sans-serif;
       }
     </style>
     <link rel="stylesheet" href="/index.css" />
+    
+    <!-- Preload main module for faster script execution -->
+    <link rel="modulepreload" href="/index.tsx" />
   </head>
 
   <body
