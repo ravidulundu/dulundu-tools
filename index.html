@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dulundu.tools - Developer Utilities</title>
 
+    <script>
+      (function () {
+        try {
+          const stored = localStorage.getItem("theme");
+          const systemDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+
+          if (stored === "dark" || (!stored && systemDark)) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Preconnects for external resources -->
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="https://aistudiocdn.com" />
