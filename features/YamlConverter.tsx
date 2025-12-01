@@ -23,45 +23,59 @@ export const YamlConverter: React.FC = () => {
 
   const [mode, setMode] = useState<Mode>("json-yaml");
 
+  type JsonValue = string | number | boolean | null | JsonObject | JsonValue[];
+  interface JsonObject {
+    [key: string]: JsonValue;
+  }
+
   // XML Helpers (Duplicated for standalone robustness)
-  const xmlToJson = (xml: Node): any => {
-    let obj: any = {};
+  const xmlToJson = (xml: Node): JsonValue => {
     if (xml.nodeType === 1) {
+      const obj: JsonObject = {};
       if ((xml as Element).attributes.length > 0) {
         obj["@attributes"] = {};
         for (let j = 0; j < (xml as Element).attributes.length; j++) {
           const attribute = (xml as Element).attributes.item(j);
           if (attribute)
-            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+            (obj["@attributes"] as JsonObject)[attribute.nodeName] =
+              attribute.nodeValue;
         }
       }
-    } else if (xml.nodeType === 3) return xml.nodeValue;
 
-    if (xml.hasChildNodes()) {
-      for (let i = 0; i < xml.childNodes.length; i++) {
-        const item = xml.childNodes.item(i);
-        const nodeName = item.nodeName;
-        if (nodeName === "#text") {
-          const val = item.nodeValue?.trim();
-          if (val) return val;
-          continue;
-        }
-        if (typeof obj[nodeName] === "undefined")
-          obj[nodeName] = xmlToJson(item);
-        else {
-          if (typeof obj[nodeName].push === "undefined") {
-            const old = obj[nodeName];
-            obj[nodeName] = [];
-            obj[nodeName].push(old);
+      if (xml.hasChildNodes()) {
+        for (let i = 0; i < xml.childNodes.length; i++) {
+          const item = xml.childNodes.item(i);
+          const nodeName = item.nodeName;
+          if (nodeName === "#text") {
+            // If it's just text content and we already have attributes, we might need a special key like #text
+            // But for simplicity in this converter, if it's mixed content, it gets complex.
+            // This logic follows the original implementation's structure but adds types.
+            const val = item.nodeValue?.trim();
+            if (val) return val;
+            continue;
           }
-          obj[nodeName].push(xmlToJson(item));
+
+          const childValue = xmlToJson(item);
+
+          if (typeof obj[nodeName] === "undefined") {
+            obj[nodeName] = childValue;
+          } else {
+            if (!Array.isArray(obj[nodeName])) {
+              const old = obj[nodeName];
+              obj[nodeName] = [old];
+            }
+            (obj[nodeName] as JsonValue[]).push(childValue);
+          }
         }
       }
+      return obj;
+    } else if (xml.nodeType === 3) {
+      return xml.nodeValue || null;
     }
-    return obj;
+    return null;
   };
 
-  const jsonToXml = (json: any): string => {
+  const jsonToXml = (json: JsonValue): string => {
     let xml = "";
     if (typeof json === "object" && json !== null) {
       if (Array.isArray(json)) {
@@ -71,11 +85,11 @@ export const YamlConverter: React.FC = () => {
       } else {
         Object.keys(json).forEach((key) => {
           if (key === "@attributes") return;
-          xml += `<${key}>${jsonToXml(json[key])}</${key}>`;
+          xml += `<${key}>${jsonToXml((json as JsonObject)[key])}</${key}>`;
         });
       }
     } else {
-      xml += json;
+      xml += String(json);
     }
     return xml;
   };
@@ -103,7 +117,7 @@ export const YamlConverter: React.FC = () => {
         const finalObj = { [rootName]: json };
         setOutput(dump(finalObj));
       } else if (mode === "yaml-xml") {
-        const obj = load(input);
+        const obj = load(input) as JsonValue;
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<root>\n${jsonToXml(
           obj
         )}\n</root>`;

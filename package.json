@@ -10,7 +10,8 @@
     "build": "node scripts/generate-sitemap.cjs && tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^1.30.0",

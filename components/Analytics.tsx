@@ -29,7 +29,7 @@ export const Analytics = () => {
   useEffect(() => {
     if (window.umami) {
       // Manually track page view with new URL
-      window.umami.track((props: any) => ({
+      window.umami.track((props: Record<string, unknown>) => ({
         ...props,
         url: location.pathname,
       }));

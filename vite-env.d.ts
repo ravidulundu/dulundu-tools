@@ -11,4 +11,13 @@ interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
 
+interface Window {
+    umami?: {
+        track: {
+            (eventName: string, eventData?: Record<string, unknown>): void;
+            (props: Record<string, unknown> | ((props: Record<string, unknown>) => Record<string, unknown>)): void;
+        };
+    };
+}
+
 

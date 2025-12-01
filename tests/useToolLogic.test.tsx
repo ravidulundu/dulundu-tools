@@ -86,15 +86,16 @@ describe("useToolLogic", () => {
     const callback = vi.fn();
 
     // Mock FileReader
+    // Mock FileReader
     const readAsTextMock = vi.fn();
-    let onloadRef: any = null;
+    let onloadRef: ((event: ProgressEvent<FileReader>) => void) | null = null;
 
     class MockFileReader {
       readAsText = readAsTextMock;
-      set onload(fn: any) {
+      set onload(fn: (event: ProgressEvent<FileReader>) => void) {
         onloadRef = fn;
       }
-      get onload() {
+      get onload(): ((event: ProgressEvent<FileReader>) => void) | null {
         return onloadRef;
       }
     }
@@ -110,7 +111,9 @@ describe("useToolLogic", () => {
     // Simulate onload
     act(() => {
       if (onloadRef) {
-        onloadRef({ target: { result: "file content" } } as any);
+        onloadRef({
+          target: { result: "file content" },
+        } as unknown as ProgressEvent<FileReader>);
       }
     });
 
@@ -138,7 +141,7 @@ describe("useToolLogic", () => {
     };
     const createElementMock = vi
       .spyOn(document, "createElement")
-      .mockReturnValue(linkMock as any);
+      .mockReturnValue(linkMock as unknown as HTMLAnchorElement);
 
     act(() => {
       result.current.handleDownload("test.txt");
