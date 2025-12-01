@@ -124,11 +124,7 @@ const aiLimiter = rateLimit({
 // ========== HEALTH CHECK ==========
 app.get('/health', (req, res) => {
     res.json({
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: Math.floor(process.uptime()),
-        ai_configured: !!ai,
-        environment: process.env.NODE_ENV || 'development'
+        status: 'healthy'
     });
 });
 
