@@ -1,30 +1,80 @@
-import React, { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-import { ALL_TOOLS } from '../constants';
-import { SEO } from './SEO';
+import React, { useMemo } from "react";
+import { useLocation } from "react-router-dom";
+import { ALL_TOOLS } from "../constants";
+import { SEO } from "./SEO";
 
 export const SeoManager: React.FC = () => {
-    const location = useLocation();
+  const location = useLocation();
 
-    const currentTool = useMemo(() => {
-        return ALL_TOOLS.find(tool => tool.path === location.pathname);
-    }, [location.pathname]);
+  const currentTool = useMemo(() => {
+    return ALL_TOOLS.find((tool) => tool.path === location.pathname);
+  }, [location.pathname]);
 
+  const jsonLd = useMemo(() => {
     if (currentTool) {
-        return (
-            <SEO
-                title={currentTool.name}
-                description={currentTool.description}
-                keywords={currentTool.tags?.join(', ') || `${currentTool.name}, ${currentTool.category}, developer tools, online utility`}
-            />
-        );
+      return {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: currentTool.name,
+        description: currentTool.description,
+        applicationCategory: "DeveloperApplication",
+        operatingSystem: "Any",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+        keywords: [
+          "Developer Tools",
+          "Web Development",
+          "Online Utilities",
+          ...(currentTool.tags || []),
+          currentTool.category,
+        ].join(", "),
+      };
     }
 
-    // Default SEO for Home and other pages
-    if (location.pathname === '/') {
-        return <SEO />; // Uses defaults defined in SEO.tsx
+    if (location.pathname === "/") {
+      return {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "Dulundu Tools",
+        description:
+          "The ultimate suite of developer utilities. Beautify, convert, generate, and debug with our collection of 100+ free tools.",
+        applicationCategory: "DeveloperApplication",
+        operatingSystem: "Any",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+        keywords:
+          "Developer Tools, Web Development, Online Utilities, JSON Formatter, Base64 Converter, SQL Formatter",
+      };
     }
 
-    // Fallback for 404 or unknown routes
-    return <SEO title="Page Not Found" />;
+    return null;
+  }, [currentTool, location.pathname]);
+
+  return (
+    <>
+      {jsonLd && (
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      )}
+      {currentTool ? (
+        <SEO
+          title={currentTool.name}
+          description={currentTool.description}
+          keywords={
+            currentTool.tags?.join(", ") ||
+            `${currentTool.name}, ${currentTool.category}, developer tools, online utility`
+          }
+        />
+      ) : location.pathname === "/" ? (
+        <SEO />
+      ) : (
+        <SEO title="Page Not Found" />
+      )}
+    </>
+  );
 };
