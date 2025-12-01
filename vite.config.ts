@@ -44,14 +44,13 @@ export default defineConfig(() => {
       rollupOptions: {
         output: {
           manualChunks: (id) => {
-            // React core - separate chunk
-            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
-              return 'react-core';
-            }
-            
-            // React Router - separate chunk
-            if (id.includes('node_modules/react-router-dom')) {
-              return 'react-router';
+            // Core React dependencies - MUST be in the same chunk to avoid context issues
+            if (
+              id.includes('node_modules/react/') || 
+              id.includes('node_modules/react-dom/') || 
+              id.includes('node_modules/react-router-dom')
+            ) {
+              return 'vendor';
             }
             
             // Large UI libraries - separate chunks
@@ -75,11 +74,6 @@ export default defineConfig(() => {
             // YAML/Parsers - separate chunk
             if (id.includes('js-yaml') || id.includes('ua-parser-js')) {
               return 'parsers';
-            }
-            
-            // All other node_modules - vendor chunk
-            if (id.includes('node_modules')) {
-              return 'vendor';
             }
           }
         }
