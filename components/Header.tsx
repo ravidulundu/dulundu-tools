@@ -103,7 +103,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
             className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-sm"
             title="Support the project"
           >
-            <Heart size={16} className="fill-white/20" />
+            <Heart size={16} className="text-red-500 fill-red-500" />
             <span>Sponsor</span>
           </a>
 
