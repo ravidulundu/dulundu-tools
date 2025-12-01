@@ -25,3 +25,9 @@ dist-ssr
 # Documentation
 *.md
 !README.md
+
+# Temporary files
+lint_report*.txt
+REFACTORING_STATUS.*
+coverage
+
