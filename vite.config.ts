@@ -2,6 +2,8 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import viteCompression from 'vite-plugin-compression';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig(() => {
   return {
@@ -26,6 +28,27 @@ export default defineConfig(() => {
           process: true,
         },
       }),
+      // Gzip compression
+      viteCompression({
+        algorithm: 'gzip',
+        ext: '.gz',
+        threshold: 10240, // Only compress files > 10KB
+        deleteOriginFile: false,
+      }),
+      // Brotli compression for better compression ratio
+      viteCompression({
+        algorithm: 'brotliCompress',
+        ext: '.br',
+        threshold: 10240,
+        deleteOriginFile: false,
+      }),
+      // Bundle analyzer (only in analyze mode)
+      process.env.ANALYZE && visualizer({
+        open: true,
+        filename: 'dist/stats.html',
+        gzipSize: true,
+        brotliSize: true,
+      }),
     ],
     define: {
       // No sensitive keys here anymore!
@@ -41,8 +64,22 @@ export default defineConfig(() => {
     },
     build: {
       chunkSizeWarningLimit: 2000,
+      // Enable CSS code splitting
+      cssCodeSplit: true,
+      // Optimize minification
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
       rollupOptions: {
         output: {
+          // Optimize chunk naming for better caching
+          chunkFileNames: 'assets/[name]-[hash].js',
+          entryFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash].[ext]',
           manualChunks: (id) => {
             // Core React dependencies - MUST be in the same chunk to avoid context issues
             if (
@@ -58,7 +95,7 @@ export default defineConfig(() => {
               return 'md-editor';
             }
             
-            if (id.includes('lucide-react')) {
+            if (id.includes('lucide-react') || id.includes('@radix-ui/react-icons')) {
               return 'icons';
             }
             
@@ -66,9 +103,14 @@ export default defineConfig(() => {
               return 'markdown';
             }
             
-            // Crypto/Utility libraries - separate chunk
-            if (id.includes('bcryptjs') || id.includes('crypto-browserify')) {
-              return 'crypto';
+            // Crypto/Utility libraries - MORE GRANULAR SPLITTING
+            // This addresses the 107KB unused crypto issue
+            if (id.includes('bcryptjs')) {
+              return 'crypto-bcrypt';
+            }
+            
+            if (id.includes('crypto-browserify')) {
+              return 'crypto-browser';
             }
             
             // YAML/Parsers - separate chunk
