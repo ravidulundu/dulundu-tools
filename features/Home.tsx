@@ -90,7 +90,7 @@ export const Home: React.FC = () => {
           name: "Dulundu Tools",
           applicationCategory: "DeveloperApplication",
           operatingSystem: "Web Browser",
-          url: "https://dulundu.tools",
+          url: import.meta.env.VITE_APP_URL || "https://dulundu.tools",
           offers: {
             "@type": "Offer",
             price: "0",

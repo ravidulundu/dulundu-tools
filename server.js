@@ -42,7 +42,7 @@ app.set('trust proxy', 1);
 
 // ========== MIDDLEWARE ==========
 const allowedOrigins = [
-    'https://dulundu.tools',
+    process.env.VITE_APP_URL || 'https://dulundu.tools',
     'https://www.dulundu.tools'
 ];
 
