@@ -47,3 +47,12 @@ html:not(.dark) [data-color-mode="light"] .w-md-editor textarea {
   color: transparent !important;
   caret-color: rgb(15 23 42) !important;
 }
+
+/* Fix for bold text appearing smaller */
+.w-md-editor strong,
+.w-md-editor b,
+.w-md-editor-text strong,
+.w-md-editor-text b {
+  font-weight: 700 !important;
+  font-size: inherit !important;
+}
