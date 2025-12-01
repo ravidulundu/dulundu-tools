@@ -49,7 +49,12 @@ chrome.contextMenus.onClicked.addListener((info) => {
     if (menu && info.selectionText) {
         const text = info.selectionText.trim();
         const encoded = encodeURIComponent(text);
-        const baseUrl = import.meta.env.VITE_APP_URL || 'https://dulundu.tools';
+        const baseUrl = import.meta.env.VITE_APP_URL;
+        
+        if (!baseUrl) {
+            console.error('VITE_APP_URL not configured');
+            return;
+        }
 
         // Open in new tab
         chrome.tabs.create({
