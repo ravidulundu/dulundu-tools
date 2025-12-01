@@ -16,12 +16,7 @@ const AppRoutes = () => {
 const App: React.FC = () => {
   return (
     <ThemeProvider>
-      <BrowserRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
+      <BrowserRouter>
         <ScrollToTop />
         <Layout>
           <Analytics />
