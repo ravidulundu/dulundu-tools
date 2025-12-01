@@ -31,8 +31,9 @@
     "**/*.ts",
     "**/*.tsx"
   ],
-  "exclude": [
     "node_modules",
-    "extension"
+    "extension",
+    "tests",
+    "src/test"
   ]
 }
