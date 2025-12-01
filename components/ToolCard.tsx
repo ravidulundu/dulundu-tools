@@ -72,7 +72,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
       </div>
 
       <div className="mt-5 pt-4 border-t border-gray-100 dark:border-slate-700/60 flex items-center justify-between">
-        <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
+        <span className="text-[10px] font-bold text-slate-600 dark:text-slate-200 uppercase tracking-wider bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
           {tool.category}
         </span>
         <div className="flex items-center text-primary text-xs font-semibold opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
