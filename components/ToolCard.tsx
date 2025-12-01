@@ -1,15 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ToolDef } from '../types';
-import { ArrowRight, Star } from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ToolDef } from "../types";
+import { ArrowRight, Star } from "lucide-react";
 
 interface ToolCardProps {
   tool: ToolDef;
-  variant?: 'default' | 'mini';
+  variant?: "default" | "mini";
 }
 
-export const ToolCard: React.FC<ToolCardProps> = ({ tool, variant = 'default' }) => {
-  if (variant === 'mini') {
+export const ToolCard: React.FC<ToolCardProps> = ({
+  tool,
+  variant = "default",
+}) => {
+  if (variant === "mini") {
     return (
       <Link
         to={tool.path}
@@ -39,7 +42,10 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, variant = 'default' })
       {/* Badges */}
       <div className="absolute top-4 right-4 flex gap-2 z-10">
         {tool.popular && (
-          <div className="bg-orange-50 dark:bg-orange-900/20 text-orange-500 dark:text-orange-400 p-1.5 rounded-lg shadow-sm backdrop-blur-sm" title="Popular Tool">
+          <div
+            className="bg-orange-50 dark:bg-orange-900/20 text-orange-500 dark:text-orange-400 p-1.5 rounded-lg shadow-sm backdrop-blur-sm"
+            title="Popular Tool"
+          >
             <Star size={14} fill="currentColor" />
           </div>
         )}
@@ -57,14 +63,18 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, variant = 'default' })
       </div>
 
       <div className="flex-grow">
-        <h3 className="font-bold text-slate-800 dark:text-white text-lg group-hover:text-primary dark:group-hover:text-primary transition-colors mb-2.5 line-clamp-1">{tool.name}</h3>
+        <h3 className="font-bold text-slate-800 dark:text-white text-lg group-hover:text-primary dark:group-hover:text-primary transition-colors mb-2.5 line-clamp-1">
+          {tool.name}
+        </h3>
         <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed h-10 font-medium">
           {tool.description}
         </p>
       </div>
 
       <div className="mt-5 pt-4 border-t border-gray-100 dark:border-slate-700/60 flex items-center justify-between">
-        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">{tool.category}</span>
+        <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
+          {tool.category}
+        </span>
         <div className="flex items-center text-primary text-xs font-semibold opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
           Open Tool <ArrowRight size={14} className="ml-1" />
         </div>

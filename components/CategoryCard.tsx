@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowRight, Layers } from 'lucide-react';
+import React from "react";
+import { ArrowRight, Layers } from "lucide-react";
 
 interface CategoryCardProps {
   category: string;
@@ -7,7 +7,11 @@ interface CategoryCardProps {
   onClick: () => void;
 }
 
-export const CategoryCard: React.FC<CategoryCardProps> = ({ category, toolCount, onClick }) => {
+export const CategoryCard: React.FC<CategoryCardProps> = ({
+  category,
+  toolCount,
+  onClick,
+}) => {
   return (
     <button
       onClick={onClick}
@@ -28,7 +32,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category, toolCount,
           <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-700/50 flex items-center justify-center group-hover:bg-primary/10 group-hover:text-primary transition-colors">
             <ArrowRight
               size={16}
-              className="text-slate-400 dark:text-slate-500 group-hover:text-primary dark:group-hover:text-primary group-hover:translate-x-0.5 transition-all"
+              className="text-slate-600 dark:text-slate-400 group-hover:text-primary dark:group-hover:text-primary group-hover:translate-x-0.5 transition-all"
             />
           </div>
         </div>
@@ -39,7 +43,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category, toolCount,
 
         <div className="flex items-center space-x-2">
           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 group-hover:bg-white dark:group-hover:bg-slate-700 transition-colors">
-            {toolCount} {toolCount === 1 ? 'tool' : 'tools'}
+            {toolCount} {toolCount === 1 ? "tool" : "tools"}
           </span>
         </div>
       </div>

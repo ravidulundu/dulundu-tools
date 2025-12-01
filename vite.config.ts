@@ -21,7 +21,7 @@ export default defineConfig(() => {
     plugins: [
       react(),
       nodePolyfills({
-        include: ['buffer', 'crypto', 'stream', 'util', 'events'],
+        include: ['buffer', 'stream', 'util', 'events'],
         globals: {
           Buffer: true,
           global: true,
@@ -63,7 +63,14 @@ export default defineConfig(() => {
       }
     },
     build: {
+      sourcemap: true, // Enable source maps for debugging and Lighthouse analysis
       chunkSizeWarningLimit: 2000,
+      // Prevent preloading of lazy-loaded crypto chunks to save LCP bandwidth
+      modulePreload: {
+        resolveDependencies: (filename, deps, context) => {
+          return deps.filter(dep => !dep.includes('crypto-'));
+        },
+      },
       // Enable CSS code splitting
       cssCodeSplit: true,
       // Optimize minification
