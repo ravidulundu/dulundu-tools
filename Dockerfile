@@ -11,6 +11,14 @@ RUN npm install
 # Copy source code
 COPY . .
 
+# Build arguments for environment variables
+ARG VITE_UMAMI_WEBSITE_ID
+ARG VITE_UMAMI_SCRIPT_URL
+
+# Set environment variables during build
+ENV VITE_UMAMI_WEBSITE_ID=$VITE_UMAMI_WEBSITE_ID
+ENV VITE_UMAMI_SCRIPT_URL=$VITE_UMAMI_SCRIPT_URL
+
 # Build the frontend
 RUN npm run build
 
