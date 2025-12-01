@@ -57,7 +57,7 @@ export default defineConfig(() => {
       alias: {
         '@': path.resolve(__dirname, '.'),
         vm: path.resolve(__dirname, 'mocks/vm.js'),
-        // crypto: path.resolve(__dirname, 'node_modules/crypto-browserify'),
+        crypto: path.resolve(__dirname, 'mocks/empty.js'),
         react: path.resolve(__dirname, 'node_modules/react'),
         'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
       }
