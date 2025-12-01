@@ -12,12 +12,11 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ========== LOGGING SETUP ==========
+// ========== LOGGER SETUP ==========
 const logger = winston.createLogger({
-    level: process.env.LOG_LEVEL || 'info',
+    level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.errors({ stack: true }),
         winston.format.json()
     ),
     transports: [
@@ -30,33 +29,11 @@ const logger = winston.createLogger({
     ]
 });
 
-// Add file logging in production
 if (process.env.NODE_ENV === 'production') {
-    logger.add(new winston.transports.File({ 
-        filename: 'logs/error.log', 
-        level: 'error' 
-    }));
-    logger.add(new winston.transports.File({ 
-        filename: 'logs/combined.log' 
-    }));
+    logger.add(new winston.transports.File({ filename: 'error.log', level: 'error' }));
+    logger.add(new winston.transports.File({ filename: 'combined.log' }));
 }
 
-// ========== STARTUP VALIDATION ==========
-function validateEnvironment() {
-    const requiredEnvVars = ['GEMINI_API_KEY'];
-    const missing = requiredEnvVars.filter(v => !process.env[v] && !process.env[`VITE_${v}`]);
-    
-    if (missing.length > 0) {
-        logger.warn(`Missing environment variables: ${missing.join(', ')}`);
-        logger.warn('AI features will be disabled');
-    }
-    
-    logger.info('Environment validation complete');
-}
-
-validateEnvironment();
-
-// ========== EXPRESS SETUP ==========
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -71,6 +48,7 @@ const allowedOrigins = [
 
 if (process.env.NODE_ENV !== 'production') {
     allowedOrigins.push('http://localhost:3000');
+    allowedOrigins.push('http://localhost:3001');
     allowedOrigins.push('http://localhost:5173');
 }
 
@@ -78,9 +56,7 @@ app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true);
         if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = 'CORS policy does not allow access from the specified origin.';
-            logger.warn(`CORS blocked: ${origin}`);
-            return callback(new Error(msg), false);
+            return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
         }
         return callback(null, true);
     },
@@ -93,7 +69,6 @@ app.use(express.json());
 // Request logging middleware
 app.use((req, res, next) => {
     const start = Date.now();
-    
     res.on('finish', () => {
         const duration = Date.now() - start;
         logger.info({
@@ -104,21 +79,16 @@ app.use((req, res, next) => {
             ip: req.ip
         });
     });
-    
     next();
 });
 
-// ========== RATE LIMITING ==========
+// Rate Limiter for AI endpoints
 const aiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100,
-    message: 'Too many requests, please try again after 15 minutes',
+    message: 'Too many requests from this IP, please try again after 15 minutes',
     standardHeaders: true,
     legacyHeaders: false,
-    handler: (req, res) => {
-        logger.warn(`Rate limit exceeded for IP: ${req.ip}`);
-        res.status(429).json({ error: 'Too many requests, please try again later' });
-    }
 });
 
 // ========== HEALTH CHECK ==========
@@ -127,6 +97,10 @@ app.get('/health', (req, res) => {
         status: 'healthy'
     });
 });
+
+// ========== STATIC FILES ==========
+// Serve static files from the dist directory
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // ========== GEMINI AI SETUP ==========
 const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
@@ -177,12 +151,6 @@ app.post('/api/ai/paraphrase', aiLimiter, asyncHandler(async (req, res) => {
 
     const { text, tone } = req.body;
 
-    if (!text || typeof text !== 'string' || text.trim().length === 0) {
-        return res.status(400).json({ error: 'Valid text is required' });
-    }
-
-    logger.debug(`AI paraphrase request: ${tone || 'professional'}`);
-
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: `You are an expert writer. Paraphrase the following text to be more ${tone || 'professional'}. Keep the meaning the same but improve clarity and flow.
@@ -198,53 +166,29 @@ app.post('/api/ai/paraphrase', aiLimiter, asyncHandler(async (req, res) => {
     res.json({ text: generatedText });
 }));
 
-// ========== STATIC FILES ==========
-app.use(express.static(path.join(__dirname, 'dist')));
-
-// ========== SPA ROUTING ==========
+// ========== SPA FALLBACK ==========
+// Handle React Routing (SPA) - Send all other requests to index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // ========== GLOBAL ERROR HANDLER ==========
 app.use((err, req, res, next) => {
-    logger.error({
-        message: err.message,
-        stack: err.stack,
-        path: req.path,
-        method: req.method
-    });
-
-    const statusCode = err.statusCode || 500;
-    res.status(statusCode).json({
-        error: process.env.NODE_ENV === 'production' 
-            ? 'Internal server error' 
-            : err.message
+    logger.error('Unhandled Error:', err);
+    res.status(500).json({
+        error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message
     });
 });
 
-// ========== SERVER STARTUP ==========
+// ========== SERVER START ==========
 const server = app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`✓ Server running on port ${PORT}`);
-    logger.info(`✓ Environment: ${process.env.NODE_ENV || 'development'}`);
-    logger.info(`✓ AI configured: ${!!ai}`);
+    logger.info(`Server running on port ${PORT}`);
 });
 
-// ========== GRACEFUL SHUTDOWN ==========
-const shutdown = (signal) => {
-    logger.info(`${signal} received, shutting down gracefully...`);
-    
+// Graceful Shutdown
+process.on('SIGTERM', () => {
+    logger.info('SIGTERM signal received: closing HTTP server');
     server.close(() => {
-        logger.info('Server closed');
-        process.exit(0);
+        logger.info('HTTP server closed');
     });
-
-    // Force shutdown after 10 seconds
-    setTimeout(() => {
-        logger.error('Forced shutdown after timeout');
-        process.exit(1);
-    }, 10000);
-};
-
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
+});

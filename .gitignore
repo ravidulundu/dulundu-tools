@@ -6,12 +6,6 @@ yarn-debug.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Temporary files
-lint_report*.txt
-REFACTORING_STATUS.*
-coverage
-
-
 node_modules
 dist
 dist-ssr
