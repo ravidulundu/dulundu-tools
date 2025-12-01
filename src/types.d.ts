@@ -4,8 +4,8 @@ declare global {
     interface Window {
         umami?: {
             track: {
-                (event: string, data?: Record<string, any>): void;
-                (callback: (props: any) => any): void;
+                (event: string, data?: Record<string, unknown>): void;
+                (callback: (props: unknown) => unknown): void;
             };
         };
     }
