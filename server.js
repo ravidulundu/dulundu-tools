@@ -87,13 +87,13 @@ app.use((req, res, next) => {
     res.setHeader(
         'Content-Security-Policy',
         "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://umami.dulundu.tools; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://umami.dulundu.tools https://stats.dulundu.tools https://static.cloudflareinsights.com; " +
         "worker-src 'self' blob:; " +
         "child-src 'self' blob:; " +
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; " +
         "font-src 'self' https://fonts.gstatic.com; " +
         "img-src 'self' data: https:; " +
-        "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools;"
+        "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools https://stats.dulundu.tools https://cdn.jsdelivr.net;"
     );
     next();
 });
