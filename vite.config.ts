@@ -65,12 +65,6 @@ export default defineConfig(() => {
     build: {
       sourcemap: true, // Enable source maps for debugging and Lighthouse analysis
       chunkSizeWarningLimit: 2000,
-      // Prevent preloading of lazy-loaded crypto chunks to save LCP bandwidth
-      modulePreload: {
-        resolveDependencies: (filename, deps, context) => {
-          return deps.filter(dep => !dep.includes('crypto-'));
-        },
-      },
       // Enable CSS code splitting
       cssCodeSplit: true,
       // Optimize minification
@@ -108,16 +102,6 @@ export default defineConfig(() => {
             
             if (id.includes('marked')) {
               return 'markdown';
-            }
-            
-            // Crypto/Utility libraries - MORE GRANULAR SPLITTING
-            // This addresses the 107KB unused crypto issue
-            if (id.includes('bcryptjs')) {
-              return 'crypto-bcrypt';
-            }
-            
-            if (id.includes('crypto-browserify')) {
-              return 'crypto-browser';
             }
             
             // YAML/Parsers - separate chunk

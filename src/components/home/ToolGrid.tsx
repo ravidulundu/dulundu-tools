@@ -64,7 +64,7 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
                 {activeCategory === "All" ? "All Tools" : activeCategory}
               </h2>
             </div>
-            <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-md text-xs font-bold">
+            <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md text-xs font-bold">
               {filteredTools.length}
             </span>
           </div>

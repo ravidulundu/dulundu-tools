@@ -43,7 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={`text-xs px-1.5 py-0.5 rounded-md ${
                 activeCategory === "All"
                   ? "bg-white/20 text-white"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
               }`}
             >
               {ALL_TOOLS.length}
@@ -65,7 +65,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 className={`text-xs px-1.5 py-0.5 rounded-md ${
                   activeCategory === category
                     ? "bg-white/20 text-white"
-                    : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
                 }`}
               >
                 {categoryInfo[category].count}
