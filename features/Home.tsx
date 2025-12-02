@@ -36,6 +36,7 @@ export const Home: React.FC = () => {
       const matchesCategory =
         activeCategory === "All" || tool.category === activeCategory;
       return matchesSearch && matchesCategory;
+      return matchesSearch && matchesCategory;
     });
   }, [searchTerm, activeCategory]);
 
