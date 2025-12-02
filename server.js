@@ -91,7 +91,7 @@ app.use((req, res, next) => {
         "worker-src 'self' blob:; " +
         "child-src 'self' blob:; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; " +
-        "font-src 'self' https://fonts.gstatic.com; " +
+        "font-src 'self' data: https://fonts.gstatic.com; " +
         "img-src 'self' data: https:; " +
         "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools https://stats.dulundu.tools https://cdn.jsdelivr.net;"
     );
