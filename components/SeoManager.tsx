@@ -14,7 +14,7 @@ export const SeoManager: React.FC = () => {
     if (currentTool) {
       return {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
+        "@type": "WebApplication",
         name: currentTool.name,
         description: currentTool.description,
         applicationCategory: "DeveloperApplication",
@@ -37,7 +37,7 @@ export const SeoManager: React.FC = () => {
     if (location.pathname === "/") {
       return {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
+        "@type": "WebApplication",
         name: "Dulundu Tools",
         description:
           "The ultimate suite of developer utilities. Beautify, convert, generate, and debug with our collection of 100+ free tools.",

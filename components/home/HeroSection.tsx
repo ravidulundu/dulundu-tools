@@ -62,6 +62,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             />
           </div>
         </div>
+
+        <p className="mt-6 text-sm text-slate-500 dark:text-slate-500 flex items-center justify-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-green-500"></span>
+          🔒 Client-side only. Your data never leaves your browser.
+        </p>
       </div>
     </div>
   );
