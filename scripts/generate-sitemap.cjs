@@ -10,7 +10,7 @@ const BASE_URL = 'https://dulundu.tools';
 
 function generateSitemap() {
     const content = fs.readFileSync(CONSTANTS_PATH, 'utf8');
-    const regex = /path:\s*'([^']+)'/g;
+    const regex = /path:\s*['"]([^'"]+)['"]/g;
     let match;
     const paths = new Set();
     paths.add('/'); // Add home

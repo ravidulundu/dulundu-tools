@@ -1,5 +1,13 @@
 import React from "react";
-import { Table, ArrowRight, Copy, Check, Trash2, Download } from "lucide-react";
+import {
+  Table,
+  ArrowRight,
+  Copy,
+  Check,
+  Trash2,
+  Download,
+  Upload,
+} from "lucide-react";
 import { ToolHeader } from "../components/common/ToolHeader";
 import { CodeEditor } from "../components/common/CodeEditor";
 import { ActionButton } from "../components/common/ActionButton";
@@ -15,9 +23,11 @@ export const CsvConverter: React.FC = () => {
     error,
     setError,
     copied,
+    fileInputRef,
     handleCopy,
     handleClear,
     handleDownload,
+    handleFileUpload,
   } = useToolLogic();
 
   const convertToJson = () => {
@@ -66,21 +76,37 @@ export const CsvConverter: React.FC = () => {
 
         {/* Toolbar */}
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
-          <Button
-            onClick={convertToJson}
-            variant="primary"
-            className="shadow-md"
-          >
-            Convert <ArrowRight size={16} className="ml-2" />
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={convertToJson}
+              variant="primary"
+              className="shadow-md"
+            >
+              Convert <ArrowRight size={16} className="ml-2" />
+            </Button>
+          </div>
 
-          <Button
-            onClick={handleClear}
-            variant="danger"
-            size="sm"
-            title="Clear All"
-            icon={Trash2}
-          />
+          <div className="flex gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <ActionButton
+              onClick={() => fileInputRef.current?.click()}
+              icon={Upload}
+              label="Upload"
+              variant="secondary"
+            />
+            <ActionButton
+              onClick={handleClear}
+              icon={Trash2}
+              label="Clear"
+              variant="danger"
+            />
+          </div>
         </div>
 
         {/* Editor Area */}

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { ArrowRightLeft, FileJson, Copy, Check, Trash2 } from "lucide-react";
+import {
+  ArrowRightLeft,
+  FileJson,
+  Copy,
+  Check,
+  Trash2,
+  Upload,
+  Download,
+} from "lucide-react";
 import { ToolHeader } from "../components/common/ToolHeader";
 import { CodeEditor } from "../components/common/CodeEditor";
 import { ActionButton } from "../components/common/ActionButton";
@@ -17,8 +25,11 @@ export const JsonConverter: React.FC = () => {
     error,
     setError,
     copied,
+    fileInputRef,
     handleCopy,
     handleClear,
+    handleFileUpload,
+    handleDownload,
   } = useToolLogic();
   const [mode, setMode] = useState<Mode>("json-xml");
 
@@ -120,6 +131,22 @@ export const JsonConverter: React.FC = () => {
             <Button onClick={convert} variant="primary" className="shadow-sm">
               Convert <ArrowRightLeft size={16} className="ml-1.5" />
             </Button>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json,.txt"
+              onChange={(e) => handleFileUpload(e)}
+              className="hidden"
+            />
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              variant="secondary"
+              size="sm"
+              title="Upload File"
+              icon={Upload}
+            />
+
             <Button
               onClick={handleClear}
               variant="danger"
@@ -156,12 +183,25 @@ export const JsonConverter: React.FC = () => {
               theme="dark"
               actions={
                 output && (
-                  <ActionButton
-                    icon={copied ? Check : Copy}
-                    label={copied ? "Copied" : "Copy"}
-                    onClick={handleCopy}
-                    variant={copied ? "success" : "primary"}
-                  />
+                  <>
+                    <ActionButton
+                      icon={Download}
+                      label="Download"
+                      onClick={() =>
+                        handleDownload(
+                          mode === "json-xml" ? "data.xml" : "data.csv",
+                          mode === "json-xml" ? "text/xml" : "text/csv"
+                        )
+                      }
+                      variant="secondary"
+                    />
+                    <ActionButton
+                      icon={copied ? Check : Copy}
+                      label={copied ? "Copied" : "Copy"}
+                      onClick={handleCopy}
+                      variant={copied ? "success" : "primary"}
+                    />
+                  </>
                 )
               }
             />

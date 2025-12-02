@@ -99,7 +99,7 @@ export const Home: React.FC = () => {
           description:
             "A comprehensive suite of free developer utilities including AI Code Helper, JSON Formatter, and 100+ other tools.",
           featureList:
-            "AI Code Assistant, JSON Formatter, Base64 Converter, SQL Beautifier, Regex Tester",
+            "AI Code Assistant, SVG Viewer, JSON Formatter, Base64 Converter, SQL Beautifier, Regex Tester, Cron Generator",
           author: {
             "@type": "Person",
             name: "Ravi Dulundu",

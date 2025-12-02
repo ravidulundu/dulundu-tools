@@ -109,18 +109,18 @@ export const XmlFormatter: React.FC = () => {
                 accept=".xml"
                 className="hidden"
               />
-              <button
+              <ActionButton
                 onClick={() => fileInputRef.current?.click()}
-                className="hidden md:flex items-center px-3 py-2 bg-white border border-gray-200 rounded-lg text-slate-600 hover:bg-slate-50 text-sm font-medium"
-              >
-                <Upload size={16} className="mr-2" /> Upload
-              </button>
-              <button
+                icon={Upload}
+                label="Upload"
+                variant="secondary"
+              />
+              <ActionButton
                 onClick={handleClear}
-                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-              >
-                <Trash2 size={20} />
-              </button>
+                icon={Trash2}
+                label="Clear"
+                variant="danger"
+              />
             </div>
           }
         />

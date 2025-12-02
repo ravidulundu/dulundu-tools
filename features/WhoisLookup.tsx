@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Search, Globe, AlertCircle, RefreshCw, Trash2 } from "lucide-react";
 import { ToolHeader } from "../components/common/ToolHeader";
+import { ActionButton } from "../components/common/ActionButton";
 import { CodeEditor } from "../components/common/CodeEditor";
 
 interface RdapResponse {
@@ -87,13 +88,12 @@ export const WhoisLookup: React.FC = () => {
               )}
               {loading ? "Searching..." : "Lookup"}
             </button>
-            <button
+            <ActionButton
               onClick={handleClear}
-              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-              title="Clear All"
-            >
-              <Trash2 size={20} />
-            </button>
+              icon={Trash2}
+              label="Clear"
+              variant="danger"
+            />
           </div>
 
           {error && (

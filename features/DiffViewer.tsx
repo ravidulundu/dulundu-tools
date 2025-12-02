@@ -1,13 +1,31 @@
-import React, { useState } from "react";
-import { ArrowRightLeft, Trash2 } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { ArrowRightLeft, Trash2, Upload } from "lucide-react";
 import { ToolHeader } from "../components/common/ToolHeader";
 import { CodeEditor } from "../components/common/CodeEditor";
 import { Button } from "../components/common/Button";
+import { ActionButton } from "../components/common/ActionButton";
 
 export const DiffViewer: React.FC = () => {
   const [oldText, setOldText] = useState("");
   const [newText, setNewText] = useState("");
   const [diff, setDiff] = useState<React.ReactNode[] | null>(null);
+
+  const oldFileRef = useRef<HTMLInputElement>(null);
+  const newFileRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setText: (text: string) => void
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      setText(content);
+    };
+    reader.readAsText(file);
+  };
 
   // Simple line-by-line diff
   const computeDiff = () => {
@@ -89,15 +107,46 @@ export const DiffViewer: React.FC = () => {
         {/* Toolbar */}
         <div className="p-3 border-b border-gray-100 flex justify-end space-x-2">
           {diff && (
-            <Button onClick={() => setDiff(null)} variant="outline" size="sm">
-              Edit
-            </Button>
+            <ActionButton
+              onClick={() => setDiff(null)}
+              label="Edit"
+              variant="secondary"
+              icon={ArrowRightLeft}
+            />
           )}
-          <Button
+          {!diff && (
+            <>
+              <input
+                ref={oldFileRef}
+                type="file"
+                onChange={(e) => handleFileUpload(e, setOldText)}
+                className="hidden"
+              />
+              <ActionButton
+                onClick={() => oldFileRef.current?.click()}
+                variant="secondary"
+                label="Upload Original"
+                icon={Upload}
+              />
+
+              <input
+                ref={newFileRef}
+                type="file"
+                onChange={(e) => handleFileUpload(e, setNewText)}
+                className="hidden"
+              />
+              <ActionButton
+                onClick={() => newFileRef.current?.click()}
+                variant="secondary"
+                label="Upload Modified"
+                icon={Upload}
+              />
+            </>
+          )}
+          <ActionButton
             onClick={handleClear}
             variant="danger"
-            size="sm"
-            title="Clear All"
+            label="Clear"
             icon={Trash2}
           />
           {!diff && (

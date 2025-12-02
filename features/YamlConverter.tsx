@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { ArrowRightLeft, Copy, Check, Trash2, ArrowRight } from "lucide-react";
+import {
+  ArrowRightLeft,
+  Copy,
+  Check,
+  Trash2,
+  ArrowRight,
+  Upload,
+  Download,
+} from "lucide-react";
 import { load, dump } from "js-yaml";
 import { ToolHeader } from "../components/common/ToolHeader";
 import { CodeEditor } from "../components/common/CodeEditor";
@@ -17,8 +25,11 @@ export const YamlConverter: React.FC = () => {
     error,
     setError,
     copied,
+    fileInputRef,
     handleCopy,
     handleClear,
+    handleFileUpload,
+    handleDownload,
   } = useToolLogic();
 
   const [mode, setMode] = useState<Mode>("json-yaml");
@@ -128,6 +139,20 @@ export const YamlConverter: React.FC = () => {
     }
   };
 
+  const getDownloadOptions = () => {
+    switch (mode) {
+      case "json-yaml":
+      case "xml-yaml":
+        return { filename: "data.yaml", type: "text/yaml" };
+      case "yaml-json":
+        return { filename: "data.json", type: "application/json" };
+      case "yaml-xml":
+        return { filename: "data.xml", type: "text/xml" };
+      default:
+        return { filename: "data.txt", type: "text/plain" };
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
@@ -166,6 +191,22 @@ export const YamlConverter: React.FC = () => {
             >
               <ArrowRight size={16} className="mr-1.5" /> Convert
             </button>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".yaml,.yml,.json,.xml,.txt"
+              onChange={(e) => handleFileUpload(e)}
+              className="hidden"
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="p-2 text-slate-600 hover:text-primary hover:bg-blue-50 rounded-lg transition-colors"
+              title="Upload File"
+            >
+              <Upload size={20} />
+            </button>
+
             <button
               onClick={handleClear}
               className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
@@ -201,12 +242,23 @@ export const YamlConverter: React.FC = () => {
               theme="dark"
               actions={
                 output && (
-                  <ActionButton
-                    icon={copied ? Check : Copy}
-                    label={copied ? "Copied" : "Copy"}
-                    onClick={handleCopy}
-                    variant={copied ? "success" : "primary"}
-                  />
+                  <>
+                    <ActionButton
+                      icon={Download}
+                      label="Download"
+                      onClick={() => {
+                        const { filename, type } = getDownloadOptions();
+                        handleDownload(filename, type);
+                      }}
+                      variant="secondary"
+                    />
+                    <ActionButton
+                      icon={copied ? Check : Copy}
+                      label={copied ? "Copied" : "Copy"}
+                      onClick={handleCopy}
+                      variant={copied ? "success" : "primary"}
+                    />
+                  </>
                 )
               }
             />

@@ -7,20 +7,34 @@ import {
   Check,
   Trash2,
   ArrowRight,
+  Upload,
+  Download,
 } from "lucide-react";
 import { ToolHeader } from "../components/common/ToolHeader";
 import { CodeEditor } from "../components/common/CodeEditor";
 import { ActionButton } from "../components/common/ActionButton";
 import { Button } from "../components/common/Button";
+import { useToolLogic } from "../hooks/useToolLogic";
 
 type Mode = "xml-json" | "json-xml";
 
 export const XmlJsonConverter: React.FC = () => {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
+  const {
+    input,
+    setInput,
+    output,
+    setOutput,
+    error,
+    setError,
+    copied,
+    fileInputRef,
+    handleCopy,
+    handleClear,
+    handleFileUpload,
+    handleDownload,
+  } = useToolLogic();
+
   const [mode, setMode] = useState<Mode>("xml-json");
-  const [error, setError] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
 
   // XML to JSON Logic
   const xmlToJson = (xml: Node): unknown => {
@@ -127,18 +141,6 @@ export const XmlJsonConverter: React.FC = () => {
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleClear = () => {
-    setInput("");
-    setOutput("");
-    setError(null);
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
@@ -154,22 +156,26 @@ export const XmlJsonConverter: React.FC = () => {
           <div className="flex bg-slate-100 p-1 rounded-lg">
             <Button
               onClick={() => setMode("xml-json")}
-              variant={mode === "xml-json" ? "primary" : "ghost"}
+              variant="ghost"
               size="sm"
               icon={FileCode}
               className={
-                mode === "xml-json" ? "bg-white text-primary shadow-sm" : ""
+                mode === "xml-json"
+                  ? "bg-white text-primary shadow-sm hover:bg-white"
+                  : "text-slate-600 hover:text-slate-900"
               }
             >
               XML to JSON
             </Button>
             <Button
               onClick={() => setMode("json-xml")}
-              variant={mode === "json-xml" ? "primary" : "ghost"}
+              variant="ghost"
               size="sm"
               icon={FileJson}
               className={
-                mode === "json-xml" ? "bg-white text-primary shadow-sm" : ""
+                mode === "json-xml"
+                  ? "bg-white text-primary shadow-sm hover:bg-white"
+                  : "text-slate-600 hover:text-slate-900"
               }
             >
               JSON to XML
@@ -180,6 +186,22 @@ export const XmlJsonConverter: React.FC = () => {
             <Button onClick={convert} variant="primary">
               <ArrowRight size={16} className="mr-1.5" /> Convert
             </Button>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".xml,.json,.txt"
+              onChange={(e) => handleFileUpload(e)}
+              className="hidden"
+            />
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              variant="secondary"
+              size="sm"
+              title="Upload File"
+              icon={Upload}
+            />
+
             <Button
               onClick={handleClear}
               variant="danger"
@@ -222,12 +244,25 @@ export const XmlJsonConverter: React.FC = () => {
               theme="dark"
               actions={
                 output && (
-                  <ActionButton
-                    icon={copied ? Check : Copy}
-                    label={copied ? "Copied" : "Copy"}
-                    onClick={handleCopy}
-                    variant={copied ? "success" : "primary"}
-                  />
+                  <>
+                    <ActionButton
+                      icon={Download}
+                      label="Download"
+                      onClick={() =>
+                        handleDownload(
+                          mode === "xml-json" ? "data.json" : "data.xml",
+                          mode === "xml-json" ? "application/json" : "text/xml"
+                        )
+                      }
+                      variant="secondary"
+                    />
+                    <ActionButton
+                      icon={copied ? Check : Copy}
+                      label={copied ? "Copied" : "Copy"}
+                      onClick={handleCopy}
+                      variant={copied ? "success" : "primary"}
+                    />
+                  </>
                 )
               }
             />

@@ -7,6 +7,8 @@ import {
   Check,
   FileCode,
   Braces,
+  Upload,
+  Download,
 } from "lucide-react";
 import { ToolHeader } from "../components/common/ToolHeader";
 import { CodeEditor } from "../components/common/CodeEditor";
@@ -24,6 +26,9 @@ export const CodeFormatter: React.FC = () => {
     copied,
     handleCopy,
     handleClear: hookHandleClear,
+    fileInputRef,
+    handleFileUpload,
+    handleDownload,
   } = useToolLogic();
 
   const [lang, setLang] = useState<Lang>("html");
@@ -133,13 +138,26 @@ export const CodeFormatter: React.FC = () => {
               Beautify
             </button>
 
-            <button
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".html,.css,.js,.txt"
+              onChange={(e) => handleFileUpload(e)}
+              className="hidden"
+            />
+            <ActionButton
+              onClick={() => fileInputRef.current?.click()}
+              icon={Upload}
+              label="Upload"
+              variant="secondary"
+            />
+
+            <ActionButton
               onClick={handleClear}
-              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-              title="Clear All"
-            >
-              <Trash2 size={20} />
-            </button>
+              icon={Trash2}
+              label="Clear"
+              variant="danger"
+            />
           </div>
         </div>
 
@@ -162,12 +180,22 @@ export const CodeFormatter: React.FC = () => {
               theme="dark"
               actions={
                 output && (
-                  <ActionButton
-                    icon={copied ? Check : Copy}
-                    label={copied ? "Copied" : "Copy"}
-                    onClick={handleCopy}
-                    variant={copied ? "success" : "primary"}
-                  />
+                  <>
+                    <ActionButton
+                      icon={Download}
+                      label="Download"
+                      onClick={() =>
+                        handleDownload(`formatted.${lang}`, "text/plain")
+                      }
+                      variant="secondary"
+                    />
+                    <ActionButton
+                      icon={copied ? Check : Copy}
+                      label={copied ? "Copied" : "Copy"}
+                      onClick={handleCopy}
+                      variant={copied ? "success" : "primary"}
+                    />
+                  </>
                 )
               }
             />

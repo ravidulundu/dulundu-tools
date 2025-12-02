@@ -17,6 +17,7 @@
     "@google/genai": "^1.30.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@uiw/react-md-editor": "^4.0.8",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -29,6 +30,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.22.3",
+    "react-syntax-highlighter": "^16.1.0",
     "ua-parser-js": "^1.0.41",
     "vite-plugin-node-polyfills": "^0.24.0",
     "winston": "^3.18.3"

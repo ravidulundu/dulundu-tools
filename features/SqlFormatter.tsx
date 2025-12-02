@@ -1,5 +1,13 @@
 import React from "react";
-import { Database, Copy, Check, Trash2, Play } from "lucide-react";
+import {
+  Database,
+  Copy,
+  Check,
+  Trash2,
+  Play,
+  Upload,
+  Download,
+} from "lucide-react";
 import { ToolHeader } from "../components/common/ToolHeader";
 import { CodeEditor } from "../components/common/CodeEditor";
 import { ActionButton } from "../components/common/ActionButton";
@@ -14,6 +22,9 @@ export const SqlFormatter: React.FC = () => {
     copied,
     handleCopy,
     handleClear,
+    fileInputRef,
+    handleFileUpload,
+    handleDownload,
   } = useToolLogic();
 
   // Check for input in URL hash (from extension)
@@ -102,13 +113,26 @@ export const SqlFormatter: React.FC = () => {
 
         {/* Toolbar */}
         <div className="p-3 bg-white border-b border-gray-100 flex justify-end space-x-2">
-          <button
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".sql,.txt"
+            onChange={(e) => handleFileUpload(e)}
+            className="hidden"
+          />
+          <ActionButton
+            onClick={() => fileInputRef.current?.click()}
+            icon={Upload}
+            label="Upload"
+            variant="secondary"
+          />
+
+          <ActionButton
             onClick={handleClear}
-            className="px-3 py-2 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-lg hover:bg-red-50 transition-colors flex items-center shadow-sm"
-          >
-            <Trash2 size={16} className="md:mr-2" />{" "}
-            <span className="hidden md:inline">Clear</span>
-          </button>
+            icon={Trash2}
+            label="Clear"
+            variant="danger"
+          />
           <button
             onClick={() => formatSql()}
             className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md flex items-center"
@@ -137,12 +161,22 @@ export const SqlFormatter: React.FC = () => {
               theme="dark"
               actions={
                 output && (
-                  <ActionButton
-                    icon={copied ? Check : Copy}
-                    label={copied ? "Copied" : "Copy"}
-                    onClick={handleCopy}
-                    variant={copied ? "success" : "primary"}
-                  />
+                  <>
+                    <ActionButton
+                      icon={Download}
+                      label="Download"
+                      onClick={() =>
+                        handleDownload("formatted.sql", "text/plain")
+                      }
+                      variant="secondary"
+                    />
+                    <ActionButton
+                      icon={copied ? Check : Copy}
+                      label={copied ? "Copied" : "Copy"}
+                      onClick={handleCopy}
+                      variant={copied ? "success" : "primary"}
+                    />
+                  </>
                 )
               }
             />

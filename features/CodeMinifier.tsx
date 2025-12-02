@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Minimize2, Copy, Trash2, Check } from "lucide-react";
+import { Minimize2, Copy, Trash2, Check, Upload, Download } from "lucide-react";
 import { ToolHeader } from "../components/common/ToolHeader";
 import { CodeEditor } from "../components/common/CodeEditor";
 import { ActionButton } from "../components/common/ActionButton";
@@ -14,8 +14,11 @@ export const CodeMinifier: React.FC = () => {
     output,
     setOutput,
     copied,
+    fileInputRef,
     handleCopy,
     handleClear: hookHandleClear,
+    handleFileUpload,
+    handleDownload,
   } = useToolLogic();
 
   const [lang, setLang] = useState<Lang>("css");
@@ -125,13 +128,26 @@ export const CodeMinifier: React.FC = () => {
               Minify
             </button>
 
-            <button
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".html,.css,.js"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <ActionButton
+              onClick={() => fileInputRef.current?.click()}
+              icon={Upload}
+              label="Upload"
+              variant="secondary"
+            />
+
+            <ActionButton
               onClick={handleClear}
-              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-              title="Clear All"
-            >
-              <Trash2 size={20} />
-            </button>
+              icon={Trash2}
+              label="Clear"
+              variant="danger"
+            />
           </div>
         </div>
 
@@ -163,12 +179,25 @@ export const CodeMinifier: React.FC = () => {
               theme="dark"
               actions={
                 output && (
-                  <ActionButton
-                    icon={copied ? Check : Copy}
-                    label={copied ? "Copied" : "Copy"}
-                    onClick={handleCopy}
-                    variant={copied ? "success" : "primary"}
-                  />
+                  <>
+                    <ActionButton
+                      icon={Download}
+                      label="Save"
+                      onClick={() =>
+                        handleDownload(
+                          `minified.${lang}`,
+                          lang === "js" ? "text/javascript" : `text/${lang}`
+                        )
+                      }
+                      variant="secondary"
+                    />
+                    <ActionButton
+                      icon={copied ? Check : Copy}
+                      label={copied ? "Copied" : "Copy"}
+                      onClick={handleCopy}
+                      variant={copied ? "success" : "primary"}
+                    />
+                  </>
                 )
               }
             />

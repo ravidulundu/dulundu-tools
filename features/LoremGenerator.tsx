@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { FileText, RefreshCw, Copy, Check } from 'lucide-react';
-import { ToolHeader } from '../components/common/ToolHeader';
-import { CodeEditor } from '../components/common/CodeEditor';
-import { ActionButton } from '../components/common/ActionButton';
+import React, { useState } from "react";
+import { FileText, RefreshCw, Copy, Check, Download } from "lucide-react";
+import { ToolHeader } from "../components/common/ToolHeader";
+import { CodeEditor } from "../components/common/CodeEditor";
+import { ActionButton } from "../components/common/ActionButton";
 
 export const LoremGenerator: React.FC = () => {
   const [paragraphs, setParagraphs] = useState(3);
-  const [output, setOutput] = useState('');
+  const [output, setOutput] = useState("");
   const [copied, setCopied] = useState(false);
 
   const LOREM_TEXT = [
@@ -15,7 +15,7 @@ export const LoremGenerator: React.FC = () => {
     "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
     "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.",
     "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.",
-    "Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus."
+    "Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.",
   ];
 
   const generateLorem = () => {
@@ -24,7 +24,7 @@ export const LoremGenerator: React.FC = () => {
       const text = LOREM_TEXT[i % LOREM_TEXT.length];
       result.push(text);
     }
-    setOutput(result.join('\n\n'));
+    setOutput(result.join("\n\n"));
     setCopied(false);
   };
 
@@ -41,7 +41,6 @@ export const LoremGenerator: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={FileText}
           title="Lorem Ipsum Generator"
@@ -51,7 +50,9 @@ export const LoremGenerator: React.FC = () => {
         {/* Toolbar */}
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex-1 max-w-md flex items-center gap-4">
-            <label className="text-sm font-medium text-slate-700 whitespace-nowrap">Paragraphs: {paragraphs}</label>
+            <label className="text-sm font-medium text-slate-700 whitespace-nowrap">
+              Paragraphs: {paragraphs}
+            </label>
             <input
               type="range"
               min="1"
@@ -78,12 +79,30 @@ export const LoremGenerator: React.FC = () => {
             readOnly
             theme="dark"
             actions={
-              <ActionButton
-                icon={copied ? Check : Copy}
-                label={copied ? 'Copied' : 'Copy'}
-                onClick={handleCopy}
-                variant={copied ? 'success' : 'primary'}
-              />
+              <>
+                <ActionButton
+                  icon={Download}
+                  label="Download"
+                  onClick={() => {
+                    const blob = new Blob([output], { type: "text/plain" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "lorem-ipsum.txt";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                  }}
+                  variant="secondary"
+                />
+                <ActionButton
+                  icon={copied ? Check : Copy}
+                  label={copied ? "Copied" : "Copy"}
+                  onClick={handleCopy}
+                  variant={copied ? "success" : "primary"}
+                />
+              </>
             }
           />
         </div>
