@@ -91,11 +91,6 @@ export default defineConfig(() => {
               return 'vendor';
             }
             
-            // Large UI libraries - separate chunks
-            if (id.includes('@uiw/react-md-editor')) {
-              return 'md-editor';
-            }
-            
             if (id.includes('lucide-react') || id.includes('@radix-ui/react-icons')) {
               return 'icons';
             }
