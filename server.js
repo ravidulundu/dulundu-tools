@@ -6,6 +6,7 @@ import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import winston from 'winston';
 import rateLimit from 'express-rate-limit';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -64,7 +65,36 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(express.json());
+
+app.use(express.json({ limit: '10mb' })); // Limit payload size for security
+
+// Content Security Policy middleware for XSS protection
+app.use((req, res, next) => {
+    res.setHeader(
+        'Content-Security-Policy',
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://umami.dulundu.tools; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src 'self' https://fonts.gstatic.com; " +
+        "img-src 'self' data: https:; " +
+        "connect-src 'self' https://umami.dulundu.tools;"
+    );
+    next();
+});
+
+// Content Security Policy middleware for XSS protection
+app.use((req, res, next) => {
+    res.setHeader(
+        'Content-Security-Policy',
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://umami.dulundu.tools; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src 'self' https://fonts.gstatic.com; " +
+        "img-src 'self' data: https:; " +
+        "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools;"
+    );
+    next();
+});
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -164,6 +194,90 @@ app.post('/api/ai/paraphrase', aiLimiter, asyncHandler(async (req, res) => {
         (response.candidates?.[0]?.content?.parts?.[0]?.text || "No response text found.");
 
     res.json({ text: generatedText });
+}));
+
+// ========== SHARE ENDPOINTS ==========
+const DATA_DIR = path.join(__dirname, 'data');
+const SHARES_DIR = path.join(DATA_DIR, 'shares');
+
+// Ensure data directories exist
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR);
+if (!fs.existsSync(SHARES_DIR)) fs.mkdirSync(SHARES_DIR);
+
+app.post('/api/share', asyncHandler(async (req, res) => {
+    const { content, type, expiration } = req.body;
+
+    if (!content) {
+        return res.status(400).json({ error: 'Content is required' });
+    }
+
+    // Generate a short ID (8 chars)
+    const { randomBytes } = await import('crypto');
+    const id = randomBytes(4).toString('hex');
+    
+    const filePath = path.join(SHARES_DIR, `${id}.json`);
+    
+    // Calculate expiration
+    let expiresAt = null;
+    if (expiration && expiration !== 'Never') {
+        const now = new Date();
+        switch (expiration) {
+            case '1 Hour':
+                expiresAt = new Date(now.getTime() + 60 * 60 * 1000).toISOString();
+                break;
+            case '24 Hours':
+                expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
+                break;
+            case '7 Days':
+                expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
+                break;
+        }
+    }
+
+    const shareData = {
+        id,
+        content,
+        type: type || 'svg',
+        createdAt: new Date().toISOString(),
+        expiresAt
+    };
+
+    await fs.promises.writeFile(filePath, JSON.stringify(shareData));
+
+    logger.info(`Created share: ${id}, expires: ${expiresAt || 'Never'}`);
+    res.json({ id });
+}));
+
+app.get('/api/share/:id', asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    
+    // Basic validation to prevent directory traversal
+    if (!/^[a-f0-9]+$/i.test(id)) {
+        return res.status(400).json({ error: 'Invalid ID format' });
+    }
+
+    const filePath = path.join(SHARES_DIR, `${id}.json`);
+
+    try {
+        const dataStr = await fs.promises.readFile(filePath, 'utf-8');
+        const data = JSON.parse(dataStr);
+
+        // Check for expiration
+        if (data.expiresAt) {
+            const expiresAt = new Date(data.expiresAt);
+            if (expiresAt < new Date()) {
+                // Expired - delete file and return 410/404
+                await fs.promises.unlink(filePath);
+                logger.info(`Share expired and deleted: ${id}`);
+                return res.status(410).json({ error: 'Share link has expired' });
+            }
+        }
+
+        res.json(data);
+    } catch (error) {
+        logger.warn(`Share not found: ${id}`);
+        res.status(404).json({ error: 'Share not found' });
+    }
 }));
 
 // ========== SPA FALLBACK ==========

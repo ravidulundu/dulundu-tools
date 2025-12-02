@@ -1,0 +1,96 @@
+import React, { useState } from "react";
+import { Upload, Copy, Download, Share2, Check } from "lucide-react";
+
+interface EditorBottomBarProps {
+  svgCode: string;
+  setSvgCode: (code: string) => void;
+  onShare: () => void;
+}
+
+export const EditorBottomBar: React.FC<EditorBottomBarProps> = ({
+  svgCode,
+  setSvgCode,
+  onShare,
+}) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".svg";
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const content = e.target?.result as string;
+          setSvgCode(content);
+        };
+        reader.readAsText(file);
+      }
+    };
+    input.click();
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(svgCode);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([svgCode], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "image.svg";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="h-12 bg-gray-50 dark:bg-[#1e1e1e] border-t border-gray-200 dark:border-gray-800 flex items-center justify-between px-4">
+      <button
+        onClick={handleUpload}
+        className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors"
+      >
+        <Upload className="w-3.5 h-3.5" />
+        Upload
+      </button>
+
+      <div className="flex items-center gap-2">
+        <button
+          onClick={handleCopy}
+          className={`flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded transition-colors border ${
+            isCopied
+              ? "text-green-600 dark:text-green-400 border-green-600 dark:border-green-500 bg-green-50 dark:bg-green-900/10"
+              : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300 dark:border-gray-700"
+          }`}
+        >
+          {isCopied ? (
+            <Check className="w-3.5 h-3.5" />
+          ) : (
+            <Copy className="w-3.5 h-3.5" />
+          )}
+          {isCopied ? "Copied!" : "Copy"}
+        </button>
+        <button
+          onClick={handleDownload}
+          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors border border-gray-300 dark:border-gray-700"
+        >
+          <Download className="w-3.5 h-3.5" />
+          Download
+        </button>
+        <button
+          onClick={onShare}
+          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors border border-gray-300 dark:border-gray-700"
+        >
+          <Share2 className="w-3.5 h-3.5" />
+          Share
+        </button>
+      </div>
+    </div>
+  );
+};

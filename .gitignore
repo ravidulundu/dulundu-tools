@@ -31,3 +31,5 @@ lint_report*.txt
 REFACTORING_STATUS.*
 coverage
 
+.env.local
+.env

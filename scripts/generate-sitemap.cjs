@@ -1,12 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const CONSTANTS_PATH = path.join(__dirname, '../constants.tsx');
+const CONSTANTS_PATH = path.join(__dirname, '../src/config/allTools.tsx');
 const PUBLIC_PATH = path.join(__dirname, '../public');
 const SITEMAP_PATH = path.join(PUBLIC_PATH, 'sitemap.xml');
 const ROBOTS_PATH = path.join(PUBLIC_PATH, 'robots.txt');
 
 const BASE_URL = 'https://dulundu.tools';
+
+const EXCLUDED_PATHS = ['/coming-soon', '/404'];
+
+// Static pages to always include
+const STATIC_PAGES = ['/privacy', '/terms'];
 
 function generateSitemap() {
     const content = fs.readFileSync(CONSTANTS_PATH, 'utf8');
@@ -17,10 +22,13 @@ function generateSitemap() {
 
     while ((match = regex.exec(content)) !== null) {
         const p = match[1];
-        if (p && p !== '*') {
+        if (p && p !== '*' && !EXCLUDED_PATHS.includes(p)) {
             paths.add(p);
         }
     }
+
+    // Add static pages
+    STATIC_PAGES.forEach(p => paths.add(p));
 
     const urls = Array.from(paths).map(p => {
         return `
@@ -41,8 +49,10 @@ ${urls}
 }
 
 function generateRobots() {
+    const disallowRules = EXCLUDED_PATHS.map(p => `Disallow: ${p}`).join('\n');
     const robots = `User-agent: *
 Allow: /
+${disallowRules}
 Sitemap: ${BASE_URL}/sitemap.xml
 `;
     fs.writeFileSync(ROBOTS_PATH, robots);

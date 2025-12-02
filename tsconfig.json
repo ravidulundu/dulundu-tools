@@ -20,7 +20,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
       ]
     },
     "allowImportingTsExtensions": true,
@@ -36,6 +36,7 @@
     "extension",
     "tests",
     "src/test",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    "verify_lines.ts"
   ]
 }

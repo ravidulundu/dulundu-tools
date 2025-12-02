@@ -55,7 +55,7 @@ export default defineConfig(() => {
     },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(__dirname, 'src'),
         vm: path.resolve(__dirname, 'mocks/vm.js'),
         crypto: path.resolve(__dirname, 'mocks/empty.js'),
         react: path.resolve(__dirname, 'node_modules/react'),
