@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AiAssistant } from '../features/AiAssistant';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { AiAssistant } from '../features/AiAssistant';
 
 describe('AiAssistant', () => {
   it('renders without crashing', () => {

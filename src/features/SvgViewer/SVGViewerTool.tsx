@@ -1,13 +1,13 @@
-import React from "react";
-import { SVGProvider } from "./context/SVGContext";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { GripVertical } from "lucide-react";
-import EditorPanel from "./components/EditorPanel";
-import PreviewPanel from "./components/PreviewPanel";
-import { Sidebar } from "./components/Sidebar/Sidebar";
+import { GripVertical } from 'lucide-react';
+import React from 'react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { useParams } from 'react-router-dom';
 
-import { useParams } from "react-router-dom";
-import { useSVG } from "./context/SVGContext";
+import EditorPanel from './components/EditorPanel';
+import PreviewPanel from './components/PreviewPanel';
+import { Sidebar } from './components/Sidebar/Sidebar';
+import { SVGProvider , useSVG } from './context/SVGContext';
+
 
 // Component to handle URL parameters for shared SVGs
 const UrlHandler = () => {
@@ -17,17 +17,17 @@ const UrlHandler = () => {
   React.useEffect(() => {
     if (id) {
       fetch(`/api/share/${id}`)
-        .then((res) => {
-          if (!res.ok) throw new Error("Share not found");
+        .then(res => {
+          if (!res.ok) throw new Error('Share not found');
           return res.json();
         })
-        .then((data) => {
+        .then(data => {
           if (data.content) {
             setSvgCode(data.content);
           }
         })
-        .catch((err) => {
-          console.error("Error fetching shared SVG:", err);
+        .catch(err => {
+          console.error('Error fetching shared SVG:', err);
           // Optional: Show toast or error notification
         });
     }

@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { DnsLookup } from "../features/DnsLookup";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { DnsLookup } from "../features/DnsLookup";
+
 
 describe("DnsLookup", () => {
   it("renders correctly", () => {

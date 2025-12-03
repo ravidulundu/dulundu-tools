@@ -1,5 +1,6 @@
-import { generateCodeHelp, paraphraseText } from '../services/geminiService';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
+import { generateCodeHelp, paraphraseText } from '../services/geminiService';
 
 describe('geminiService', () => {
   const mockFetch = vi.fn();

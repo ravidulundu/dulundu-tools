@@ -1,4 +1,3 @@
-import { useState, useMemo, useEffect } from "react";
 import {
   Search,
   Command,
@@ -8,6 +7,8 @@ import {
   Star,
   History,
 } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+
 import { ALL_TOOLS } from "@/constants";
 
 // Helper to detect content type (Same as before)

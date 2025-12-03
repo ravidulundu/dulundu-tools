@@ -1,8 +1,10 @@
-import React from "react";
-import { TrendingUp, Grid, Zap, Search } from "lucide-react";
-import { ToolCard } from "../ToolCard";
-import { ToolDef } from "../../types";
-import { SetURLSearchParams } from "react-router-dom";
+import { TrendingUp, Grid, Zap, Search } from 'lucide-react';
+import React from 'react';
+import { SetURLSearchParams } from 'react-router-dom';
+
+import { ToolDef } from '../../types';
+import { ToolCard } from '../ToolCard';
+
 
 interface ToolGridProps {
   isDirectoryView: boolean;
@@ -35,13 +37,11 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
               <TrendingUp size={20} />
             </div>
             <div className="text-center lg:text-left">
-              <h2 className="text-xl font-bold text-slate-800 dark:text-white">
-                Popular Tools
-              </h2>
+              <h2 className="text-xl font-bold text-slate-800 dark:text-white">Popular Tools</h2>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {popularTools.map((tool) => (
+            {popularTools.map(tool => (
               <ToolCard key={tool.id} tool={tool} variant="mini" />
             ))}
           </div>
@@ -53,15 +53,11 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
         <div className="flex flex-col lg:flex-row items-center justify-between mb-6 gap-4 lg:gap-0">
           <div className="flex items-center justify-center lg:justify-start space-x-3">
             <div className="p-2 bg-blue-100 dark:bg-blue-900/20 text-primary rounded-lg">
-              {activeCategory === "All" ? (
-                <Grid size={20} />
-              ) : (
-                <Zap size={20} />
-              )}
+              {activeCategory === 'All' ? <Grid size={20} /> : <Zap size={20} />}
             </div>
             <div className="text-center lg:text-left">
               <h2 className="text-xl font-bold text-slate-800 dark:text-white">
-                {activeCategory === "All" ? "All Tools" : activeCategory}
+                {activeCategory === 'All' ? 'All Tools' : activeCategory}
               </h2>
             </div>
             <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md text-xs font-bold">
@@ -72,7 +68,7 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
 
         {filteredTools.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
-            {filteredTools.map((tool) => (
+            {filteredTools.map(tool => (
               <ToolCard key={tool.id} tool={tool} />
             ))}
           </div>
@@ -85,14 +81,14 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
               No tools found
             </h3>
             <p className="text-slate-500 dark:text-slate-400 max-w-md text-center">
-              We couldn't find any tools matching "{searchTerm}". Try checking
-              your spelling or browsing by category.
+              We couldn't find any tools matching "{searchTerm}". Try checking your spelling or
+              browsing by category.
             </p>
             <button
               onClick={() => {
-                setSearchTerm("");
+                setSearchTerm('');
                 setSearchParams({});
-                setActiveCategory("All");
+                setActiveCategory('All');
               }}
               className="mt-6 px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
             >

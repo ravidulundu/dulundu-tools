@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { PojoGenerator } from "../features/PojoGenerator";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { PojoGenerator } from "../features/PojoGenerator";
+
 
 describe("PojoGenerator", () => {
   it("renders correctly", () => {

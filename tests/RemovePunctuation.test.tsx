@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { RemovePunctuation } from "../features/RemovePunctuation";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { RemovePunctuation } from "../features/RemovePunctuation";
+
 
 describe("RemovePunctuation", () => {
   it("renders correctly", () => {

@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { NumberSorter } from '../features/NumberSorter';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { NumberSorter } from '../features/NumberSorter';
 
 describe('NumberSorter', () => {
   it('renders without crashing', () => {

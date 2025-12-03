@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { CssUnitConverter } from "../features/CssUnitConverter";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { CssUnitConverter } from "../features/CssUnitConverter";
+
 
 describe("CssUnitConverter", () => {
   it("renders correctly", () => {

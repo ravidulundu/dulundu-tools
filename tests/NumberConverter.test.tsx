@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { NumberConverter } from "../features/NumberConverter";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { NumberConverter } from "../features/NumberConverter";
+
 
 describe("NumberConverter", () => {
   it("renders correctly", () => {

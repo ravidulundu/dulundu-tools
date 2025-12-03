@@ -1,5 +1,6 @@
-import { measureComponentRender, logPageLoadTime } from '../utils/performance';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
+import { measureComponentRender, logPageLoadTime } from '../utils/performance';
 
 describe('performance utils', () => {
   describe('measureComponentRender', () => {

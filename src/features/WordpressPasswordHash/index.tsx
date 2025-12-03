@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { Lock, RefreshCw, Copy, Check, Trash2 } from "lucide-react";
+import { Lock, RefreshCw, Copy, Check, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+
 // bcryptjs lazy loaded
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const WordpressPasswordHash: React.FC = () => {
-  const [password, setPassword] = useState("");
-  const [hash, setHash] = useState("");
+  const [password, setPassword] = useState('');
+  const [hash, setHash] = useState('');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +17,7 @@ export const WordpressPasswordHash: React.FC = () => {
     setLoading(true);
 
     try {
-      const bcrypt = (await import("bcryptjs")).default;
+      const bcrypt = (await import('bcryptjs')).default;
 
       // WordPress uses Phpass (Portable PHP password hashing framework)
       // Modern WP also supports bcrypt ($2y$)
@@ -32,7 +33,7 @@ export const WordpressPasswordHash: React.FC = () => {
       // Let's stick to bcrypt but label it clearly.
       setHash(hashed);
     } catch (error) {
-      console.error("Failed to load bcrypt", error);
+      console.error('Failed to load bcrypt', error);
     } finally {
       setLoading(false);
     }
@@ -45,8 +46,8 @@ export const WordpressPasswordHash: React.FC = () => {
   };
 
   const handleClear = () => {
-    setPassword("");
-    setHash("");
+    setPassword('');
+    setHash('');
     setCopied(false);
   };
 
@@ -100,19 +101,18 @@ export const WordpressPasswordHash: React.FC = () => {
                   hash && (
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   )
                 }
               />
               {hash && (
                 <p className="mt-2 text-xs text-slate-500 px-1">
-                  Note: This generates a standard Bcrypt hash ($2y$...), which
-                  is fully supported by modern WordPress versions. Legacy
-                  WordPress sites might use MD5-based Phpass ($P$...), but
-                  Bcrypt is recommended for security.
+                  Note: This generates a standard Bcrypt hash ($2y$...), which is fully supported by
+                  modern WordPress versions. Legacy WordPress sites might use MD5-based Phpass
+                  ($P$...), but Bcrypt is recommended for security.
                 </p>
               )}
             </div>

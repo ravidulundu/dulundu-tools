@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Analytics } from '../components/Analytics';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { Analytics } from '../components/Analytics';
+import { ThemeProvider } from '../contexts/ThemeContext';
+
 
 describe('Analytics', () => {
   it('renders without crashing', () => {

@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import { FileSpreadsheet, Trash2, Table } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { Button } from "@/components/common/Button";
+import { FileSpreadsheet, Trash2, Table } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { Button } from '@/components/common/Button';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const ExcelViewer: React.FC = () => {
   const [data, setData] = useState<string[][]>([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
 
   const parseCSV = (text: string) => {
     // Simple CSV parser handling quotes
     const rows: string[][] = [];
     let currentRow: string[] = [];
-    let currentCell = "";
+    let currentCell = '';
     let inQuotes = false;
 
     for (let i = 0; i < text.length; i++) {
@@ -27,15 +28,15 @@ export const ExcelViewer: React.FC = () => {
         } else {
           inQuotes = !inQuotes;
         }
-      } else if (char === "," && !inQuotes) {
+      } else if (char === ',' && !inQuotes) {
         currentRow.push(currentCell);
-        currentCell = "";
-      } else if ((char === "\r" || char === "\n") && !inQuotes) {
-        if (char === "\r" && nextChar === "\n") i++;
+        currentCell = '';
+      } else if ((char === '\r' || char === '\n') && !inQuotes) {
+        if (char === '\r' && nextChar === '\n') i++;
         currentRow.push(currentCell);
         rows.push(currentRow);
         currentRow = [];
-        currentCell = "";
+        currentCell = '';
       } else {
         currentCell += char;
       }
@@ -54,7 +55,7 @@ export const ExcelViewer: React.FC = () => {
 
   const handleClear = () => {
     setData([]);
-    setInput("");
+    setInput('');
   };
 
   return (
@@ -67,21 +68,11 @@ export const ExcelViewer: React.FC = () => {
         />
         {/* Toolbar */}
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
-          <Button
-            onClick={handleLoad}
-            disabled={!input.trim()}
-            variant="primary"
-            icon={Table}
-          >
+          <Button onClick={handleLoad} disabled={!input.trim()} variant="primary" icon={Table}>
             Load Table
           </Button>
 
-          <ActionButton
-            onClick={handleClear}
-            variant="danger"
-            label="Clear"
-            icon={Trash2}
-          />
+          <ActionButton onClick={handleClear} variant="danger" label="Clear" icon={Trash2} />
         </div>
         {/* Content Area */}
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
@@ -98,9 +89,7 @@ export const ExcelViewer: React.FC = () => {
           ) : (
             <div className="h-full flex flex-col animate-in fade-in slide-in-from-bottom-4">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-slate-700">
-                  Table View ({data.length} rows)
-                </h3>
+                <h3 className="font-bold text-slate-700">Table View ({data.length} rows)</h3>
               </div>
               <div className="flex-1 overflow-auto border border-gray-200 rounded-xl bg-white shadow-sm">
                 <table className="w-full text-sm text-left text-slate-600">

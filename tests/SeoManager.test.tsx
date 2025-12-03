@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { SeoManager } from '../components/SeoManager';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { SeoManager } from '../components/SeoManager';
+import { ThemeProvider } from '../contexts/ThemeContext';
+
 
 describe('SeoManager', () => {
   it('renders without crashing', () => {

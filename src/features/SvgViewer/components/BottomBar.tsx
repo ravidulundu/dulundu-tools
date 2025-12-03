@@ -1,7 +1,8 @@
-import React from "react";
-import { useSVG } from "../context/SVGContext";
-import { Minus, Plus, Download, Copy, Share2, Upload } from "lucide-react";
-import clsx from "clsx";
+import clsx from 'clsx';
+import { Minus, Plus, Download, Copy, Share2, Upload } from 'lucide-react';
+import React from 'react';
+
+import { useSVG } from '../context/SVGContext';
 
 const BottomBar = () => {
   const { scale, setScale, background, setBackground } = useSVG();
@@ -30,47 +31,45 @@ const BottomBar = () => {
       {/* Center: Background Toggles */}
       <div className="flex items-center gap-2">
         <button
-          onClick={() => setBackground("white")}
+          onClick={() => setBackground('white')}
           className={clsx(
-            "w-6 h-6 rounded border transition-all",
-            background === "white"
-              ? "border-blue-500 ring-2 ring-blue-200"
-              : "border-gray-300 bg-white"
+            'w-6 h-6 rounded border transition-all',
+            background === 'white'
+              ? 'border-blue-500 ring-2 ring-blue-200'
+              : 'border-gray-300 bg-white'
           )}
           title="White Background"
         />
         <button
-          onClick={() => setBackground("transparent")}
+          onClick={() => setBackground('transparent')}
           className={clsx(
-            "w-6 h-6 rounded border transition-all bg-gray-100",
-            background === "transparent"
-              ? "border-blue-500 ring-2 ring-blue-200"
-              : "border-gray-300"
+            'w-6 h-6 rounded border transition-all bg-gray-100',
+            background === 'transparent'
+              ? 'border-blue-500 ring-2 ring-blue-200'
+              : 'border-gray-300'
           )}
           title="Transparent Background"
         />
         <button
-          onClick={() => setBackground("black")}
+          onClick={() => setBackground('black')}
           className={clsx(
-            "w-6 h-6 rounded border transition-all bg-black",
-            background === "black"
-              ? "border-blue-500 ring-2 ring-blue-200"
-              : "border-gray-600"
+            'w-6 h-6 rounded border transition-all bg-black',
+            background === 'black' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-600'
           )}
           title="Black Background"
         />
         <button
-          onClick={() => setBackground("checkerboard")}
+          onClick={() => setBackground('checkerboard')}
           className={clsx(
-            "w-6 h-6 rounded border transition-all",
-            background === "checkerboard"
-              ? "border-blue-500 ring-2 ring-blue-200"
-              : "border-gray-300"
+            'w-6 h-6 rounded border transition-all',
+            background === 'checkerboard'
+              ? 'border-blue-500 ring-2 ring-blue-200'
+              : 'border-gray-300'
           )}
           style={{
             backgroundImage: `linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)`,
-            backgroundSize: "8px 8px",
-            backgroundColor: "white",
+            backgroundSize: '8px 8px',
+            backgroundColor: 'white',
           }}
           title="Checkerboard Background"
         />

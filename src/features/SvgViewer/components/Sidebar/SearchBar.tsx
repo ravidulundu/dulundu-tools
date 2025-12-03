@@ -1,5 +1,5 @@
-import React from "react";
-import { Search } from "lucide-react";
+import { Search } from 'lucide-react';
+import React from 'react';
 
 interface SearchBarProps {
   value: string;
@@ -8,14 +8,9 @@ interface SearchBarProps {
   isLoading?: boolean;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({
-  value,
-  onChange,
-  onSearch,
-  isLoading,
-}) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onSearch, isLoading }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onSearch();
     }
   };
@@ -25,7 +20,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       <input
         type="text"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search icons (e.g. 'home', 'user')..."
         className="w-full bg-gray-100 dark:bg-[#252526] border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-200 text-sm rounded-md pl-9 pr-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-gray-500"

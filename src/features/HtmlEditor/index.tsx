@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Code, Eye, RotateCcw, Download } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
+import { Code, Eye, RotateCcw, Download } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const HtmlEditor: React.FC = () => {
   const [html, setHtml] = useState(
     '<div class="card">\n  <h1>Hello World</h1>\n  <p>Start editing to see changes instantly!</p>\n  <button>Click Me</button>\n</div>'
   );
   const [css, setCss] = useState(
-    ".card {\n  padding: 20px;\n  background: #f0f9ff;\n  border-radius: 12px;\n  font-family: sans-serif;\n  text-align: center;\n}\n\nh1 {\n  color: #0ea5e9;\n}\n\nbutton {\n  background: #0ea5e9;\n  color: white;\n  border: none;\n  padding: 8px 16px;\n  border-radius: 6px;\n  cursor: pointer;\n}"
+    '.card {\n  padding: 20px;\n  background: #f0f9ff;\n  border-radius: 12px;\n  font-family: sans-serif;\n  text-align: center;\n}\n\nh1 {\n  color: #0ea5e9;\n}\n\nbutton {\n  background: #0ea5e9;\n  color: white;\n  border: none;\n  padding: 8px 16px;\n  border-radius: 6px;\n  cursor: pointer;\n}'
   );
-  const [srcDoc, setSrcDoc] = useState("");
+  const [srcDoc, setSrcDoc] = useState('');
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -51,7 +52,7 @@ export const HtmlEditor: React.FC = () => {
                   <ActionButton
                     icon={RotateCcw}
                     label="Clear"
-                    onClick={() => setHtml("")}
+                    onClick={() => setHtml('')}
                     variant="secondary"
                     size="sm"
                   />
@@ -69,7 +70,7 @@ export const HtmlEditor: React.FC = () => {
                   <ActionButton
                     icon={RotateCcw}
                     label="Clear"
-                    onClick={() => setCss("")}
+                    onClick={() => setCss('')}
                     variant="secondary"
                     size="sm"
                   />
@@ -86,11 +87,11 @@ export const HtmlEditor: React.FC = () => {
               </div>
               <button
                 onClick={() => {
-                  const blob = new Blob([srcDoc], { type: "text/html" });
+                  const blob = new Blob([srcDoc], { type: 'text/html' });
                   const url = URL.createObjectURL(blob);
-                  const a = document.createElement("a");
+                  const a = document.createElement('a');
                   a.href = url;
-                  a.download = "index.html";
+                  a.download = 'index.html';
                   document.body.appendChild(a);
                   a.click();
                   document.body.removeChild(a);

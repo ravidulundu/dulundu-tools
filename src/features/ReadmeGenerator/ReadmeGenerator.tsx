@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import { SECTIONS, Section } from "./data/sections";
-import { ConfirmationModal } from "./components/ConfirmationModal";
-import { PreviewAndRaw } from "./components/PreviewAndRaw";
-import { useTheme } from "../../contexts/ThemeContext";
-import MDEditor from "@uiw/react-md-editor";
-import "./MDEditor.css";
-import { SEO } from "@/components/SEO";
-import { HelpCircle } from "lucide-react";
+import MDEditor from '@uiw/react-md-editor';
+import React, { useState, useEffect, useRef } from 'react';
+
+import { ConfirmationModal } from './components/ConfirmationModal';
+import { PreviewAndRaw } from './components/PreviewAndRaw';
+import { SECTIONS, Section } from './data/sections';
+import { useTheme } from '../../contexts/ThemeContext';
+
+import './MDEditor.css';
+import { SEO } from '@/components/SEO';
+
+import { HelpCircle } from 'lucide-react';
 
 // Extended Section interface to track inclusion state
 interface ExtendedSection extends Section {
@@ -17,19 +20,19 @@ interface ExtendedSection extends Section {
 export const ReadmeGenerator = () => {
   // Get theme from ThemeProvider
   const { theme } = useTheme();
-  const isDarkMode = theme === "dark";
+  const isDarkMode = theme === 'dark';
 
   // Initialize with all sections, but none included by default
   const [sections, setSections] = useState<ExtendedSection[]>(() => {
-    return SECTIONS.map((s) => ({
+    return SECTIONS.map(s => ({
       ...s,
       isIncluded: false,
-      content: s.content || "",
+      content: s.content || '',
     }));
   });
 
   // Full markdown state - user can edit freely in MDEditor
-  const [fullMarkdown, setFullMarkdown] = useState<string>("");
+  const [fullMarkdown, setFullMarkdown] = useState<string>('');
   const [draggedSectionId, setDraggedSectionId] = useState<string | null>(null);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
 
@@ -53,9 +56,9 @@ export const ReadmeGenerator = () => {
     if (sectionsChanged) {
       // Regenerate markdown from selected sections
       const combined = currentSections
-        .filter((s) => s.isIncluded)
-        .map((s) => s.content)
-        .join("\n\n");
+        .filter(s => s.isIncluded)
+        .map(s => s.content)
+        .join('\n\n');
       setFullMarkdown(combined);
 
       // Update ref for next comparison
@@ -64,16 +67,14 @@ export const ReadmeGenerator = () => {
   }, [sections]);
 
   const handleToggleSection = (id: string) => {
-    setSections((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, isIncluded: !s.isIncluded } : s))
-    );
+    setSections(prev => prev.map(s => (s.id === id ? { ...s, isIncluded: !s.isIncluded } : s)));
   };
 
   const handleAddCustomSection = () => {
     const customSection: ExtendedSection = {
       id: `custom-${Date.now()}`,
-      name: "Custom Section",
-      emoji: "✨",
+      name: 'Custom Section',
+      emoji: '✨',
       content: `## Custom Section\n\nAdd your content here.`,
       isIncluded: true,
     };
@@ -85,30 +86,30 @@ export const ReadmeGenerator = () => {
   };
 
   const confirmReset = () => {
-    setSections((prev) => prev.map((s) => ({ ...s, isIncluded: false })));
-    setFullMarkdown("");
+    setSections(prev => prev.map(s => ({ ...s, isIncluded: false })));
+    setFullMarkdown('');
     setIsResetModalOpen(false);
   };
 
   const handleDragStart = (e: React.DragEvent, id: string) => {
     setDraggedSectionId(id);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", id);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', id);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
+    e.dataTransfer.dropEffect = 'move';
   };
 
   const handleDrop = (e: React.DragEvent, targetId: string) => {
     e.preventDefault();
-    const sourceId = e.dataTransfer.getData("text/plain") || draggedSectionId;
+    const sourceId = e.dataTransfer.getData('text/plain') || draggedSectionId;
 
     if (!sourceId || sourceId === targetId) return;
 
-    const sourceIndex = sections.findIndex((s) => s.id === sourceId);
-    const targetIndex = sections.findIndex((s) => s.id === targetId);
+    const sourceIndex = sections.findIndex(s => s.id === sourceId);
+    const targetIndex = sections.findIndex(s => s.id === targetId);
 
     if (sourceIndex === -1 || targetIndex === -1) return;
 
@@ -129,7 +130,7 @@ export const ReadmeGenerator = () => {
       await navigator.clipboard.writeText(fullMarkdown);
       // You could add a toast notification here
     } catch (err) {
-      console.error("Failed to copy:", err);
+      console.error('Failed to copy:', err);
     }
   };
 
@@ -153,19 +154,19 @@ export const ReadmeGenerator = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
-          {sections.map((section) => (
+          {sections.map(section => (
             <div
               key={section.id}
               draggable
-              onDragStart={(e) => handleDragStart(e, section.id)}
+              onDragStart={e => handleDragStart(e, section.id)}
               onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, section.id)}
+              onDrop={e => handleDrop(e, section.id)}
               onDragEnd={handleDragEnd}
               onClick={() => handleToggleSection(section.id)}
               className={`
                 group relative flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer select-none transition-all
                 hover:bg-gray-100 dark:hover:bg-gray-800/50
-                ${draggedSectionId === section.id ? "opacity-50" : ""}
+                ${draggedSectionId === section.id ? 'opacity-50' : ''}
               `}
             >
               <span className="cursor-grab active:cursor-grabbing opacity-30 hover:opacity-100 text-gray-400">
@@ -177,11 +178,11 @@ export const ReadmeGenerator = () => {
                 className={`w-4 h-4 rounded border flex items-center justify-center transition-colors
                   ${
                     section.isIncluded
-                      ? "bg-green-500 border-green-500 text-white"
-                      : "border-gray-400 text-transparent hover:border-gray-500"
+                      ? 'bg-green-500 border-green-500 text-white'
+                      : 'border-gray-400 text-transparent hover:border-gray-500'
                   }
                 `}
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   handleToggleSection(section.id);
                 }}
@@ -205,8 +206,8 @@ export const ReadmeGenerator = () => {
               <span
                 className={`text-sm font-medium truncate flex-1 ${
                   section.isIncluded
-                    ? "text-slate-900 dark:text-slate-100"
-                    : "text-gray-500 dark:text-gray-400"
+                    ? 'text-slate-900 dark:text-slate-100'
+                    : 'text-gray-500 dark:text-gray-400'
                 }`}
               >
                 {section.name}
@@ -245,10 +246,7 @@ export const ReadmeGenerator = () => {
             </a>
           </div>
           <div className="flex-1 overflow-hidden">
-            <div
-              data-color-mode={isDarkMode ? "dark" : "light"}
-              style={{ height: "100%" }}
-            >
+            <div data-color-mode={isDarkMode ? 'dark' : 'light'} style={{ height: '100%' }}>
               <MDEditor
                 value={fullMarkdown}
                 onChange={setFullMarkdown}

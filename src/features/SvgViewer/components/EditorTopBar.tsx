@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { RotateCcw, Undo, Redo, Crop, Check, Settings } from "lucide-react";
-import { DEFAULT_SVG_CODE } from "../context/SVGContext";
-import { optimizeSvg, prettifySvg } from "../utils/svgOptimizer";
+import { RotateCcw, Undo, Redo, Crop, Check, Settings } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { DEFAULT_SVG_CODE } from '../context/SVGContext';
+import { optimizeSvg, prettifySvg } from '../utils/svgOptimizer';
 
 interface EditorTopBarProps {
   svgCode: string;
@@ -34,12 +35,12 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
   useEffect(() => {
     if (!svgCode) return;
     const parser = new DOMParser();
-    const doc = parser.parseFromString(svgCode, "image/svg+xml");
-    const svg = doc.querySelector("svg");
+    const doc = parser.parseFromString(svgCode, 'image/svg+xml');
+    const svg = doc.querySelector('svg');
     if (svg) {
-      const width = parseInt(svg.getAttribute("width") || "0") || 0;
-      const height = parseInt(svg.getAttribute("height") || "0") || 0;
-      setDimensions((prev) =>
+      const width = parseInt(svg.getAttribute('width') || '0') || 0;
+      const height = parseInt(svg.getAttribute('height') || '0') || 0;
+      setDimensions(prev =>
         prev.w !== width || prev.h !== height ? { w: width, h: height } : prev
       );
     }
@@ -48,15 +49,15 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
   // Close dimensions popover on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         setShowDimensions(false);
       }
     };
     if (showDimensions) {
-      window.addEventListener("keydown", handleKeyDown);
+      window.addEventListener('keydown', handleKeyDown);
     }
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [showDimensions]);
 
@@ -77,23 +78,16 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
       }
     };
 
-    openTag = updateAttr(openTag, "width", w);
-    openTag = updateAttr(openTag, "height", h);
+    openTag = updateAttr(openTag, 'width', w);
+    openTag = updateAttr(openTag, 'height', h);
 
     if (editorRef.current) {
       const model = editorRef.current.getModel();
       if (model) {
-        const matches = model.findMatches(
-          "<svg[^>]*>",
-          true,
-          true,
-          false,
-          null,
-          true
-        );
+        const matches = model.findMatches('<svg[^>]*>', true, true, false, null, true);
         if (matches && matches.length > 0) {
           const range = matches[0].range;
-          editorRef.current.executeEdits("dimensions-update", [
+          editorRef.current.executeEdits('dimensions-update', [
             {
               range: range,
               text: openTag,
@@ -110,17 +104,17 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
   };
 
   const handleReset = () => {
-    if (confirm("Are you sure you want to reset the code to default?")) {
+    if (confirm('Are you sure you want to reset the code to default?')) {
       setSvgCode(DEFAULT_SVG_CODE);
     }
   };
 
   const handleUndo = () => {
-    editorRef.current?.trigger("source", "undo");
+    editorRef.current?.trigger('source', 'undo');
   };
 
   const handleRedo = () => {
-    editorRef.current?.trigger("source", "redo");
+    editorRef.current?.trigger('source', 'redo');
   };
 
   const handlePrettify = () => {
@@ -146,7 +140,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
   };
 
   const handleClear = () => {
-    setSvgCode("");
+    setSvgCode('');
   };
 
   return (
@@ -203,12 +197,12 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
                   <input
                     type="number"
                     value={dimensions.w}
-                    onChange={(e) => {
+                    onChange={e => {
                       const val = e.target.value;
-                      setDimensions((prev) => ({ ...prev, w: val }));
+                      setDimensions(prev => ({ ...prev, w: val }));
                       const w = parseInt(val);
                       const h =
-                        typeof dimensions.h === "string"
+                        typeof dimensions.h === 'string'
                           ? parseInt(dimensions.h) || 0
                           : dimensions.h;
                       if (!isNaN(w)) {
@@ -225,12 +219,12 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
                   <input
                     type="number"
                     value={dimensions.h}
-                    onChange={(e) => {
+                    onChange={e => {
                       const val = e.target.value;
-                      setDimensions((prev) => ({ ...prev, h: val }));
+                      setDimensions(prev => ({ ...prev, h: val }));
                       const h = parseInt(val);
                       const w =
-                        typeof dimensions.w === "string"
+                        typeof dimensions.w === 'string'
                           ? parseInt(dimensions.w) || 0
                           : dimensions.w;
                       if (!isNaN(h)) {
@@ -249,8 +243,8 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
           onClick={handlePrettify}
           className={`flex items-center gap-1 text-xs font-medium transition-colors ${
             isPrettified
-              ? "text-blue-500"
-              : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              ? 'text-blue-500'
+              : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
           }`}
         >
           {isPrettified && <Check className="w-3.5 h-3.5" />}
@@ -261,19 +255,17 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
           onClick={handleOptimize}
           className={`flex items-center gap-1 text-xs font-medium transition-colors ${
             isOptimized
-              ? "text-green-500"
-              : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              ? 'text-green-500'
+              : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
           }`}
         >
           {isOptimized && <Check className="w-3.5 h-3.5" />}
-          {isOptimized ? "Optimized" : "Optimize"}
-          {!isOptimized &&
-            optimizationStats &&
-            optimizationStats.percentage > 0 && (
-              <span className="ml-1 text-[10px] bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full">
-                -{optimizationStats.percentage}%
-              </span>
-            )}
+          {isOptimized ? 'Optimized' : 'Optimize'}
+          {!isOptimized && optimizationStats && optimizationStats.percentage > 0 && (
+            <span className="ml-1 text-[10px] bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full">
+              -{optimizationStats.percentage}%
+            </span>
+          )}
         </button>
 
         {/* Optimization Stats Display - Compact */}

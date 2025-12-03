@@ -1,37 +1,29 @@
-import React, { useState, useEffect } from "react";
-import {
-  Calendar,
-  Clock,
-  RefreshCw,
-  ArrowRight,
-  Copy,
-  Check,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { ActionButton } from "@/components/common/ActionButton";
+import { Calendar, Clock, RefreshCw, ArrowRight, Copy, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const DateConverter: React.FC = () => {
-  const [timestamp, setTimestamp] = useState<number>(
-    Math.floor(Date.now() / 1000)
-  );
-  const [iso, setIso] = useState("");
-  const [local, setLocal] = useState("");
-  const [utc, setUtc] = useState("");
+  const [timestamp, setTimestamp] = useState<number>(Math.floor(Date.now() / 1000));
+  const [iso, setIso] = useState('');
+  const [local, setLocal] = useState('');
+  const [utc, setUtc] = useState('');
 
   useEffect(() => {
     // Check for input in URL hash (from extension)
     const hash = window.location.hash;
-    if (hash.includes("input=")) {
+    if (hash.includes('input=')) {
       try {
         const params = new URLSearchParams(hash.substring(1));
-        const inputParam = params.get("input");
+        const inputParam = params.get('input');
         if (inputParam) {
           const decoded = decodeURIComponent(inputParam);
           // Try to parse as number (timestamp)
           const ts = parseInt(decoded);
           if (!isNaN(ts)) {
             handleTsChange(decoded); // Reuse existing logic
-            window.history.replaceState(null, "", window.location.pathname);
+            window.history.replaceState(null, '', window.location.pathname);
             return; // Skip default updateFromTs
           }
         }
@@ -84,12 +76,7 @@ export const DateConverter: React.FC = () => {
 
         {/* Toolbar */}
         <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
-          <ActionButton
-            onClick={setToNow}
-            icon={Clock}
-            label="Set to Now"
-            variant="secondary"
-          />
+          <ActionButton onClick={setToNow} icon={Clock} label="Set to Now" variant="secondary" />
         </div>
 
         {/* Content Area */}
@@ -105,7 +92,7 @@ export const DateConverter: React.FC = () => {
                   <input
                     type="number"
                     value={timestamp}
-                    onChange={(e) => handleTsChange(e.target.value)}
+                    onChange={e => handleTsChange(e.target.value)}
                     className="flex-1 p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg text-slate-800"
                   />
                 </div>
@@ -122,13 +109,11 @@ export const DateConverter: React.FC = () => {
                 <input
                   type="text"
                   value={iso}
-                  onChange={(e) => handleIsoChange(e.target.value)}
+                  onChange={e => handleIsoChange(e.target.value)}
                   className="w-full p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg text-slate-800"
                   placeholder="YYYY-MM-DDTHH:mm:ss.sssZ"
                 />
-                <p className="text-xs text-slate-400 mt-2">
-                  Standard exchange format
-                </p>
+                <p className="text-xs text-slate-400 mt-2">Standard exchange format</p>
               </div>
             </div>
 
@@ -143,25 +128,22 @@ export const DateConverter: React.FC = () => {
                   label="Unix Timestamp (Milliseconds)"
                   value={(timestamp * 1000).toString()}
                 />
-                <ResultRow
-                  label="Unix Timestamp (Seconds)"
-                  value={timestamp.toString()}
-                />
+                <ResultRow label="Unix Timestamp (Seconds)" value={timestamp.toString()} />
                 <ResultRow
                   label="Relative"
                   value={(() => {
                     const diff = Date.now() - timestamp * 1000;
-                    const rtf = new Intl.RelativeTimeFormat("en", {
-                      numeric: "auto",
+                    const rtf = new Intl.RelativeTimeFormat('en', {
+                      numeric: 'auto',
                     });
-                    if (Math.abs(diff) < 1000) return "Just now";
+                    if (Math.abs(diff) < 1000) return 'Just now';
                     if (Math.abs(diff) < 60000)
-                      return rtf.format(-Math.round(diff / 1000), "seconds");
+                      return rtf.format(-Math.round(diff / 1000), 'seconds');
                     if (Math.abs(diff) < 3600000)
-                      return rtf.format(-Math.round(diff / 60000), "minutes");
+                      return rtf.format(-Math.round(diff / 60000), 'minutes');
                     if (Math.abs(diff) < 86400000)
-                      return rtf.format(-Math.round(diff / 3600000), "hours");
-                    return rtf.format(-Math.round(diff / 86400000), "days");
+                      return rtf.format(-Math.round(diff / 3600000), 'hours');
+                    return rtf.format(-Math.round(diff / 86400000), 'days');
                   })()}
                 />
               </div>
@@ -173,10 +155,7 @@ export const DateConverter: React.FC = () => {
   );
 };
 
-const ResultRow: React.FC<{ label: string; value: string }> = ({
-  label,
-  value,
-}) => {
+const ResultRow: React.FC<{ label: string; value: string }> = ({ label, value }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -187,20 +166,14 @@ const ResultRow: React.FC<{ label: string; value: string }> = ({
 
   return (
     <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50 transition-colors group">
-      <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">
-        {label}
-      </span>
+      <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">{label}</span>
       <div className="flex items-center gap-3">
-        <span className="font-mono text-slate-800 font-bold text-lg">
-          {value}
-        </span>
+        <span className="font-mono text-slate-800 font-bold text-lg">{value}</span>
         <ActionButton
           onClick={handleCopy}
           icon={copied ? Check : Copy}
           variant="ghost"
-          className={
-            copied ? "text-green-500" : "text-slate-400 hover:text-primary"
-          }
+          className={copied ? 'text-green-500' : 'text-slate-400 hover:text-primary'}
           title="Copy"
         />
       </div>

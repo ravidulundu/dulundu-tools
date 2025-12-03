@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Code2,
   Wand2,
@@ -9,13 +8,15 @@ import {
   Braces,
   Upload,
   Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+} from 'lucide-react';
+import React, { useState } from 'react';
 
-type Lang = "html" | "css" | "js";
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
+
+type Lang = 'html' | 'css' | 'js';
 
 export const CodeFormatter: React.FC = () => {
   const {
@@ -31,28 +32,26 @@ export const CodeFormatter: React.FC = () => {
     handleDownload,
   } = useToolLogic();
 
-  const [lang, setLang] = useState<Lang>("html");
+  const [lang, setLang] = useState<Lang>('html');
 
   const format = () => {
     let result = input;
 
-    if (lang === "css") {
+    if (lang === 'css') {
       result = result
-        .replace(/\s*\{\s*/g, " {\n  ")
-        .replace(/;\s*/g, ";\n  ")
-        .replace(/,\s*/g, ", ")
-        .replace(/\s*\}\s*/g, "\n}\n")
-        .replace(/^\s+/gm, "")
-        .replace(/;\n\s*\}/g, ";\n}")
-        .replace(/\n\s*\n/g, "\n");
-    } else if (lang === "html") {
+        .replace(/\s*\{\s*/g, ' {\n  ')
+        .replace(/;\s*/g, ';\n  ')
+        .replace(/,\s*/g, ', ')
+        .replace(/\s*\}\s*/g, '\n}\n')
+        .replace(/^\s+/gm, '')
+        .replace(/;\n\s*\}/g, ';\n}')
+        .replace(/\n\s*\n/g, '\n');
+    } else if (lang === 'html') {
       let pad = 0;
-      result = result
-        .replace(/>\s*</g, "><")
-        .replace(/(>)(<)(\/*)/g, "$1\r\n$2$3");
+      result = result.replace(/>\s*</g, '><').replace(/(>)(<)(\/*)/g, '$1\r\n$2$3');
 
-      let formatted = "";
-      result.split("\r\n").forEach((node) => {
+      let formatted = '';
+      result.split('\r\n').forEach(node => {
         let indent = 0;
         if (node.match(/.+<\/\w[^>]*>$/)) indent = 0;
         else if (node.match(/^<\/\w/)) {
@@ -60,15 +59,15 @@ export const CodeFormatter: React.FC = () => {
         } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) indent = 1;
         else indent = 0;
 
-        formatted += "  ".repeat(pad) + node + "\r\n";
+        formatted += '  '.repeat(pad) + node + '\r\n';
         pad += indent;
       });
       result = formatted.trim();
-    } else if (lang === "js") {
+    } else if (lang === 'js') {
       result = result
-        .replace(/;\s*/g, ";\n")
-        .replace(/\{\s*/g, " {\n  ")
-        .replace(/\}\s*/g, "\n}\n");
+        .replace(/;\s*/g, ';\n')
+        .replace(/\{\s*/g, ' {\n  ')
+        .replace(/\}\s*/g, '\n}\n');
     }
 
     setOutput(result);
@@ -79,8 +78,8 @@ export const CodeFormatter: React.FC = () => {
   };
 
   const getIcon = () => {
-    if (lang === "html") return Code2;
-    if (lang === "css") return Braces;
+    if (lang === 'html') return Code2;
+    if (lang === 'css') return Braces;
     return FileCode;
   };
 
@@ -97,31 +96,31 @@ export const CodeFormatter: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
             <button
-              onClick={() => setLang("html")}
+              onClick={() => setLang('html')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                lang === "html"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                lang === 'html'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               HTML
             </button>
             <button
-              onClick={() => setLang("css")}
+              onClick={() => setLang('css')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                lang === "css"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                lang === 'css'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               CSS
             </button>
             <button
-              onClick={() => setLang("js")}
+              onClick={() => setLang('js')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                lang === "js"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                lang === 'js'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               JS
@@ -142,7 +141,7 @@ export const CodeFormatter: React.FC = () => {
               ref={fileInputRef}
               type="file"
               accept=".html,.css,.js,.txt"
-              onChange={(e) => handleFileUpload(e)}
+              onChange={e => handleFileUpload(e)}
               className="hidden"
             />
             <ActionButton
@@ -152,12 +151,7 @@ export const CodeFormatter: React.FC = () => {
               variant="secondary"
             />
 
-            <ActionButton
-              onClick={handleClear}
-              icon={Trash2}
-              label="Clear"
-              variant="danger"
-            />
+            <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
           </div>
         </div>
 
@@ -184,16 +178,14 @@ export const CodeFormatter: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Download"
-                      onClick={() =>
-                        handleDownload(`formatted.${lang}`, "text/plain")
-                      }
+                      onClick={() => handleDownload(`formatted.${lang}`, 'text/plain')}
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

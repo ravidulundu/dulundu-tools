@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { SqlConverter } from "../features/SqlConverter";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { SqlConverter } from "../features/SqlConverter";
+
 
 describe("SqlConverter", () => {
   it("renders correctly", () => {

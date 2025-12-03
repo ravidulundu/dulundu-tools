@@ -1,9 +1,10 @@
-import { describe, it, expect, vi, beforeAll } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { WordpressPasswordHash } from "../features/WordpressPasswordHash";
 import React from "react";
-import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
+import { describe, it, expect, vi, beforeAll } from "vitest";
+
+import { ThemeProvider } from "../contexts/ThemeContext";
+import { WordpressPasswordHash } from "../features/WordpressPasswordHash";
 
 // Mock bcryptjs
 vi.mock("bcryptjs", () => ({

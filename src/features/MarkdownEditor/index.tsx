@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import DOMPurify from "dompurify";
-import { FileText, Eye, Check, Copy, Download } from "lucide-react";
-import { marked } from "marked";
-import Editor, { OnMount } from "@monaco-editor/react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useTheme } from "@/contexts/ThemeContext";
+import Editor, { OnMount } from '@monaco-editor/react';
+import DOMPurify from 'dompurify';
+import { FileText, Eye, Check, Copy, Download } from 'lucide-react';
+import { marked } from 'marked';
+import React, { useState, useEffect, useRef } from 'react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export const MarkdownEditor: React.FC = () => {
   const { theme } = useTheme();
@@ -79,7 +80,7 @@ alert(message);
 ## Inline code
 
 This web site is using \`markedjs/marked\`.`);
-  const [html, setHtml] = useState("");
+  const [html, setHtml] = useState('');
   const [copied, setCopied] = useState(false);
 
   // Refs for sync scrolling
@@ -90,10 +91,10 @@ This web site is using \`markedjs/marked\`.`);
   useEffect(() => {
     try {
       const rawHtml = marked.parse(markdown);
-      if (typeof rawHtml === "string") {
+      if (typeof rawHtml === 'string') {
         setHtml(rawHtml);
       } else {
-        (rawHtml as Promise<string>).then((res) => setHtml(res));
+        (rawHtml as Promise<string>).then(res => setHtml(res));
       }
     } catch (e) {
       // Ignore parsing errors while typing
@@ -109,7 +110,7 @@ This web site is using \`markedjs/marked\`.`);
   const handleDownload = (content: string, filename: string, type: string) => {
     const blob = new Blob([content], { type });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
     a.download = filename;
     document.body.appendChild(a);
@@ -118,13 +119,12 @@ This web site is using \`markedjs/marked\`.`);
     URL.revokeObjectURL(url);
   };
 
-  const handleEditorDidMount: OnMount = (editor) => {
+  const handleEditorDidMount: OnMount = editor => {
     editorRef.current = editor;
-    editor.onDidScrollChange((e) => {
+    editor.onDidScrollChange(e => {
       if (!isScrolling.current && previewRef.current) {
         isScrolling.current = true;
-        const editorScrollHeight =
-          editor.getScrollHeight() - editor.getLayoutInfo().height;
+        const editorScrollHeight = editor.getScrollHeight() - editor.getLayoutInfo().height;
         const previewScrollHeight =
           previewRef.current.scrollHeight - previewRef.current.clientHeight;
         const ratio = e.scrollTop / editorScrollHeight;
@@ -137,11 +137,9 @@ This web site is using \`markedjs/marked\`.`);
   const handlePreviewScroll = () => {
     if (!isScrolling.current && editorRef.current && previewRef.current) {
       isScrolling.current = true;
-      const previewScrollHeight =
-        previewRef.current.scrollHeight - previewRef.current.clientHeight;
+      const previewScrollHeight = previewRef.current.scrollHeight - previewRef.current.clientHeight;
       const editorScrollHeight =
-        editorRef.current.getScrollHeight() -
-        editorRef.current.getLayoutInfo().height;
+        editorRef.current.getScrollHeight() - editorRef.current.getLayoutInfo().height;
       const ratio = previewRef.current.scrollTop / previewScrollHeight;
       editorRef.current.setScrollTop(ratio * editorScrollHeight);
       setTimeout(() => (isScrolling.current = false), 10);
@@ -153,13 +151,11 @@ This web site is using \`markedjs/marked\`.`);
       {/* Toolbar matching theme colors */}
       <div className="flex items-center justify-between px-4 py-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-sm border-b border-gray-200 dark:border-slate-800 shrink-0 transition-colors duration-200">
         <div className="flex items-center gap-4">
-          <span className="font-bold text-slate-800 dark:text-white">
-            Markdown Live Preview
-          </span>
+          <span className="font-bold text-slate-800 dark:text-white">Markdown Live Preview</span>
           <button
             onClick={() =>
               setMarkdown(
-                "# Markdown syntax guide\n\n## Headers\n\n# This is a Heading h1\n## This is a Heading h2\n###### This is a Heading h6\n\n## Emphasis\n\n*This text will be italic*\n_This will also be italic_\n\n**This text will be bold**\n__This will also be bold__\n\n_You **can** combine them_\n\n## Lists\n\n### Unordered\n\n* Item 1\n* Item 2\n* Item 2a\n* Item 2b\n    * Item 3a\n    * Item 3b\n\n### Ordered\n\n1. Item 1\n2. Item 2\n3. Item 3\n    1. Item 3a\n    2. Item 3b\n\n## Images\n\n![Dulundu Tools Logo](/favicon.svg \"Dulundu Tools Logo\")\n\n## Links\n\nYou may be using [Dulundu Tools](https://dulundu.tools/).\n\n## Blockquotes\n\n> Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.\n>\n>> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.\n\n## Tables\n\n| Left columns  | Right columns |\n| ------------- |:-------------:|\n| left foo      | right foo     |\n| left bar      | right bar     |\n| left baz      | right baz     |\n\n## Blocks of code\n\n```\nlet message = 'Hello world';\nalert(message);\n```\n\n## Inline code\n\nThis web site is using `markedjs/marked`."
+                '# Markdown syntax guide\n\n## Headers\n\n# This is a Heading h1\n## This is a Heading h2\n###### This is a Heading h6\n\n## Emphasis\n\n*This text will be italic*\n_This will also be italic_\n\n**This text will be bold**\n__This will also be bold__\n\n_You **can** combine them_\n\n## Lists\n\n### Unordered\n\n* Item 1\n* Item 2\n* Item 2a\n* Item 2b\n    * Item 3a\n    * Item 3b\n\n### Ordered\n\n1. Item 1\n2. Item 2\n3. Item 3\n    1. Item 3a\n    2. Item 3b\n\n## Images\n\n![Dulundu Tools Logo](/favicon.svg "Dulundu Tools Logo")\n\n## Links\n\nYou may be using [Dulundu Tools](https://dulundu.tools/).\n\n## Blockquotes\n\n> Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.\n>\n>> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.\n\n## Tables\n\n| Left columns  | Right columns |\n| ------------- |:-------------:|\n| left foo      | right foo     |\n| left bar      | right bar     |\n| left baz      | right baz     |\n\n## Blocks of code\n\n```\nlet message = \'Hello world\';\nalert(message);\n```\n\n## Inline code\n\nThis web site is using `markedjs/marked`.'
               )
             }
             className="hover:text-primary dark:hover:text-white transition-colors"
@@ -170,7 +166,7 @@ This web site is using \`markedjs/marked\`.`);
             onClick={handleCopy}
             className="hover:text-primary dark:hover:text-white transition-colors"
           >
-            {copied ? "Copied!" : "Copy"}
+            {copied ? 'Copied!' : 'Copy'}
           </button>
         </div>
         <div className="flex items-center gap-2">
@@ -178,7 +174,7 @@ This web site is using \`markedjs/marked\`.`);
             <input
               type="checkbox"
               defaultChecked={true}
-              onChange={(e) => {
+              onChange={e => {
                 isScrolling.current = !e.target.checked;
               }}
               className="rounded border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-slate-800 text-primary focus:ring-offset-white dark:focus:ring-offset-slate-900"
@@ -187,16 +183,14 @@ This web site is using \`markedjs/marked\`.`);
           </label>
           <div className="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-2" />
           <button
-            onClick={() =>
-              handleDownload(markdown, "document.md", "text/markdown")
-            }
+            onClick={() => handleDownload(markdown, 'document.md', 'text/markdown')}
             className="hover:text-primary dark:hover:text-white transition-colors"
             title="Download Markdown"
           >
             <Download size={16} />
           </button>
           <button
-            onClick={() => handleDownload(html, "document.html", "text/html")}
+            onClick={() => handleDownload(html, 'document.html', 'text/html')}
             className="hover:text-primary dark:hover:text-white transition-colors"
             title="Download HTML"
           >
@@ -215,18 +209,18 @@ This web site is using \`markedjs/marked\`.`);
                 height="100%"
                 defaultLanguage="markdown"
                 value={markdown}
-                onChange={(value) => setMarkdown(value || "")}
+                onChange={value => setMarkdown(value || '')}
                 onMount={handleEditorDidMount}
-                theme={theme === "dark" ? "vs-dark" : "light"}
+                theme={theme === 'dark' ? 'vs-dark' : 'light'}
                 options={{
                   minimap: { enabled: false },
                   fontSize: 14,
-                  wordWrap: "on",
+                  wordWrap: 'on',
                   scrollBeyondLastLine: false,
                   padding: { top: 16, bottom: 16 },
                   fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
-                  lineNumbers: "on",
-                  renderLineHighlight: "all",
+                  lineNumbers: 'on',
+                  renderLineHighlight: 'all',
                 }}
               />
             </div>

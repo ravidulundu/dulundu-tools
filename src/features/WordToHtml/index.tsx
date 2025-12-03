@@ -1,9 +1,10 @@
-import React, { useState, useRef } from "react";
-import { FileText, Code, Copy, Check, Trash2 } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
+import { FileText, Code, Copy, Check, Trash2 } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const WordToHtml: React.FC = () => {
-  const [html, setHtml] = useState("");
+  const [html, setHtml] = useState('');
   const [copied, setCopied] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
 
@@ -36,8 +37,8 @@ export const WordToHtml: React.FC = () => {
               <button
                 onClick={() => {
                   if (editorRef.current) {
-                    editorRef.current.innerHTML = "";
-                    setHtml("");
+                    editorRef.current.innerHTML = '';
+                    setHtml('');
                   }
                 }}
                 className="text-xs text-red-500 hover:text-red-600 flex items-center"
@@ -55,9 +56,7 @@ export const WordToHtml: React.FC = () => {
           </div>
 
           <div className="flex flex-col h-full">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              HTML Output
-            </label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">HTML Output</label>
             <div className="relative flex-1">
               <textarea
                 readOnly
@@ -71,11 +70,7 @@ export const WordToHtml: React.FC = () => {
                   className="absolute top-4 right-4 p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"
                   title="Copy"
                 >
-                  {copied ? (
-                    <Check size={16} className="text-green-500" />
-                  ) : (
-                    <Copy size={16} />
-                  )}
+                  {copied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
                 </button>
               )}
             </div>

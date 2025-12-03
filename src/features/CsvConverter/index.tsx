@@ -1,18 +1,11 @@
-import React from "react";
-import {
-  Table,
-  ArrowRight,
-  Copy,
-  Check,
-  Trash2,
-  Download,
-  Upload,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { Button } from "@/components/common/Button";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { Table, ArrowRight, Copy, Check, Trash2, Download, Upload } from 'lucide-react';
+import React from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { Button } from '@/components/common/Button';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const CsvConverter: React.FC = () => {
   const {
@@ -32,28 +25,25 @@ export const CsvConverter: React.FC = () => {
 
   const convertToJson = () => {
     if (!input.trim()) {
-      setOutput("");
+      setOutput('');
       return;
     }
 
     try {
-      const lines = input.trim().split("\n");
-      if (lines.length < 2)
-        throw new Error("CSV must have at least a header row and one data row");
+      const lines = input.trim().split('\n');
+      if (lines.length < 2) throw new Error('CSV must have at least a header row and one data row');
 
-      const headers = lines[0]
-        .split(",")
-        .map((h) => h.trim().replace(/^"|"$/g, ""));
+      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
       const result = [];
 
       for (let i = 1; i < lines.length; i++) {
         const obj: Record<string, string> = {};
-        const currentline = lines[i].split(","); // Simple split, doesn't handle commas in quotes yet for simplicity
+        const currentline = lines[i].split(','); // Simple split, doesn't handle commas in quotes yet for simplicity
 
         for (let j = 0; j < headers.length; j++) {
           let val = currentline[j]?.trim();
-          if (val) val = val.replace(/^"|"$/g, "");
-          obj[headers[j]] = val || "";
+          if (val) val = val.replace(/^"|"$/g, '');
+          obj[headers[j]] = val || '';
         }
         result.push(obj);
       }
@@ -61,7 +51,7 @@ export const CsvConverter: React.FC = () => {
       setOutput(JSON.stringify(result, null, 2));
       setError(null);
     } catch (e) {
-      setError("Error parsing CSV. Ensure format is correct.");
+      setError('Error parsing CSV. Ensure format is correct.');
     }
   };
 
@@ -77,11 +67,7 @@ export const CsvConverter: React.FC = () => {
         {/* Toolbar */}
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-2">
-            <Button
-              onClick={convertToJson}
-              variant="primary"
-              className="shadow-md"
-            >
+            <Button onClick={convertToJson} variant="primary" className="shadow-md">
               Convert <ArrowRight size={16} className="ml-2" />
             </Button>
           </div>
@@ -100,12 +86,7 @@ export const CsvConverter: React.FC = () => {
               label="Upload"
               variant="secondary"
             />
-            <ActionButton
-              onClick={handleClear}
-              icon={Trash2}
-              label="Clear"
-              variant="danger"
-            />
+            <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
           </div>
         </div>
 
@@ -132,16 +113,14 @@ export const CsvConverter: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Save"
-                      onClick={() =>
-                        handleDownload("converted.json", "application/json")
-                      }
+                      onClick={() => handleDownload('converted.json', 'application/json')}
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </div>
                 )

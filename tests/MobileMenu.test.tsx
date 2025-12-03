@@ -1,9 +1,11 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import MobileMenu from "../components/MobileMenu";
 import React from "react";
-import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
+import { describe, it, expect } from "vitest";
+
+import MobileMenu from "../components/MobileMenu";
+import { ThemeProvider } from "../contexts/ThemeContext";
+
 
 describe("MobileMenu", () => {
   it("renders without crashing", () => {

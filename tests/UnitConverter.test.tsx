@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { UnitConverter } from "../features/UnitConverter";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { UnitConverter } from "../features/UnitConverter";
+
 
 describe("UnitConverter", () => {
   it("converts length correctly", () => {

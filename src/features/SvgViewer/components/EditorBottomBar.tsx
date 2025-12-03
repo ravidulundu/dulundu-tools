@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Upload, Copy, Download, Share2, Check } from "lucide-react";
+import { Upload, Copy, Download, Share2, Check } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface EditorBottomBarProps {
   svgCode: string;
@@ -15,14 +15,14 @@ export const EditorBottomBar: React.FC<EditorBottomBarProps> = ({
   const [isCopied, setIsCopied] = useState(false);
 
   const handleUpload = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".svg";
-    input.onchange = (e) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.svg';
+    input.onchange = e => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = e => {
           const content = e.target?.result as string;
           setSvgCode(content);
         };
@@ -39,11 +39,11 @@ export const EditorBottomBar: React.FC<EditorBottomBarProps> = ({
   };
 
   const handleDownload = () => {
-    const blob = new Blob([svgCode], { type: "image/svg+xml" });
+    const blob = new Blob([svgCode], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "image.svg";
+    a.download = 'image.svg';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -65,16 +65,12 @@ export const EditorBottomBar: React.FC<EditorBottomBarProps> = ({
           onClick={handleCopy}
           className={`flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded transition-colors border ${
             isCopied
-              ? "text-green-600 dark:text-green-400 border-green-600 dark:border-green-500 bg-green-50 dark:bg-green-900/10"
-              : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300 dark:border-gray-700"
+              ? 'text-green-600 dark:text-green-400 border-green-600 dark:border-green-500 bg-green-50 dark:bg-green-900/10'
+              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300 dark:border-gray-700'
           }`}
         >
-          {isCopied ? (
-            <Check className="w-3.5 h-3.5" />
-          ) : (
-            <Copy className="w-3.5 h-3.5" />
-          )}
-          {isCopied ? "Copied!" : "Copy"}
+          {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+          {isCopied ? 'Copied!' : 'Copy'}
         </button>
         <button
           onClick={handleDownload}

@@ -1,6 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
-import { useToolLogic } from "../hooks/useToolLogic";
 import { describe, it, expect, vi } from "vitest";
+
+import { useToolLogic } from "../hooks/useToolLogic";
 
 describe("useToolLogic", () => {
   it("should initialize with default values", () => {

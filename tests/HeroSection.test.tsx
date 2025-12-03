@@ -1,9 +1,11 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { HeroSection } from "../components/home/HeroSection";
 import React from "react";
-import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
+import { describe, it, expect } from "vitest";
+
+import { HeroSection } from "../components/home/HeroSection";
+import { ThemeProvider } from "../contexts/ThemeContext";
+
 
 describe("HeroSection", () => {
   it("renders without crashing", () => {

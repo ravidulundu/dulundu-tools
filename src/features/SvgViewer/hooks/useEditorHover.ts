@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 
 export interface HoverInfo {
@@ -23,11 +22,12 @@ export const useEditorHover = (editor: any) => {
 
         // Get content of the hovered line
         const lineContent = model.getLineContent(lineNumber);
-        
+
         const column = e.target.position.column;
-        
+
         // Find all SVG tags on this line
-        const tagRegex = /<(path|circle|rect|ellipse|polygon|polyline|line|g|text|use|image|defs|symbol|marker|mask|pattern|clipPath|linearGradient|radialGradient|stop)[^>]*>/gi;
+        const tagRegex =
+          /<(path|circle|rect|ellipse|polygon|polyline|line|g|text|use|image|defs|symbol|marker|mask|pattern|clipPath|linearGradient|radialGradient|stop)[^>]*>/gi;
         let match;
         let foundElement = null;
 
@@ -35,30 +35,30 @@ export const useEditorHover = (editor: any) => {
         while ((match = tagRegex.exec(lineContent)) !== null) {
           const startCol = match.index + 1; // 1-based column
           const endCol = startCol + match[0].length;
-          
+
           if (column >= startCol && column <= endCol) {
             foundElement = {
               type: match[1].toLowerCase(),
-              index: match.index
+              index: match.index,
             };
             break;
           }
         }
-        
+
         if (foundElement) {
           const elementType = foundElement.type;
-          
+
           // Calculate element index (global nth-of-type)
           // Get text up to the start of this specific element instance
           const lineStartOffset = model.getOffsetAt({ lineNumber: lineNumber, column: 1 });
           const elementStartOffset = lineStartOffset + foundElement.index;
-          
+
           const fullText = model.getValue();
           const textBefore = fullText.substring(0, elementStartOffset);
-          
+
           // Remove comments to avoid false counts
           const textBeforeNoComments = textBefore.replace(/<!--[\s\S]*?-->/g, '');
-          
+
           const regex = new RegExp(`<${elementType}[^>]*>`, 'gi');
           const matches = textBeforeNoComments.match(regex);
           const elementIndex = matches ? matches.length : 0;

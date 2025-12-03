@@ -1,17 +1,10 @@
-import React from "react";
-import {
-  Wand2,
-  ArrowRight,
-  Copy,
-  Check,
-  Trash2,
-  Upload,
-  Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { Wand2, ArrowRight, Copy, Check, Trash2, Upload, Download } from 'lucide-react';
+import React from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const LuaBeautifier: React.FC = () => {
   const {
@@ -27,7 +20,7 @@ export const LuaBeautifier: React.FC = () => {
     handleDownload,
   } = useToolLogic({
     initialInput:
-      "function factorial(n) if n==0 then return 1 else return n*factorial(n-1) end end",
+      'function factorial(n) if n==0 then return 1 else return n*factorial(n-1) end end',
   });
 
   const beautifyLua = (code: string) => {
@@ -38,22 +31,22 @@ export const LuaBeautifier: React.FC = () => {
     // 2. Add newlines before 'end', 'until', 'else', 'elseif'
 
     // Normalize spaces
-    formatted = formatted.replace(/\s+/g, " ");
+    formatted = formatted.replace(/\s+/g, ' ');
 
     // Add newlines around keywords
-    formatted = formatted.replace(/\s(then|do|repeat)\s/g, " $1\n");
-    formatted = formatted.replace(/\s(end|until|else|elseif)\s/g, "\n$1\n");
-    formatted = formatted.replace(/\s(function)\s/g, "\n$1 ");
+    formatted = formatted.replace(/\s(then|do|repeat)\s/g, ' $1\n');
+    formatted = formatted.replace(/\s(end|until|else|elseif)\s/g, '\n$1\n');
+    formatted = formatted.replace(/\s(function)\s/g, '\n$1 ');
 
     // Split lines
-    const lines = formatted.split("\n");
+    const lines = formatted.split('\n');
     let indentLevel = 0;
-    const indentChar = "    ";
+    const indentChar = '    ';
 
     const result = lines
-      .map((line) => {
+      .map(line => {
         line = line.trim();
-        if (!line) return "";
+        if (!line) return '';
 
         // Decrease indent for closing blocks
         if (line.match(/^(end|until|else|elseif)/)) {
@@ -63,19 +56,16 @@ export const LuaBeautifier: React.FC = () => {
         const indentedLine = indentChar.repeat(indentLevel) + line;
 
         // Increase indent for opening blocks
-        if (
-          line.match(/^(function|if|while|repeat|for|else|elseif|do)/) &&
-          !line.match(/\send$/)
-        ) {
+        if (line.match(/^(function|if|while|repeat|for|else|elseif|do)/) && !line.match(/\send$/)) {
           // Check if it's not a single line function/if (heuristic)
-          if (!line.includes("end")) {
+          if (!line.includes('end')) {
             indentLevel++;
           }
         }
 
         return indentedLine;
       })
-      .join("\n");
+      .join('\n');
 
     return result.trim();
   };
@@ -151,16 +141,14 @@ export const LuaBeautifier: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Save"
-                      onClick={() =>
-                        handleDownload("formatted.lua", "text/x-lua")
-                      }
+                      onClick={() => handleDownload('formatted.lua', 'text/x-lua')}
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

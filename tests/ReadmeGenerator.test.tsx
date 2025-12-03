@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeAll } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ReadmeGenerator } from "../features/ReadmeGenerator/ReadmeGenerator";
 import React from "react";
+import { describe, it, expect, vi, beforeAll } from "vitest";
 
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { ReadmeGenerator } from "../features/ReadmeGenerator/ReadmeGenerator";
 
 describe("ReadmeGenerator", () => {
   beforeAll(() => {

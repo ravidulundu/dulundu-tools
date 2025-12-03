@@ -1,6 +1,7 @@
-import React from "react";
-import { Copy } from "lucide-react";
-import { generateDataUris, formatBytes } from "../../utils/svgExporter";
+import { Copy } from 'lucide-react';
+import React from 'react';
+
+import { generateDataUris, formatBytes } from '../../utils/svgExporter';
 
 interface DataUriTabProps {
   svgCode: string;
@@ -14,12 +15,8 @@ export const DataUriTab: React.FC<DataUriTabProps> = ({ svgCode }) => {
           <div key={key} className="flex flex-col gap-3 w-full">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-900">
-                  {data.label}
-                </span>
-                <span className="text-sm text-gray-400">
-                  {formatBytes(data.size)}
-                </span>
+                <span className="text-sm font-medium text-gray-900">{data.label}</span>
+                <span className="text-sm text-gray-400">{formatBytes(data.size)}</span>
               </div>
               <button
                 onClick={() => {

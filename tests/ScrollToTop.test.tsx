@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { ScrollToTop } from '../components/ScrollToTop';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { ScrollToTop } from '../components/ScrollToTop';
+import { ThemeProvider } from '../contexts/ThemeContext';
+
 
 describe('ScrollToTop', () => {
   it('renders without crashing', () => {

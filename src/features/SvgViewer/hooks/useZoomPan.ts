@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from 'react';
 
 interface Transform {
   x: number;
@@ -24,15 +24,15 @@ export const useZoomPan = () => {
       if (e.ctrlKey || e.metaKey) {
         e.preventDefault();
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
-        setTransform((prev) => ({
+        setTransform(prev => ({
           ...prev,
           scale: Math.min(Math.max(0.1, prev.scale * delta), 10),
         }));
       }
     };
 
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    return () => container.removeEventListener("wheel", handleWheel);
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
   }, []);
 
   // Global mouseup to clear drag state
@@ -40,8 +40,8 @@ export const useZoomPan = () => {
     if (!isDragging) return;
 
     const handleGlobalMouseUp = () => setIsDragging(false);
-    window.addEventListener("mouseup", handleGlobalMouseUp);
-    return () => window.removeEventListener("mouseup", handleGlobalMouseUp);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    return () => window.removeEventListener('mouseup', handleGlobalMouseUp);
   }, [isDragging]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -55,7 +55,7 @@ export const useZoomPan = () => {
     const dx = e.clientX - lastMousePos.x;
     const dy = e.clientY - lastMousePos.y;
 
-    setTransform((prev) => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
+    setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
     setLastMousePos({ x: e.clientX, y: e.clientY });
   };
 
@@ -63,14 +63,14 @@ export const useZoomPan = () => {
   const handleMouseLeave = () => setIsDragging(false);
 
   const handleZoomIn = () => {
-    setTransform((prev) => ({
+    setTransform(prev => ({
       ...prev,
       scale: Math.min(10, prev.scale * 1.2),
     }));
   };
 
   const handleZoomOut = () => {
-    setTransform((prev) => ({
+    setTransform(prev => ({
       ...prev,
       scale: Math.max(0.1, prev.scale / 1.2),
     }));

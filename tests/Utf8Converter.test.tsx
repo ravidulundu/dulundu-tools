@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Utf8Converter } from '../features/Utf8Converter';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { Utf8Converter } from '../features/Utf8Converter';
 
 describe('Utf8Converter', () => {
   it('renders without crashing', () => {

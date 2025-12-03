@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import { Archive, Minimize2, Maximize2, Copy, Check, Trash2, ArrowRight } from 'lucide-react';
-import { ToolHeader } from '@/components/common/ToolHeader';
-import { CodeEditor } from '@/components/common/CodeEditor';
+import React, { useState } from 'react';
+
 import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const GzipCompressor: React.FC = () => {
   const [input, setInput] = useState('');
@@ -11,7 +12,7 @@ export const GzipCompressor: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [stats, setStats] = useState<{ orig: number, res: number } | null>(null);
+  const [stats, setStats] = useState<{ orig: number; res: number } | null>(null);
 
   const bufferToBase64 = (buffer: Uint8Array): string => {
     let binary = '';
@@ -33,7 +34,10 @@ export const GzipCompressor: React.FC = () => {
   };
 
   const process = async () => {
-    if (!input) { setOutput(''); return; }
+    if (!input) {
+      setOutput('');
+      return;
+    }
     setLoading(true);
     setError(null);
     setStats(null);
@@ -64,7 +68,7 @@ export const GzipCompressor: React.FC = () => {
         setStats({ orig: input.length, res: text.length });
       }
     } catch (e) {
-      setError("Operation failed. Ensure input is valid.");
+      setError('Operation failed. Ensure input is valid.');
       console.error(e);
     } finally {
       setLoading(false);
@@ -87,7 +91,6 @@ export const GzipCompressor: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={Archive}
           title="GZip Compressor"
@@ -98,13 +101,23 @@ export const GzipCompressor: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex bg-slate-100 p-1 rounded-lg">
             <button
-              onClick={() => { setMode('compress'); setInput(output); setOutput(''); setStats(null); }}
+              onClick={() => {
+                setMode('compress');
+                setInput(output);
+                setOutput('');
+                setStats(null);
+              }}
               className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all ${mode === 'compress' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
             >
               <Minimize2 size={16} className="mr-2" /> Compress
             </button>
             <button
-              onClick={() => { setMode('decompress'); setInput(output); setOutput(''); setStats(null); }}
+              onClick={() => {
+                setMode('decompress');
+                setInput(output);
+                setOutput('');
+                setStats(null);
+              }}
               className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all ${mode === 'decompress' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
             >
               <Maximize2 size={16} className="mr-2" /> Decompress
@@ -117,14 +130,21 @@ export const GzipCompressor: React.FC = () => {
               disabled={loading || !input}
               className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm font-medium flex items-center text-sm disabled:opacity-50"
             >
-              {loading ? 'Processing...' : (
+              {loading ? (
+                'Processing...'
+              ) : (
                 <>
-                  {mode === 'compress' ? 'Compress' : 'Decompress'} <ArrowRight size={16} className="ml-1.5" />
+                  {mode === 'compress' ? 'Compress' : 'Decompress'}{' '}
+                  <ArrowRight size={16} className="ml-1.5" />
                 </>
               )}
             </button>
 
-            <button onClick={handleClear} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Clear All">
+            <button
+              onClick={handleClear}
+              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              title="Clear All"
+            >
               <Trash2 size={20} />
             </button>
           </div>
@@ -133,12 +153,15 @@ export const GzipCompressor: React.FC = () => {
         {/* Editor Area */}
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
-
             <CodeEditor
               value={input}
               onChange={setInput}
               label={`Input ${mode === 'compress' ? 'Text' : 'Base64 GZip'}`}
-              placeholder={mode === 'compress' ? "Type text to compress..." : "Paste Base64 encoded GZip string..."}
+              placeholder={
+                mode === 'compress'
+                  ? 'Type text to compress...'
+                  : 'Paste Base64 encoded GZip string...'
+              }
               theme="light"
             />
 

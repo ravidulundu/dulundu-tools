@@ -1,5 +1,6 @@
-import React from "react";
-import { SEO } from "@/components/SEO";
+import React from 'react';
+
+import { SEO } from '@/components/SEO';
 
 export const PrivacyPolicy: React.FC = () => {
   return (
@@ -12,19 +13,17 @@ export const PrivacyPolicy: React.FC = () => {
       <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
 
       <div className="prose prose-slate max-w-none">
-        <p className="text-sm text-gray-500 mb-8">
-          Last Updated: December 2, 2024
-        </p>
+        <p className="text-sm text-gray-500 mb-8">Last Updated: December 2, 2024</p>
 
         <h2>1. Introduction</h2>
         <p>
-          Dulundu.tools ("we", "our", or "us") is committed to protecting your
-          privacy. This Privacy Policy explains how we collect, use, and
-          safeguard your information when you use our Service.
+          Dulundu.tools ("we", "our", or "us") is committed to protecting your privacy. This Privacy
+          Policy explains how we collect, use, and safeguard your information when you use our
+          Service.
         </p>
         <p>
-          <strong>Key Principle:</strong> We minimize data collection and
-          process most data client-side in your browser.
+          <strong>Key Principle:</strong> We minimize data collection and process most data
+          client-side in your browser.
         </p>
 
         <h2>2. Data We Collect</h2>
@@ -63,9 +62,7 @@ export const PrivacyPolicy: React.FC = () => {
           <li>Your prompt is sent to Google Gemini AI for processing</li>
           <li>Responses are generated and returned to you</li>
           <li>We do NOT store prompts or responses</li>
-          <li>
-            Google's AI may process data according to their privacy policy
-          </li>
+          <li>Google's AI may process data according to their privacy policy</li>
         </ul>
 
         <h2>3. Data We DON'T Collect</h2>
@@ -96,9 +93,7 @@ export const PrivacyPolicy: React.FC = () => {
         </ul>
 
         <h2>5. Browser-Based Processing</h2>
-        <p>
-          Most tools process data entirely in your browser using JavaScript:
-        </p>
+        <p>Most tools process data entirely in your browser using JavaScript:</p>
         <ul>
           <li>JSON Formatter</li>
           <li>Base64 Converter</li>
@@ -108,20 +103,18 @@ export const PrivacyPolicy: React.FC = () => {
           <li>And many others...</li>
         </ul>
         <p>
-          <strong>Your data never leaves your device</strong> for these tools.
-          We cannot and do not access this data.
+          <strong>Your data never leaves your device</strong> for these tools. We cannot and do not
+          access this data.
         </p>
 
         <h2>6. Server-Side Processing</h2>
         <p>Only these features send data to our servers:</p>
         <ul>
           <li>
-            <strong>Share Feature:</strong> When you explicitly create a
-            shareable link
+            <strong>Share Feature:</strong> When you explicitly create a shareable link
           </li>
           <li>
-            <strong>AI Features:</strong> When you use AI code helper or
-            paraphrasing
+            <strong>AI Features:</strong> When you use AI code helper or paraphrasing
           </li>
         </ul>
         <p>Server-processed data is:</p>
@@ -135,8 +128,7 @@ export const PrivacyPolicy: React.FC = () => {
         <p>If you are in the European Union, you have the following rights:</p>
         <ul>
           <li>
-            <strong>Right to Access:</strong> Request a copy of data we have
-            about you
+            <strong>Right to Access:</strong> Request a copy of data we have about you
           </li>
           <li>
             <strong>Right to Rectification:</strong> Correct inaccurate data
@@ -145,19 +137,17 @@ export const PrivacyPolicy: React.FC = () => {
             <strong>Right to Erasure:</strong> Request deletion of your data
           </li>
           <li>
-            <strong>Right to Restriction:</strong> Limit how we process your
-            data
+            <strong>Right to Restriction:</strong> Limit how we process your data
           </li>
           <li>
-            <strong>Right to Data Portability:</strong> Receive data in a
-            portable format
+            <strong>Right to Data Portability:</strong> Receive data in a portable format
           </li>
           <li>
             <strong>Right to Object:</strong> Object to data processing
           </li>
         </ul>
         <p>
-          To exercise these rights, contact:{" "}
+          To exercise these rights, contact:{' '}
           <a href="mailto:privacy@dulundu.tools" className="text-blue-600">
             privacy@dulundu.tools
           </a>
@@ -174,7 +164,7 @@ export const PrivacyPolicy: React.FC = () => {
           <li>Information about data sharing</li>
         </ul>
         <p>
-          Contact:{" "}
+          Contact:{' '}
           <a href="mailto:privacy@dulundu.tools" className="text-blue-600">
             privacy@dulundu.tools
           </a>
@@ -186,8 +176,7 @@ export const PrivacyPolicy: React.FC = () => {
             <strong>Analytics:</strong> 90 days (anonymized)
           </li>
           <li>
-            <strong>Shared Links:</strong> Based on your selected expiration (1
-            hour to never)
+            <strong>Shared Links:</strong> Based on your selected expiration (1 hour to never)
           </li>
           <li>
             <strong>AI Prompts:</strong> Not stored
@@ -243,23 +232,22 @@ export const PrivacyPolicy: React.FC = () => {
 
         <h2>12. Children's Privacy</h2>
         <p>
-          Our Service is not directed to individuals under 13. We do not
-          knowingly collect personal information from children. If you believe a
-          child has provided us with personal information, please contact us
-          immediately.
+          Our Service is not directed to individuals under 13. We do not knowingly collect personal
+          information from children. If you believe a child has provided us with personal
+          information, please contact us immediately.
         </p>
 
         <h2>13. Changes to Privacy Policy</h2>
         <p>
-          We may update this Privacy Policy from time to time. Changes will be
-          posted on this page with an updated "Last Updated" date. Continued use
-          of the Service constitutes acceptance of changes.
+          We may update this Privacy Policy from time to time. Changes will be posted on this page
+          with an updated "Last Updated" date. Continued use of the Service constitutes acceptance
+          of changes.
         </p>
 
         <h2>14. Contact Us</h2>
         <p>For privacy-related questions or to exercise your rights:</p>
         <p>
-          <strong>Email:</strong>{" "}
+          <strong>Email:</strong>{' '}
           <a href="mailto:privacy@dulundu.tools" className="text-blue-600">
             privacy@dulundu.tools
           </a>
@@ -268,10 +256,7 @@ export const PrivacyPolicy: React.FC = () => {
         </p>
 
         <h2>15. Consent</h2>
-        <p>
-          By using Dulundu.tools, you consent to this Privacy Policy and agree
-          to its terms.
-        </p>
+        <p>By using Dulundu.tools, you consent to this Privacy Policy and agree to its terms.</p>
       </div>
     </div>
   );

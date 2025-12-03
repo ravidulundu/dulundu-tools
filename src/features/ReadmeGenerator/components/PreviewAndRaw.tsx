@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import DOMPurify from "dompurify";
-import { marked } from "marked";
+import DOMPurify from 'dompurify';
+import { marked } from 'marked';
+import React, { useState, useEffect } from 'react';
 
 interface PreviewAndRawProps {
   markdown: string;
 }
 
 export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
-  const [html, setHtml] = useState("");
-  const [activeTab, setActiveTab] = useState<"preview" | "raw">("preview");
+  const [html, setHtml] = useState('');
+  const [activeTab, setActiveTab] = useState<'preview' | 'raw'>('preview');
   const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
@@ -25,16 +25,16 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
-      console.error("Failed to copy:", err);
+      console.error('Failed to copy:', err);
     }
   };
 
   const handleDownload = () => {
-    const blob = new Blob([markdown], { type: "text/markdown" });
+    const blob = new Blob([markdown], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "README.md";
+    a.download = 'README.md';
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -46,21 +46,21 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex gap-1">
             <button
-              onClick={() => setActiveTab("preview")}
+              onClick={() => setActiveTab('preview')}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                activeTab === "preview"
-                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                  : "text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800"
+                activeTab === 'preview'
+                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                  : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'
               }`}
             >
               Preview
             </button>
             <button
-              onClick={() => setActiveTab("raw")}
+              onClick={() => setActiveTab('raw')}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                activeTab === "raw"
-                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                  : "text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800"
+                activeTab === 'raw'
+                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                  : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'
               }`}
             >
               Raw
@@ -72,8 +72,8 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
               onClick={handleCopy}
               className={`px-3 py-1.5 rounded-md transition-colors text-xs font-medium flex items-center gap-2 ${
                 copySuccess
-                  ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                  : "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700"
+                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                  : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
               }`}
             >
               {copySuccess ? (
@@ -140,7 +140,7 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
 
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-slate-900">
-        {activeTab === "preview" ? (
+        {activeTab === 'preview' ? (
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 min-h-full">
             <div
               className="prose prose-slate max-w-none 
@@ -168,7 +168,7 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 min-h-full">
             <pre className="text-sm text-slate-800 dark:text-slate-200 font-mono whitespace-pre-wrap break-words leading-relaxed">
               {markdown ||
-                "# No sections selected\n\nClick sections on the left to add them to your README."}
+                '# No sections selected\n\nClick sections on the left to add them to your README.'}
             </pre>
           </div>
         )}

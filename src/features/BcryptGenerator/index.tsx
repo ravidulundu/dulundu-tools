@@ -1,22 +1,16 @@
-import React, { useState } from "react";
-import {
-  Lock,
-  RefreshCw,
-  Check,
-  AlertTriangle,
-  Copy,
-  Trash2,
-} from "lucide-react";
+import { Lock, RefreshCw, Check, AlertTriangle, Copy, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+
 // bcryptjs lazy loaded
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const BcryptGenerator: React.FC = () => {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [rounds, setRounds] = useState(10);
-  const [hash, setHash] = useState("");
-  const [compareHash, setCompareHash] = useState("");
+  const [hash, setHash] = useState('');
+  const [compareHash, setCompareHash] = useState('');
   const [matchResult, setMatchResult] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -26,7 +20,7 @@ export const BcryptGenerator: React.FC = () => {
     setLoading(true);
 
     try {
-      const bcrypt = (await import("bcryptjs")).default;
+      const bcrypt = (await import('bcryptjs')).default;
       // Use timeout to allow UI update before blocking sync operation
       setTimeout(() => {
         try {
@@ -40,7 +34,7 @@ export const BcryptGenerator: React.FC = () => {
         }
       }, 50);
     } catch (error) {
-      console.error("Failed to load bcrypt", error);
+      console.error('Failed to load bcrypt', error);
       setLoading(false);
     }
   };
@@ -51,11 +45,11 @@ export const BcryptGenerator: React.FC = () => {
       return;
     }
     try {
-      const bcrypt = (await import("bcryptjs")).default;
+      const bcrypt = (await import('bcryptjs')).default;
       const isMatch = bcrypt.compareSync(password, compareHash);
       setMatchResult(isMatch);
     } catch (error) {
-      console.error("Failed to load bcrypt", error);
+      console.error('Failed to load bcrypt', error);
     }
   };
 
@@ -67,9 +61,9 @@ export const BcryptGenerator: React.FC = () => {
   };
 
   const handleClear = () => {
-    setPassword("");
-    setHash("");
-    setCompareHash("");
+    setPassword('');
+    setHash('');
+    setCompareHash('');
     setMatchResult(null);
   };
 
@@ -97,19 +91,17 @@ export const BcryptGenerator: React.FC = () => {
               ) : (
                 <RefreshCw className="mr-1.5" size={16} />
               )}
-              {loading ? "Hashing..." : "Hash Password"}
+              {loading ? 'Hashing...' : 'Hash Password'}
             </button>
 
             <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <label className="text-xs font-bold text-slate-500 uppercase">
-                Rounds:
-              </label>
+              <label className="text-xs font-bold text-slate-500 uppercase">Rounds:</label>
               <input
                 type="number"
                 min="4"
                 max="15"
                 value={rounds}
-                onChange={(e) => setRounds(parseInt(e.target.value))}
+                onChange={e => setRounds(parseInt(e.target.value))}
                 className="w-12 bg-transparent text-sm font-bold text-slate-700 outline-none text-center"
               />
             </div>
@@ -147,9 +139,9 @@ export const BcryptGenerator: React.FC = () => {
                   hash && (
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   )
                 }
@@ -169,7 +161,7 @@ export const BcryptGenerator: React.FC = () => {
                   <input
                     type="text"
                     value={compareHash}
-                    onChange={(e) => setCompareHash(e.target.value)}
+                    onChange={e => setCompareHash(e.target.value)}
                     className="w-full p-3 bg-slate-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm"
                     placeholder="$2a$10$..."
                   />
@@ -187,9 +179,7 @@ export const BcryptGenerator: React.FC = () => {
                   {matchResult !== null && (
                     <div
                       className={`px-4 py-2 rounded-lg flex items-center font-bold text-sm animate-in fade-in slide-in-from-right-2 ${
-                        matchResult
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
+                        matchResult ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                       }`}
                     >
                       {matchResult ? (
@@ -197,7 +187,7 @@ export const BcryptGenerator: React.FC = () => {
                       ) : (
                         <AlertTriangle size={18} className="mr-2" />
                       )}
-                      {matchResult ? "Match! Valid Password." : "Do NOT Match."}
+                      {matchResult ? 'Match! Valid Password.' : 'Do NOT Match.'}
                     </div>
                   )}
                 </div>

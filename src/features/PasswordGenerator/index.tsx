@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
 import { Lock, RefreshCw, Copy, Check } from 'lucide-react';
-import { ToolHeader } from '@/components/common/ToolHeader';
+import React, { useState } from 'react';
+
 import { ActionButton } from '@/components/common/ActionButton';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const PasswordGenerator: React.FC = () => {
   const [password, setPassword] = useState('');
@@ -57,7 +58,6 @@ export const PasswordGenerator: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={Lock}
           title="Password Generator"
@@ -78,11 +78,12 @@ export const PasswordGenerator: React.FC = () => {
         {/* Content Area */}
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col items-center justify-center">
           <div className="max-w-3xl w-full flex flex-col gap-8">
-
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl blur-xl transition-all group-hover:blur-2xl"></div>
               <div className="relative bg-white p-8 md:p-12 rounded-2xl border border-gray-200 shadow-sm text-center">
-                <div className="text-4xl md:text-5xl font-mono font-bold text-slate-800 break-all tracking-wider mb-2">{password}</div>
+                <div className="text-4xl md:text-5xl font-mono font-bold text-slate-800 break-all tracking-wider mb-2">
+                  {password}
+                </div>
                 <p className="text-slate-400 text-sm font-medium">Strength: Strong</p>
 
                 <div className="absolute top-4 right-4">
@@ -101,14 +102,16 @@ export const PasswordGenerator: React.FC = () => {
               <div className="mb-8">
                 <div className="flex justify-between items-center mb-3">
                   <label className="font-bold text-slate-700">Password Length</label>
-                  <span className="text-primary font-bold bg-blue-50 px-3 py-1 rounded-lg text-sm">{length} characters</span>
+                  <span className="text-primary font-bold bg-blue-50 px-3 py-1 rounded-lg text-sm">
+                    {length} characters
+                  </span>
                 </div>
                 <input
                   type="range"
                   min="4"
                   max="64"
                   value={length}
-                  onChange={(e) => setLength(parseInt(e.target.value))}
+                  onChange={e => setLength(parseInt(e.target.value))}
                   className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-600"
                 />
               </div>
@@ -119,14 +122,15 @@ export const PasswordGenerator: React.FC = () => {
                   { key: 'lowercase', label: 'Lowercase', ex: 'abc' },
                   { key: 'numbers', label: 'Numbers', ex: '123' },
                   { key: 'symbols', label: 'Symbols', ex: '@#$' },
-                ].map((opt) => (
+                ].map(opt => (
                   <button
                     key={opt.key}
                     onClick={() => toggleOption(opt.key as any)}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${options[opt.key as keyof typeof options]
-                      ? 'bg-blue-50 border-primary/30 text-primary shadow-sm'
-                      : 'bg-white border-gray-100 text-slate-400 hover:border-gray-200'
-                      }`}
+                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
+                      options[opt.key as keyof typeof options]
+                        ? 'bg-blue-50 border-primary/30 text-primary shadow-sm'
+                        : 'bg-white border-gray-100 text-slate-400 hover:border-gray-200'
+                    }`}
                   >
                     <span className="font-bold text-sm">{opt.label}</span>
                     <span className="text-xs opacity-60 mt-1 font-mono">({opt.ex})</span>
@@ -134,7 +138,6 @@ export const PasswordGenerator: React.FC = () => {
                 ))}
               </div>
             </div>
-
           </div>
         </div>
       </div>

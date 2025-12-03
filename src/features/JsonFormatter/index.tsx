@@ -1,18 +1,10 @@
-import React from "react";
-import {
-  Copy,
-  Trash2,
-  AlertCircle,
-  FileJson,
-  Check,
-  Upload,
-  Download,
-  Wrench,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { Copy, Trash2, AlertCircle, FileJson, Check, Upload, Download, Wrench } from 'lucide-react';
+import React from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const JsonFormatter: React.FC = () => {
   const {
@@ -33,10 +25,10 @@ export const JsonFormatter: React.FC = () => {
   // Check for input in URL hash (from extension)
   React.useEffect(() => {
     const hash = window.location.hash;
-    if (hash.includes("input=")) {
+    if (hash.includes('input=')) {
       try {
         const params = new URLSearchParams(hash.substring(1)); // remove #
-        const inputParam = params.get("input");
+        const inputParam = params.get('input');
         if (inputParam) {
           const decoded = decodeURIComponent(inputParam);
           setInput(decoded);
@@ -50,23 +42,23 @@ export const JsonFormatter: React.FC = () => {
           } catch (e) {}
 
           // Clean URL
-          window.history.replaceState(null, "", window.location.pathname);
+          window.history.replaceState(null, '', window.location.pathname);
         }
       } catch (e) {
-        console.error("Failed to parse input from URL", e);
+        console.error('Failed to parse input from URL', e);
       }
     }
   }, [setInput, setOutput, setError]);
 
-  const processJson = (mode: "beautify" | "minify") => {
+  const processJson = (mode: 'beautify' | 'minify') => {
     if (!input.trim()) {
-      setOutput("");
+      setOutput('');
       setError(null);
       return;
     }
     try {
       const parsed = JSON.parse(input);
-      if (mode === "beautify") {
+      if (mode === 'beautify') {
         setOutput(JSON.stringify(parsed, null, 2));
       } else {
         setOutput(JSON.stringify(parsed));
@@ -80,11 +72,11 @@ export const JsonFormatter: React.FC = () => {
   const fixJson = () => {
     if (!input.trim()) return;
 
-    let fixed = input
+    const fixed = input
       .replace(/'/g, '"')
       .replace(/(\w+):/g, '"$1":')
-      .replace(/,\s*}/g, "}")
-      .replace(/,\s*]/g, "]");
+      .replace(/,\s*}/g, '}')
+      .replace(/,\s*]/g, ']');
 
     try {
       const parsed = JSON.parse(fixed);
@@ -92,12 +84,12 @@ export const JsonFormatter: React.FC = () => {
       setOutput(JSON.stringify(parsed, null, 2));
       setError(null);
     } catch (e) {
-      setError("Could not auto-fix JSON. Syntax is too broken.");
+      setError('Could not auto-fix JSON. Syntax is too broken.');
     }
   };
 
   const onFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleFileUpload(e, (content) => {
+    handleFileUpload(e, content => {
       try {
         const parsed = JSON.parse(content);
         setOutput(JSON.stringify(parsed, null, 2));
@@ -121,13 +113,13 @@ export const JsonFormatter: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-2">
             <button
-              onClick={() => processJson("beautify")}
+              onClick={() => processJson('beautify')}
               className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-sm"
             >
               Beautify
             </button>
             <button
-              onClick={() => processJson("minify")}
+              onClick={() => processJson('minify')}
               className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors font-medium text-sm"
             >
               Minify
@@ -154,12 +146,7 @@ export const JsonFormatter: React.FC = () => {
               label="Upload"
               variant="secondary"
             />
-            <ActionButton
-              onClick={handleClear}
-              icon={Trash2}
-              label="Clear"
-              variant="danger"
-            />
+            <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
           </div>
         </div>
 
@@ -194,16 +181,14 @@ export const JsonFormatter: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Save"
-                      onClick={() =>
-                        handleDownload("formatted.json", "application/json")
-                      }
+                      onClick={() => handleDownload('formatted.json', 'application/json')}
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

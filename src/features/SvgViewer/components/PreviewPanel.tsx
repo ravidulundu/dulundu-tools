@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import DOMPurify from "dompurify";
-import { useSVG } from "../context/SVGContext";
-import clsx from "clsx";
-import { ZoomIn, ZoomOut, Maximize2, Download, Copy } from "lucide-react";
+import Editor from '@monaco-editor/react';
+import clsx from 'clsx';
+import DOMPurify from 'dompurify';
+import { ZoomIn, ZoomOut, Maximize2, Download, Copy } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { useSVG } from '../context/SVGContext';
 import {
   svgToReact,
   svgToDataUri,
@@ -10,17 +12,16 @@ import {
   svgToReactNative,
   generateDataUris,
   formatBytes,
-} from "../utils/svgExporter";
-import Editor from "@monaco-editor/react";
-import { DataUriTab } from "./tabs/DataUriTab";
-import { CodeTab } from "./tabs/CodeTab";
-import { PngTab } from "./tabs/PngTab";
+} from '../utils/svgExporter';
+import { CodeTab } from './tabs/CodeTab';
+import { DataUriTab } from './tabs/DataUriTab';
+import { PngTab } from './tabs/PngTab';
 
 export const PreviewPanel = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const { svgCode, hoveredElement, background, setBackground } = useSVG();
-  const [activeTab, setActiveTab] = useState("Preview");
-  const tabs = ["Preview", "React", "React Native", "PNG", "Data URI"];
+  const [activeTab, setActiveTab] = useState('Preview');
+  const tabs = ['Preview', 'React', 'React Native', 'PNG', 'Data URI'];
 
   const [transform, setTransform] = useState({ x: 0, y: 0, scale: 1 });
   const [isDragging, setIsDragging] = useState(false);
@@ -28,7 +29,7 @@ export const PreviewPanel = () => {
 
   // Sync global scale to local transform
   React.useEffect(() => {
-    setTransform((prev) => ({ ...prev, scale: transform.scale })); // Note: 'scale' was removed from useSVG, using transform.scale here
+    setTransform(prev => ({ ...prev, scale: transform.scale })); // Note: 'scale' was removed from useSVG, using transform.scale here
   }, [transform.scale]); // Dependency changed to transform.scale
 
   // State for the highlight box overlay
@@ -81,30 +82,30 @@ export const PreviewPanel = () => {
       if (e.ctrlKey || e.metaKey) {
         e.preventDefault();
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
-        setTransform((prev) => ({
+        setTransform(prev => ({
           ...prev,
           scale: Math.min(Math.max(0.1, prev.scale * delta), 10),
         }));
       }
     };
 
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    return () => container.removeEventListener("wheel", handleWheel);
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
   }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (activeTab !== "Preview" && activeTab !== "PNG") return;
+    if (activeTab !== 'Preview' && activeTab !== 'PNG') return;
     setIsDragging(true);
     setLastMousePos({ x: e.clientX, y: e.clientY });
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || (activeTab !== "Preview" && activeTab !== "PNG")) return;
+    if (!isDragging || (activeTab !== 'Preview' && activeTab !== 'PNG')) return;
 
     const dx = e.clientX - lastMousePos.x;
     const dy = e.clientY - lastMousePos.y;
 
-    setTransform((prev) => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
+    setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
     setLastMousePos({ x: e.clientX, y: e.clientY });
   };
 
@@ -123,22 +124,22 @@ export const PreviewPanel = () => {
     };
 
     if (isDragging) {
-      window.addEventListener("mouseup", handleGlobalMouseUp);
+      window.addEventListener('mouseup', handleGlobalMouseUp);
       return () => {
-        window.removeEventListener("mouseup", handleGlobalMouseUp);
+        window.removeEventListener('mouseup', handleGlobalMouseUp);
       };
     }
   }, [isDragging]);
 
   const handleZoomIn = () => {
-    setTransform((prev) => ({
+    setTransform(prev => ({
       ...prev,
       scale: Math.min(10, prev.scale * 1.2),
     }));
   };
 
   const handleZoomOut = () => {
-    setTransform((prev) => ({
+    setTransform(prev => ({
       ...prev,
       scale: Math.max(0.1, prev.scale / 1.2),
     }));
@@ -148,11 +149,15 @@ export const PreviewPanel = () => {
     setTransform({ x: 0, y: 0, scale: 1 });
   };
 
-  const backgrounds: Array<"white" | "transparent" | "black" | "checkerboard"> =
-    ["white", "transparent", "black", "checkerboard"];
+  const backgrounds: Array<'white' | 'transparent' | 'black' | 'checkerboard'> = [
+    'white',
+    'transparent',
+    'black',
+    'checkerboard',
+  ];
 
   // Local state for zoom input to allow typing without immediate auto-formatting
-  const [zoomInputValue, setZoomInputValue] = useState("100%");
+  const [zoomInputValue, setZoomInputValue] = useState('100%');
 
   // Sync local input state when global transform scale changes (e.g. via buttons)
   React.useEffect(() => {
@@ -160,13 +165,13 @@ export const PreviewPanel = () => {
   }, [transform.scale]);
 
   const handleZoomInputCommit = (value: string) => {
-    const cleanVal = value.replace(/[^0-9]/g, "");
+    const cleanVal = value.replace(/[^0-9]/g, '');
     if (cleanVal) {
       const num = parseInt(cleanVal, 10);
       // Limit range 10% to 1000%
       const clampedNum = Math.min(Math.max(10, num), 1000);
       const newScale = clampedNum / 100;
-      setTransform((prev) => ({ ...prev, scale: newScale }));
+      setTransform(prev => ({ ...prev, scale: newScale }));
       // The useEffect will update zoomInputValue to formatted string
     } else {
       // Revert if invalid
@@ -180,11 +185,11 @@ export const PreviewPanel = () => {
 
   // Generate PNG when tab is active or SVG/Scale changes
   React.useEffect(() => {
-    if (activeTab === "PNG" && svgCode) {
+    if (activeTab === 'PNG' && svgCode) {
       setPngDataUri(null); // Clear previous URI while generating
       svgToPng(svgCode, pngScale)
-        .then((uri) => setPngDataUri(uri))
-        .catch((err) => console.error("Failed to generate PNG", err));
+        .then(uri => setPngDataUri(uri))
+        .catch(err => console.error('Failed to generate PNG', err));
     }
   }, [activeTab, svgCode, pngScale]);
 
@@ -192,15 +197,13 @@ export const PreviewPanel = () => {
     <div className="h-full flex flex-col bg-gray-50 dark:bg-[#1e1e1e]">
       {/* Top Bar - Tabs */}
       <div className="h-10 border-b border-gray-200 dark:border-gray-800 bg-white flex items-center px-2 gap-1 overflow-x-auto">
-        {tabs.map((tab) => (
+        {tabs.map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={clsx(
-              "px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap",
-              activeTab === tab
-                ? "bg-blue-50 text-blue-600"
-                : "text-gray-600 hover:bg-gray-100"
+              'px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap',
+              activeTab === tab ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-100'
             )}
           >
             {tab}
@@ -210,21 +213,21 @@ export const PreviewPanel = () => {
 
       {/* Content Area */}
       <div className="flex-1 min-h-0 relative">
-        {activeTab === "Preview" ? (
+        {activeTab === 'Preview' ? (
           <div className="w-full h-full bg-gray-50 dark:bg-[#1e1e1e] flex flex-col relative">
             {/* ... Preview content ... */}
             <div
               className={clsx(
-                "flex-1 flex items-center justify-center overflow-hidden relative",
-                isDragging ? "cursor-grabbing" : "cursor-grab"
+                'flex-1 flex items-center justify-center overflow-hidden relative',
+                isDragging ? 'cursor-grabbing' : 'cursor-grab'
               )}
               style={{
-                ...(background === "checkerboard"
+                ...(background === 'checkerboard'
                   ? {
                       backgroundImage: `linear-gradient(45deg, #e5e7eb 25%, transparent 25%), linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e7eb 75%), linear-gradient(-45deg, transparent 75%, #e5e7eb 75%)`,
-                      backgroundSize: "20px 20px",
-                      backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-                      backgroundColor: "#ffffff",
+                      backgroundSize: '20px 20px',
+                      backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
+                      backgroundColor: '#ffffff',
                     }
                   : { backgroundColor: background }),
               }}
@@ -244,34 +247,29 @@ export const PreviewPanel = () => {
                   <div
                     className="shadow-sm svg-preview-wrapper"
                     style={{
-                      ...(background === "checkerboard"
+                      ...(background === 'checkerboard'
                         ? {
                             backgroundImage: `linear-gradient(45deg, #e5e7eb 25%, transparent 25%), linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e7eb 75%), linear-gradient(-45deg, transparent 75%, #e5e7eb 75%)`,
-                            backgroundSize: "20px 20px",
-                            backgroundPosition:
-                              "0 0, 0 10px, 10px -10px, -10px 0px",
-                            backgroundColor: "#ffffff",
+                            backgroundSize: '20px 20px',
+                            backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
+                            backgroundColor: '#ffffff',
                           }
                         : { backgroundColor: background }),
-                      width: "fit-content",
-                      height: "fit-content",
+                      width: 'fit-content',
+                      height: 'fit-content',
                     }}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(
                         (() => {
                           let processed = svgCode
-                            .replace(/\<\?xml[^?]*\?\>/gi, "") // Remove XML declaration
-                            .replace(/\<!DOCTYPE[^\>]*\>\s*/gi, "") // Remove DOCTYPE
-                            .replace(/\<!--[\s\S]*?--\>/g, "") // Remove comments
+                            .replace(/\<\?xml[^?]*\?\>/gi, '') // Remove XML declaration
+                            .replace(/\<!DOCTYPE[^\>]*\>\s*/gi, '') // Remove DOCTYPE
+                            .replace(/\<!--[\s\S]*?--\>/g, '') // Remove comments
                             .trim();
 
                           // If width/height missing but viewBox exists, inject them
-                          const hasWidth = /\<svg[^\>]*\swidth\s*=/i.test(
-                            processed
-                          );
-                          const hasHeight = /\<svg[^\>]*\sheight\s*=/i.test(
-                            processed
-                          );
+                          const hasWidth = /\<svg[^\>]*\swidth\s*=/i.test(processed);
+                          const hasHeight = /\<svg[^\>]*\sheight\s*=/i.test(processed);
 
                           if (!hasWidth && !hasHeight) {
                             const viewBoxMatch = processed.match(
@@ -304,13 +302,13 @@ export const PreviewPanel = () => {
               )}
             </div>
           </div>
-        ) : activeTab === "React" ? (
+        ) : activeTab === 'React' ? (
           <CodeTab code={svgToReact(svgCode)} />
-        ) : activeTab === "React Native" ? (
+        ) : activeTab === 'React Native' ? (
           <CodeTab code={svgToReactNative(svgCode)} />
-        ) : activeTab === "Data URI" ? (
+        ) : activeTab === 'Data URI' ? (
           <DataUriTab svgCode={svgCode} />
-        ) : activeTab === "PNG" ? (
+        ) : activeTab === 'PNG' ? (
           <PngTab
             pngDataUri={pngDataUri}
             background={background}
@@ -328,7 +326,7 @@ export const PreviewPanel = () => {
         )}
 
         {/* Selection Highlight Overlay - Moved outside transform container */}
-        {highlightBox && activeTab === "Preview" && (
+        {highlightBox && activeTab === 'Preview' && (
           <div
             className="absolute pointer-events-none z-50"
             style={{
@@ -336,11 +334,11 @@ export const PreviewPanel = () => {
               left: highlightBox.left,
               width: highlightBox.width,
               height: highlightBox.height,
-              border: "2px solid #3b82f6", // Tailwind blue-500
-              backgroundColor: "rgba(59, 130, 246, 0.2)", // Semi-transparent blue
-              boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.2)", // Subtle inner light border
-              borderRadius: "2px",
-              transition: "all 0.1s ease-out",
+              border: '2px solid #3b82f6', // Tailwind blue-500
+              backgroundColor: 'rgba(59, 130, 246, 0.2)', // Semi-transparent blue
+              boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.2)', // Subtle inner light border
+              borderRadius: '2px',
+              transition: 'all 0.1s ease-out',
             }}
           />
         )}
@@ -351,37 +349,31 @@ export const PreviewPanel = () => {
         {/* Left Group: Background, Scale, Download */}
         <div className="flex items-center gap-6">
           {/* Background (Only for Preview and PNG) */}
-          {(activeTab === "Preview" || activeTab === "PNG") && (
+          {(activeTab === 'Preview' || activeTab === 'PNG') && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-500 mr-2">Background:</span>
-              {backgrounds.map((bg) => (
+              {backgrounds.map(bg => (
                 <button
                   key={bg}
                   onClick={() => setBackground(bg)}
                   className={clsx(
-                    "w-6 h-6 rounded border-2 transition-all",
+                    'w-6 h-6 rounded border-2 transition-all',
                     background === bg
-                      ? "border-blue-500 ring-2 ring-blue-500/20"
-                      : "border-gray-300 hover:border-gray-400"
+                      ? 'border-blue-500 ring-2 ring-blue-500/20'
+                      : 'border-gray-300 hover:border-gray-400'
                   )}
                   title={bg}
                 >
-                  {bg === "white" && (
-                    <div className="w-full h-full bg-white rounded-sm" />
-                  )}
-                  {bg === "black" && (
-                    <div className="w-full h-full bg-black rounded-sm" />
-                  )}
-                  {bg === "transparent" && (
-                    <div className="w-full h-full bg-gray-200 rounded-sm" />
-                  )}
-                  {bg === "checkerboard" && (
+                  {bg === 'white' && <div className="w-full h-full bg-white rounded-sm" />}
+                  {bg === 'black' && <div className="w-full h-full bg-black rounded-sm" />}
+                  {bg === 'transparent' && <div className="w-full h-full bg-gray-200 rounded-sm" />}
+                  {bg === 'checkerboard' && (
                     <div
                       className="w-full h-full rounded-sm"
                       style={{
                         backgroundImage: `linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)`,
-                        backgroundSize: "6px 6px",
-                        backgroundPosition: "0 0, 0 3px, 3px -3px, -3px 0px",
+                        backgroundSize: '6px 6px',
+                        backgroundPosition: '0 0, 0 3px, 3px -3px, -3px 0px',
                       }}
                     />
                   )}
@@ -391,14 +383,14 @@ export const PreviewPanel = () => {
           )}
 
           {/* Scale Selector (Only for PNG) */}
-          {activeTab === "PNG" && (
+          {activeTab === 'PNG' && (
             <>
               <div className="h-4 w-px bg-gray-300" />
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-500">Scale:</span>
                 <select
                   value={pngScale}
-                  onChange={(e) => setPngScale(Number(e.target.value))}
+                  onChange={e => setPngScale(Number(e.target.value))}
                   className="text-xs bg-gray-50 border border-gray-200 rounded px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                 >
                   <option value={0.5}>0.5x</option>
@@ -413,43 +405,43 @@ export const PreviewPanel = () => {
           {/* Download Button */}
           <button
             onClick={() => {
-              if (activeTab === "PNG" && pngDataUri) {
-                const a = document.createElement("a");
+              if (activeTab === 'PNG' && pngDataUri) {
+                const a = document.createElement('a');
                 a.href = pngDataUri;
                 a.download = `image@${pngScale}x.png`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-              } else if (activeTab === "React") {
+              } else if (activeTab === 'React') {
                 const blob = new Blob([svgToReact(svgCode)], {
-                  type: "text/plain",
+                  type: 'text/plain',
                 });
                 const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
+                const a = document.createElement('a');
                 a.href = url;
-                a.download = "Icon.tsx";
+                a.download = 'Icon.tsx';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-              } else if (activeTab === "React Native") {
+              } else if (activeTab === 'React Native') {
                 const blob = new Blob([svgToReactNative(svgCode)], {
-                  type: "text/plain",
+                  type: 'text/plain',
                 });
                 const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
+                const a = document.createElement('a');
                 a.href = url;
-                a.download = "Icon.tsx";
+                a.download = 'Icon.tsx';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
               } else {
-                const blob = new Blob([svgCode], { type: "image/svg+xml" });
+                const blob = new Blob([svgCode], { type: 'image/svg+xml' });
                 const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
+                const a = document.createElement('a');
                 a.href = url;
-                a.download = "image.svg";
+                a.download = 'image.svg';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -458,19 +450,19 @@ export const PreviewPanel = () => {
             }}
             className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors whitespace-nowrap"
             title={
-              activeTab === "PNG"
-                ? "Download PNG"
-                : activeTab === "React" || activeTab === "React Native"
-                ? "Download Component"
-                : "Download SVG"
+              activeTab === 'PNG'
+                ? 'Download PNG'
+                : activeTab === 'React' || activeTab === 'React Native'
+                  ? 'Download Component'
+                  : 'Download SVG'
             }
           >
             <Download className="w-3.5 h-3.5 flex-shrink-0" />
-            {activeTab === "PNG"
-              ? "Download PNG"
-              : activeTab === "React" || activeTab === "React Native"
-              ? "Download JSX"
-              : "Download SVG"}
+            {activeTab === 'PNG'
+              ? 'Download PNG'
+              : activeTab === 'React' || activeTab === 'React Native'
+                ? 'Download JSX'
+                : 'Download SVG'}
           </button>
         </div>
 
@@ -490,20 +482,20 @@ export const PreviewPanel = () => {
             type="text"
             className="text-xs font-mono text-gray-600 w-[50px] text-center bg-transparent border border-transparent hover:border-gray-300 rounded focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all"
             value={zoomInputValue}
-            onChange={(e) => setZoomInputValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
+            onChange={e => setZoomInputValue(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
                 handleZoomInputCommit(e.currentTarget.value);
                 e.currentTarget.blur();
               }
             }}
-            onFocus={(e) => {
+            onFocus={e => {
               // Remove % sign on focus for easier editing
-              const val = e.target.value.replace("%", "");
+              const val = e.target.value.replace('%', '');
               setZoomInputValue(val);
               e.target.select();
             }}
-            onBlur={(e) => {
+            onBlur={e => {
               handleZoomInputCommit(e.target.value);
             }}
           />

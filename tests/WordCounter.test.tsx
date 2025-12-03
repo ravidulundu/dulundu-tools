@@ -1,7 +1,9 @@
-import { describe, it, expect, vi, beforeAll } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { WordCounter } from "../features/WordCounter";
 import React from "react";
+import { describe, it, expect, vi, beforeAll } from "vitest";
+
+import { WordCounter } from "../features/WordCounter";
+
 
 describe("WordCounter", () => {
   beforeAll(() => {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface OptimizationStats {
   originalSize: number;
@@ -13,10 +13,8 @@ interface SVGContextType {
   setOptimizationStats: (stats: OptimizationStats | null) => void;
   scale: number;
   setScale: (scale: number) => void;
-  background: "white" | "transparent" | "black" | "checkerboard";
-  setBackground: (
-    bg: "white" | "transparent" | "black" | "checkerboard"
-  ) => void;
+  background: 'white' | 'transparent' | 'black' | 'checkerboard';
+  setBackground: (bg: 'white' | 'transparent' | 'black' | 'checkerboard') => void;
   hoveredElement: {
     lineNumber: number;
     elementType: string;
@@ -39,13 +37,12 @@ export const SVGProvider = ({ children }: { children: ReactNode }) => {
   // Default SVG (The orange logo from the screenshot or a placeholder)
   const [svgCode, setSvgCode] = useState<string>(DEFAULT_SVG_CODE);
 
-  const [optimizationStats, setOptimizationStats] =
-    useState<OptimizationStats | null>(null);
+  const [optimizationStats, setOptimizationStats] = useState<OptimizationStats | null>(null);
 
   const [scale, setScale] = useState(1);
-  const [background, setBackground] = useState<
-    "white" | "transparent" | "black" | "checkerboard"
-  >("checkerboard");
+  const [background, setBackground] = useState<'white' | 'transparent' | 'black' | 'checkerboard'>(
+    'checkerboard'
+  );
 
   const [hoveredElement, setHoveredElement] = useState<{
     lineNumber: number;
@@ -76,7 +73,7 @@ export const SVGProvider = ({ children }: { children: ReactNode }) => {
 export const useSVG = () => {
   const context = useContext(SVGContext);
   if (context === undefined) {
-    throw new Error("useSVG must be used within a SVGProvider");
+    throw new Error('useSVG must be used within a SVGProvider');
   }
   return context;
 };

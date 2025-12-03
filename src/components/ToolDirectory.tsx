@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+
 import { ToolDef } from '../types';
 import { ToolCard } from './ToolCard';
 import { ALL_TOOLS } from '../constants';
@@ -11,10 +12,10 @@ export const ToolDirectory: React.FC<ToolDirectoryProps> = ({ tools }) => {
   // Group tools by category
   const toolsByCategory = useMemo(() => {
     const grouped: Record<string, ToolDef[]> = {};
-    
-    // Initialize with empty arrays to ensure specific order if needed, 
+
+    // Initialize with empty arrays to ensure specific order if needed,
     // or just let it fill dynamically.
-    
+
     tools.forEach(tool => {
       if (!grouped[tool.category]) {
         grouped[tool.category] = [];
@@ -29,15 +30,15 @@ export const ToolDirectory: React.FC<ToolDirectoryProps> = ({ tools }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {categories.map((category) => {
+      {categories.map(category => {
         const categoryTools = toolsByCategory[category];
-        
+
         // Skip empty categories
         if (categoryTools.length === 0) return null;
 
         return (
-          <div 
-            key={category} 
+          <div
+            key={category}
             className="flex flex-col bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 h-full"
           >
             {/* Category Header */}
@@ -53,7 +54,7 @@ export const ToolDirectory: React.FC<ToolDirectoryProps> = ({ tools }) => {
 
             {/* Tools List (Grid inside Card) */}
             <div className="p-4 grid grid-cols-1 gap-2">
-              {categoryTools.map((tool) => (
+              {categoryTools.map(tool => (
                 <ToolCard key={tool.id} tool={tool} variant="mini" />
               ))}
             </div>

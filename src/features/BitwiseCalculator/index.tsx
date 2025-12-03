@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Cpu, Binary, Calculator, RefreshCw } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { ActionButton } from "@/components/common/ActionButton";
+import { Cpu, Binary, Calculator, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const BitwiseCalculator: React.FC = () => {
   const [a, setA] = useState<number>(0);
@@ -25,9 +26,9 @@ export const BitwiseCalculator: React.FC = () => {
   const toBin = (n: number) =>
     (n >>> 0)
       .toString(2)
-      .padStart(32, "0")
+      .padStart(32, '0')
       .match(/.{1,8}/g)
-      ?.join(" ");
+      ?.join(' ');
 
   const handleReset = () => {
     setA(0);
@@ -46,12 +47,7 @@ export const BitwiseCalculator: React.FC = () => {
         />
         {/* Toolbar */}
         <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
-          <ActionButton
-            onClick={handleReset}
-            icon={RefreshCw}
-            label="Reset"
-            variant="secondary"
-          />
+          <ActionButton onClick={handleReset} icon={RefreshCw} label="Reset" variant="secondary" />
         </div>
         {/* Content Area */}
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
@@ -65,7 +61,7 @@ export const BitwiseCalculator: React.FC = () => {
                   <input
                     type="number"
                     value={a}
-                    onChange={(e) => setA(parseInt(e.target.value) || 0)}
+                    onChange={e => setA(parseInt(e.target.value) || 0)}
                     className="w-full p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg"
                   />
                   <div className="text-xs font-mono text-slate-500 bg-slate-50 p-2 rounded border border-gray-100 break-all">
@@ -81,7 +77,7 @@ export const BitwiseCalculator: React.FC = () => {
                   <input
                     type="number"
                     value={b}
-                    onChange={(e) => setB(parseInt(e.target.value) || 0)}
+                    onChange={e => setB(parseInt(e.target.value) || 0)}
                     className="w-full p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg"
                   />
                   <div className="text-xs font-mono text-slate-500 bg-slate-50 p-2 rounded border border-gray-100 break-all">
@@ -97,34 +93,30 @@ export const BitwiseCalculator: React.FC = () => {
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
-                  { label: "A & B (AND)", val: results.and, icon: Binary },
-                  { label: "A | B (OR)", val: results.or, icon: Binary },
-                  { label: "A ^ B (XOR)", val: results.xor, icon: Binary },
-                  { label: "~A (NOT)", val: results.notA, icon: Calculator },
+                  { label: 'A & B (AND)', val: results.and, icon: Binary },
+                  { label: 'A | B (OR)', val: results.or, icon: Binary },
+                  { label: 'A ^ B (XOR)', val: results.xor, icon: Binary },
+                  { label: '~A (NOT)', val: results.notA, icon: Calculator },
                   {
-                    label: "A << 1 (L. Shift)",
+                    label: 'A << 1 (L. Shift)',
                     val: results.leftShift,
                     icon: Calculator,
                   },
                   {
-                    label: "A >> 1 (R. Shift)",
+                    label: 'A >> 1 (R. Shift)',
                     val: results.rightShift,
                     icon: Calculator,
                   },
-                ].map((op) => (
+                ].map(op => (
                   <div
                     key={op.label}
                     className="p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-bold text-slate-500 uppercase">
-                        {op.label}
-                      </span>
+                      <span className="text-xs font-bold text-slate-500 uppercase">{op.label}</span>
                       <op.icon size={16} className="text-slate-300" />
                     </div>
-                    <div className="text-2xl font-bold text-slate-800 mb-2 font-mono">
-                      {op.val}
-                    </div>
+                    <div className="text-2xl font-bold text-slate-800 mb-2 font-mono">{op.val}</div>
                     <div className="text-[10px] font-mono text-slate-400 break-all bg-slate-50 p-1.5 rounded">
                       {toBin(op.val)}
                     </div>

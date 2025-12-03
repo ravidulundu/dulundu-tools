@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Base64Converter } from '../features/Base64Converter';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { Base64Converter } from '../features/Base64Converter';
 
 describe('Base64Converter', () => {
   it('renders without crashing', () => {

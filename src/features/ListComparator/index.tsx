@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { ArrowRightLeft, Copy, Check, Trash2 } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
+import { ArrowRightLeft, Copy, Check, Trash2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const ListComparator: React.FC = () => {
-  const [listA, setListA] = useState("Apple\nBanana\nCherry\nDate");
-  const [listB, setListB] = useState("Banana\nDate\nElderberry\nFig");
+  const [listA, setListA] = useState('Apple\nBanana\nCherry\nDate');
+  const [listB, setListB] = useState('Banana\nDate\nElderberry\nFig');
 
   const [aOnly, setAOnly] = useState<string[]>([]);
   const [bOnly, setBOnly] = useState<string[]>([]);
@@ -20,20 +21,20 @@ export const ListComparator: React.FC = () => {
   const compare = () => {
     const setA = new Set(
       listA
-        .split("\n")
-        .map((s) => s.trim())
+        .split('\n')
+        .map(s => s.trim())
         .filter(Boolean)
     );
     const setB = new Set(
       listB
-        .split("\n")
-        .map((s) => s.trim())
+        .split('\n')
+        .map(s => s.trim())
         .filter(Boolean)
     );
 
-    const intersectionRes = [...setA].filter((x) => setB.has(x));
-    const aOnlyRes = [...setA].filter((x) => !setB.has(x));
-    const bOnlyRes = [...setB].filter((x) => !setA.has(x));
+    const intersectionRes = [...setA].filter(x => setB.has(x));
+    const aOnlyRes = [...setA].filter(x => !setB.has(x));
+    const bOnlyRes = [...setB].filter(x => !setA.has(x));
     const unionRes = Array.from(new Set([...setA, ...setB]));
 
     setIntersection(intersectionRes.sort());
@@ -43,8 +44,8 @@ export const ListComparator: React.FC = () => {
   };
 
   const handleClear = () => {
-    setListA("");
-    setListB("");
+    setListA('');
+    setListB('');
   };
 
   return (
@@ -98,21 +99,9 @@ export const ListComparator: React.FC = () => {
                 count={intersection.length}
                 data={intersection}
               />
-              <ResultBox
-                title="A ∪ B (Union)"
-                count={union.length}
-                data={union}
-              />
-              <ResultBox
-                title="A Only (A - B)"
-                count={aOnly.length}
-                data={aOnly}
-              />
-              <ResultBox
-                title="B Only (B - A)"
-                count={bOnly.length}
-                data={bOnly}
-              />
+              <ResultBox title="A ∪ B (Union)" count={union.length} data={union} />
+              <ResultBox title="A Only (A - B)" count={aOnly.length} data={aOnly} />
+              <ResultBox title="B Only (B - A)" count={bOnly.length} data={bOnly} />
             </div>
           </div>
         </div>
@@ -128,7 +117,7 @@ const ResultBox: React.FC<{ title: string; count: number; data: string[] }> = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
-    navigator.clipboard.writeText(data.join("\n"));
+    navigator.clipboard.writeText(data.join('\n'));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -136,7 +125,7 @@ const ResultBox: React.FC<{ title: string; count: number; data: string[] }> = ({
   return (
     <div className="flex flex-col h-full min-h-[200px]">
       <CodeEditor
-        value={data.join("\n")}
+        value={data.join('\n')}
         label={`${title} (${count})`}
         readOnly
         theme="dark"
@@ -144,9 +133,9 @@ const ResultBox: React.FC<{ title: string; count: number; data: string[] }> = ({
           data.length > 0 && (
             <ActionButton
               icon={copied ? Check : Copy}
-              label={copied ? "Copied" : "Copy"}
+              label={copied ? 'Copied' : 'Copy'}
               onClick={handleCopy}
-              variant={copied ? "success" : "primary"}
+              variant={copied ? 'success' : 'primary'}
               size="sm"
             />
           )

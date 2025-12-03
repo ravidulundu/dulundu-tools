@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { SearchBar } from "./SearchBar";
-import { IconGrid } from "./IconGrid";
-import { searchIcons } from "../../services/iconify";
-import { useSVG } from "../../context/SVGContext";
+import React, { useState } from 'react';
+
+import { IconGrid } from './IconGrid';
+import { SearchBar } from './SearchBar';
+import { useSVG } from '../../context/SVGContext';
+import { searchIcons } from '../../services/iconify';
 
 export const Sidebar = () => {
   const { setSvgCode } = useSVG();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [icons, setIcons] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
@@ -15,7 +16,7 @@ export const Sidebar = () => {
 
   // Initial load or popular icons could go here
   React.useEffect(() => {
-    handleSearch("arrow"); // Default search to show something
+    handleSearch('arrow'); // Default search to show something
   }, []);
 
   // Debounced search: auto-search when user types
@@ -29,10 +30,7 @@ export const Sidebar = () => {
     return () => clearTimeout(timeoutId);
   }, [query]);
 
-  const handleSearch = async (
-    searchQuery: string = query,
-    colorful: boolean = isColorful
-  ) => {
+  const handleSearch = async (searchQuery: string = query, colorful: boolean = isColorful) => {
     if (!searchQuery.trim()) return;
 
     setIsLoading(true);
@@ -41,7 +39,7 @@ export const Sidebar = () => {
       const result = await searchIcons(searchQuery, 50, colorful);
       setIcons(result.icons);
     } catch (error) {
-      console.error("Search failed", error);
+      console.error('Search failed', error);
     } finally {
       setIsLoading(false);
     }
@@ -54,9 +52,7 @@ export const Sidebar = () => {
   return (
     <div className="h-full bg-white dark:bg-[#1e1e1e] border-r border-gray-200 dark:border-gray-800 flex flex-col">
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-        <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-200 mb-3">
-          SVG Library
-        </h2>
+        <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-200 mb-3">SVG Library</h2>
         <SearchBar
           value={query}
           onChange={setQuery}
@@ -76,11 +72,11 @@ export const Sidebar = () => {
             }}
             className={`text-xs px-2 py-1 rounded border transition-colors ${
               isColorful
-                ? "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800"
-                : "bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700"
+                ? 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800'
+                : 'bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >
-            {isColorful ? "✨ Colorful Only" : "🎨 Show Colorful"}
+            {isColorful ? '✨ Colorful Only' : '🎨 Show Colorful'}
           </button>
         </div>
       </div>

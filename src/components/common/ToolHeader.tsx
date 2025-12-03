@@ -1,5 +1,5 @@
-import React from "react";
-import { LucideIcon } from "lucide-react";
+import { LucideIcon } from 'lucide-react';
+import React from 'react';
 
 interface ToolHeaderProps {
   icon: LucideIcon;
@@ -24,17 +24,11 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
             <Icon className="w-8 h-8 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-              {title}
-            </h1>
-            <p className="text-slate-500 mt-1 text-sm leading-relaxed max-w-2xl">
-              {description}
-            </p>
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{title}</h1>
+            <p className="text-slate-500 mt-1 text-sm leading-relaxed max-w-2xl">{description}</p>
           </div>
         </div>
-        {actions && (
-          <div className="flex items-center gap-2 shrink-0">{actions}</div>
-        )}
+        {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
       </div>
     </div>
   );

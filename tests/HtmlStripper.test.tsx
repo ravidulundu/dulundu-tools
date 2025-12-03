@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { HtmlStripper } from '../features/HtmlStripper';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { HtmlStripper } from '../features/HtmlStripper';
 
 describe('HtmlStripper', () => {
   it('renders without crashing', () => {

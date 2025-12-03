@@ -1,9 +1,10 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { PreviewAndRaw } from "../features/ReadmeGenerator/components/PreviewAndRaw";
 import React from "react";
-import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
+import { describe, it, expect } from "vitest";
+
+import { ThemeProvider } from "../contexts/ThemeContext";
+import { PreviewAndRaw } from "../features/ReadmeGenerator/components/PreviewAndRaw";
 
 describe("PreviewAndRaw", () => {
   it("renders without crashing", () => {

@@ -43,7 +43,7 @@ export enum ToolCategory {
   PARSER = 'Parsers',
   MATH = 'Bitwise Tools',
   CHART = 'Chart Tools',
-  TEXT = 'String Utilities' // Kept for backward compatibility if needed, though STRING is preferred
+  TEXT = 'String Utilities', // Kept for backward compatibility if needed, though STRING is preferred
 }
 
 export interface ToolDef {

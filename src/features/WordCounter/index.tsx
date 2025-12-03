@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Type, Trash2, Copy, Check } from "lucide-react";
-import { useToolLogic } from "@/hooks/useToolLogic";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
+import { Type, Trash2, Copy, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const WordCounter: React.FC = () => {
-  const {
-    input: text,
-    setInput: setText,
-    copied,
-    handleCopy: originalHandleCopy,
-  } = useToolLogic();
+  const { input: text, setInput: setText, copied, handleCopy: originalHandleCopy } = useToolLogic();
 
   const [stats, setStats] = useState({
     words: 0,
@@ -49,14 +45,12 @@ export const WordCounter: React.FC = () => {
   // Let's use the hook, and setOutput(text) in the useEffect.
 
   useEffect(() => {
-    const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
     const chars = text.length;
-    const charsNoSpace = text.replace(/\s/g, "").length;
-    const lines = text.trim() === "" ? 0 : text.split(/\n/).length;
+    const charsNoSpace = text.replace(/\s/g, '').length;
+    const lines = text.trim() === '' ? 0 : text.split(/\n/).length;
     const paragraphs =
-      text.trim() === ""
-        ? 0
-        : text.split(/\n\s*\n/).filter((p) => p.trim() !== "").length;
+      text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(p => p.trim() !== '').length;
 
     setStats({ words, chars, charsNoSpace, lines, paragraphs });
 
@@ -83,30 +77,25 @@ export const WordCounter: React.FC = () => {
 
   useEffect(() => {
     const t = textVal;
-    const words = t.trim() === "" ? 0 : t.trim().split(/\s+/).length;
+    const words = t.trim() === '' ? 0 : t.trim().split(/\s+/).length;
     const chars = t.length;
-    const charsNoSpace = t.replace(/\s/g, "").length;
-    const lines = t.trim() === "" ? 0 : t.split(/\n/).length;
-    const paragraphs =
-      t.trim() === ""
-        ? 0
-        : t.split(/\n\s*\n/).filter((p) => p.trim() !== "").length;
+    const charsNoSpace = t.replace(/\s/g, '').length;
+    const lines = t.trim() === '' ? 0 : t.split(/\n/).length;
+    const paragraphs = t.trim() === '' ? 0 : t.split(/\n\s*\n/).filter(p => p.trim() !== '').length;
 
     setStats({ words, chars, charsNoSpace, lines, paragraphs });
     setOutput(t); // Sync for copy
   }, [textVal, setOutput]);
 
-  const transformText = (type: "upper" | "lower" | "capital" | "sentence") => {
+  const transformText = (type: 'upper' | 'lower' | 'capital' | 'sentence') => {
     let newText = textVal;
-    if (type === "upper") newText = textVal.toUpperCase();
-    if (type === "lower") newText = textVal.toLowerCase();
-    if (type === "capital") {
-      newText = textVal.replace(/\b\w/g, (l) => l.toUpperCase());
+    if (type === 'upper') newText = textVal.toUpperCase();
+    if (type === 'lower') newText = textVal.toLowerCase();
+    if (type === 'capital') {
+      newText = textVal.replace(/\b\w/g, l => l.toUpperCase());
     }
-    if (type === "sentence") {
-      newText = textVal
-        .toLowerCase()
-        .replace(/(^\s*\w|[\.\!\?]\s*\w)/g, (c) => c.toUpperCase());
+    if (type === 'sentence') {
+      newText = textVal.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
     }
     setTextVal(newText);
   };
@@ -124,25 +113,25 @@ export const WordCounter: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-2 overflow-x-auto pb-1 md:pb-0">
             <button
-              onClick={() => transformText("upper")}
+              onClick={() => transformText('upper')}
               className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-gray-200 text-slate-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
             >
               UPPERCASE
             </button>
             <button
-              onClick={() => transformText("lower")}
+              onClick={() => transformText('lower')}
               className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-gray-200 text-slate-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
             >
               lowercase
             </button>
             <button
-              onClick={() => transformText("capital")}
+              onClick={() => transformText('capital')}
               className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-gray-200 text-slate-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
             >
               Capitalize Words
             </button>
             <button
-              onClick={() => transformText("sentence")}
+              onClick={() => transformText('sentence')}
               className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-gray-200 text-slate-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
             >
               Sentence case
@@ -150,24 +139,19 @@ export const WordCounter: React.FC = () => {
           </div>
 
           <div className="flex space-x-2">
-            <ActionButton
-              onClick={handleClear}
-              icon={Trash2}
-              label="Clear"
-              variant="danger"
-            />
+            <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
           </div>
         </div>
 
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-gray-200 border-b border-gray-200">
           {[
-            { label: "Words", value: stats.words },
-            { label: "Characters", value: stats.chars },
-            { label: "Chars (no space)", value: stats.charsNoSpace },
-            { label: "Lines", value: stats.lines },
-            { label: "Paragraphs", value: stats.paragraphs },
-          ].map((stat) => (
+            { label: 'Words', value: stats.words },
+            { label: 'Characters', value: stats.chars },
+            { label: 'Chars (no space)', value: stats.charsNoSpace },
+            { label: 'Lines', value: stats.lines },
+            { label: 'Paragraphs', value: stats.paragraphs },
+          ].map(stat => (
             <div key={stat.label} className="bg-white p-3 text-center">
               <div className="text-xl md:text-2xl font-bold text-slate-800">
                 {stat.value.toLocaleString()}
@@ -189,9 +173,9 @@ export const WordCounter: React.FC = () => {
               textVal && (
                 <ActionButton
                   icon={hookCopied ? Check : Copy}
-                  label={hookCopied ? "Copied" : "Copy"}
+                  label={hookCopied ? 'Copied' : 'Copy'}
                   onClick={hookHandleCopy}
-                  variant={hookCopied ? "success" : "primary"}
+                  variant={hookCopied ? 'success' : 'primary'}
                 />
               )
             }

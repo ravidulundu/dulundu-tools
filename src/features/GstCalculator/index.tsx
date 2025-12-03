@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import { DollarSign } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
 import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const GstCalculator: React.FC = () => {
@@ -10,7 +11,7 @@ export const GstCalculator: React.FC = () => {
   const [result, setResult] = useState({
     net: 0,
     gst: 0,
-    total: 0
+    total: 0,
   });
 
   useEffect(() => {
@@ -27,26 +28,26 @@ export const GstCalculator: React.FC = () => {
       setResult({
         net: amt,
         gst: gstAmt,
-        total: totalAmt
+        total: totalAmt,
       });
     } else {
       // Remove GST (Inclusive)
-      const gstAmt = amt - (amt * (100 / (100 + rate)));
+      const gstAmt = amt - amt * (100 / (100 + rate));
       const netAmt = amt - gstAmt;
       setResult({
         net: netAmt,
         gst: gstAmt,
-        total: amt
+        total: amt,
       });
     }
   };
 
-  const fmt = (num: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+  const fmt = (num: number) =>
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={DollarSign}
           title="GST Calculator"
@@ -59,13 +60,17 @@ export const GstCalculator: React.FC = () => {
             {/* Input Section */}
             <div className="space-y-6 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Initial Amount</label>
+                <label className="block text-sm font-bold text-slate-700 mb-2">
+                  Initial Amount
+                </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                    $
+                  </span>
                   <input
                     type="number"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={e => setAmount(e.target.value)}
                     className="w-full pl-8 p-4 bg-slate-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-lg font-bold text-slate-800 transition-all"
                     placeholder="0.00"
                   />
@@ -75,7 +80,7 @@ export const GstCalculator: React.FC = () => {
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-2">GST Rate (%)</label>
                 <div className="grid grid-cols-4 gap-2 mb-3">
-                  {[5, 12, 18, 28].map((r) => (
+                  {[5, 12, 18, 28].map(r => (
                     <button
                       key={r}
                       onClick={() => setRate(r)}
@@ -89,15 +94,19 @@ export const GstCalculator: React.FC = () => {
                   <input
                     type="number"
                     value={rate}
-                    onChange={(e) => setRate(parseFloat(e.target.value))}
+                    onChange={e => setRate(parseFloat(e.target.value))}
                     className="w-full p-3 bg-slate-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-bold text-slate-800 transition-all"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">%</span>
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                    %
+                  </span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Calculation Type</label>
+                <label className="block text-sm font-bold text-slate-700 mb-2">
+                  Calculation Type
+                </label>
                 <div className="grid grid-cols-2 bg-slate-100 p-1 rounded-xl">
                   <button
                     onClick={() => setType('exclusive')}
@@ -134,8 +143,7 @@ export const GstCalculator: React.FC = () => {
                 <p className="text-xs text-blue-600 leading-relaxed">
                   {type === 'exclusive'
                     ? `To calculate GST, multiply ${fmt(parseFloat(amount))} by ${rate}%. Add the result to the original amount.`
-                    : `To remove GST, divide ${fmt(parseFloat(amount))} by (1 + ${rate / 100}). The difference is the GST component.`
-                  }
+                    : `To remove GST, divide ${fmt(parseFloat(amount))} by (1 + ${rate / 100}). The difference is the GST component.`}
                 </p>
               </div>
             </div>

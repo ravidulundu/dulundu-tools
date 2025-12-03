@@ -15,7 +15,7 @@ const checkRateLimit = (): { allowed: boolean; error?: string } => {
       const releaseDate = new Date(blockedUntil).toLocaleTimeString();
       return {
         allowed: false,
-        error: `⛔ Abuse detected. You are blocked from using AI features until tomorrow.`
+        error: `⛔ Abuse detected. You are blocked from using AI features until tomorrow.`,
       };
     }
 
@@ -40,24 +40,26 @@ const checkRateLimit = (): { allowed: boolean; error?: string } => {
 
       return {
         allowed: false,
-        error: `⛔ Abuse detected. You sent too many requests too quickly. Access revoked until ${tomorrow.toLocaleDateString()}.`
+        error: `⛔ Abuse detected. You sent too many requests too quickly. Access revoked until ${tomorrow.toLocaleDateString()}.`,
       };
     }
 
     // 5. Save state
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ blockedUntil, minuteStart, minuteCount }));
     return { allowed: true };
-
   } catch (e) {
     // Fallback if localStorage fails (e.g. private mode restrictions)
     return { allowed: true };
   }
 };
 
-export const generateCodeHelp = async (prompt: string, language: string = 'javascript'): Promise<string> => {
+export const generateCodeHelp = async (
+  prompt: string,
+  language: string = 'javascript'
+): Promise<string> => {
   const securityCheck = checkRateLimit();
   if (!securityCheck.allowed) {
-    return securityCheck.error || "Access denied.";
+    return securityCheck.error || 'Access denied.';
   }
 
   try {
@@ -77,15 +79,18 @@ export const generateCodeHelp = async (prompt: string, language: string = 'javas
     const data = await response.json();
     return data.text;
   } catch (error) {
-    console.error("AI Service Error:", error);
+    console.error('AI Service Error:', error);
     return `Error: ${error instanceof Error ? error.message : String(error)}`;
   }
 };
 
-export const paraphraseText = async (text: string, tone: string = 'professional'): Promise<string> => {
+export const paraphraseText = async (
+  text: string,
+  tone: string = 'professional'
+): Promise<string> => {
   const securityCheck = checkRateLimit();
   if (!securityCheck.allowed) {
-    return securityCheck.error || "Access denied.";
+    return securityCheck.error || 'Access denied.';
   }
 
   try {
@@ -105,7 +110,7 @@ export const paraphraseText = async (text: string, tone: string = 'professional'
     const data = await response.json();
     return data.text;
   } catch (error) {
-    console.error("AI Service Error:", error);
+    console.error('AI Service Error:', error);
     return `Error: ${error instanceof Error ? error.message : String(error)}`;
   }
 };

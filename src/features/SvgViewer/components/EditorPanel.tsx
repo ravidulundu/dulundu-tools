@@ -1,21 +1,17 @@
-import React from "react";
-import Editor from "@monaco-editor/react";
-import { useSVG } from "../context/SVGContext";
-import clsx from "clsx";
-import { ShareModal } from "./ShareModal";
-import { EditorTopBar } from "./EditorTopBar";
-import { EditorBottomBar } from "./EditorBottomBar";
-import { useEditorHover } from "../hooks/useEditorHover";
-import { optimizeSvg } from "../utils/svgOptimizer";
+import Editor from '@monaco-editor/react';
+import clsx from 'clsx';
+import React from 'react';
+
+import { EditorBottomBar } from './EditorBottomBar';
+import { EditorTopBar } from './EditorTopBar';
+import { ShareModal } from './ShareModal';
+import { useSVG } from '../context/SVGContext';
+import { useEditorHover } from '../hooks/useEditorHover';
+import { optimizeSvg } from '../utils/svgOptimizer';
 
 const EditorPanel = () => {
-  const {
-    svgCode,
-    setSvgCode,
-    optimizationStats,
-    setOptimizationStats,
-    setHoveredElement,
-  } = useSVG();
+  const { svgCode, setSvgCode, optimizationStats, setOptimizationStats, setHoveredElement } =
+    useSVG();
 
   const [cursorPosition, setCursorPosition] = React.useState({
     line: 1,
@@ -68,9 +64,7 @@ const EditorPanel = () => {
     const optimized = optimizeSvg(svgCode);
 
     const optimizedSize = new Blob([optimized]).size;
-    const percentage = Math.round(
-      ((originalSize - optimizedSize) / originalSize) * 100
-    );
+    const percentage = Math.round(((originalSize - optimizedSize) / originalSize) * 100);
 
     setOptimizationStats({
       originalSize,
@@ -98,19 +92,19 @@ const EditorPanel = () => {
       {/* Editor Area */}
       <div
         className={clsx(
-          "flex-1 overflow-hidden transition-colors relative",
-          isDragOver && "bg-blue-50/10 ring-2 ring-inset ring-blue-500"
+          'flex-1 overflow-hidden transition-colors relative',
+          isDragOver && 'bg-blue-50/10 ring-2 ring-inset ring-blue-500'
         )}
-        onDragOver={(e) => {
+        onDragOver={e => {
           e.preventDefault();
           setIsDragOver(true);
         }}
         onDragLeave={() => setIsDragOver(false)}
-        onDrop={(e) => {
+        onDrop={e => {
           e.preventDefault();
           setIsDragOver(false);
-          const droppedSvg = e.dataTransfer.getData("text/plain");
-          if (droppedSvg && droppedSvg.includes("<svg")) {
+          const droppedSvg = e.dataTransfer.getData('text/plain');
+          if (droppedSvg && droppedSvg.includes('<svg')) {
             setSvgCode(droppedSvg);
           }
         }}
@@ -119,18 +113,18 @@ const EditorPanel = () => {
           height="100%"
           defaultLanguage="xml"
           value={svgCode}
-          onChange={(value) => setSvgCode(value || "")}
+          onChange={value => setSvgCode(value || '')}
           theme="vs-dark"
           onMount={handleEditorDidMount}
           options={{
             minimap: { enabled: false },
             fontSize: 13,
-            lineNumbers: "on",
+            lineNumbers: 'on',
             scrollBeyondLastLine: false,
-            wordWrap: "on",
+            wordWrap: 'on',
             padding: { top: 16, bottom: 16 },
             fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-            renderLineHighlight: "none",
+            renderLineHighlight: 'none',
             // Disable native drag and drop to prevent conflict
             dragAndDrop: false,
           }}

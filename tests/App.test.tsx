@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import App from "../App";
 import { describe, it, expect, vi } from "vitest";
+
+import App from "../App";
 
 // Mock child components to avoid complex rendering and context issues
 vi.mock("../components/Analytics", () => ({

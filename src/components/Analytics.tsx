@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const Analytics = () => {
   const location = useLocation();
@@ -10,16 +10,16 @@ export const Analytics = () => {
     const scriptUrl = import.meta.env.VITE_UMAMI_SCRIPT_URL;
 
     // Only load if both env vars are configured
-    if (websiteId && scriptUrl && !document.getElementById("umami-script")) {
-      const script = document.createElement("script");
-      script.id = "umami-script";
+    if (websiteId && scriptUrl && !document.getElementById('umami-script')) {
+      const script = document.createElement('script');
+      script.id = 'umami-script';
       script.async = true;
       script.defer = true;
       script.src = scriptUrl;
-      script.setAttribute("data-website-id", websiteId);
+      script.setAttribute('data-website-id', websiteId);
 
       // Auto-track handles initial load, but we might need manual for SPA transitions
-      script.setAttribute("data-auto-track", "true");
+      script.setAttribute('data-auto-track', 'true');
 
       document.head.appendChild(script);
     }

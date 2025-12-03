@@ -1,30 +1,31 @@
-import React, { useState } from "react";
-import { FileText, RefreshCw, Copy, Check, Download } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
+import { FileText, RefreshCw, Copy, Check, Download } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const LoremGenerator: React.FC = () => {
   const [paragraphs, setParagraphs] = useState(3);
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState('');
   const [copied, setCopied] = useState(false);
 
   const LOREM_TEXT = [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-    "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.",
-    "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.",
-    "Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.",
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+    'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.',
+    'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.',
+    'Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.',
   ];
 
   const generateLorem = () => {
-    let result = [];
+    const result = [];
     for (let i = 0; i < paragraphs; i++) {
       const text = LOREM_TEXT[i % LOREM_TEXT.length];
       result.push(text);
     }
-    setOutput(result.join("\n\n"));
+    setOutput(result.join('\n\n'));
     setCopied(false);
   };
 
@@ -58,7 +59,7 @@ export const LoremGenerator: React.FC = () => {
               min="1"
               max="20"
               value={paragraphs}
-              onChange={(e) => setParagraphs(parseInt(e.target.value))}
+              onChange={e => setParagraphs(parseInt(e.target.value))}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
             />
           </div>
@@ -84,11 +85,11 @@ export const LoremGenerator: React.FC = () => {
                   icon={Download}
                   label="Download"
                   onClick={() => {
-                    const blob = new Blob([output], { type: "text/plain" });
+                    const blob = new Blob([output], { type: 'text/plain' });
                     const url = URL.createObjectURL(blob);
-                    const a = document.createElement("a");
+                    const a = document.createElement('a');
                     a.href = url;
-                    a.download = "lorem-ipsum.txt";
+                    a.download = 'lorem-ipsum.txt';
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -98,9 +99,9 @@ export const LoremGenerator: React.FC = () => {
                 />
                 <ActionButton
                   icon={copied ? Check : Copy}
-                  label={copied ? "Copied" : "Copy"}
+                  label={copied ? 'Copied' : 'Copy'}
                   onClick={handleCopy}
-                  variant={copied ? "success" : "primary"}
+                  variant={copied ? 'success' : 'primary'}
                 />
               </>
             }

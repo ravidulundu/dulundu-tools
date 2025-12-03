@@ -1,17 +1,10 @@
-import React from "react";
-import {
-  Minimize2,
-  ArrowRight,
-  Copy,
-  Check,
-  Trash2,
-  Upload,
-  Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { Minimize2, ArrowRight, Copy, Check, Trash2, Upload, Download } from 'lucide-react';
+import React from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const LuaMinifier: React.FC = () => {
   const {
@@ -27,7 +20,7 @@ export const LuaMinifier: React.FC = () => {
     handleDownload,
   } = useToolLogic({
     initialInput:
-      "-- Example Lua Code\nfunction factorial(n)\n    if n == 0 then\n        return 1\n    else\n        return n * factorial(n - 1)\n    end\nend\n\nprint(factorial(5))",
+      '-- Example Lua Code\nfunction factorial(n)\n    if n == 0 then\n        return 1\n    else\n        return n * factorial(n - 1)\n    end\nend\n\nprint(factorial(5))',
   });
 
   const minifyLua = (code: string) => {
@@ -35,19 +28,19 @@ export const LuaMinifier: React.FC = () => {
 
     // Reset
     minified = code;
-    minified = minified.replace(/--.*$/gm, ""); // Comments
-    minified = minified.replace(/--\[\[[\s\S]*?\]\]/g, ""); // Block comments
+    minified = minified.replace(/--.*$/gm, ''); // Comments
+    minified = minified.replace(/--\[\[[\s\S]*?\]\]/g, ''); // Block comments
 
     // Tokenize roughly by splitting by whitespace and operators, but that's hard.
     // Simple approach: Remove leading/trailing whitespace per line, join with space.
     minified = minified
-      .split("\n")
-      .map((l) => l.trim())
-      .filter((l) => l)
-      .join(" ");
+      .split('\n')
+      .map(l => l.trim())
+      .filter(l => l)
+      .join(' ');
 
     // Aggressive: remove spaces around symbols
-    minified = minified.replace(/\s*([=+\-*/%^#<>~,(){}])\s*/g, "$1");
+    minified = minified.replace(/\s*([=+\-*/%^#<>~,(){}])\s*/g, '$1');
 
     return minified.trim();
   };
@@ -126,16 +119,14 @@ export const LuaMinifier: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Save"
-                      onClick={() =>
-                        handleDownload("minified.lua", "text/x-lua")
-                      }
+                      onClick={() => handleDownload('minified.lua', 'text/x-lua')}
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

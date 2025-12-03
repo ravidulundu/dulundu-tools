@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Regex, Flag, CheckCircle, XCircle, AlertCircle } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { Button } from "@/components/common/Button";
+import { Regex, Flag, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { Button } from '@/components/common/Button';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const RegexTester: React.FC = () => {
-  const [pattern, setPattern] = useState(
-    "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
-  );
-  const [flags, setFlags] = useState("gm");
+  const [pattern, setPattern] = useState('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
+  const [flags, setFlags] = useState('gm');
   const [text, setText] = useState(
-    "Contact us at support@example.com or sales@example.org for more info."
+    'Contact us at support@example.com or sales@example.org for more info.'
   );
   const [matches, setMatches] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -32,8 +31,7 @@ export const RegexTester: React.FC = () => {
 
       if (!regex.global && text.match(regex)) {
         const m = text.match(regex);
-        if (m)
-          newMatches.push({ index: m.index, value: m[0], groups: m.slice(1) });
+        if (m) newMatches.push({ index: m.index, value: m[0], groups: m.slice(1) });
       } else {
         let match;
         let limit = 1000;
@@ -64,9 +62,7 @@ export const RegexTester: React.FC = () => {
 
     matches.forEach((m, i) => {
       if (m.index > lastIndex) {
-        parts.push(
-          <span key={`pre-${i}`}>{text.substring(lastIndex, m.index)}</span>
-        );
+        parts.push(<span key={`pre-${i}`}>{text.substring(lastIndex, m.index)}</span>);
       }
       parts.push(
         <span
@@ -88,7 +84,7 @@ export const RegexTester: React.FC = () => {
   };
 
   const toggleFlag = (f: string) => {
-    if (flags.includes(f)) setFlags(flags.replace(f, ""));
+    if (flags.includes(f)) setFlags(flags.replace(f, ''));
     else setFlags(flags + f);
   };
 
@@ -105,23 +101,19 @@ export const RegexTester: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <div className="flex-1 flex items-center bg-white border border-gray-300 rounded-lg px-3 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
-              <span className="text-slate-400 font-mono text-lg select-none">
-                /
-              </span>
+              <span className="text-slate-400 font-mono text-lg select-none">/</span>
               <input
                 type="text"
                 value={pattern}
-                onChange={(e) => setPattern(e.target.value)}
+                onChange={e => setPattern(e.target.value)}
                 className="flex-1 p-2 bg-transparent outline-none font-mono text-slate-800 text-sm"
                 placeholder="Enter regex pattern..."
               />
-              <span className="text-slate-400 font-mono text-lg select-none">
-                /
-              </span>
+              <span className="text-slate-400 font-mono text-lg select-none">/</span>
               <input
                 type="text"
                 value={flags}
-                onChange={(e) => setFlags(e.target.value)}
+                onChange={e => setFlags(e.target.value)}
                 className="w-12 p-2 bg-transparent outline-none font-mono text-slate-600 font-bold text-sm"
                 placeholder="gims"
               />
@@ -130,22 +122,22 @@ export const RegexTester: React.FC = () => {
 
           <div className="flex flex-wrap gap-2">
             {[
-              { char: "g", label: "Global" },
-              { char: "i", label: "Insensitive" },
-              { char: "m", label: "Multiline" },
-              { char: "s", label: "Single Line" },
-              { char: "u", label: "Unicode" },
-            ].map((f) => (
+              { char: 'g', label: 'Global' },
+              { char: 'i', label: 'Insensitive' },
+              { char: 'm', label: 'Multiline' },
+              { char: 's', label: 'Single Line' },
+              { char: 'u', label: 'Unicode' },
+            ].map(f => (
               <Button
                 key={f.char}
                 onClick={() => toggleFlag(f.char)}
-                variant={flags.includes(f.char) ? "primary" : "outline"}
+                variant={flags.includes(f.char) ? 'primary' : 'outline'}
                 size="sm"
                 icon={flags.includes(f.char) ? CheckCircle : Flag}
                 className={
                   flags.includes(f.char)
-                    ? "bg-blue-100 text-primary border-blue-200 hover:bg-blue-200"
-                    : ""
+                    ? 'bg-blue-100 text-primary border-blue-200 hover:bg-blue-200'
+                    : ''
                 }
               >
                 {f.label} ({f.char})
@@ -196,32 +188,21 @@ export const RegexTester: React.FC = () => {
                           <th className="p-3 font-medium border-b border-gray-100 w-12 text-center">
                             #
                           </th>
-                          <th className="p-3 font-medium border-b border-gray-100">
-                            Match
-                          </th>
-                          <th className="p-3 font-medium border-b border-gray-100 w-20">
-                            Index
-                          </th>
-                          <th className="p-3 font-medium border-b border-gray-100">
-                            Groups
-                          </th>
+                          <th className="p-3 font-medium border-b border-gray-100">Match</th>
+                          <th className="p-3 font-medium border-b border-gray-100 w-20">Index</th>
+                          <th className="p-3 font-medium border-b border-gray-100">Groups</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
                         {matches.map((m, i) => (
-                          <tr
-                            key={i}
-                            className="hover:bg-blue-50/50 transition-colors group"
-                          >
+                          <tr key={i} className="hover:bg-blue-50/50 transition-colors group">
                             <td className="p-3 text-slate-400 text-center font-mono text-xs">
                               {i + 1}
                             </td>
                             <td className="p-3 font-mono font-bold text-slate-700 break-all">
                               {m.value}
                             </td>
-                            <td className="p-3 text-slate-500 font-mono text-xs">
-                              {m.index}
-                            </td>
+                            <td className="p-3 text-slate-500 font-mono text-xs">{m.index}</td>
                             <td className="p-3 text-slate-500">
                               {m.groups && m.groups.length > 0 ? (
                                 <span className="flex flex-wrap gap-1">

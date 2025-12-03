@@ -1,9 +1,11 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Header } from "../components/Header";
 import React from "react";
-import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
+import { describe, it, expect } from "vitest";
+
+import { Header } from "../components/Header";
+import { ThemeProvider } from "../contexts/ThemeContext";
+
 
 describe("Header", () => {
   it("renders without crashing", () => {

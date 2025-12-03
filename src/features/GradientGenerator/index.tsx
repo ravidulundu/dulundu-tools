@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import { Palette, Copy, Check, RotateCcw } from 'lucide-react';
-import { ToolHeader } from '@/components/common/ToolHeader';
-import { CodeEditor } from '@/components/common/CodeEditor';
+import React, { useState } from 'react';
+
 import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const GradientGenerator: React.FC = () => {
   const [color1, setColor1] = useState('#3b82f6');
@@ -20,15 +21,24 @@ export const GradientGenerator: React.FC = () => {
   };
 
   const handleRandom = () => {
-    setColor1('#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'));
-    setColor2('#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'));
+    setColor1(
+      '#' +
+        Math.floor(Math.random() * 16777215)
+          .toString(16)
+          .padStart(6, '0')
+    );
+    setColor2(
+      '#' +
+        Math.floor(Math.random() * 16777215)
+          .toString(16)
+          .padStart(6, '0')
+    );
     setAngle(Math.floor(Math.random() * 360));
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={Palette}
           title="CSS Gradient Generator"
@@ -63,13 +73,13 @@ export const GradientGenerator: React.FC = () => {
                     <input
                       type="color"
                       value={color1}
-                      onChange={(e) => setColor1(e.target.value)}
+                      onChange={e => setColor1(e.target.value)}
                       className="w-12 h-12 rounded-lg cursor-pointer border-0 p-0"
                     />
                     <input
                       type="text"
                       value={color1}
-                      onChange={(e) => setColor1(e.target.value)}
+                      onChange={e => setColor1(e.target.value)}
                       className="flex-1 p-3 bg-slate-50 border border-gray-200 rounded-lg font-mono text-sm uppercase outline-none focus:ring-2 focus:ring-primary/50 text-slate-800"
                     />
                   </div>
@@ -81,26 +91,28 @@ export const GradientGenerator: React.FC = () => {
                     <input
                       type="color"
                       value={color2}
-                      onChange={(e) => setColor2(e.target.value)}
+                      onChange={e => setColor2(e.target.value)}
                       className="w-12 h-12 rounded-lg cursor-pointer border-0 p-0"
                     />
                     <input
                       type="text"
                       value={color2}
-                      onChange={(e) => setColor2(e.target.value)}
+                      onChange={e => setColor2(e.target.value)}
                       className="flex-1 p-3 bg-slate-50 border border-gray-200 rounded-lg font-mono text-sm uppercase outline-none focus:ring-2 focus:ring-primary/50 text-slate-800"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Angle ({angle}°)</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Angle ({angle}°)
+                  </label>
                   <input
                     type="range"
                     min="0"
                     max="360"
                     value={angle}
-                    onChange={(e) => setAngle(parseInt(e.target.value))}
+                    onChange={e => setAngle(parseInt(e.target.value))}
                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
                   />
                 </div>

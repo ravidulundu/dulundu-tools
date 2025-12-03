@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import DOMPurify from "dompurify";
-import { getIconSvg } from "../../services/iconify";
+import DOMPurify from 'dompurify';
+import React, { useState, useEffect } from 'react';
+
+import { getIconSvg } from '../../services/iconify';
 
 interface IconGridProps {
   icons: string[];
@@ -8,9 +9,7 @@ interface IconGridProps {
 }
 
 export const IconGrid: React.FC<IconGridProps> = ({ icons, onSelectIcon }) => {
-  const [loadedIcons, setLoadedIcons] = React.useState<Record<string, string>>(
-    {}
-  );
+  const [loadedIcons, setLoadedIcons] = React.useState<Record<string, string>>({});
 
   // Lazy load SVGs for the grid
   // In a real virtualized list, we would only load visible ones.
@@ -22,7 +21,7 @@ export const IconGrid: React.FC<IconGridProps> = ({ icons, onSelectIcon }) => {
       const newIcons: Record<string, string> = {};
       // Fetch in batches or individually
       // For performance, we'll just fetch the ones we don't have yet
-      const iconsToFetch = icons.filter((icon) => !loadedIcons[icon]);
+      const iconsToFetch = icons.filter(icon => !loadedIcons[icon]);
 
       if (iconsToFetch.length === 0) return;
 
@@ -30,11 +29,11 @@ export const IconGrid: React.FC<IconGridProps> = ({ icons, onSelectIcon }) => {
       const batch = iconsToFetch.slice(0, 20);
 
       await Promise.all(
-        batch.map(async (iconName) => {
+        batch.map(async iconName => {
           try {
             const svg = await getIconSvg(iconName);
             if (active) {
-              setLoadedIcons((prev) => ({ ...prev, [iconName]: svg }));
+              setLoadedIcons(prev => ({ ...prev, [iconName]: svg }));
             }
           } catch (e) {
             console.error(`Failed to load icon ${iconName}`, e);
@@ -60,19 +59,17 @@ export const IconGrid: React.FC<IconGridProps> = ({ icons, onSelectIcon }) => {
 
   return (
     <div className="grid grid-cols-4 gap-2 p-1">
-      {icons.map((iconName) => (
+      {icons.map(iconName => (
         <button
           key={iconName}
           draggable={!!loadedIcons[iconName]}
-          onDragStart={(e) => {
+          onDragStart={e => {
             if (loadedIcons[iconName]) {
-              e.dataTransfer.setData("text/plain", loadedIcons[iconName]);
-              e.dataTransfer.effectAllowed = "copy";
+              e.dataTransfer.setData('text/plain', loadedIcons[iconName]);
+              e.dataTransfer.effectAllowed = 'copy';
             }
           }}
-          onClick={() =>
-            loadedIcons[iconName] && onSelectIcon(loadedIcons[iconName])
-          }
+          onClick={() => loadedIcons[iconName] && onSelectIcon(loadedIcons[iconName])}
           className="aspect-square flex items-center justify-center bg-gray-100 dark:bg-[#252526] hover:bg-gray-200 dark:hover:bg-[#2d2d2e] border border-transparent hover:border-blue-500/50 rounded transition-all group relative cursor-grab active:cursor-grabbing"
           title={iconName}
         >

@@ -1,20 +1,13 @@
-import React, { useState } from "react";
-import {
-  ArrowRightLeft,
-  Copy,
-  Check,
-  Trash2,
-  ArrowRight,
-  Upload,
-  Download,
-} from "lucide-react";
-import { load, dump } from "js-yaml";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { load, dump } from 'js-yaml';
+import { ArrowRightLeft, Copy, Check, Trash2, ArrowRight, Upload, Download } from 'lucide-react';
+import React, { useState } from 'react';
 
-type Mode = "json-yaml" | "yaml-json" | "xml-yaml" | "yaml-xml";
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
+
+type Mode = 'json-yaml' | 'yaml-json' | 'xml-yaml' | 'yaml-xml';
 
 export const YamlConverter: React.FC = () => {
   const {
@@ -32,7 +25,7 @@ export const YamlConverter: React.FC = () => {
     handleDownload,
   } = useToolLogic();
 
-  const [mode, setMode] = useState<Mode>("json-yaml");
+  const [mode, setMode] = useState<Mode>('json-yaml');
 
   type JsonValue = string | number | boolean | null | JsonObject | JsonValue[];
   interface JsonObject {
@@ -44,12 +37,11 @@ export const YamlConverter: React.FC = () => {
     if (xml.nodeType === 1) {
       const obj: JsonObject = {};
       if ((xml as Element).attributes.length > 0) {
-        obj["@attributes"] = {};
+        obj['@attributes'] = {};
         for (let j = 0; j < (xml as Element).attributes.length; j++) {
           const attribute = (xml as Element).attributes.item(j);
           if (attribute)
-            (obj["@attributes"] as JsonObject)[attribute.nodeName] =
-              attribute.nodeValue;
+            (obj['@attributes'] as JsonObject)[attribute.nodeName] = attribute.nodeValue;
         }
       }
 
@@ -57,7 +49,7 @@ export const YamlConverter: React.FC = () => {
         for (let i = 0; i < xml.childNodes.length; i++) {
           const item = xml.childNodes.item(i);
           const nodeName = item.nodeName;
-          if (nodeName === "#text") {
+          if (nodeName === '#text') {
             // If it's just text content and we already have attributes, we might need a special key like #text
             // But for simplicity in this converter, if it's mixed content, it gets complex.
             // This logic follows the original implementation's structure but adds types.
@@ -68,7 +60,7 @@ export const YamlConverter: React.FC = () => {
 
           const childValue = xmlToJson(item);
 
-          if (typeof obj[nodeName] === "undefined") {
+          if (typeof obj[nodeName] === 'undefined') {
             obj[nodeName] = childValue;
           } else {
             if (!Array.isArray(obj[nodeName])) {
@@ -87,15 +79,15 @@ export const YamlConverter: React.FC = () => {
   };
 
   const jsonToXml = (json: JsonValue): string => {
-    let xml = "";
-    if (typeof json === "object" && json !== null) {
+    let xml = '';
+    if (typeof json === 'object' && json !== null) {
       if (Array.isArray(json)) {
-        json.forEach((item) => {
+        json.forEach(item => {
           xml += `<item>${jsonToXml(item)}</item>`;
         });
       } else {
-        Object.keys(json).forEach((key) => {
-          if (key === "@attributes") return;
+        Object.keys(json).forEach(key => {
+          if (key === '@attributes') return;
           xml += `<${key}>${jsonToXml((json as JsonObject)[key])}</${key}>`;
         });
       }
@@ -107,32 +99,30 @@ export const YamlConverter: React.FC = () => {
 
   const convert = () => {
     if (!input.trim()) {
-      setOutput("");
+      setOutput('');
       return;
     }
     setError(null);
 
     try {
-      if (mode === "json-yaml") {
+      if (mode === 'json-yaml') {
         const obj = JSON.parse(input);
         setOutput(dump(obj));
-      } else if (mode === "yaml-json") {
+      } else if (mode === 'yaml-json') {
         const obj = load(input);
         setOutput(JSON.stringify(obj, null, 2));
-      } else if (mode === "xml-yaml") {
+      } else if (mode === 'xml-yaml') {
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(input, "text/xml");
-        if (xmlDoc.querySelector("parsererror")) throw new Error("Invalid XML");
+        const xmlDoc = parser.parseFromString(input, 'text/xml');
+        if (xmlDoc.querySelector('parsererror')) throw new Error('Invalid XML');
         const json = xmlToJson(xmlDoc.documentElement);
         const rootName = xmlDoc.documentElement.nodeName;
         const finalObj = { [rootName]: json };
         setOutput(dump(finalObj));
-      } else if (mode === "yaml-xml") {
+      } else if (mode === 'yaml-xml') {
         const obj = load(input) as JsonValue;
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<root>\n${jsonToXml(
-          obj
-        )}\n</root>`;
-        setOutput(xml.replace(/(>)(<)(\/*)/g, "$1\r\n$2$3"));
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<root>\n${jsonToXml(obj)}\n</root>`;
+        setOutput(xml.replace(/(>)(<)(\/*)/g, '$1\r\n$2$3'));
       }
     } catch (e) {
       setError((e as Error).message);
@@ -141,15 +131,15 @@ export const YamlConverter: React.FC = () => {
 
   const getDownloadOptions = () => {
     switch (mode) {
-      case "json-yaml":
-      case "xml-yaml":
-        return { filename: "data.yaml", type: "text/yaml" };
-      case "yaml-json":
-        return { filename: "data.json", type: "application/json" };
-      case "yaml-xml":
-        return { filename: "data.xml", type: "text/xml" };
+      case 'json-yaml':
+      case 'xml-yaml':
+        return { filename: 'data.yaml', type: 'text/yaml' };
+      case 'yaml-json':
+        return { filename: 'data.json', type: 'application/json' };
+      case 'yaml-xml':
+        return { filename: 'data.xml', type: 'text/xml' };
       default:
-        return { filename: "data.txt", type: "text/plain" };
+        return { filename: 'data.txt', type: 'text/plain' };
     }
   };
 
@@ -165,18 +155,18 @@ export const YamlConverter: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-4 items-center justify-between">
           <div className="flex bg-slate-100 p-1 rounded-lg flex-wrap">
             {[
-              { id: "json-yaml", label: "JSON to YAML" },
-              { id: "yaml-json", label: "YAML to JSON" },
-              { id: "xml-yaml", label: "XML to YAML" },
-              { id: "yaml-xml", label: "YAML to XML" },
-            ].map((opt) => (
+              { id: 'json-yaml', label: 'JSON to YAML' },
+              { id: 'yaml-json', label: 'YAML to JSON' },
+              { id: 'xml-yaml', label: 'XML to YAML' },
+              { id: 'yaml-xml', label: 'YAML to XML' },
+            ].map(opt => (
               <button
                 key={opt.id}
                 onClick={() => setMode(opt.id as Mode)}
                 className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
                   mode === opt.id
-                    ? "bg-white text-primary shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
+                    ? 'bg-white text-primary shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700'
                 }`}
               >
                 {opt.label}
@@ -196,7 +186,7 @@ export const YamlConverter: React.FC = () => {
               ref={fileInputRef}
               type="file"
               accept=".yaml,.yml,.json,.xml,.txt"
-              onChange={(e) => handleFileUpload(e)}
+              onChange={e => handleFileUpload(e)}
               className="hidden"
             />
             <button
@@ -254,9 +244,9 @@ export const YamlConverter: React.FC = () => {
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

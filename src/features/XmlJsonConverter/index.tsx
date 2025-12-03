@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   ArrowRightLeft,
   FileJson,
@@ -9,14 +8,16 @@ import {
   ArrowRight,
   Upload,
   Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { Button } from "@/components/common/Button";
-import { useToolLogic } from "@/hooks/useToolLogic";
+} from 'lucide-react';
+import React, { useState } from 'react';
 
-type Mode = "xml-json" | "json-xml";
+import { ActionButton } from '@/components/common/ActionButton';
+import { Button } from '@/components/common/Button';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
+
+type Mode = 'xml-json' | 'json-xml';
 
 export const XmlJsonConverter: React.FC = () => {
   const {
@@ -34,21 +35,21 @@ export const XmlJsonConverter: React.FC = () => {
     handleDownload,
   } = useToolLogic();
 
-  const [mode, setMode] = useState<Mode>("xml-json");
+  const [mode, setMode] = useState<Mode>('xml-json');
 
   // XML to JSON Logic
   const xmlToJson = (xml: Node): unknown => {
-    let obj: Record<string, any> = {};
+    const obj: Record<string, any> = {};
 
     if (xml.nodeType === 1) {
       // element
       // do attributes
       if ((xml as Element).attributes.length > 0) {
-        obj["@attributes"] = {};
+        obj['@attributes'] = {};
         for (let j = 0; j < (xml as Element).attributes.length; j++) {
           const attribute = (xml as Element).attributes.item(j);
           if (attribute) {
-            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+            obj['@attributes'][attribute.nodeName] = attribute.nodeValue;
           }
         }
       }
@@ -63,16 +64,16 @@ export const XmlJsonConverter: React.FC = () => {
         const item = xml.childNodes.item(i);
         const nodeName = item.nodeName;
 
-        if (nodeName === "#text") {
+        if (nodeName === '#text') {
           const val = item.nodeValue?.trim();
           if (val) return val; // Only return text if simple content
           continue;
         }
 
-        if (typeof obj[nodeName] === "undefined") {
+        if (typeof obj[nodeName] === 'undefined') {
           obj[nodeName] = xmlToJson(item);
         } else {
-          if (typeof obj[nodeName].push === "undefined") {
+          if (typeof obj[nodeName].push === 'undefined') {
             const old = obj[nodeName];
             obj[nodeName] = [];
             obj[nodeName].push(old);
@@ -86,15 +87,15 @@ export const XmlJsonConverter: React.FC = () => {
 
   // JSON to XML Logic
   const jsonToXml = (json: any): string => {
-    let xml = "";
-    if (typeof json === "object" && json !== null) {
+    let xml = '';
+    if (typeof json === 'object' && json !== null) {
       if (Array.isArray(json)) {
-        json.forEach((item) => {
+        json.forEach(item => {
           xml += `<item>${jsonToXml(item)}</item>`;
         });
       } else {
-        Object.keys(json).forEach((key) => {
-          if (key === "@attributes") {
+        Object.keys(json).forEach(key => {
+          if (key === '@attributes') {
             // Skip attributes in body generation, simplified
             return;
           }
@@ -109,17 +110,17 @@ export const XmlJsonConverter: React.FC = () => {
 
   const convert = () => {
     if (!input.trim()) {
-      setOutput("");
+      setOutput('');
       return;
     }
     setError(null);
 
     try {
-      if (mode === "xml-json") {
+      if (mode === 'xml-json') {
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(input, "text/xml");
-        const err = xmlDoc.querySelector("parsererror");
-        if (err) throw new Error("Invalid XML Format");
+        const xmlDoc = parser.parseFromString(input, 'text/xml');
+        const err = xmlDoc.querySelector('parsererror');
+        if (err) throw new Error('Invalid XML Format');
 
         const json = xmlToJson(xmlDoc.documentElement);
         // Wrapper for root element name
@@ -129,11 +130,9 @@ export const XmlJsonConverter: React.FC = () => {
         setOutput(JSON.stringify(finalObj, null, 2));
       } else {
         const parsed = JSON.parse(input);
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<root>\n${jsonToXml(
-          parsed
-        )}\n</root>`;
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<root>\n${jsonToXml(parsed)}\n</root>`;
         // Basic beautify
-        const formatted = xml.replace(/(>)(<)(\/*)/g, "$1\r\n$2$3");
+        const formatted = xml.replace(/(>)(<)(\/*)/g, '$1\r\n$2$3');
         setOutput(formatted);
       }
     } catch (e) {
@@ -155,27 +154,27 @@ export const XmlJsonConverter: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-4 items-center justify-between">
           <div className="flex bg-slate-100 p-1 rounded-lg">
             <Button
-              onClick={() => setMode("xml-json")}
+              onClick={() => setMode('xml-json')}
               variant="ghost"
               size="sm"
               icon={FileCode}
               className={
-                mode === "xml-json"
-                  ? "bg-white text-primary shadow-sm hover:bg-white"
-                  : "text-slate-600 hover:text-slate-900"
+                mode === 'xml-json'
+                  ? 'bg-white text-primary shadow-sm hover:bg-white'
+                  : 'text-slate-600 hover:text-slate-900'
               }
             >
               XML to JSON
             </Button>
             <Button
-              onClick={() => setMode("json-xml")}
+              onClick={() => setMode('json-xml')}
               variant="ghost"
               size="sm"
               icon={FileJson}
               className={
-                mode === "json-xml"
-                  ? "bg-white text-primary shadow-sm hover:bg-white"
-                  : "text-slate-600 hover:text-slate-900"
+                mode === 'json-xml'
+                  ? 'bg-white text-primary shadow-sm hover:bg-white'
+                  : 'text-slate-600 hover:text-slate-900'
               }
             >
               JSON to XML
@@ -191,7 +190,7 @@ export const XmlJsonConverter: React.FC = () => {
               ref={fileInputRef}
               type="file"
               accept=".xml,.json,.txt"
-              onChange={(e) => handleFileUpload(e)}
+              onChange={e => handleFileUpload(e)}
               className="hidden"
             />
             <Button
@@ -219,13 +218,13 @@ export const XmlJsonConverter: React.FC = () => {
               <CodeEditor
                 value={input}
                 onChange={setInput}
-                label={`Input ${mode === "xml-json" ? "XML" : "JSON"}`}
+                label={`Input ${mode === 'xml-json' ? 'XML' : 'JSON'}`}
                 placeholder={
-                  mode === "xml-json"
-                    ? "<root><item>Value</item></root>"
+                  mode === 'xml-json'
+                    ? '<root><item>Value</item></root>'
                     : '{"root": {"item": "Value"}}'
                 }
-                language={mode === "xml-json" ? "xml" : "json"}
+                language={mode === 'xml-json' ? 'xml' : 'json'}
                 theme="light"
               />
               {error && (
@@ -237,10 +236,10 @@ export const XmlJsonConverter: React.FC = () => {
 
             <CodeEditor
               value={output}
-              label={`Output ${mode === "xml-json" ? "JSON" : "XML"}`}
+              label={`Output ${mode === 'xml-json' ? 'JSON' : 'XML'}`}
               placeholder="Result will appear here..."
               readOnly
-              language={mode === "xml-json" ? "json" : "xml"}
+              language={mode === 'xml-json' ? 'json' : 'xml'}
               theme="dark"
               actions={
                 output && (
@@ -250,17 +249,17 @@ export const XmlJsonConverter: React.FC = () => {
                       label="Download"
                       onClick={() =>
                         handleDownload(
-                          mode === "xml-json" ? "data.json" : "data.xml",
-                          mode === "xml-json" ? "application/json" : "text/xml"
+                          mode === 'xml-json' ? 'data.json' : 'data.xml',
+                          mode === 'xml-json' ? 'application/json' : 'text/xml'
                         )
                       }
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

@@ -1,17 +1,10 @@
-import React from "react";
-import {
-  FileCode,
-  ArrowRight,
-  Copy,
-  Check,
-  Trash2,
-  Upload,
-  Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { FileCode, ArrowRight, Copy, Check, Trash2, Upload, Download } from 'lucide-react';
+import React from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const CsvXmlConverter: React.FC = () => {
   const {
@@ -31,42 +24,38 @@ export const CsvXmlConverter: React.FC = () => {
 
   const convert = () => {
     if (!input.trim()) {
-      setOutput("");
+      setOutput('');
       return;
     }
 
     try {
-      const lines = input.trim().split("\n");
-      if (lines.length < 2)
-        throw new Error("CSV must have at least a header row and one data row");
+      const lines = input.trim().split('\n');
+      if (lines.length < 2) throw new Error('CSV must have at least a header row and one data row');
 
       const headers = lines[0]
-        .split(",")
-        .map((h) => h.trim().replace(/^"|"$/g, "").replace(/\s+/g, "_")); // Sanitize tag names
+        .split(',')
+        .map(h => h.trim().replace(/^"|"$/g, '').replace(/\s+/g, '_')); // Sanitize tag names
 
       let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<root>\n';
 
       for (let i = 1; i < lines.length; i++) {
-        const currentline = lines[i].split(",");
-        xml += "  <row>\n";
+        const currentline = lines[i].split(',');
+        xml += '  <row>\n';
         for (let j = 0; j < headers.length; j++) {
-          let val = currentline[j]?.trim() || "";
-          val = val.replace(/^"|"$/g, "");
+          let val = currentline[j]?.trim() || '';
+          val = val.replace(/^"|"$/g, '');
           // Escape XML special chars
-          val = val
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
+          val = val.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
           xml += `    <${headers[j]}>${val}</${headers[j]}>\n`;
         }
-        xml += "  </row>\n";
+        xml += '  </row>\n';
       }
-      xml += "</root>";
+      xml += '</root>';
 
       setOutput(xml);
       setError(null);
     } catch (e) {
-      setError("Error parsing CSV. Ensure format is correct.");
+      setError('Error parsing CSV. Ensure format is correct.');
     }
   };
 
@@ -138,16 +127,14 @@ export const CsvXmlConverter: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Save"
-                      onClick={() =>
-                        handleDownload("converted.xml", "text/xml")
-                      }
+                      onClick={() => handleDownload('converted.xml', 'text/xml')}
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

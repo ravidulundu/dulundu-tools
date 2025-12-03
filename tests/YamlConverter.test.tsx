@@ -1,7 +1,9 @@
-import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { YamlConverter } from "../features/YamlConverter";
 import React from "react";
+import { describe, it, expect, vi } from "vitest";
+
+import { YamlConverter } from "../features/YamlConverter";
+
 
 // Mock js-yaml
 vi.mock("js-yaml", () => ({

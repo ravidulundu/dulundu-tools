@@ -1,11 +1,12 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { ToolCard } from "../components/ToolCard";
 import { Settings } from "lucide-react";
-import { ToolCategory } from "../types";
 import React from "react";
-import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
+import { describe, it, expect } from "vitest";
+
+import { ToolCard } from "../components/ToolCard";
+import { ThemeProvider } from "../contexts/ThemeContext";
+import { ToolCategory } from "../types";
 
 describe("ToolCard", () => {
   it("renders without crashing", () => {

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Table,
   ArrowRight,
@@ -8,11 +7,13 @@ import {
   ArrowLeftRight,
   Upload,
   Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+} from 'lucide-react';
+import React, { useState } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const TsvConverter: React.FC = () => {
   const {
@@ -30,31 +31,28 @@ export const TsvConverter: React.FC = () => {
     handleDownload,
   } = useToolLogic();
 
-  const [mode, setMode] = useState<"tsv-json" | "tsv-csv">("tsv-json");
+  const [mode, setMode] = useState<'tsv-json' | 'tsv-csv'>('tsv-json');
 
   const convert = () => {
     if (!input.trim()) {
-      setOutput("");
+      setOutput('');
       return;
     }
 
     try {
-      const lines = input.trim().split("\n");
-      if (lines.length < 2)
-        throw new Error("TSV must have at least a header row and one data row");
+      const lines = input.trim().split('\n');
+      if (lines.length < 2) throw new Error('TSV must have at least a header row and one data row');
 
-      const headers = lines[0]
-        .split("\t")
-        .map((h) => h.trim().replace(/^"|"$/g, ""));
+      const headers = lines[0].split('\t').map(h => h.trim().replace(/^"|"$/g, ''));
 
-      if (mode === "tsv-json") {
+      if (mode === 'tsv-json') {
         const result = [];
         for (let i = 1; i < lines.length; i++) {
           const obj: any = {};
-          const currentline = lines[i].split("\t");
+          const currentline = lines[i].split('\t');
           for (let j = 0; j < headers.length; j++) {
             let val = currentline[j]?.trim();
-            if (val) val = val.replace(/^"|"$/g, "");
+            if (val) val = val.replace(/^"|"$/g, '');
             obj[headers[j]] = val;
           }
           result.push(obj);
@@ -62,19 +60,19 @@ export const TsvConverter: React.FC = () => {
         setOutput(JSON.stringify(result, null, 2));
       } else {
         // TSV to CSV
-        const csvRows = [headers.join(",")];
+        const csvRows = [headers.join(',')];
         for (let i = 1; i < lines.length; i++) {
-          const vals = lines[i].split("\t").map((v) => {
-            let val = v.trim().replace(/^"|"$/g, "");
+          const vals = lines[i].split('\t').map(v => {
+            const val = v.trim().replace(/^"|"$/g, '');
             return `"${val}"`;
           });
-          csvRows.push(vals.join(","));
+          csvRows.push(vals.join(','));
         }
-        setOutput(csvRows.join("\n"));
+        setOutput(csvRows.join('\n'));
       }
       setError(null);
     } catch (e) {
-      setError("Error parsing TSV. Ensure format is correct (tab separated).");
+      setError('Error parsing TSV. Ensure format is correct (tab separated).');
     }
   };
 
@@ -91,21 +89,21 @@ export const TsvConverter: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-4 items-center justify-between">
           <div className="flex bg-slate-100 p-1 rounded-lg">
             <button
-              onClick={() => setMode("tsv-json")}
+              onClick={() => setMode('tsv-json')}
               className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
-                mode === "tsv-json"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                mode === 'tsv-json'
+                  ? 'bg-white text-primary shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               TSV to JSON
             </button>
             <button
-              onClick={() => setMode("tsv-csv")}
+              onClick={() => setMode('tsv-csv')}
               className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
-                mode === "tsv-csv"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                mode === 'tsv-csv'
+                  ? 'bg-white text-primary shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               TSV to CSV
@@ -124,7 +122,7 @@ export const TsvConverter: React.FC = () => {
               ref={fileInputRef}
               type="file"
               accept=".tsv,.txt"
-              onChange={(e) => handleFileUpload(e)}
+              onChange={e => handleFileUpload(e)}
               className="hidden"
             />
             <button
@@ -157,9 +155,7 @@ export const TsvConverter: React.FC = () => {
                 theme="light"
               />
               {error && (
-                <p className="mt-2 text-xs text-red-500 font-bold animate-pulse">
-                  {error}
-                </p>
+                <p className="mt-2 text-xs text-red-500 font-bold animate-pulse">{error}</p>
               )}
             </div>
 
@@ -168,7 +164,7 @@ export const TsvConverter: React.FC = () => {
               label="Output"
               placeholder="Result will appear here..."
               readOnly
-              language={mode === "tsv-json" ? "json" : "text"}
+              language={mode === 'tsv-json' ? 'json' : 'text'}
               theme="dark"
               actions={
                 output && (
@@ -178,17 +174,17 @@ export const TsvConverter: React.FC = () => {
                       label="Download"
                       onClick={() =>
                         handleDownload(
-                          mode === "tsv-json" ? "data.json" : "data.csv",
-                          mode === "tsv-json" ? "application/json" : "text/csv"
+                          mode === 'tsv-json' ? 'data.json' : 'data.csv',
+                          mode === 'tsv-json' ? 'application/json' : 'text/csv'
                         )
                       }
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

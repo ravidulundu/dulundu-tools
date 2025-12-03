@@ -1,6 +1,6 @@
+import { Construction, ArrowLeft, Mail } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Construction, ArrowLeft, Mail } from 'lucide-react';
 
 export const ComingSoon: React.FC = () => {
   return (
@@ -11,12 +11,13 @@ export const ComingSoon: React.FC = () => {
         </div>
         <h1 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">Under Construction</h1>
         <p className="text-lg text-slate-500 mb-10 leading-relaxed max-w-lg">
-          We are currently working hard to bring this tool to life. It will be available in the next scheduled update.
+          We are currently working hard to bring this tool to life. It will be available in the next
+          scheduled update.
         </p>
-        
+
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="flex items-center justify-center space-x-2 px-8 py-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all font-medium shadow-md hover:shadow-lg transform hover:-translate-y-1"
           >
             <ArrowLeft size={20} />

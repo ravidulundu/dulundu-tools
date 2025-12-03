@@ -1,108 +1,80 @@
-import React, { useState } from "react";
-import { Type, Copy, Check } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { ActionButton } from "@/components/common/ActionButton";
+import { Type, Copy, Check } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const TextStyler: React.FC = () => {
-  const [text, setText] = useState("Dulundu.tools");
+  const [text, setText] = useState('Dulundu.tools');
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const styles = [
     {
-      name: "Bold (Serif)",
+      name: 'Bold (Serif)',
       transform: (s: string) =>
-        s.replace(/[A-Za-z0-9]/g, (c) => {
-          const chars = [
-            ..."𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳",
-          ];
-          const index =
-            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(
-              c
-            );
+        s.replace(/[A-Za-z0-9]/g, c => {
+          const chars = [...'𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳'];
+          const index = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.indexOf(c);
           return chars[index] || c;
         }),
     },
     {
-      name: "Italic (Serif)",
+      name: 'Italic (Serif)',
       transform: (s: string) =>
-        s.replace(/[A-Za-z]/g, (c) => {
-          const chars = [
-            ..."𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠ᴛ𝑢𝑣𝑤𝑥𝑦𝑧",
-          ];
-          const index =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(c);
+        s.replace(/[A-Za-z]/g, c => {
+          const chars = [...'𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠ᴛ𝑢𝑣𝑤𝑥𝑦𝑧'];
+          const index = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.indexOf(c);
           return chars[index] || c;
         }),
     },
     {
-      name: "Monospace",
+      name: 'Monospace',
       transform: (s: string) =>
-        s.replace(/[A-Za-z0-9]/g, (c) => {
-          const chars = [
-            ..."𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝑔𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣",
-          ];
-          const index =
-            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(
-              c
-            );
+        s.replace(/[A-Za-z0-9]/g, c => {
+          const chars = [...'𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝑔𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣'];
+          const index = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.indexOf(c);
           return chars[index] || c;
         }),
     },
     {
-      name: "Script",
+      name: 'Script',
       transform: (s: string) =>
-        s.replace(/[A-Za-z]/g, (c) => {
-          const chars = [
-            ..."𝒜𝐵𝒞𝒟𝐸𝐹𝒢𝐻𝐼𝒥𝒦𝐿𝑀𝒩𝒪𝒫𝒬𝑅𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹𝑒𝒻𝑔𝒽𝒾𝒿𝓀𝓁𝓂𝓃𝑜𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏",
-          ];
-          const index =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(c);
+        s.replace(/[A-Za-z]/g, c => {
+          const chars = [...'𝒜𝐵𝒞𝒟𝐸𝐹𝒢𝐻𝐼𝒥𝒦𝐿𝑀𝒩𝒪𝒫𝒬𝑅𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹𝑒𝒻𝑔𝒽𝒾𝒿𝓀𝓁𝓂𝓃𝑜𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏'];
+          const index = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.indexOf(c);
           return chars[index] || c;
         }),
     },
     {
-      name: "Double Struck",
+      name: 'Double Struck',
       transform: (s: string) =>
-        s.replace(/[A-Za-z0-9]/g, (c) => {
-          const chars = [
-            ..."𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫",
-          ];
-          const index =
-            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(
-              c
-            );
+        s.replace(/[A-Za-z0-9]/g, c => {
+          const chars = [...'𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫'];
+          const index = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.indexOf(c);
           return chars[index] || c;
         }),
     },
     {
-      name: "Bubbles",
+      name: 'Bubbles',
       transform: (s: string) =>
-        s.replace(/[A-Za-z0-9]/g, (c) => {
-          const chars = [
-            ..."⓪①②③④⑤⑥⑦⑧⑨ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ",
-          ];
-          const index =
-            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(
-              c
-            );
+        s.replace(/[A-Za-z0-9]/g, c => {
+          const chars = [...'⓪①②③④⑤⑥⑦⑧⑨ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ'];
+          const index = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.indexOf(c);
           return chars[index] || c;
         }),
     },
     {
-      name: "Upside Down",
+      name: 'Upside Down',
       transform: (s: string) =>
         s
-          .split("")
+          .split('')
           .reverse()
-          .join("")
-          .replace(/[a-zA-Z0-9]/g, (c) => {
-            const chars = [
-              ..."zʎxʍʌnʇsɹbdouɯlʞɾıɥƃɟǝpɔqɐZ⅄XMΛ∩⊥SᴚΌԀONW˥➦ſIHפℲƎpƆq∀68ㄥ9ϛㄣƐᘔƖ0",
-            ];
-            const index =
-              "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".indexOf(
-                c
-              );
+          .join('')
+          .replace(/[a-zA-Z0-9]/g, c => {
+            const chars = [...'zʎxʍʌnʇsɹbdouɯlʞɾıɥƃɟǝpɔqɐZ⅄XMΛ∩⊥SᴚΌԀONW˥➦ſIHפℲƎpƆq∀68ㄥ9ϛㄣƐᘔƖ0'];
+            const index = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.indexOf(
+              c
+            );
             return chars[index] || c;
           }),
     },
@@ -128,7 +100,7 @@ export const TextStyler: React.FC = () => {
             <input
               type="text"
               value={text}
-              onChange={(e) => setText(e.target.value)}
+              onChange={e => setText(e.target.value)}
               placeholder="Type your text here..."
               className="w-full p-4 text-lg border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white shadow-sm"
             />
@@ -137,7 +109,7 @@ export const TextStyler: React.FC = () => {
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             <div className="grid gap-4">
               {styles.map((style, index) => {
-                const styledText = style.transform(text || "Sample Text");
+                const styledText = style.transform(text || 'Sample Text');
                 return (
                   <div
                     key={style.name}
@@ -147,9 +119,7 @@ export const TextStyler: React.FC = () => {
                       <p className="text-xs text-slate-400 font-medium uppercase mb-1">
                         {style.name}
                       </p>
-                      <p className="text-lg text-slate-800 font-medium break-all">
-                        {styledText}
-                      </p>
+                      <p className="text-lg text-slate-800 font-medium break-all">{styledText}</p>
                     </div>
                     <ActionButton
                       onClick={() => handleCopy(styledText, index)}
@@ -157,8 +127,8 @@ export const TextStyler: React.FC = () => {
                       variant="ghost"
                       className={
                         copiedIndex === index
-                          ? "text-green-500"
-                          : "text-slate-400 hover:text-primary"
+                          ? 'text-green-500'
+                          : 'text-slate-400 hover:text-primary'
                       }
                       title="Copy"
                     />

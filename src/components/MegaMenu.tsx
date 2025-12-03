@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
-import { Grid, ChevronDown } from "lucide-react";
-import { ALL_TOOLS } from "../constants";
+import { Grid, ChevronDown } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+
+import { ALL_TOOLS } from '../constants';
 
 interface MegaMenuProps {
   isOpen: boolean;
@@ -12,7 +13,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   // Get first tool path for each category
   const categoryToPath = useMemo(() => {
     const mapping: Record<string, string> = {};
-    ALL_TOOLS.forEach((tool) => {
+    ALL_TOOLS.forEach(tool => {
       if (!mapping[tool.category]) {
         mapping[tool.category] = tool.path;
       }
@@ -23,54 +24,52 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   // exact list provided by user, organized into columns for the mega menu
   const menuColumns = [
     [
-      "Finance Tools",
-      "Formatters & Beautifiers",
-      "Image Converter Tools",
-      "IP Tools",
-      "JSON Tools",
-      "TSV Tools",
-      "XML Tools",
-      "YAML Tools",
+      'Finance Tools',
+      'Formatters & Beautifiers',
+      'Image Converter Tools',
+      'IP Tools',
+      'JSON Tools',
+      'TSV Tools',
+      'XML Tools',
+      'YAML Tools',
     ],
     [
-      "Color Tools",
-      "CSV Tools",
-      "CSS Tools",
-      "HTML Tools",
-      "Javascript Tools",
-      "Number Tools",
-      "SQL Tools",
-      "Unit Tools",
+      'Color Tools',
+      'CSV Tools',
+      'CSS Tools',
+      'HTML Tools',
+      'Javascript Tools',
+      'Number Tools',
+      'SQL Tools',
+      'Unit Tools',
     ],
     [
-      "Base64 Tools",
-      "Cryptography",
-      "Escape Unescape Tools",
-      "Minifiers",
-      "Random Tools",
-      "String Tools",
-      "UTF Tools",
-      "Validators",
+      'Base64 Tools',
+      'Cryptography',
+      'Escape Unescape Tools',
+      'Minifiers',
+      'Random Tools',
+      'String Tools',
+      'UTF Tools',
+      'Validators',
     ],
     [
-      "Compress Decompress",
-      "CSS Generators",
-      "CSS Unit Converter Tools",
-      "HTML Generators",
-      "Other Tools",
-      "POJO Tools",
-      "Random Generators",
-      "Text Style Tools",
-      "Twitter Tools",
+      'Compress Decompress',
+      'CSS Generators',
+      'CSS Unit Converter Tools',
+      'HTML Generators',
+      'Other Tools',
+      'POJO Tools',
+      'Random Generators',
+      'Text Style Tools',
+      'Twitter Tools',
     ],
   ];
 
   return (
     <div
       className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-[900px] bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-100 dark:border-slate-700 transition-all duration-200 transform p-6 z-50 ${
-        isOpen
-          ? "opacity-100 visible translate-y-0"
-          : "opacity-0 invisible translate-y-2"
+        isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'
       }`}
     >
       {/* Invisible bridge to prevent menu from closing when moving mouse from nav to menu */}
@@ -92,10 +91,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
       <div className="grid grid-cols-4 gap-8">
         {menuColumns.map((column, colIndex) => (
           <div key={colIndex} className="flex flex-col space-y-1">
-            {column.map((category) => (
+            {column.map(category => (
               <Link
                 key={category}
-                to={categoryToPath[category] || "/"}
+                to={categoryToPath[category] || '/'}
                 className="text-[13px] text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 px-2 py-1.5 rounded-lg transition-colors truncate block"
                 title={category}
                 onClick={onClose}
@@ -112,9 +111,9 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
           Popular Tools
         </h4>
         <div className="flex flex-wrap gap-2">
-          {ALL_TOOLS.filter((t) => t.popular)
+          {ALL_TOOLS.filter(t => t.popular)
             .slice(0, 8)
-            .map((tool) => (
+            .map(tool => (
               <Link
                 key={tool.id}
                 to={tool.path}

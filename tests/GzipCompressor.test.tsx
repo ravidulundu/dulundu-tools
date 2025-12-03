@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { GzipCompressor } from "../features/GzipCompressor";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { GzipCompressor } from "../features/GzipCompressor";
+
 
 describe("GzipCompressor", () => {
   it("renders correctly", () => {

@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react";
-import { useSeo } from "../hooks/useSeo";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
+
+import { useSeo } from "../hooks/useSeo";
 
 describe("useSeo", () => {
   const defaultTitle = "Dulundu.tools - Free Developer Utilities";

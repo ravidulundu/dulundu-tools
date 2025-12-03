@@ -1,18 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { ToolDef } from "../types";
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight, Star } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+import { ToolDef } from '../types';
 
 interface ToolCardProps {
   tool: ToolDef;
-  variant?: "default" | "mini";
+  variant?: 'default' | 'mini';
 }
 
-export const ToolCard: React.FC<ToolCardProps> = ({
-  tool,
-  variant = "default",
-}) => {
-  if (variant === "mini") {
+export const ToolCard: React.FC<ToolCardProps> = ({ tool, variant = 'default' }) => {
+  if (variant === 'mini') {
     return (
       <Link
         to={tool.path}

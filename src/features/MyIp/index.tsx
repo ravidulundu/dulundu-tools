@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
-import {
-  Wifi,
-  Monitor,
-  Globe,
-  Smartphone,
-  RefreshCw,
-  Copy,
-  Check,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { ActionButton } from "@/components/common/ActionButton";
+import { Wifi, Monitor, Globe, Smartphone, RefreshCw, Copy, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const MyIp: React.FC = () => {
   const [ipData, setIpData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
 
   const fetchIp = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://api.ipify.org?format=json");
+      const res = await fetch('https://api.ipify.org?format=json');
       const data = await res.json();
       setIpData({
         ip: data.ip,
@@ -29,16 +22,14 @@ export const MyIp: React.FC = () => {
         screen: `${window.screen.width} x ${window.screen.height}`,
         window: `${window.innerWidth} x ${window.innerHeight}`,
         platform: navigator.platform,
-        cores: navigator.hardwareConcurrency || "Unknown",
+        cores: navigator.hardwareConcurrency || 'Unknown',
         memory: (navigator as any).deviceMemory
           ? `~${(navigator as any).deviceMemory} GB`
-          : "Unknown",
+          : 'Unknown',
       });
-      setError("");
+      setError('');
     } catch (e) {
-      setError(
-        "Failed to retrieve IP address. Likely due to an ad-blocker or network issue."
-      );
+      setError('Failed to retrieve IP address. Likely due to an ad-blocker or network issue.');
     } finally {
       setLoading(false);
     }
@@ -70,7 +61,7 @@ export const MyIp: React.FC = () => {
             icon={RefreshCw}
             label="Refresh"
             variant="secondary"
-            className={loading ? "animate-spin" : ""}
+            className={loading ? 'animate-spin' : ''}
           />
         </div>
         <div className="flex-1 p-4 md:p-6 bg-gray-50/30 flex flex-col items-center">
@@ -91,7 +82,7 @@ export const MyIp: React.FC = () => {
                 {loading ? (
                   <span className="animate-pulse">Loading...</span>
                 ) : (
-                  ipData?.ip || "Unknown"
+                  ipData?.ip || 'Unknown'
                 )}
               </div>
               {!loading && ipData?.ip && (
@@ -99,12 +90,8 @@ export const MyIp: React.FC = () => {
                   onClick={handleCopy}
                   className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors text-sm font-medium backdrop-blur-sm border border-white/10"
                 >
-                  {copied ? (
-                    <Check size={16} className="text-green-400" />
-                  ) : (
-                    <Copy size={16} />
-                  )}
-                  <span>{copied ? "Copied" : "Copy IP"}</span>
+                  {copied ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
+                  <span>{copied ? 'Copied' : 'Copy IP'}</span>
                 </button>
               )}
             </div>
@@ -121,25 +108,15 @@ export const MyIp: React.FC = () => {
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between border-b border-gray-100 pb-2">
-                      <span className="text-slate-500 text-sm">
-                        Screen Resolution
-                      </span>
-                      <span className="font-mono text-slate-800 text-sm">
-                        {ipData.screen}
-                      </span>
+                      <span className="text-slate-500 text-sm">Screen Resolution</span>
+                      <span className="font-mono text-slate-800 text-sm">{ipData.screen}</span>
                     </div>
                     <div className="flex justify-between border-b border-gray-100 pb-2">
-                      <span className="text-slate-500 text-sm">
-                        Window Size
-                      </span>
-                      <span className="font-mono text-slate-800 text-sm">
-                        {ipData.window}
-                      </span>
+                      <span className="text-slate-500 text-sm">Window Size</span>
+                      <span className="font-mono text-slate-800 text-sm">{ipData.window}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-500 text-sm">
-                        Pixel Ratio
-                      </span>
+                      <span className="text-slate-500 text-sm">Pixel Ratio</span>
                       <span className="font-mono text-slate-800 text-sm">
                         {window.devicePixelRatio}x
                       </span>
@@ -157,21 +134,15 @@ export const MyIp: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between border-b border-gray-100 pb-2">
                       <span className="text-slate-500 text-sm">Platform</span>
-                      <span className="font-mono text-slate-800 text-sm">
-                        {ipData.platform}
-                      </span>
+                      <span className="font-mono text-slate-800 text-sm">{ipData.platform}</span>
                     </div>
                     <div className="flex justify-between border-b border-gray-100 pb-2">
                       <span className="text-slate-500 text-sm">Language</span>
-                      <span className="font-mono text-slate-800 text-sm">
-                        {ipData.language}
-                      </span>
+                      <span className="font-mono text-slate-800 text-sm">{ipData.language}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500 text-sm">CPU Cores</span>
-                      <span className="font-mono text-slate-800 text-sm">
-                        {ipData.cores}
-                      </span>
+                      <span className="font-mono text-slate-800 text-sm">{ipData.cores}</span>
                     </div>
                   </div>
                 </div>

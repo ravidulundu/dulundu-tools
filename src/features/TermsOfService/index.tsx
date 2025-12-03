@@ -1,5 +1,6 @@
-import React from "react";
-import { SEO } from "@/components/SEO";
+import React from 'react';
+
+import { SEO } from '@/components/SEO';
 
 export const TermsOfService: React.FC = () => {
   return (
@@ -12,22 +13,17 @@ export const TermsOfService: React.FC = () => {
       <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
 
       <div className="prose prose-slate max-w-none">
-        <p className="text-sm text-gray-500 mb-8">
-          Last Updated: December 2, 2024
-        </p>
+        <p className="text-sm text-gray-500 mb-8">Last Updated: December 2, 2024</p>
 
         <h2>1. Acceptance of Terms</h2>
         <p>
-          By accessing and using Dulundu.tools ("the Service"), you accept and
-          agree to be bound by the terms and provision of this agreement. If you
-          do not agree to these Terms of Service, please do not use the Service.
+          By accessing and using Dulundu.tools ("the Service"), you accept and agree to be bound by
+          the terms and provision of this agreement. If you do not agree to these Terms of Service,
+          please do not use the Service.
         </p>
 
         <h2>2. Description of Service</h2>
-        <p>
-          Dulundu.tools provides free online developer utilities including but
-          not limited to:
-        </p>
+        <p>Dulundu.tools provides free online developer utilities including but not limited to:</p>
         <ul>
           <li>Code formatters and validators</li>
           <li>Encoding/decoding tools</li>
@@ -35,9 +31,7 @@ export const TermsOfService: React.FC = () => {
           <li>Data conversion tools</li>
           <li>Generator utilities</li>
         </ul>
-        <p>
-          All tools are provided as-is without any warranties or guarantees.
-        </p>
+        <p>All tools are provided as-is without any warranties or guarantees.</p>
 
         <h2>3. Acceptable Use</h2>
         <p>You agree NOT to use the Service to:</p>
@@ -46,83 +40,66 @@ export const TermsOfService: React.FC = () => {
           <li>Process sensitive personal data without proper authorization</li>
           <li>Attempt to gain unauthorized access to our systems</li>
           <li>Transmit malware, viruses, or malicious code</li>
-          <li>
-            Engage in activities that could harm the Service or other users
-          </li>
+          <li>Engage in activities that could harm the Service or other users</li>
           <li>Scrape or automate requests beyond reasonable personal use</li>
         </ul>
 
         <h2>4. Rate Limiting and Fair Use</h2>
-        <p>
-          To ensure service availability for all users, we implement rate
-          limiting:
-        </p>
+        <p>To ensure service availability for all users, we implement rate limiting:</p>
         <ul>
           <li>AI-powered features: Maximum 100 requests per 15 minutes</li>
           <li>File uploads: Maximum 10MB per request</li>
           <li>API endpoints: Subject to rate limiting based on IP address</li>
         </ul>
-        <p>
-          Excessive use may result in temporary or permanent service
-          restrictions.
-        </p>
+        <p>Excessive use may result in temporary or permanent service restrictions.</p>
 
         <h2>5. Data Processing and Privacy</h2>
         <p>
-          <strong>Client-Side Processing:</strong> Most tools process data
-          entirely in your browser. Your data never leaves your device.
+          <strong>Client-Side Processing:</strong> Most tools process data entirely in your browser.
+          Your data never leaves your device.
         </p>
         <p>
-          <strong>Server-Side Features:</strong> Some features (AI assistance,
-          shared links) temporarily process data on our servers. This data is:
+          <strong>Server-Side Features:</strong> Some features (AI assistance, shared links)
+          temporarily process data on our servers. This data is:
         </p>
         <ul>
-          <li>
-            Not permanently stored unless you explicitly create a shareable link
-          </li>
+          <li>Not permanently stored unless you explicitly create a shareable link</li>
           <li>Automatically deleted after the expiration period you set</li>
           <li>Never sold or shared with third parties</li>
         </ul>
         <p>
-          <strong>DO NOT</strong> process sensitive personal information
-          (passwords, credit cards, health records, etc.) through our tools.
+          <strong>DO NOT</strong> process sensitive personal information (passwords, credit cards,
+          health records, etc.) through our tools.
         </p>
 
         <h2>6. GDPR Compliance (EU Users)</h2>
         <p>
-          For users in the European Union, we comply with the General Data
-          Protection Regulation (GDPR):
+          For users in the European Union, we comply with the General Data Protection Regulation
+          (GDPR):
         </p>
         <ul>
           <li>
-            <strong>Right to Access:</strong> You can request information about
-            data we process
+            <strong>Right to Access:</strong> You can request information about data we process
           </li>
           <li>
-            <strong>Right to Deletion:</strong> You can request deletion of your
-            data
+            <strong>Right to Deletion:</strong> You can request deletion of your data
           </li>
           <li>
-            <strong>Right to Portability:</strong> You can export your shared
-            links
+            <strong>Right to Portability:</strong> You can export your shared links
           </li>
           <li>
-            <strong>Data Minimization:</strong> We only collect necessary
-            analytics data
+            <strong>Data Minimization:</strong> We only collect necessary analytics data
           </li>
         </ul>
         <p>
-          Contact:{" "}
+          Contact:{' '}
           <a href="mailto:privacy@dulundu.tools" className="text-blue-600">
             privacy@dulundu.tools
           </a>
         </p>
 
         <h2>7. LGPD Compliance (Brazil Users)</h2>
-        <p>
-          For users in Brazil, we comply with Lei Geral de Proteção de Dados
-          (LGPD):
-        </p>
+        <p>For users in Brazil, we comply with Lei Geral de Proteção de Dados (LGPD):</p>
         <ul>
           <li>Data processing is limited and transparent</li>
           <li>You have the right to access and delete your data</li>
@@ -131,13 +108,13 @@ export const TermsOfService: React.FC = () => {
 
         <h2>8. Intellectual Property</h2>
         <p>
-          The Service and its original content, features, and functionality are
-          owned by Dulundu.tools and are protected by international copyright,
-          trademark, and other intellectual property laws.
+          The Service and its original content, features, and functionality are owned by
+          Dulundu.tools and are protected by international copyright, trademark, and other
+          intellectual property laws.
         </p>
         <p>
-          <strong>Your Content:</strong> You retain all rights to any data you
-          process through our tools. We claim no ownership of your content.
+          <strong>Your Content:</strong> You retain all rights to any data you process through our
+          tools. We claim no ownership of your content.
         </p>
 
         <h2>9. Third-Party Services</h2>
@@ -150,19 +127,18 @@ export const TermsOfService: React.FC = () => {
             <strong>Google Fonts:</strong> For typography
           </li>
           <li>
-            <strong>Umami Analytics:</strong> For privacy-friendly usage
-            statistics (no personal data)
+            <strong>Umami Analytics:</strong> For privacy-friendly usage statistics (no personal
+            data)
           </li>
           <li>
-            <strong>Google Gemini AI:</strong> For AI-powered features (data not
-            stored)
+            <strong>Google Gemini AI:</strong> For AI-powered features (data not stored)
           </li>
         </ul>
 
         <h2>10. Disclaimer of Warranties</h2>
         <p>
-          THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES
-          OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO:
+          THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER
+          EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO:
         </p>
         <ul>
           <li>Accuracy or completeness of results</li>
@@ -172,38 +148,34 @@ export const TermsOfService: React.FC = () => {
 
         <h2>11. Limitation of Liability</h2>
         <p>
-          IN NO EVENT SHALL DULUNDU.TOOLS BE LIABLE FOR ANY INDIRECT,
-          INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF
-          YOUR USE OF THE SERVICE.
+          IN NO EVENT SHALL DULUNDU.TOOLS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL,
+          CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF YOUR USE OF THE SERVICE.
         </p>
 
         <h2>12. Changes to Terms</h2>
         <p>
-          We reserve the right to modify these terms at any time. Changes will
-          be effective immediately upon posting. Continued use of the Service
-          constitutes acceptance of modified terms.
+          We reserve the right to modify these terms at any time. Changes will be effective
+          immediately upon posting. Continued use of the Service constitutes acceptance of modified
+          terms.
         </p>
 
         <h2>13. Termination</h2>
         <p>
-          We reserve the right to terminate or suspend access to the Service
-          immediately, without prior notice, for any violation of these Terms of
-          Service.
+          We reserve the right to terminate or suspend access to the Service immediately, without
+          prior notice, for any violation of these Terms of Service.
         </p>
 
         <h2>14. Governing Law</h2>
         <p>
-          These Terms shall be governed by and construed in accordance with the
-          laws of the jurisdiction where the service is operated, without regard
-          to its conflict of law provisions.
+          These Terms shall be governed by and construed in accordance with the laws of the
+          jurisdiction where the service is operated, without regard to its conflict of law
+          provisions.
         </p>
 
         <h2>15. Contact Information</h2>
+        <p>If you have any questions about these Terms, please contact us at:</p>
         <p>
-          If you have any questions about these Terms, please contact us at:
-        </p>
-        <p>
-          <strong>Email:</strong>{" "}
+          <strong>Email:</strong>{' '}
           <a href="mailto:legal@dulundu.tools" className="text-blue-600">
             legal@dulundu.tools
           </a>

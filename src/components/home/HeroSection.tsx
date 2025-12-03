@@ -1,16 +1,13 @@
-import React from "react";
-import { Zap, Search, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Zap, Search, ArrowRight } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface HeroSectionProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({
-  searchTerm,
-  setSearchTerm,
-}) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ searchTerm, setSearchTerm }) => {
   return (
     <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 relative z-20 transition-colors duration-200">
       {/* Background Wrapper with Overflow Hidden */}
@@ -19,8 +16,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div
           className="absolute inset-0 opacity-[0.03] dark:opacity-[0.1]"
           style={{
-            backgroundImage: "radial-gradient(#3b82f6 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
+            backgroundImage: 'radial-gradient(#3b82f6 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
           }}
         ></div>
         <div className="absolute left-0 right-0 top-0 m-auto h-[310px] w-[310px] rounded-full bg-primary/20 opacity-20 blur-[100px]"></div>
@@ -38,8 +35,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </span>
         </h1>
         <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-          The ultimate suite of developer utilities.{" "}
-          <br className="hidden md:block" />
+          The ultimate suite of developer utilities. <br className="hidden md:block" />
           Beautify, convert, generate, and debug in seconds.
         </p>
 
@@ -55,7 +51,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               type="text"
               placeholder="Search tools (e.g., JSON, Base64, Color)..."
               value={searchTerm}
-              onChange={(e) => {
+              onChange={e => {
                 setSearchTerm(e.target.value);
               }}
               className="w-full p-6 pl-16 rounded-2xl border border-gray-200 dark:border-slate-700 bg-transparent text-xl text-slate-900 dark:text-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 font-medium"

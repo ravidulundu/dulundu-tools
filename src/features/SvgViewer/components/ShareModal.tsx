@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -7,24 +7,20 @@ interface ShareModalProps {
   svgCode: string;
 }
 
-export const ShareModal: React.FC<ShareModalProps> = ({
-  isOpen,
-  onClose,
-  svgCode,
-}) => {
-  const [shareStep, setShareStep] = useState<"SAVE" | "SHARE">("SAVE");
-  const [shareUrl, setShareUrl] = useState("");
-  const [svgName, setSvgName] = useState("Untitled SVG");
+export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode }) => {
+  const [shareStep, setShareStep] = useState<'SAVE' | 'SHARE'>('SAVE');
+  const [shareUrl, setShareUrl] = useState('');
+  const [svgName, setSvgName] = useState('Untitled SVG');
   const [isUrlCopied, setIsUrlCopied] = useState(false);
-  const [expiration, setExpiration] = useState("Never");
+  const [expiration, setExpiration] = useState('Never');
   const [isSaving, setIsSaving] = useState(false);
 
   // Reset state when modal opens
   React.useEffect(() => {
     if (isOpen) {
-      setShareStep("SAVE");
-      setSvgName("Untitled SVG");
-      setExpiration("Never");
+      setShareStep('SAVE');
+      setSvgName('Untitled SVG');
+      setExpiration('Never');
       setIsSaving(false);
     }
   }, [isOpen]);
@@ -32,35 +28,33 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   const handleSaveAndShare = async () => {
     setIsSaving(true);
     try {
-      const response = await fetch("/api/share", {
-        method: "POST",
+      const response = await fetch('/api/share', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           content: svgCode,
-          type: "svg",
+          type: 'svg',
           expiration: expiration, // Send selected expiration
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save share");
+        throw new Error('Failed to save share');
       }
 
       const data = await response.json();
 
       const origin =
-        typeof window !== "undefined"
-          ? window.location.origin
-          : "https://dulundu.tools";
+        typeof window !== 'undefined' ? window.location.origin : 'https://dulundu.tools';
 
       const url = `${origin}/s/${data.id}`;
       setShareUrl(url);
-      setShareStep("SHARE");
+      setShareStep('SHARE');
     } catch (error) {
-      console.error("Error sharing SVG:", error);
-      alert("Failed to create share link. Please try again.");
+      console.error('Error sharing SVG:', error);
+      alert('Failed to create share link. Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -77,7 +71,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   return (
     <div className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-[#252526] rounded-lg shadow-xl w-full max-w-md overflow-hidden border border-gray-200 dark:border-gray-700">
-        {shareStep === "SAVE" ? (
+        {shareStep === 'SAVE' ? (
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -96,7 +90,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
             <input
               type="text"
               value={svgName}
-              onChange={(e) => setSvgName(e.target.value)}
+              onChange={e => setSvgName(e.target.value)}
               className="w-full px-3 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-300 dark:border-gray-700 rounded-md text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
               placeholder="Untitled SVG"
             />
@@ -106,7 +100,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               </label>
               <select
                 value={expiration}
-                onChange={(e) => setExpiration(e.target.value)}
+                onChange={e => setExpiration(e.target.value)}
                 className="flex-1 px-3 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-300 dark:border-gray-700 rounded-md text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="Never">Never</option>
@@ -127,7 +121,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 disabled={isSaving}
                 className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSaving ? "Saving..." : "Save"}
+                {isSaving ? 'Saving...' : 'Save'}
               </button>
             </div>
           </div>
@@ -145,8 +139,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               </button>
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-              Anyone with the link below will be able to view and duplicate the
-              file
+              Anyone with the link below will be able to view and duplicate the file
             </p>
             <div className="flex gap-2">
               <input
@@ -159,7 +152,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 onClick={handleCopyUrl}
                 className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors min-w-[80px]"
               >
-                {isUrlCopied ? "Copied!" : "Copy"}
+                {isUrlCopied ? 'Copied!' : 'Copy'}
               </button>
             </div>
           </div>

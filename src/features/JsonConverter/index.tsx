@@ -1,20 +1,13 @@
-import React, { useState } from "react";
-import {
-  ArrowRightLeft,
-  FileJson,
-  Copy,
-  Check,
-  Trash2,
-  Upload,
-  Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { Button } from "@/components/common/Button";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { ArrowRightLeft, FileJson, Copy, Check, Trash2, Upload, Download } from 'lucide-react';
+import React, { useState } from 'react';
 
-type Mode = "json-xml" | "json-csv";
+import { ActionButton } from '@/components/common/ActionButton';
+import { Button } from '@/components/common/Button';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
+
+type Mode = 'json-xml' | 'json-csv';
 
 export const JsonConverter: React.FC = () => {
   const {
@@ -31,21 +24,19 @@ export const JsonConverter: React.FC = () => {
     handleFileUpload,
     handleDownload,
   } = useToolLogic();
-  const [mode, setMode] = useState<Mode>("json-xml");
+  const [mode, setMode] = useState<Mode>('json-xml');
 
   // Helper: JSON to XML
   const jsonToXml = (json: unknown): string => {
-    let xml = "";
-    if (typeof json === "object" && json !== null) {
+    let xml = '';
+    if (typeof json === 'object' && json !== null) {
       if (Array.isArray(json)) {
-        json.forEach((item) => {
+        json.forEach(item => {
           xml += `<item>${jsonToXml(item)}</item>`;
         });
       } else {
-        Object.keys(json as Record<string, unknown>).forEach((key) => {
-          xml += `<${key}>${jsonToXml(
-            (json as Record<string, unknown>)[key]
-          )}</${key}>`;
+        Object.keys(json as Record<string, unknown>).forEach(key => {
+          xml += `<${key}>${jsonToXml((json as Record<string, unknown>)[key])}</${key}>`;
         });
       }
     } else {
@@ -57,24 +48,24 @@ export const JsonConverter: React.FC = () => {
   // Helper: JSON to CSV
   const jsonToCsv = (json: Record<string, unknown>[]): string => {
     if (!Array.isArray(json) || json.length === 0)
-      throw new Error("JSON must be a non-empty array of objects");
+      throw new Error('JSON must be a non-empty array of objects');
     const headers = Object.keys(json[0]);
-    const csvRows = [headers.join(",")];
+    const csvRows = [headers.join(',')];
 
     for (const row of json) {
-      const values = headers.map((header) => {
+      const values = headers.map(header => {
         const val = row[header];
-        const escaped = ("" + (val ?? "")).replace(/"/g, '\\"');
+        const escaped = ('' + (val ?? '')).replace(/"/g, '\\"');
         return `"${escaped}"`;
       });
-      csvRows.push(values.join(","));
+      csvRows.push(values.join(','));
     }
-    return csvRows.join("\n");
+    return csvRows.join('\n');
   };
 
   const convert = () => {
     if (!input.trim()) {
-      setOutput("");
+      setOutput('');
       return;
     }
     setError(null);
@@ -82,12 +73,10 @@ export const JsonConverter: React.FC = () => {
     try {
       const parsed = JSON.parse(input);
 
-      if (mode === "json-xml") {
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<root>\n${jsonToXml(
-          parsed
-        )}\n</root>`;
+      if (mode === 'json-xml') {
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<root>\n${jsonToXml(parsed)}\n</root>`;
         // Basic pretty print via regex
-        const formatted = xml.replace(/(>)(<)(\/*)/g, "$1\r\n$2$3");
+        const formatted = xml.replace(/(>)(<)(\/*)/g, '$1\r\n$2$3');
         setOutput(formatted);
       } else {
         // Ensure array for CSV
@@ -112,15 +101,15 @@ export const JsonConverter: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-2">
             <Button
-              onClick={() => setMode("json-xml")}
-              variant={mode === "json-xml" ? "primary" : "outline"}
+              onClick={() => setMode('json-xml')}
+              variant={mode === 'json-xml' ? 'primary' : 'outline'}
               size="sm"
             >
               JSON to XML
             </Button>
             <Button
-              onClick={() => setMode("json-csv")}
-              variant={mode === "json-csv" ? "primary" : "outline"}
+              onClick={() => setMode('json-csv')}
+              variant={mode === 'json-csv' ? 'primary' : 'outline'}
               size="sm"
             >
               JSON to CSV
@@ -136,7 +125,7 @@ export const JsonConverter: React.FC = () => {
               ref={fileInputRef}
               type="file"
               accept=".json,.txt"
-              onChange={(e) => handleFileUpload(e)}
+              onChange={e => handleFileUpload(e)}
               className="hidden"
             />
             <Button
@@ -177,7 +166,7 @@ export const JsonConverter: React.FC = () => {
 
             <CodeEditor
               value={output}
-              label={mode === "json-xml" ? "XML Output" : "CSV Output"}
+              label={mode === 'json-xml' ? 'XML Output' : 'CSV Output'}
               placeholder="Result will appear here..."
               readOnly
               theme="dark"
@@ -189,17 +178,17 @@ export const JsonConverter: React.FC = () => {
                       label="Download"
                       onClick={() =>
                         handleDownload(
-                          mode === "json-xml" ? "data.xml" : "data.csv",
-                          mode === "json-xml" ? "text/xml" : "text/csv"
+                          mode === 'json-xml' ? 'data.xml' : 'data.csv',
+                          mode === 'json-xml' ? 'text/xml' : 'text/csv'
                         )
                       }
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

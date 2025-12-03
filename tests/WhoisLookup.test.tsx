@@ -1,7 +1,9 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { WhoisLookup } from "../features/WhoisLookup";
 import React from "react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+
+import { WhoisLookup } from "../features/WhoisLookup";
+
 
 describe("WhoisLookup", () => {
   const mockFetch = vi.fn();

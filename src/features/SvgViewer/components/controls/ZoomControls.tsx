@@ -1,5 +1,5 @@
-import React from "react";
-import { ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
+import { ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
+import React from 'react';
 
 interface ZoomControlsProps {
   scale: number;
@@ -14,7 +14,7 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
   onZoomOut,
   onReset,
 }) => {
-  const [zoomInputValue, setZoomInputValue] = React.useState("100%");
+  const [zoomInputValue, setZoomInputValue] = React.useState('100%');
 
   // Sync input with scale changes
   React.useEffect(() => {
@@ -22,7 +22,7 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
   }, [scale]);
 
   const handleZoomInputCommit = (value: string) => {
-    const cleanVal = value.replace(/[^0-9]/g, "");
+    const cleanVal = value.replace(/[^0-9]/g, '');
     if (cleanVal) {
       const num = parseInt(cleanVal, 10);
       const clampedNum = Math.min(Math.max(10, num), 1000);
@@ -49,19 +49,19 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
         type="text"
         className="text-xs font-mono text-gray-600 w-[50px] text-center bg-transparent border border-transparent hover:border-gray-300 rounded focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all"
         value={zoomInputValue}
-        onChange={(e) => setZoomInputValue(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
+        onChange={e => setZoomInputValue(e.target.value)}
+        onKeyDown={e => {
+          if (e.key === 'Enter') {
             handleZoomInputCommit(e.currentTarget.value);
             e.currentTarget.blur();
           }
         }}
-        onFocus={(e) => {
-          const val = e.target.value.replace("%", "");
+        onFocus={e => {
+          const val = e.target.value.replace('%', '');
           setZoomInputValue(val);
           e.target.select();
         }}
-        onBlur={(e) => handleZoomInputCommit(e.target.value)}
+        onBlur={e => handleZoomInputCommit(e.target.value)}
       />
       <button
         onClick={onZoomIn}

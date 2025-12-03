@@ -1,17 +1,10 @@
-import React from "react";
-import {
-  Code2,
-  Copy,
-  Check,
-  Trash2,
-  Wand2,
-  Upload,
-  Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { Code2, Copy, Check, Trash2, Wand2, Upload, Download } from 'lucide-react';
+import React from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const PhpFormatter: React.FC = () => {
   const {
@@ -26,8 +19,7 @@ export const PhpFormatter: React.FC = () => {
     handleFileUpload,
     handleDownload,
   } = useToolLogic({
-    initialInput:
-      "<?php function test($a){if($a){return true;}else{return false;}} ?>",
+    initialInput: '<?php function test($a){if($a){return true;}else{return false;}} ?>',
   });
 
   const formatPhp = (code: string) => {
@@ -37,40 +29,40 @@ export const PhpFormatter: React.FC = () => {
     let formatted = code;
 
     // Normalize whitespace
-    formatted = formatted.replace(/\s+/g, " ");
+    formatted = formatted.replace(/\s+/g, ' ');
 
     // Add newlines around braces
-    formatted = formatted.replace(/\{/g, " {\n");
-    formatted = formatted.replace(/\}/g, "\n}\n");
-    formatted = formatted.replace(/;/g, ";\n");
+    formatted = formatted.replace(/\{/g, ' {\n');
+    formatted = formatted.replace(/\}/g, '\n}\n');
+    formatted = formatted.replace(/;/g, ';\n');
 
     // Fix PHP tags
-    formatted = formatted.replace(/<\?php/g, "<?php\n");
-    formatted = formatted.replace(/\?>/g, "\n?>");
+    formatted = formatted.replace(/<\?php/g, '<?php\n');
+    formatted = formatted.replace(/\?>/g, '\n?>');
 
     // Indentation
-    const lines = formatted.split("\n");
+    const lines = formatted.split('\n');
     let indentLevel = 0;
-    const indentChar = "    ";
+    const indentChar = '    ';
 
     const result = lines
-      .map((line) => {
+      .map(line => {
         line = line.trim();
-        if (!line) return "";
+        if (!line) return '';
 
-        if (line.includes("}")) {
+        if (line.includes('}')) {
           indentLevel = Math.max(0, indentLevel - 1);
         }
 
         const indentedLine = indentChar.repeat(indentLevel) + line;
 
-        if (line.includes("{")) {
+        if (line.includes('{')) {
           indentLevel++;
         }
 
         return indentedLine;
       })
-      .join("\n");
+      .join('\n');
 
     return result.trim();
   };
@@ -149,16 +141,14 @@ export const PhpFormatter: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Save"
-                      onClick={() =>
-                        handleDownload("formatted.php", "text/x-php")
-                      }
+                      onClick={() => handleDownload('formatted.php', 'text/x-php')}
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

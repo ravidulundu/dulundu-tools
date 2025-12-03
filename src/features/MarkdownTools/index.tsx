@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
 import { FileText, ArrowLeftRight, Copy, Check, Code, Trash2 } from 'lucide-react';
 import { marked } from 'marked';
-import { ToolHeader } from '@/components/common/ToolHeader';
-import { CodeEditor } from '@/components/common/CodeEditor';
+import React, { useState } from 'react';
+
 import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const MarkdownTools: React.FC = () => {
   const [input, setInput] = useState('# Hello World\n\nThis is **Markdown** text.');
@@ -62,7 +63,7 @@ export const MarkdownTools: React.FC = () => {
   };
 
   const toggleMode = () => {
-    setMode(prev => prev === 'md-to-html' ? 'html-to-md' : 'md-to-html');
+    setMode(prev => (prev === 'md-to-html' ? 'html-to-md' : 'md-to-html'));
     setInput(output); // Swap input/output for convenience
     setOutput('');
   };
@@ -75,7 +76,6 @@ export const MarkdownTools: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={FileText}
           title="Markdown Converter"
@@ -100,7 +100,11 @@ export const MarkdownTools: React.FC = () => {
             >
               Convert <Code size={16} className="ml-2" />
             </button>
-            <button onClick={handleClear} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Clear All">
+            <button
+              onClick={handleClear}
+              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              title="Clear All"
+            >
               <Trash2 size={20} />
             </button>
           </div>
@@ -113,7 +117,9 @@ export const MarkdownTools: React.FC = () => {
               value={input}
               onChange={setInput}
               label={mode === 'md-to-html' ? 'Markdown Input' : 'HTML Input'}
-              placeholder={mode === 'md-to-html' ? "# Type markdown here..." : "<div>Type HTML here...</div>"}
+              placeholder={
+                mode === 'md-to-html' ? '# Type markdown here...' : '<div>Type HTML here...</div>'
+              }
               language={mode === 'md-to-html' ? 'markdown' : 'html'}
               theme="light"
             />

@@ -1,5 +1,5 @@
-import React from "react";
-import { ArrowRight, Layers } from "lucide-react";
+import { ArrowRight, Layers } from 'lucide-react';
+import React from 'react';
 
 interface CategoryCardProps {
   category: string;
@@ -7,11 +7,7 @@ interface CategoryCardProps {
   onClick: () => void;
 }
 
-export const CategoryCard: React.FC<CategoryCardProps> = ({
-  category,
-  toolCount,
-  onClick,
-}) => {
+export const CategoryCard: React.FC<CategoryCardProps> = ({ category, toolCount, onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -43,7 +39,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
 
         <div className="flex items-center space-x-2">
           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 group-hover:bg-white dark:group-hover:bg-slate-700 transition-colors">
-            {toolCount} {toolCount === 1 ? "tool" : "tools"}
+            {toolCount} {toolCount === 1 ? 'tool' : 'tools'}
           </span>
         </div>
       </div>

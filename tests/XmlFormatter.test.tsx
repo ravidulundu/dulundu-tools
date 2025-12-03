@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { XmlFormatter } from "../features/XmlFormatter";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { XmlFormatter } from "../features/XmlFormatter";
+
 
 describe("XmlFormatter", () => {
   it("renders correctly", () => {

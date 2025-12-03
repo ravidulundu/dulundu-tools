@@ -1,3 +1,3 @@
-import SVGViewerTool from "./SVGViewerTool";
+import SVGViewerTool from './SVGViewerTool';
 
 export const SvgViewer = SVGViewerTool;

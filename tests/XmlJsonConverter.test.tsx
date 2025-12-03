@@ -1,9 +1,10 @@
-import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { XmlJsonConverter } from "../features/XmlJsonConverter";
 import React from "react";
-import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
+import { describe, it, expect } from "vitest";
+
+import { ThemeProvider } from "../contexts/ThemeContext";
+import { XmlJsonConverter } from "../features/XmlJsonConverter";
 
 describe("XmlJsonConverter", () => {
   it("converts XML to JSON", async () => {

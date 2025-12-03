@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { JsonConverter } from "../features/JsonConverter";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { JsonConverter } from "../features/JsonConverter";
+
 
 describe("JsonConverter", () => {
   it("renders correctly", () => {

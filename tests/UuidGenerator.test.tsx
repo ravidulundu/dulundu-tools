@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { UuidGenerator } from '../features/UuidGenerator';
 import React from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { UuidGenerator } from '../features/UuidGenerator';
 
 describe('UuidGenerator', () => {
   it('renders without crashing', () => {

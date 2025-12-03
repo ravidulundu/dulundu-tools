@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import { Key, RefreshCw, Copy, Check } from 'lucide-react';
-import { ToolHeader } from '@/components/common/ToolHeader';
-import { CodeEditor } from '@/components/common/CodeEditor';
+import React, { useState } from 'react';
+
 import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const TokenGenerator: React.FC = () => {
   const [length, setLength] = useState(32);
@@ -12,7 +13,7 @@ export const TokenGenerator: React.FC = () => {
     uppercase: true,
     numbers: true,
     symbols: false,
-    hex: false
+    hex: false,
   });
   const [tokens, setTokens] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
@@ -72,7 +73,6 @@ export const TokenGenerator: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={Key}
           title="Token Generator"
@@ -88,17 +88,37 @@ export const TokenGenerator: React.FC = () => {
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Length ({length})</label>
-                    <input type="range" min="8" max="128" value={length} onChange={(e) => setLength(parseInt(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary" />
+                    <label className="block text-sm font-bold text-slate-700 mb-2">
+                      Length ({length})
+                    </label>
+                    <input
+                      type="range"
+                      min="8"
+                      max="128"
+                      value={length}
+                      onChange={e => setLength(parseInt(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                    />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Quantity ({count})</label>
-                    <input type="range" min="1" max="20" value={count} onChange={(e) => setCount(parseInt(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary" />
+                    <label className="block text-sm font-bold text-slate-700 mb-2">
+                      Quantity ({count})
+                    </label>
+                    <input
+                      type="range"
+                      min="1"
+                      max="20"
+                      value={count}
+                      onChange={e => setCount(parseInt(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                    />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-3">Character Sets</label>
+                  <label className="block text-sm font-bold text-slate-700 mb-3">
+                    Character Sets
+                  </label>
                   <div className="flex flex-wrap gap-3">
                     {[
                       { id: 'lowercase', label: 'a-z' },
@@ -110,10 +130,11 @@ export const TokenGenerator: React.FC = () => {
                       <button
                         key={opt.id}
                         onClick={() => toggleOption(opt.id as any)}
-                        className={`px-4 py-2 rounded-lg text-sm font-bold border transition-all ${options[opt.id as keyof typeof options]
+                        className={`px-4 py-2 rounded-lg text-sm font-bold border transition-all ${
+                          options[opt.id as keyof typeof options]
                             ? 'bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm'
                             : 'bg-white border-gray-200 text-slate-400 hover:border-gray-300'
-                          }`}
+                        }`}
                       >
                         {opt.label}
                       </button>
@@ -121,7 +142,10 @@ export const TokenGenerator: React.FC = () => {
                   </div>
                 </div>
 
-                <button onClick={generate} className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 font-bold shadow-md flex items-center justify-center">
+                <button
+                  onClick={generate}
+                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 font-bold shadow-md flex items-center justify-center"
+                >
                   <RefreshCw size={18} className="mr-2" /> Generate Tokens
                 </button>
               </div>

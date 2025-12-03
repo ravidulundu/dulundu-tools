@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { ChmodCalculator } from "../features/ChmodCalculator";
 import React from "react";
+import { describe, it, expect } from "vitest";
+
+import { ChmodCalculator } from "../features/ChmodCalculator";
+
 
 describe("ChmodCalculator", () => {
   it("renders correctly", () => {

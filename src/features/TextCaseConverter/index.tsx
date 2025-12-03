@@ -1,58 +1,47 @@
-import React from "react";
-import { Type, ArrowRight, Copy, Check, Trash2 } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { Type, ArrowRight, Copy, Check, Trash2 } from 'lucide-react';
+import React from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const TextCaseConverter: React.FC = () => {
-  const {
-    input,
-    setInput,
-    output,
-    setOutput,
-    copied,
-    handleCopy,
-    handleClear,
-  } = useToolLogic({ initialInput: "hello world_this-is a test" });
+  const { input, setInput, output, setOutput, copied, handleCopy, handleClear } = useToolLogic({
+    initialInput: 'hello world_this-is a test',
+  });
 
   const convert = (type: string) => {
     let words: string[] =
-      input.match(
-        /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g
-      ) || [];
-    words = words.map((x) => x.toLowerCase());
+      input.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g) || [];
+    words = words.map(x => x.toLowerCase());
 
-    let res = "";
+    let res = '';
     switch (type) {
-      case "camel":
-        res = words
-          .map((w, i) => (i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1)))
-          .join("");
+      case 'camel':
+        res = words.map((w, i) => (i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1))).join('');
         break;
-      case "pascal":
-        res = words.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join("");
+      case 'pascal':
+        res = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
         break;
-      case "snake":
-        res = words.join("_");
+      case 'snake':
+        res = words.join('_');
         break;
-      case "kebab":
-        res = words.join("-");
+      case 'kebab':
+        res = words.join('-');
         break;
-      case "constant":
-        res = words.join("_").toUpperCase();
+      case 'constant':
+        res = words.join('_').toUpperCase();
         break;
-      case "title":
-        res = words
-          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-          .join(" ");
+      case 'title':
+        res = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         break;
-      case "sentence":
-        res = words.join(" ");
+      case 'sentence':
+        res = words.join(' ');
         res = res.charAt(0).toUpperCase() + res.slice(1);
         break;
-      case "dot":
-        res = words.join(".");
+      case 'dot':
+        res = words.join('.');
         break;
     }
     setOutput(res);
@@ -70,15 +59,15 @@ export const TextCaseConverter: React.FC = () => {
         {/* Toolbar */}
         <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-2 justify-center">
           {[
-            { id: "camel", label: "camelCase" },
-            { id: "pascal", label: "PascalCase" },
-            { id: "snake", label: "snake_case" },
-            { id: "constant", label: "CONSTANT_CASE" },
-            { id: "kebab", label: "kebab-case" },
-            { id: "title", label: "Title Case" },
-            { id: "sentence", label: "Sentence case" },
-            { id: "dot", label: "dot.case" },
-          ].map((btn) => (
+            { id: 'camel', label: 'camelCase' },
+            { id: 'pascal', label: 'PascalCase' },
+            { id: 'snake', label: 'snake_case' },
+            { id: 'constant', label: 'CONSTANT_CASE' },
+            { id: 'kebab', label: 'kebab-case' },
+            { id: 'title', label: 'Title Case' },
+            { id: 'sentence', label: 'Sentence case' },
+            { id: 'dot', label: 'dot.case' },
+          ].map(btn => (
             <button
               key={btn.id}
               onClick={() => convert(btn.id)}
@@ -117,9 +106,9 @@ export const TextCaseConverter: React.FC = () => {
                 output && (
                   <ActionButton
                     icon={copied ? Check : Copy}
-                    label={copied ? "Copied" : "Copy"}
+                    label={copied ? 'Copied' : 'Copy'}
                     onClick={handleCopy}
-                    variant={copied ? "success" : "primary"}
+                    variant={copied ? 'success' : 'primary'}
                   />
                 )
               }

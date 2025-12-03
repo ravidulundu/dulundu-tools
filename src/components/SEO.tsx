@@ -1,5 +1,6 @@
-import React from "react";
-import { useSeo } from "../hooks/useSeo";
+import React from 'react';
+
+import { useSeo } from '../hooks/useSeo';
 
 interface SEOProps {
   title?: string;
@@ -10,9 +11,10 @@ interface SEOProps {
   ogType?: string;
 }
 
-export const SEO: React.FC<
-  SEOProps & { structuredData?: Record<string, unknown> }
-> = ({ structuredData, ...props }) => {
+export const SEO: React.FC<SEOProps & { structuredData?: Record<string, unknown> }> = ({
+  structuredData,
+  ...props
+}) => {
   useSeo(props);
 
   if (structuredData) {

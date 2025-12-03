@@ -1,13 +1,14 @@
-import React, { useState, useRef } from "react";
-import { ArrowRightLeft, Trash2, Upload } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { Button } from "@/components/common/Button";
-import { ActionButton } from "@/components/common/ActionButton";
+import { ArrowRightLeft, Trash2, Upload } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { Button } from '@/components/common/Button';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const DiffViewer: React.FC = () => {
-  const [oldText, setOldText] = useState("");
-  const [newText, setNewText] = useState("");
+  const [oldText, setOldText] = useState('');
+  const [newText, setNewText] = useState('');
   const [diff, setDiff] = useState<React.ReactNode[] | null>(null);
 
   const oldFileRef = useRef<HTMLInputElement>(null);
@@ -20,7 +21,7 @@ export const DiffViewer: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = event => {
       const content = event.target?.result as string;
       setText(content);
     };
@@ -29,22 +30,19 @@ export const DiffViewer: React.FC = () => {
 
   // Simple line-by-line diff
   const computeDiff = () => {
-    const oldLines = oldText.split("\n");
-    const newLines = newText.split("\n");
+    const oldLines = oldText.split('\n');
+    const newLines = newText.split('\n');
 
     const maxLines = Math.max(oldLines.length, newLines.length);
     const result = [];
 
     for (let i = 0; i < maxLines; i++) {
-      const oldLine = oldLines[i] || "";
-      const newLine = newLines[i] || "";
+      const oldLine = oldLines[i] || '';
+      const newLine = newLines[i] || '';
 
       if (oldLine === newLine) {
         result.push(
-          <div
-            key={i}
-            className="flex border-b border-gray-100 hover:bg-gray-50 group"
-          >
+          <div key={i} className="flex border-b border-gray-100 hover:bg-gray-50 group">
             <div className="w-12 p-1 text-right text-gray-400 text-xs select-none border-r border-gray-200 bg-gray-50 font-mono pr-2">
               {i + 1}
             </div>
@@ -90,8 +88,8 @@ export const DiffViewer: React.FC = () => {
   };
 
   const handleClear = () => {
-    setOldText("");
-    setNewText("");
+    setOldText('');
+    setNewText('');
     setDiff(null);
   };
 
@@ -119,7 +117,7 @@ export const DiffViewer: React.FC = () => {
               <input
                 ref={oldFileRef}
                 type="file"
-                onChange={(e) => handleFileUpload(e, setOldText)}
+                onChange={e => handleFileUpload(e, setOldText)}
                 className="hidden"
               />
               <ActionButton
@@ -132,7 +130,7 @@ export const DiffViewer: React.FC = () => {
               <input
                 ref={newFileRef}
                 type="file"
-                onChange={(e) => handleFileUpload(e, setNewText)}
+                onChange={e => handleFileUpload(e, setNewText)}
                 className="hidden"
               />
               <ActionButton
@@ -143,19 +141,9 @@ export const DiffViewer: React.FC = () => {
               />
             </>
           )}
-          <ActionButton
-            onClick={handleClear}
-            variant="danger"
-            label="Clear"
-            icon={Trash2}
-          />
+          <ActionButton onClick={handleClear} variant="danger" label="Clear" icon={Trash2} />
           {!diff && (
-            <Button
-              onClick={computeDiff}
-              variant="primary"
-              size="sm"
-              className="font-bold"
-            >
+            <Button onClick={computeDiff} variant="primary" size="sm" className="font-bold">
               Compare Texts
             </Button>
           )}
@@ -189,9 +177,7 @@ export const DiffViewer: React.FC = () => {
                 Comparison Result
               </span>
             </div>
-            <div className="flex-1 overflow-y-auto custom-scrollbar">
-              {diff}
-            </div>
+            <div className="flex-1 overflow-y-auto custom-scrollbar">{diff}</div>
           </div>
         )}
       </div>

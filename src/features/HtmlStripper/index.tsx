@@ -1,19 +1,12 @@
-import React, { useState } from "react";
-import {
-  Code,
-  Trash2,
-  Copy,
-  Check,
-  ArrowRight,
-  Upload,
-  Download,
-} from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { Code, Trash2, Copy, Check, ArrowRight, Upload, Download } from 'lucide-react';
+import React, { useState } from 'react';
 
-type Mode = "strip" | "escape" | "unescape";
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
+
+type Mode = 'strip' | 'escape' | 'unescape';
 
 export const HtmlStripper: React.FC = () => {
   const {
@@ -27,31 +20,31 @@ export const HtmlStripper: React.FC = () => {
     handleClear,
     handleFileUpload,
     handleDownload,
-  } = useToolLogic({ initialInput: "<p>Hello <strong>World</strong>!</p>" });
+  } = useToolLogic({ initialInput: '<p>Hello <strong>World</strong>!</p>' });
 
-  const [mode, setMode] = useState<Mode>("strip");
+  const [mode, setMode] = useState<Mode>('strip');
 
   const process = () => {
     if (!input) {
-      setOutput("");
+      setOutput('');
       return;
     }
 
-    if (mode === "strip") {
-      const doc = new DOMParser().parseFromString(input, "text/html");
-      setOutput(doc.body.textContent || "");
-    } else if (mode === "escape") {
+    if (mode === 'strip') {
+      const doc = new DOMParser().parseFromString(input, 'text/html');
+      setOutput(doc.body.textContent || '');
+    } else if (mode === 'escape') {
       setOutput(
         input
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;")
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;')
       );
-    } else if (mode === "unescape") {
-      const doc = new DOMParser().parseFromString(input, "text/html");
-      setOutput(doc.documentElement.textContent || "");
+    } else if (mode === 'unescape') {
+      const doc = new DOMParser().parseFromString(input, 'text/html');
+      setOutput(doc.documentElement.textContent || '');
     }
   };
 
@@ -68,31 +61,31 @@ export const HtmlStripper: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
             <button
-              onClick={() => setMode("strip")}
+              onClick={() => setMode('strip')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                mode === "strip"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                mode === 'strip'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               Strip Tags
             </button>
             <button
-              onClick={() => setMode("escape")}
+              onClick={() => setMode('escape')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                mode === "escape"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                mode === 'escape'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               Escape
             </button>
             <button
-              onClick={() => setMode("unescape")}
+              onClick={() => setMode('unescape')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                mode === "unescape"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                mode === 'unescape'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               Unescape
@@ -155,14 +148,14 @@ export const HtmlStripper: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Save"
-                      onClick={() => handleDownload("result.txt", "text/plain")}
+                      onClick={() => handleDownload('result.txt', 'text/plain')}
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )

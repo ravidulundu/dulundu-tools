@@ -1,19 +1,9 @@
-import React, { useState, Suspense } from "react";
-import { Link, useLocation } from "react-router-dom";
-import {
-  Code2,
-  Menu,
-  Sun,
-  Moon,
-  Github,
-  MessageSquare,
-  ChevronDown,
-  X,
-  Heart,
-} from "lucide-react";
+import { Code2, Menu, Sun, Moon, Github, MessageSquare, ChevronDown, X, Heart } from 'lucide-react';
+import React, { useState, Suspense } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-const MegaMenu = React.lazy(() => import("./MegaMenu"));
-const MobileMenu = React.lazy(() => import("./MobileMenu"));
+const MegaMenu = React.lazy(() => import('./MegaMenu'));
+const MobileMenu = React.lazy(() => import('./MobileMenu'));
 
 interface HeaderProps {
   darkMode: boolean;
@@ -26,10 +16,10 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "AI Assistant", path: "/ai-assistant" },
-    { name: "JSON Tools", path: "/json-formatter" },
-    { name: "Readme Generator", path: "/readme-generator" },
+    { name: 'Home', path: '/' },
+    { name: 'AI Assistant', path: '/ai-assistant' },
+    { name: 'JSON Tools', path: '/json-formatter' },
+    { name: 'Readme Generator', path: '/readme-generator' },
   ];
 
   return (
@@ -47,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
 
         {/* Center: Navigation Links */}
         <nav className="hidden md:flex items-center justify-center space-x-1">
-          {navLinks.map((link) => {
+          {navLinks.map(link => {
             const isActive = location.pathname === link.path;
             return (
               <Link
@@ -55,8 +45,8 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
                 to={link.path}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-blue-50 dark:bg-blue-900/20 text-primary font-semibold"
-                    : "text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-gray-50 dark:hover:bg-slate-800"
+                    ? 'bg-blue-50 dark:bg-blue-900/20 text-primary font-semibold'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-gray-50 dark:hover:bg-slate-800'
                 }`}
               >
                 {link.name}
@@ -71,11 +61,11 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
             onMouseLeave={() => setMegaMenuOpen(false)}
           >
             <span className="text-sm font-medium flex items-center text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
-              Developer Tools{" "}
+              Developer Tools{' '}
               <ChevronDown
                 size={14}
                 className={`ml-1 opacity-70 transition-transform ${
-                  megaMenuOpen ? "rotate-180" : ""
+                  megaMenuOpen ? 'rotate-180' : ''
                 }`}
               />
             </span>
@@ -83,10 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
             {/* Mega Menu Dropdown */}
             <Suspense fallback={null}>
               {megaMenuOpen && (
-                <MegaMenu
-                  isOpen={megaMenuOpen}
-                  onClose={() => setMegaMenuOpen(false)}
-                />
+                <MegaMenu isOpen={megaMenuOpen} onClose={() => setMegaMenuOpen(false)} />
               )}
             </Suspense>
           </div>
@@ -99,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
             href="https://donate.stripe.com/6oU6oG537fBTbW94Lig7e00"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => window.umami?.track("Donate Header Click")}
+            onClick={() => window.umami?.track('Donate Header Click')}
             className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-sm"
             title="Support the project"
           >
@@ -152,10 +139,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
       {/* Mobile Menu */}
       <Suspense fallback={null}>
         {mobileMenuOpen && (
-          <MobileMenu
-            onClose={() => setMobileMenuOpen(false)}
-            navLinks={navLinks}
-          />
+          <MobileMenu onClose={() => setMobileMenuOpen(false)} navLinks={navLinks} />
         )}
       </Suspense>
     </header>

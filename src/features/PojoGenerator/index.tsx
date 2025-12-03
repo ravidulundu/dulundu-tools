@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import { FileCode, ArrowRight, Copy, Check, Trash2, Wand2 } from 'lucide-react';
-import { ToolHeader } from '@/components/common/ToolHeader';
-import { CodeEditor } from '@/components/common/CodeEditor';
+import React, { useState } from 'react';
+
 import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const PojoGenerator: React.FC = () => {
   const [input, setInput] = useState('');
@@ -17,7 +18,7 @@ export const PojoGenerator: React.FC = () => {
   const generateJava = (jsonStr: string) => {
     try {
       const obj = JSON.parse(jsonStr);
-      let classes: string[] = [];
+      const classes: string[] = [];
 
       const parseObject = (name: string, jsonObj: any) => {
         let classStr = `public class ${capitalize(name)} {\n`;
@@ -61,10 +62,10 @@ export const PojoGenerator: React.FC = () => {
           else if (typeof value === 'boolean') type = 'boolean';
           else if (Array.isArray(value)) {
             if (value.length > 0 && typeof value[0] === 'object') type = `List<${capitalize(key)}>`;
-            else if (value.length > 0) type = `List<${typeof value[0] === 'string' ? 'String' : 'Object'}>`;
+            else if (value.length > 0)
+              type = `List<${typeof value[0] === 'string' ? 'String' : 'Object'}>`;
             else type = 'List<Object>';
-          }
-          else if (typeof value === 'object') type = capitalize(key);
+          } else if (typeof value === 'object') type = capitalize(key);
 
           classStr += `\n    public ${type} get${capitalize(key)}() { return ${key}; }`;
           classStr += `\n    public void set${capitalize(key)}(${type} ${key}) { this.${key} = ${key}; }`;
@@ -80,7 +81,7 @@ export const PojoGenerator: React.FC = () => {
       setOutput(header + classes.reverse().join('\n')); // Reverse so nested classes come first or handle file split. For single view, just join.
       setError(null);
     } catch (e) {
-      setError("Invalid JSON input.");
+      setError('Invalid JSON input.');
     }
   };
 
@@ -99,7 +100,6 @@ export const PojoGenerator: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-
         <ToolHeader
           icon={FileCode}
           title="POJO Generator"
@@ -112,14 +112,18 @@ export const PojoGenerator: React.FC = () => {
             <div className="flex items-center space-x-2 bg-slate-50 p-1 rounded-lg border border-gray-200">
               <label className="text-xs font-medium text-slate-500 pl-2">Class:</label>
               <input
-                type="text" value={className} onChange={(e) => setClassName(e.target.value)}
+                type="text"
+                value={className}
+                onChange={e => setClassName(e.target.value)}
                 className="bg-transparent text-sm font-medium text-slate-700 outline-none w-32 p-1"
               />
             </div>
             <div className="flex items-center space-x-2 bg-slate-50 p-1 rounded-lg border border-gray-200">
               <label className="text-xs font-medium text-slate-500 pl-2">Package:</label>
               <input
-                type="text" value={packageName} onChange={(e) => setPackageName(e.target.value)}
+                type="text"
+                value={packageName}
+                onChange={e => setPackageName(e.target.value)}
                 className="bg-transparent text-sm font-medium text-slate-700 outline-none w-40 p-1"
               />
             </div>
@@ -132,7 +136,11 @@ export const PojoGenerator: React.FC = () => {
             >
               <Wand2 size={16} className="mr-1.5" /> Generate
             </button>
-            <button onClick={handleClear} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Clear All">
+            <button
+              onClick={handleClear}
+              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              title="Clear All"
+            >
               <Trash2 size={20} />
             </button>
           </div>
@@ -150,7 +158,9 @@ export const PojoGenerator: React.FC = () => {
                 language="json"
                 theme="light"
               />
-              {error && <p className="mt-2 text-xs text-red-500 font-bold animate-pulse">{error}</p>}
+              {error && (
+                <p className="mt-2 text-xs text-red-500 font-bold animate-pulse">{error}</p>
+              )}
             </div>
 
             <CodeEditor

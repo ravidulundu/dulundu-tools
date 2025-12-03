@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Search, Globe, AlertCircle, RefreshCw, Trash2 } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { ActionButton } from "@/components/common/ActionButton";
-import { CodeEditor } from "@/components/common/CodeEditor";
+import { Search, Globe, AlertCircle, RefreshCw, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 interface RdapResponse {
   handle?: string;
@@ -16,25 +17,24 @@ interface RdapResponse {
 }
 
 export const WhoisLookup: React.FC = () => {
-  const [domain, setDomain] = useState("");
+  const [domain, setDomain] = useState('');
   const [data, setData] = useState<RdapResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const lookup = async () => {
-    if (!domain.includes(".")) {
-      setError("Please enter a valid domain (e.g., google.com)");
+    if (!domain.includes('.')) {
+      setError('Please enter a valid domain (e.g., google.com)');
       return;
     }
     setLoading(true);
-    setError("");
+    setError('');
     setData(null);
 
     try {
       // Using rdap.org as a free proxy to RDAP
       const res = await fetch(`https://rdap.org/domain/${domain}`);
-      if (!res.ok)
-        throw new Error("Domain not found or registry does not support RDAP");
+      if (!res.ok) throw new Error('Domain not found or registry does not support RDAP');
       const json = await res.json();
       setData(json);
     } catch (e) {
@@ -45,9 +45,9 @@ export const WhoisLookup: React.FC = () => {
   };
 
   const handleClear = () => {
-    setDomain("");
+    setDomain('');
     setData(null);
-    setError("");
+    setError('');
   };
 
   return (
@@ -66,8 +66,8 @@ export const WhoisLookup: React.FC = () => {
               <input
                 type="text"
                 value={domain}
-                onChange={(e) => setDomain(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && lookup()}
+                onChange={e => setDomain(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && lookup()}
                 placeholder="example.com"
                 className="w-full p-2 pl-9 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
               />
@@ -86,14 +86,9 @@ export const WhoisLookup: React.FC = () => {
               ) : (
                 <Search className="mr-1.5" size={16} />
               )}
-              {loading ? "Searching..." : "Lookup"}
+              {loading ? 'Searching...' : 'Lookup'}
             </button>
-            <ActionButton
-              onClick={handleClear}
-              icon={Trash2}
-              label="Clear"
-              variant="danger"
-            />
+            <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
           </div>
 
           {error && (
@@ -115,21 +110,19 @@ export const WhoisLookup: React.FC = () => {
                   </h3>
                   <ul className="space-y-3 text-sm">
                     <li className="flex justify-between items-center">
-                      <span className="text-slate-500">Handle</span>{" "}
+                      <span className="text-slate-500">Handle</span>{' '}
                       <span className="font-mono bg-slate-50 px-2 py-0.5 rounded border border-gray-100">
                         {data.handle}
                       </span>
                     </li>
                     <li className="flex justify-between items-center">
-                      <span className="text-slate-500">Name</span>{" "}
-                      <span className="font-mono font-bold text-primary">
-                        {data.ldhName}
-                      </span>
+                      <span className="text-slate-500">Name</span>{' '}
+                      <span className="font-mono font-bold text-primary">{data.ldhName}</span>
                     </li>
                     <li className="flex flex-col mt-2 gap-2">
                       <span className="text-slate-500">Status Flags</span>
                       <div className="flex flex-wrap gap-1.5">
-                        {data.status?.map((s) => (
+                        {data.status?.map(s => (
                           <span
                             key={s}
                             className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs border border-blue-100 font-medium"
@@ -147,13 +140,13 @@ export const WhoisLookup: React.FC = () => {
                     Events
                   </h3>
                   <ul className="space-y-3 text-sm">
-                    {data.events?.map((e) => (
+                    {data.events?.map(e => (
                       <li
                         key={e.eventAction}
                         className="flex justify-between items-center group hover:bg-slate-50 p-1.5 rounded-lg transition-colors -mx-1.5 px-1.5"
                       >
                         <span className="text-slate-500 capitalize font-medium">
-                          {e.eventAction.replace(" last", "")}
+                          {e.eventAction.replace(' last', '')}
                         </span>
                         <span className="font-mono text-slate-700">
                           {new Date(e.eventDate).toLocaleDateString()}
@@ -177,9 +170,7 @@ export const WhoisLookup: React.FC = () => {
           ) : (
             <div className="h-full flex flex-col items-center justify-center text-slate-400">
               <Globe size={48} className="mb-4 opacity-20" />
-              <p className="text-sm font-medium">
-                Enter a domain to see registration details
-              </p>
+              <p className="text-sm font-medium">Enter a domain to see registration details</p>
             </div>
           )}
         </div>

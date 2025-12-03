@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Palette, Copy, Check, RefreshCw } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { ActionButton } from "@/components/common/ActionButton";
+import { Palette, Copy, Check, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { ActionButton } from '@/components/common/ActionButton';
+import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const ColorConverter: React.FC = () => {
-  const [hex, setHex] = useState("#3b82f6");
-  const [rgb, setRgb] = useState("rgb(59, 130, 246)");
-  const [hsl, setHsl] = useState("hsl(217, 91%, 60%)");
-  const [copied, setCopied] = useState("");
+  const [hex, setHex] = useState('#3b82f6');
+  const [rgb, setRgb] = useState('rgb(59, 130, 246)');
+  const [hsl, setHsl] = useState('hsl(217, 91%, 60%)');
+  const [copied, setCopied] = useState('');
 
   // Conversion Helpers
   const hexToRgb = (hex: string) => {
@@ -22,7 +23,7 @@ export const ColorConverter: React.FC = () => {
   };
 
   const rgbToHex = (r: number, g: number, b: number) => {
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
   };
 
   const rgbToHsl = (r: number, g: number, b: number) => {
@@ -54,9 +55,7 @@ export const ColorConverter: React.FC = () => {
       h /= 6;
     }
 
-    return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(
-      l * 100
-    )}%)`;
+    return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
   };
 
   const hslToRgb = (h: number, s: number, l: number) => {
@@ -115,9 +114,7 @@ export const ColorConverter: React.FC = () => {
 
   const handleHslChange = (val: string) => {
     setHsl(val);
-    const match = val.match(
-      /^hsl\s*\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)$/i
-    );
+    const match = val.match(/^hsl\s*\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)$/i);
     if (match) {
       const h = parseInt(match[1]) / 360;
       const s = parseInt(match[2]) / 100;
@@ -131,13 +128,13 @@ export const ColorConverter: React.FC = () => {
   const copyToClipboard = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
     setCopied(type);
-    setTimeout(() => setCopied(""), 2000);
+    setTimeout(() => setCopied(''), 2000);
   };
 
   const handleReset = () => {
-    setHex("#3b82f6");
-    setRgb("rgb(59, 130, 246)");
-    setHsl("hsl(217, 91%, 60%)");
+    setHex('#3b82f6');
+    setRgb('rgb(59, 130, 246)');
+    setHsl('hsl(217, 91%, 60%)');
   };
 
   return (
@@ -196,10 +193,10 @@ export const ColorConverter: React.FC = () => {
                   ></div>
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">
                     <ActionButton
-                      icon={copied === "hex" ? Check : Copy}
-                      label={copied === "hex" ? "Copied" : "Copy"}
-                      onClick={() => copyToClipboard(hex, "hex")}
-                      variant={copied === "hex" ? "success" : "ghost"}
+                      icon={copied === 'hex' ? Check : Copy}
+                      label={copied === 'hex' ? 'Copied' : 'Copy'}
+                      onClick={() => copyToClipboard(hex, 'hex')}
+                      variant={copied === 'hex' ? 'success' : 'ghost'}
                       size="sm"
                     />
                   </div>
@@ -214,16 +211,16 @@ export const ColorConverter: React.FC = () => {
                   <input
                     type="text"
                     value={rgb}
-                    onChange={(e) => handleRgbChange(e.target.value)}
+                    onChange={e => handleRgbChange(e.target.value)}
                     className="w-full p-4 border border-gray-200 rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-slate-50 text-slate-800 transition-all"
                     placeholder="rgb(0, 0, 0)"
                   />
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">
                     <ActionButton
-                      icon={copied === "rgb" ? Check : Copy}
-                      label={copied === "rgb" ? "Copied" : "Copy"}
-                      onClick={() => copyToClipboard(rgb, "rgb")}
-                      variant={copied === "rgb" ? "success" : "ghost"}
+                      icon={copied === 'rgb' ? Check : Copy}
+                      label={copied === 'rgb' ? 'Copied' : 'Copy'}
+                      onClick={() => copyToClipboard(rgb, 'rgb')}
+                      variant={copied === 'rgb' ? 'success' : 'ghost'}
                       size="sm"
                     />
                   </div>
@@ -238,16 +235,16 @@ export const ColorConverter: React.FC = () => {
                   <input
                     type="text"
                     value={hsl}
-                    onChange={(e) => handleHslChange(e.target.value)}
+                    onChange={e => handleHslChange(e.target.value)}
                     className="w-full p-4 border border-gray-200 rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-slate-50 text-slate-800 transition-all"
                     placeholder="hsl(0, 0%, 0%)"
                   />
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">
                     <ActionButton
-                      icon={copied === "hsl" ? Check : Copy}
-                      label={copied === "hsl" ? "Copied" : "Copy"}
-                      onClick={() => copyToClipboard(hsl, "hsl")}
-                      variant={copied === "hsl" ? "success" : "ghost"}
+                      icon={copied === 'hsl' ? Check : Copy}
+                      label={copied === 'hsl' ? 'Copied' : 'Copy'}
+                      onClick={() => copyToClipboard(hsl, 'hsl')}
+                      variant={copied === 'hsl' ? 'success' : 'ghost'}
                       size="sm"
                     />
                   </div>

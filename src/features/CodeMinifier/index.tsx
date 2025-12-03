@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Minimize2, Copy, Trash2, Check, Upload, Download } from "lucide-react";
-import { ToolHeader } from "@/components/common/ToolHeader";
-import { CodeEditor } from "@/components/common/CodeEditor";
-import { ActionButton } from "@/components/common/ActionButton";
-import { useToolLogic } from "@/hooks/useToolLogic";
+import { Minimize2, Copy, Trash2, Check, Upload, Download } from 'lucide-react';
+import React, { useState } from 'react';
 
-type Lang = "html" | "css" | "js";
+import { ActionButton } from '@/components/common/ActionButton';
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolLogic } from '@/hooks/useToolLogic';
+
+type Lang = 'html' | 'css' | 'js';
 
 export const CodeMinifier: React.FC = () => {
   const {
@@ -21,7 +22,7 @@ export const CodeMinifier: React.FC = () => {
     handleDownload,
   } = useToolLogic();
 
-  const [lang, setLang] = useState<Lang>("css");
+  const [lang, setLang] = useState<Lang>('css');
   const [stats, setStats] = useState<{
     original: number;
     minified: number;
@@ -31,29 +32,29 @@ export const CodeMinifier: React.FC = () => {
   const minify = () => {
     let result = input;
 
-    if (lang === "css") {
+    if (lang === 'css') {
       // Basic CSS Minification
       result = result
-        .replace(/\/\*[\s\S]*?\*\//g, "") // Remove comments
-        .replace(/\s+/g, " ") // Collapse whitespace
-        .replace(/\s*([{}:;,])\s*/g, "$1") // Remove space around separators
-        .replace(/;}/g, "}") // Remove last semicolon
+        .replace(/\/\*[\s\S]*?\*\//g, '') // Remove comments
+        .replace(/\s+/g, ' ') // Collapse whitespace
+        .replace(/\s*([{}:;,])\s*/g, '$1') // Remove space around separators
+        .replace(/;}/g, '}') // Remove last semicolon
         .trim();
-    } else if (lang === "html") {
+    } else if (lang === 'html') {
       // Basic HTML Minification
       result = result
-        .replace(/<!--[\s\S]*?-->/g, "") // Remove comments
-        .replace(/\s+/g, " ") // Collapse whitespace
-        .replace(/>\s+</g, "><") // Remove space between tags
+        .replace(/<!--[\s\S]*?-->/g, '') // Remove comments
+        .replace(/\s+/g, ' ') // Collapse whitespace
+        .replace(/>\s+</g, '><') // Remove space between tags
         .trim();
-    } else if (lang === "js") {
+    } else if (lang === 'js') {
       // Very Safe/Basic JS Minification
       result = result
-        .replace(/\/\*[\s\S]*?\*\//g, "") // Block comments
-        .replace(/^\s*\/\/.*/gm, "") // Line comments
-        .replace(/([;{}])\s+/g, "$1") // Space after semi/brackets
-        .replace(/\s+([;{}])/g, "$1") // Space before semi/brackets
-        .replace(/\s+/g, " ")
+        .replace(/\/\*[\s\S]*?\*\//g, '') // Block comments
+        .replace(/^\s*\/\/.*/gm, '') // Line comments
+        .replace(/([;{}])\s+/g, '$1') // Space after semi/brackets
+        .replace(/\s+([;{}])/g, '$1') // Space before semi/brackets
+        .replace(/\s+/g, ' ')
         .trim();
     }
 
@@ -62,9 +63,7 @@ export const CodeMinifier: React.FC = () => {
     const originalSize = new Blob([input]).size;
     const minifiedSize = new Blob([result]).size;
     const savings =
-      originalSize > 0
-        ? ((1 - minifiedSize / originalSize) * 100).toFixed(2) + "%"
-        : "0%";
+      originalSize > 0 ? ((1 - minifiedSize / originalSize) * 100).toFixed(2) + '%' : '0%';
 
     setStats({ original: originalSize, minified: minifiedSize, savings });
   };
@@ -87,31 +86,31 @@ export const CodeMinifier: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
             <button
-              onClick={() => setLang("html")}
+              onClick={() => setLang('html')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                lang === "html"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                lang === 'html'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               HTML
             </button>
             <button
-              onClick={() => setLang("css")}
+              onClick={() => setLang('css')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                lang === "css"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                lang === 'css'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               CSS
             </button>
             <button
-              onClick={() => setLang("js")}
+              onClick={() => setLang('js')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                lang === "js"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                lang === 'js'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               JS
@@ -142,12 +141,7 @@ export const CodeMinifier: React.FC = () => {
               variant="secondary"
             />
 
-            <ActionButton
-              onClick={handleClear}
-              icon={Trash2}
-              label="Clear"
-              variant="danger"
-            />
+            <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
           </div>
         </div>
 
@@ -186,16 +180,16 @@ export const CodeMinifier: React.FC = () => {
                       onClick={() =>
                         handleDownload(
                           `minified.${lang}`,
-                          lang === "js" ? "text/javascript" : `text/${lang}`
+                          lang === 'js' ? 'text/javascript' : `text/${lang}`
                         )
                       }
                       variant="secondary"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
-                      label={copied ? "Copied" : "Copy"}
+                      label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
-                      variant={copied ? "success" : "primary"}
+                      variant={copied ? 'success' : 'primary'}
                     />
                   </>
                 )
