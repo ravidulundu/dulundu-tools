@@ -1,21 +1,20 @@
-import { render } from "@testing-library/react";
-import { Settings } from "lucide-react";
-import React from "react";
-import { BrowserRouter } from "react-router-dom";
-import { describe, it, expect } from "vitest";
+import { render } from '@testing-library/react';
+import { Code } from 'lucide-react';
+import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
 
-import { ToolHeader } from "../components/common/ToolHeader";
-import { ThemeProvider } from "../contexts/ThemeContext";
+import { ToolHeader } from '@/components/common/ToolHeader';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
 
-describe("ToolHeader", () => {
-  it("renders without crashing", () => {
+describe('ToolHeader', () => {
+  it('renders without crashing', () => {
     render(
       <BrowserRouter>
         <ThemeProvider>
-          <ToolHeader
-            title="Test Tool"
-            description="Test Description"
-            icon={Settings}
+          <ToolHeader 
+            title="Test Tool" 
+            description="Test description"
+            icon={Code}
           />
         </ThemeProvider>
       </BrowserRouter>

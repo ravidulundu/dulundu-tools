@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { BcryptGenerator } from '../features/BcryptGenerator';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { BcryptGenerator } from '@/features/BcryptGenerator';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('BcryptGenerator', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <BcryptGenerator />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<BcryptGenerator />);
     expect(document.body).toBeDefined();
   });
 });

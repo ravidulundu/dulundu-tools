@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
 import { ThemeProvider } from '@/contexts/ThemeProvider';
-import { UuidGenerator } from '@/features/UuidGenerator';
+import { TermsOfService } from '@/features/TermsOfService';
 
 const renderWithProviders = (component) => {
   return render(
@@ -13,9 +13,9 @@ const renderWithProviders = (component) => {
   );
 };
 
-describe('UuidGenerator', () => {
+describe('TermsOfService', () => {
   it('renders without crashing', () => {
-    renderWithProviders(<UuidGenerator />);
+    renderWithProviders(<TermsOfService />);
     expect(document.body).toBeDefined();
   });
 });

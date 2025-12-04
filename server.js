@@ -70,22 +70,9 @@ app.use(cors({
 
 app.use(express.json({ limit: '10mb' })); // Limit payload size for security
 
-// Content Security Policy middleware for XSS protection
+// Security headers middleware
 app.use((req, res, next) => {
-    res.setHeader(
-        'Content-Security-Policy',
-        "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://umami.dulundu.tools; " +
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-        "font-src 'self' https://fonts.gstatic.com; " +
-        "img-src 'self' data: https:; " +
-        "connect-src 'self' https://umami.dulundu.tools;"
-    );
-    next();
-});
-
-// Content Security Policy middleware for XSS protection
-app.use((req, res, next) => {
+    // Content Security Policy
     res.setHeader(
         'Content-Security-Policy',
         "default-src 'self'; " +
@@ -97,6 +84,11 @@ app.use((req, res, next) => {
         "img-src 'self' data: https:; " +
         "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools https://stats.dulundu.tools https://cdn.jsdelivr.net;"
     );
+    // Additional security headers
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
     next();
 });
 
@@ -120,7 +112,16 @@ app.use((req, res, next) => {
 const aiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100,
-    message: 'Too many requests from this IP, please try again after 15 minutes',
+    message: { error: 'Too many requests from this IP, please try again after 15 minutes' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// Rate Limiter for Share endpoints (prevent disk flooding)
+const shareLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 50, // 50 shares per hour per IP
+    message: { error: 'Too many share requests, please try again later' },
     standardHeaders: true,
     legacyHeaders: false,
 });
@@ -161,6 +162,10 @@ app.post('/api/ai/generate', aiLimiter, asyncHandler(async (req, res) => {
         return res.status(400).json({ error: 'Valid prompt is required' });
     }
 
+    if (prompt.length > 10000) {
+        return res.status(400).json({ error: 'Prompt too long (max 10000 characters)' });
+    }
+
     logger.debug(`AI generate request: ${language || 'code'}`);
 
     const response = await ai.models.generateContent({
@@ -185,6 +190,14 @@ app.post('/api/ai/paraphrase', aiLimiter, asyncHandler(async (req, res) => {
 
     const { text, tone } = req.body;
 
+    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+        return res.status(400).json({ error: 'Valid text is required' });
+    }
+
+    if (text.length > 10000) {
+        return res.status(400).json({ error: 'Text too long (max 10000 characters)' });
+    }
+
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: `You are an expert writer. Paraphrase the following text to be more ${tone || 'professional'}. Keep the meaning the same but improve clarity and flow.
@@ -208,11 +221,53 @@ const SHARES_DIR = path.join(DATA_DIR, 'shares');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR);
 if (!fs.existsSync(SHARES_DIR)) fs.mkdirSync(SHARES_DIR);
 
-app.post('/api/share', asyncHandler(async (req, res) => {
+const MAX_CONTENT_LENGTH = 5 * 1024 * 1024; // 5MB max for share content
+const CLEANUP_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours
+
+// Cleanup expired shares
+const cleanupExpiredShares = async () => {
+    try {
+        const files = await fs.promises.readdir(SHARES_DIR);
+        const now = new Date();
+        let deletedCount = 0;
+
+        for (const file of files) {
+            if (!file.endsWith('.json')) continue;
+
+            const filePath = path.join(SHARES_DIR, file);
+            try {
+                const data = JSON.parse(await fs.promises.readFile(filePath, 'utf-8'));
+                if (data.expiresAt && new Date(data.expiresAt) < now) {
+                    await fs.promises.unlink(filePath);
+                    deletedCount++;
+                }
+            } catch (_e) {
+                // Skip corrupted files
+            }
+        }
+
+        if (deletedCount > 0) {
+            logger.info(`Cleanup: Deleted ${deletedCount} expired share(s)`);
+        }
+    } catch (error) {
+        logger.error('Cleanup error:', error);
+    }
+};
+
+// Run cleanup on startup and every 6 hours
+cleanupExpiredShares();
+setInterval(cleanupExpiredShares, CLEANUP_INTERVAL);
+
+app.post('/api/share', shareLimiter, asyncHandler(async (req, res) => {
     const { content, type, expiration } = req.body;
 
-    if (!content) {
-        return res.status(400).json({ error: 'Content is required' });
+    // Content validation
+    if (!content || typeof content !== 'string') {
+        return res.status(400).json({ error: 'Valid content is required' });
+    }
+
+    if (content.length > MAX_CONTENT_LENGTH) {
+        return res.status(400).json({ error: 'Content too large (max 5MB)' });
     }
 
     // Generate a short ID (8 chars)
@@ -221,21 +276,24 @@ app.post('/api/share', asyncHandler(async (req, res) => {
     
     const filePath = path.join(SHARES_DIR, `${id}.json`);
     
-    // Calculate expiration
-    let expiresAt = null;
-    if (expiration && expiration !== 'Never') {
-        const now = new Date();
-        switch (expiration) {
-            case '1 Hour':
-                expiresAt = new Date(now.getTime() + 60 * 60 * 1000).toISOString();
-                break;
-            case '24 Hours':
-                expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
-                break;
-            case '7 Days':
-                expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
-                break;
-        }
+    // Calculate expiration (default: 30 days max)
+    const now = new Date();
+    let expiresAt;
+    switch (expiration) {
+        case '1 Hour':
+            expiresAt = new Date(now.getTime() + 60 * 60 * 1000).toISOString();
+            break;
+        case '24 Hours':
+            expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
+            break;
+        case '7 Days':
+            expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
+            break;
+        case '30 Days':
+        default:
+            // Max 30 days for all cases (including legacy 'Never')
+            expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+            break;
     }
 
     const shareData = {

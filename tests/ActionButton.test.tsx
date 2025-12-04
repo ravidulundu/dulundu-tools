@@ -1,22 +1,17 @@
-import { render } from "@testing-library/react";
-import { Settings } from "lucide-react";
-import React from "react";
-import { BrowserRouter } from "react-router-dom";
-import { describe, it, expect } from "vitest";
+import { render } from '@testing-library/react';
+import { Copy } from 'lucide-react';
+import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect, vi } from 'vitest';
 
-import { ActionButton } from "../components/common/ActionButton";
-import { ThemeProvider } from "../contexts/ThemeContext";
+import { ActionButton } from '@/components/common/ActionButton';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
 
-describe("ActionButton", () => {
-  it("renders without crashing", () => {
+describe('ActionButton', () => {
+  it('renders without crashing', () => {
     render(
       <BrowserRouter>
         <ThemeProvider>
-          <ActionButton
-            label="Test Action"
-            onClick={() => {}}
-            icon={Settings}
-          />
+          <ActionButton onClick={vi.fn()} icon={Copy} title="Copy" />
         </ThemeProvider>
       </BrowserRouter>
     );

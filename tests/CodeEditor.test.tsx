@@ -1,18 +1,21 @@
-import { render } from "@testing-library/react";
-import React from "react";
-import { BrowserRouter } from "react-router-dom";
-import { describe, it, expect } from "vitest";
+import { render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect, vi } from 'vitest';
 
-import { CodeEditor } from "../components/common/CodeEditor";
-import { ThemeProvider } from "../contexts/ThemeContext";
+import { CodeEditor } from '@/components/common/CodeEditor';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
 
-
-describe("CodeEditor", () => {
-  it("renders without crashing", () => {
+describe('CodeEditor', () => {
+  it('renders without crashing', () => {
     render(
       <BrowserRouter>
         <ThemeProvider>
-          <CodeEditor value="" onChange={() => {}} />
+          <CodeEditor 
+            value="test" 
+            onChange={vi.fn()} 
+            language="javascript"
+            placeholder="Enter code"
+          />
         </ThemeProvider>
       </BrowserRouter>
     );

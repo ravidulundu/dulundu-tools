@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { DiffViewer } from '../features/DiffViewer';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { DiffViewer } from '@/features/DiffViewer';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('DiffViewer', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <DiffViewer />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<DiffViewer />);
     expect(document.body).toBeDefined();
   });
 });

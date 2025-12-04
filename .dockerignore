@@ -24,3 +24,8 @@ coverage
 # Tests
 tests
 src/test
+mocks
+
+# Development
+scripts
+.claude

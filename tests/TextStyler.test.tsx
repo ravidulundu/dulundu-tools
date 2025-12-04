@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { TextStyler } from '../features/TextStyler';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { TextStyler } from '@/features/TextStyler';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('TextStyler', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <TextStyler />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<TextStyler />);
     expect(document.body).toBeDefined();
   });
 });

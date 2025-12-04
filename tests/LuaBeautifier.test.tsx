@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { LuaBeautifier } from '../features/LuaBeautifier';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { LuaBeautifier } from '@/features/LuaBeautifier';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('LuaBeautifier', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <LuaBeautifier />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<LuaBeautifier />);
     expect(document.body).toBeDefined();
   });
 });

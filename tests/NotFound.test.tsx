@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { NotFound } from '../features/NotFound';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { NotFound } from '@/features/NotFound';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('NotFound', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <NotFound />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<NotFound />);
     expect(document.body).toBeDefined();
   });
 });

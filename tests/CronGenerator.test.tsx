@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { CronGenerator } from '../features/CronGenerator';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { CronGenerator } from '@/features/CronGenerator';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('CronGenerator', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <CronGenerator />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<CronGenerator />);
     expect(document.body).toBeDefined();
   });
 });

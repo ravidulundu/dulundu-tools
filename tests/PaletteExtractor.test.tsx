@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { PaletteExtractor } from '../features/PaletteExtractor';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { PaletteExtractor } from '@/features/PaletteExtractor';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('PaletteExtractor', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <PaletteExtractor />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<PaletteExtractor />);
     expect(document.body).toBeDefined();
   });
 });

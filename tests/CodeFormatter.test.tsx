@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { CodeFormatter } from '../features/CodeFormatter';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { CodeFormatter } from '@/features/CodeFormatter';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('CodeFormatter', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <CodeFormatter />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<CodeFormatter />);
     expect(document.body).toBeDefined();
   });
 });

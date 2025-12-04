@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { ParaphrasingTool } from '../features/ParaphrasingTool';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { ParaphrasingTool } from '@/features/ParaphrasingTool';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('ParaphrasingTool', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <ParaphrasingTool />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<ParaphrasingTool />);
     expect(document.body).toBeDefined();
   });
 });

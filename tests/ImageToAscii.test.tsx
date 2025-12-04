@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { ImageToAscii } from '../features/ImageToAscii';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { ImageToAscii } from '@/features/ImageToAscii';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('ImageToAscii', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <ImageToAscii />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<ImageToAscii />);
     expect(document.body).toBeDefined();
   });
 });

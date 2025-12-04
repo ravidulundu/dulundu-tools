@@ -11,7 +11,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
   const [shareUrl, setShareUrl] = useState('');
   const [svgName, setSvgName] = useState('Untitled SVG');
   const [isUrlCopied, setIsUrlCopied] = useState(false);
-  const [expiration, setExpiration] = useState('Never');
+  const [expiration, setExpiration] = useState('7 Days');
   const [isSaving, setIsSaving] = useState(false);
 
   // Reset state when modal opens
@@ -19,7 +19,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
     if (isOpen) {
       setShareStep('SAVE');
       setSvgName('Untitled SVG');
-      setExpiration('Never');
+      setExpiration('7 Days');
       setIsSaving(false);
     }
   }, [isOpen]);
@@ -106,10 +106,10 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
                 onChange={e => setExpiration(e.target.value)}
                 className="flex-1 px-3 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-300 dark:border-gray-700 rounded-md text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="Never">Never</option>
                 <option value="1 Hour">1 Hour</option>
                 <option value="24 Hours">24 Hours</option>
                 <option value="7 Days">7 Days</option>
+                <option value="30 Days">30 Days</option>
               </select>
             </div>
             <div className="flex gap-3">

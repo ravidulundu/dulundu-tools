@@ -27,6 +27,7 @@ dist-ssr
 # Documentation
 *.md
 !README.md
+!API.md
 
 # Temporary files
 lint_report*.txt
@@ -35,3 +36,9 @@ coverage
 
 .env.local
 .env
+
+# Runtime data
+data/
+
+# Claude Code
+.claude/

@@ -2,18 +2,20 @@ import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { SEO } from '@/components/SEO';
 import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { SvgViewer } from '@/features/SvgViewer';
 
-describe('SEO', () => {
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
+
+describe('SvgViewer', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <SEO title="Test" description="Test description" />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<SvgViewer />);
     expect(document.body).toBeDefined();
   });
 });

@@ -1,20 +1,21 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { ListComparator } from '../features/ListComparator';
+import { ThemeProvider } from '@/contexts/ThemeProvider';
+import { ListComparator } from '@/features/ListComparator';
+
+const renderWithProviders = (component) => {
+  return render(
+    <BrowserRouter>
+      <ThemeProvider>{component}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 describe('ListComparator', () => {
   it('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <ListComparator />
-        </ThemeProvider>
-      </BrowserRouter>
-    );
+    renderWithProviders(<ListComparator />);
     expect(document.body).toBeDefined();
   });
 });
