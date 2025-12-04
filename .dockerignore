@@ -26,6 +26,7 @@ tests
 src/test
 mocks
 
-# Development
-scripts
+# Development (keep generate-sitemap.cjs for build)
+scripts/regenerate-tests.cjs
+scripts/generate-tests.js
 .claude
