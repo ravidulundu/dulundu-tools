@@ -134,8 +134,26 @@ app.get('/health', (req, res) => {
 });
 
 // ========== STATIC FILES ==========
-// Serve static files from the dist directory
-app.use(express.static(path.join(__dirname, 'dist')));
+// Serve static files from the dist directory with caching
+app.use(express.static(path.join(__dirname, 'dist'), {
+    maxAge: '1y', // Cache assets for 1 year (they have hashed filenames)
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, filePath) => {
+        // HTML files should not be cached (SPA routing)
+        if (filePath.endsWith('.html')) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        }
+        // JS and CSS files with hash can be cached long-term
+        else if (filePath.match(/\.(js|css)$/)) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        }
+        // Images and fonts
+        else if (filePath.match(/\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        }
+    }
+}));
 
 // ========== GEMINI AI SETUP ==========
 const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
