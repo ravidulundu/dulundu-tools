@@ -66,8 +66,11 @@ export default defineConfig(() => {
     build: {
       sourcemap: true, // Enable source maps for debugging and Lighthouse analysis
       chunkSizeWarningLimit: 2000,
-      // Enable CSS code splitting
-      cssCodeSplit: true,
+      // Disable CSS code splitting - prevents all CSS from being render-blocking
+      // With cssCodeSplit: false, all CSS goes into one file which is better for:
+      // 1. Caching (one file with long cache)
+      // 2. Performance (no waterfall of CSS files blocking render)
+      cssCodeSplit: false,
       // Optimize minification
       minify: 'terser',
       terserOptions: {
@@ -153,14 +156,9 @@ export default defineConfig(() => {
               return 'diff-lib';
             }
 
-            // Heavy features - each in own chunk
-            if (id.includes('features/SvgViewer')) return 'feat-svg';
-            if (id.includes('features/MarkdownEditor')) return 'feat-md';
-            if (id.includes('features/CodeFormatter')) return 'feat-code';
-            if (id.includes('features/ReadmeGenerator')) return 'feat-readme';
-            if (id.includes('features/ExcelViewer')) return 'feat-excel';
-            if (id.includes('features/DiffViewer')) return 'feat-diff';
-            if (id.includes('features/RegexTester')) return 'feat-regex';
+            // Note: Feature components (SvgViewer, MarkdownEditor, etc.) are NOT
+            // manually chunked here. React.lazy + Suspense handles their code
+            // splitting naturally, without forcing CSS extraction to index.html.
           }
         }
       }
