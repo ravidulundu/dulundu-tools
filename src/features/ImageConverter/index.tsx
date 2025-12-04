@@ -116,6 +116,13 @@ export const ImageConverter: React.FC = () => {
             {/* Upload Area - Only for Convert and Encode tabs */}
             {activeTab !== 'decode' && (
               <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    fileInputRef.current?.click();
+                  }
+                }}
                 className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-slate-50 transition-all cursor-pointer bg-white"
                 onClick={() => fileInputRef.current?.click()}
               >
@@ -135,7 +142,7 @@ export const ImageConverter: React.FC = () => {
                     />
                     <p className="font-medium text-slate-800">{fileInfo?.name}</p>
                     <p className="text-sm text-slate-500">
-                      {(fileInfo?.size! / 1024).toFixed(2)} KB
+                      {((fileInfo?.size || 0) / 1024).toFixed(2)} KB
                     </p>
                     <button className="mt-4 text-sm text-primary hover:underline">
                       Click to change image
@@ -156,10 +163,14 @@ export const ImageConverter: React.FC = () => {
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                 <div className="flex flex-col md:flex-row items-end gap-4 mb-6">
                   <div className="flex-1 w-full">
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label
+                      htmlFor="output-format"
+                      className="block text-sm font-medium text-slate-700 mb-2"
+                    >
                       Convert To
                     </label>
                     <select
+                      id="output-format"
                       value={outputFormat}
                       onChange={e => setOutputFormat(e.target.value)}
                       className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/50 bg-white"

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { Settings } from "lucide-react";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";

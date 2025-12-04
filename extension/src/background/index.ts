@@ -11,7 +11,7 @@ const MENUS = [
 
 // Create context menus on install
 chrome.runtime.onInstalled.addListener(() => {
-    console.log('Dulundu Tools: Extension Installed/Updated');
+
 
     // Clean up existing menus first to avoid errors during dev reload
     chrome.contextMenus.removeAll(() => {
@@ -26,7 +26,6 @@ chrome.runtime.onInstalled.addListener(() => {
             contexts: ['selection']
         }, () => {
             if (chrome.runtime.lastError) console.error('Parent menu error:', chrome.runtime.lastError);
-            else console.log('Parent menu created');
         });
 
         // Create sub-items

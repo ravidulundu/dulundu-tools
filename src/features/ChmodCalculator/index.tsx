@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
 
+type PermissionSet = { r: boolean; w: boolean; x: boolean };
+type Permissions = { owner: PermissionSet; group: PermissionSet; public: PermissionSet };
+
 export const ChmodCalculator: React.FC = () => {
-  const [permissions, setPermissions] = useState({
+  const [permissions, setPermissions] = useState<Permissions>({
     owner: { r: true, w: true, x: true }, // 7
     group: { r: true, w: false, x: true }, // 5
     public: { r: true, w: false, x: true }, // 5
@@ -13,16 +16,16 @@ export const ChmodCalculator: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const getOctal = () => {
-    const calc = (p: any) => (p.r ? 4 : 0) + (p.w ? 2 : 0) + (p.x ? 1 : 0);
+    const calc = (p: PermissionSet) => (p.r ? 4 : 0) + (p.w ? 2 : 0) + (p.x ? 1 : 0);
     return `${calc(permissions.owner)}${calc(permissions.group)}${calc(permissions.public)}`;
   };
 
   const getSymbolic = () => {
-    const sym = (p: any) => `${p.r ? 'r' : '-'}${p.w ? 'w' : '-'}${p.x ? 'x' : '-'}`;
+    const sym = (p: PermissionSet) => `${p.r ? 'r' : '-'}${p.w ? 'w' : '-'}${p.x ? 'x' : '-'}`;
     return `-${sym(permissions.owner)}${sym(permissions.group)}${sym(permissions.public)}`;
   };
 
-  const updatePermission = (scope: 'owner' | 'group' | 'public', type: 'r' | 'w' | 'x') => {
+  const updatePermission = (scope: keyof Permissions, type: keyof PermissionSet) => {
     setPermissions(prev => ({
       ...prev,
       [scope]: {
@@ -117,7 +120,7 @@ export const ChmodCalculator: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={permissions[scope.id as keyof typeof permissions].r}
-                        onChange={() => updatePermission(scope.id as any, 'r')}
+                        onChange={() => updatePermission(scope.id as keyof Permissions, 'r')}
                         className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/50 cursor-pointer"
                       />
                       <span className="ml-3 text-slate-700 font-medium group-hover:text-primary transition-colors">
@@ -128,7 +131,7 @@ export const ChmodCalculator: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={permissions[scope.id as keyof typeof permissions].w}
-                        onChange={() => updatePermission(scope.id as any, 'w')}
+                        onChange={() => updatePermission(scope.id as keyof Permissions, 'w')}
                         className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/50 cursor-pointer"
                       />
                       <span className="ml-3 text-slate-700 font-medium group-hover:text-primary transition-colors">
@@ -139,7 +142,7 @@ export const ChmodCalculator: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={permissions[scope.id as keyof typeof permissions].x}
-                        onChange={() => updatePermission(scope.id as any, 'x')}
+                        onChange={() => updatePermission(scope.id as keyof Permissions, 'x')}
                         className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/50 cursor-pointer"
                       />
                       <span className="ml-3 text-slate-700 font-medium group-hover:text-primary transition-colors">

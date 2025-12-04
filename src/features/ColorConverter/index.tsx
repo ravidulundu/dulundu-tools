@@ -1,5 +1,5 @@
 import { Palette, Copy, Check, RefreshCw } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
@@ -33,8 +33,8 @@ export const ColorConverter: React.FC = () => {
     const max = Math.max(r, g, b),
       min = Math.min(r, g, b);
     let h = 0,
-      s,
-      l = (max + min) / 2;
+      s;
+    const l = (max + min) / 2;
 
     if (max === min) {
       h = s = 0; // achromatic
@@ -176,11 +176,15 @@ export const ColorConverter: React.FC = () => {
             {/* Inputs */}
             <div className="flex-1 w-full space-y-6 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">
+                <label
+                  htmlFor="input-hex"
+                  className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide"
+                >
                   HEX Color
                 </label>
                 <div className="relative group">
                   <input
+                    id="input-hex"
                     type="text"
                     value={hex}
                     onChange={handleHexChange}
@@ -204,11 +208,15 @@ export const ColorConverter: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">
+                <label
+                  htmlFor="input-rgb"
+                  className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide"
+                >
                   RGB Color
                 </label>
                 <div className="relative group">
                   <input
+                    id="input-rgb"
                     type="text"
                     value={rgb}
                     onChange={e => handleRgbChange(e.target.value)}
@@ -228,11 +236,15 @@ export const ColorConverter: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">
+                <label
+                  htmlFor="input-hsl"
+                  className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide"
+                >
                   HSL Color
                 </label>
                 <div className="relative group">
                   <input
+                    id="input-hsl"
                     type="text"
                     value={hsl}
                     onChange={e => handleHslChange(e.target.value)}

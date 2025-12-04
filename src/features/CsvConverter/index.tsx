@@ -50,7 +50,7 @@ export const CsvConverter: React.FC = () => {
 
       setOutput(JSON.stringify(result, null, 2));
       setError(null);
-    } catch (e) {
+    } catch (_e) {
       setError('Error parsing CSV. Ensure format is correct.');
     }
   };

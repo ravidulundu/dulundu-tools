@@ -21,18 +21,18 @@ export const UuidGenerator: React.FC = () => {
           v = c == 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
-    } catch (e) {
+    } catch (_e) {
       return 'Error generating UUID';
     }
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = React.useCallback(() => {
     const newUuids = Array(count)
       .fill(null)
       .map(() => generateUUID());
     setUuids(newUuids);
     setCopied(false);
-  };
+  }, [count]);
 
   const handleCopy = () => {
     if (uuids.length === 0) return;
@@ -49,7 +49,7 @@ export const UuidGenerator: React.FC = () => {
   // Generate on first load
   React.useEffect(() => {
     if (uuids.length === 0) handleGenerate();
-  }, []);
+  }, [handleGenerate, uuids.length]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">

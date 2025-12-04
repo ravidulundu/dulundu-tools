@@ -1,8 +1,7 @@
-import React from 'react';
+import { useTheme } from '@/hooks/useTheme';
 
 import { Footer } from './Footer';
 import { Header } from './Header';
-import { useTheme } from '../contexts/ThemeContext';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme, toggleTheme } = useTheme();

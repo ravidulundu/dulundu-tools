@@ -1,13 +1,4 @@
-import {
-  Table,
-  ArrowRight,
-  Copy,
-  Check,
-  Trash2,
-  ArrowLeftRight,
-  Upload,
-  Download,
-} from 'lucide-react';
+import { Table, Copy, Check, Trash2, ArrowLeftRight, Upload, Download } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
@@ -48,7 +39,7 @@ export const TsvConverter: React.FC = () => {
       if (mode === 'tsv-json') {
         const result = [];
         for (let i = 1; i < lines.length; i++) {
-          const obj: any = {};
+          const obj: Record<string, string> = {};
           const currentline = lines[i].split('\t');
           for (let j = 0; j < headers.length; j++) {
             let val = currentline[j]?.trim();
@@ -71,7 +62,7 @@ export const TsvConverter: React.FC = () => {
         setOutput(csvRows.join('\n'));
       }
       setError(null);
-    } catch (e) {
+    } catch (_e) {
       setError('Error parsing TSV. Ensure format is correct (tab separated).');
     }
   };

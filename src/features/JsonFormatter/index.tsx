@@ -39,7 +39,9 @@ export const JsonFormatter: React.FC = () => {
               setOutput(JSON.stringify(parsed, null, 2));
               setError(null);
             }, 100);
-          } catch (e) {}
+          } catch (_e) {
+            // Ignore parse error
+          }
 
           // Clean URL
           window.history.replaceState(null, '', window.location.pathname);
@@ -83,7 +85,7 @@ export const JsonFormatter: React.FC = () => {
       setInput(JSON.stringify(parsed, null, 2));
       setOutput(JSON.stringify(parsed, null, 2));
       setError(null);
-    } catch (e) {
+    } catch (_e) {
       setError('Could not auto-fix JSON. Syntax is too broken.');
     }
   };

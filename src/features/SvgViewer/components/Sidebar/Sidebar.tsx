@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { IconGrid } from './IconGrid';
 import { SearchBar } from './SearchBar';
-import { useSVG } from '../../context/SVGContext';
+import { useSVG } from '../../hooks/useSVG';
 import { searchIcons } from '../../services/iconify';
 
 export const Sidebar = () => {
@@ -14,10 +14,28 @@ export const Sidebar = () => {
 
   const [isColorful, setIsColorful] = useState(false);
 
+  const handleSearch = React.useCallback(
+    async (searchQuery: string = query, colorful: boolean = isColorful) => {
+      if (!searchQuery.trim()) return;
+
+      setIsLoading(true);
+      setHasSearched(true);
+      try {
+        const result = await searchIcons(searchQuery, 50, colorful);
+        setIcons(result.icons);
+      } catch (error) {
+        console.error('Search failed', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [query, isColorful]
+  );
+
   // Initial load or popular icons could go here
   React.useEffect(() => {
     handleSearch('arrow'); // Default search to show something
-  }, []);
+  }, [handleSearch]);
 
   // Debounced search: auto-search when user types
   React.useEffect(() => {
@@ -28,22 +46,7 @@ export const Sidebar = () => {
     }, 500); // Wait 500ms after user stops typing
 
     return () => clearTimeout(timeoutId);
-  }, [query]);
-
-  const handleSearch = async (searchQuery: string = query, colorful: boolean = isColorful) => {
-    if (!searchQuery.trim()) return;
-
-    setIsLoading(true);
-    setHasSearched(true);
-    try {
-      const result = await searchIcons(searchQuery, 50, colorful);
-      setIcons(result.icons);
-    } catch (error) {
-      console.error('Search failed', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [query, handleSearch]);
 
   const handleSelectIcon = (svg: string) => {
     setSvgCode(svg);

@@ -59,7 +59,7 @@ function processDirectory(sourceDir, relativePathPrefix) {
     const testFilePath = path.join(testsDir, testFileName);
 
     if (fs.existsSync(testFilePath)) {
-      console.log(`Test already exists for ${componentName}`);
+      process.stdout.write(`Test already exists for ${componentName}\n`);
       return;
     }
 
@@ -81,11 +81,11 @@ function processDirectory(sourceDir, relativePathPrefix) {
 
     const content = generateTestContent(componentName, importPath);
     fs.writeFileSync(testFilePath, content);
-    console.log(`Created test for ${componentName}`);
+    process.stdout.write(`Created test for ${componentName}\n`);
   });
 }
 
-console.log('Generating tests...');
+process.stdout.write('Generating tests...\n');
 processDirectory(featuresDir, '../features');
 processDirectory(componentsDir, '../components');
-console.log('Done.');
+process.stdout.write('Done.\n');

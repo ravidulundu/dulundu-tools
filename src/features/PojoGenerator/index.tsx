@@ -1,4 +1,4 @@
-import { FileCode, ArrowRight, Copy, Check, Trash2, Wand2 } from 'lucide-react';
+import { FileCode, Copy, Check, Trash2, Wand2 } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
@@ -20,7 +20,7 @@ export const PojoGenerator: React.FC = () => {
       const obj = JSON.parse(jsonStr);
       const classes: string[] = [];
 
-      const parseObject = (name: string, jsonObj: any) => {
+      const parseObject = (name: string, jsonObj: Record<string, unknown>) => {
         let classStr = `public class ${capitalize(name)} {\n`;
 
         Object.keys(jsonObj).forEach(key => {
@@ -34,7 +34,7 @@ export const PojoGenerator: React.FC = () => {
           else if (Array.isArray(value)) {
             if (value.length > 0 && typeof value[0] === 'object') {
               const subClassName = capitalize(key); // Singularize ideally
-              parseObject(subClassName, value[0]);
+              parseObject(subClassName, value[0] as Record<string, unknown>);
               type = `List<${subClassName}>`;
             } else if (value.length > 0) {
               const innerType = typeof value[0] === 'string' ? 'String' : 'Object';
@@ -44,7 +44,7 @@ export const PojoGenerator: React.FC = () => {
             }
           } else if (typeof value === 'object') {
             const subClassName = capitalize(key);
-            parseObject(subClassName, value);
+            parseObject(subClassName, value as Record<string, unknown>);
             type = subClassName;
           }
 
@@ -80,7 +80,7 @@ export const PojoGenerator: React.FC = () => {
       const header = `package ${packageName};\n\nimport java.util.List;\n\n`;
       setOutput(header + classes.reverse().join('\n')); // Reverse so nested classes come first or handle file split. For single view, just join.
       setError(null);
-    } catch (e) {
+    } catch (_e) {
       setError('Invalid JSON input.');
     }
   };
@@ -110,8 +110,11 @@ export const PojoGenerator: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-4 items-center justify-between">
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center space-x-2 bg-slate-50 p-1 rounded-lg border border-gray-200">
-              <label className="text-xs font-medium text-slate-500 pl-2">Class:</label>
+              <label htmlFor="class-name" className="text-xs font-medium text-slate-500 pl-2">
+                Class:
+              </label>
               <input
+                id="class-name"
                 type="text"
                 value={className}
                 onChange={e => setClassName(e.target.value)}
@@ -119,8 +122,11 @@ export const PojoGenerator: React.FC = () => {
               />
             </div>
             <div className="flex items-center space-x-2 bg-slate-50 p-1 rounded-lg border border-gray-200">
-              <label className="text-xs font-medium text-slate-500 pl-2">Package:</label>
+              <label htmlFor="package-name" className="text-xs font-medium text-slate-500 pl-2">
+                Package:
+              </label>
               <input
+                id="package-name"
                 type="text"
                 value={packageName}
                 onChange={e => setPackageName(e.target.value)}

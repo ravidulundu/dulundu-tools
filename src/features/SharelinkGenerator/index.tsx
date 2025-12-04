@@ -1,4 +1,4 @@
-import { Share2, Link as LinkIcon, Copy, Check, Trash2, ExternalLink } from 'lucide-react';
+import { Share2, Copy, Check, Trash2, ExternalLink } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
@@ -72,7 +72,7 @@ export const SharelinkGenerator: React.FC = () => {
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit overflow-y-auto max-h-full">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Platform</label>
+                  <span className="block text-sm font-bold text-slate-700 mb-2">Platform</span>
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       'twitter',
@@ -103,7 +103,9 @@ export const SharelinkGenerator: React.FC = () => {
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="block text-sm font-bold text-slate-700">URL to Share</label>
+                    <label htmlFor="url-input" className="block text-sm font-bold text-slate-700">
+                      URL to Share
+                    </label>
                     <button
                       onClick={handleClear}
                       className="text-xs text-red-500 hover:text-red-600 flex items-center"
@@ -112,6 +114,7 @@ export const SharelinkGenerator: React.FC = () => {
                     </button>
                   </div>
                   <input
+                    id="url-input"
                     type="text"
                     value={url}
                     onChange={e => setUrl(e.target.value)}
@@ -121,10 +124,14 @@ export const SharelinkGenerator: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                  <label
+                    htmlFor="message-input"
+                    className="block text-sm font-bold text-slate-700 mb-2"
+                  >
                     Message / Title (Optional)
                   </label>
                   <textarea
+                    id="message-input"
                     value={text}
                     onChange={e => setText(e.target.value)}
                     className="w-full p-3 h-24 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-slate-900 bg-slate-50"

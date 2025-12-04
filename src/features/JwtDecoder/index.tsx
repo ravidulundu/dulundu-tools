@@ -53,7 +53,7 @@ export const JwtDecoder: React.FC = () => {
 
       setHeader(decodePart(parts[0]));
       setPayload(decodePart(parts[1]));
-    } catch (e) {
+    } catch (_e) {
       setHeader('');
       setPayload('');
       setError('Invalid JWT Token or Base64 encoding.');
@@ -118,7 +118,7 @@ export const JwtDecoder: React.FC = () => {
       setHeader('{\n  "alg": "HS256",\n  "typ": "JWT"\n}');
       setPayload('{\n  "sub": "1234567890",\n  "name": "John Doe",\n  "iat": 1516239022\n}');
     }
-  }, [mode]);
+  }, [mode, header]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
@@ -241,10 +241,14 @@ export const JwtDecoder: React.FC = () => {
                   />
                 </div>
                 <div className="h-24">
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1.5">
+                  <label
+                    htmlFor="secret-input"
+                    className="block text-xs font-bold text-slate-500 uppercase mb-1.5"
+                  >
                     Secret (HMAC-SHA256)
                   </label>
                   <input
+                    id="secret-input"
                     type="text"
                     value={secret}
                     onChange={e => setSecret(e.target.value)}

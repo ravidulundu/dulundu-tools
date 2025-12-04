@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 
 import { ToolDef } from '../types';
 import { ToolCard } from './ToolCard';
-import { ALL_TOOLS } from '../constants';
 
 interface ToolDirectoryProps {
   tools: ToolDef[];

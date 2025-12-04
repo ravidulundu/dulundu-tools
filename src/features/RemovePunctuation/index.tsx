@@ -1,5 +1,5 @@
-import { Eraser, ArrowRight, Copy, Check, Trash2 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { Eraser, Copy, Check, Trash2 } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
@@ -7,29 +7,27 @@ import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const RemovePunctuation: React.FC = () => {
   const [input, setInput] = useState('');
-  const [output, setOutput] = useState('');
   const [copied, setCopied] = useState(false);
   const [mode, setMode] = useState<'all' | 'special'>('all');
 
-  const handleProcess = () => {
-    if (!input) {
-      setOutput('');
-      return;
-    }
+  const output = useMemo(() => {
+    if (!input) return '';
 
     let result = input;
     if (mode === 'all') {
       // Remove all punctuation
-      result = result.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"'\[\]<>|@\+\\]/g, '');
+      // Using new RegExp to avoid eslint no-useless-escape on forward slash
+      const regex = new RegExp('[.,/#!$%^&*;:{}=_`~()?"\'[\\]<>|@+\\\\-]', 'g');
+      result = result.replace(regex, '');
       // Replace multiple spaces with single space
       result = result.replace(/\s{2,}/g, ' ');
     } else {
       // Keep basic sentence structure (.,?!) but remove others
-      result = result.replace(/[\/#$%\^&\*;:{}=\-_`~()"'\[\]<>|@\+\\]/g, '');
+      const regex = new RegExp('[/#$%^&*;:{}=_`~()"\'[\\]<>|@+\\\\-]', 'g');
+      result = result.replace(regex, '');
     }
-
-    setOutput(result);
-  };
+    return result;
+  }, [input, mode]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output);
@@ -39,14 +37,8 @@ export const RemovePunctuation: React.FC = () => {
 
   const handleClear = () => {
     setInput('');
-    setOutput('');
     setCopied(false);
   };
-
-  // Auto-process when input or mode changes
-  useEffect(() => {
-    handleProcess();
-  }, [input, mode]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">

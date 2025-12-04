@@ -30,7 +30,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   theme = readOnly ? 'dark' : 'light',
   actions,
   language,
-  className,
+
   showLineNumbers = false,
   showStats = false,
   showCopyButton = false,

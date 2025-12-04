@@ -20,6 +20,64 @@ export const SqlFormatter: React.FC = () => {
     handleDownload,
   } = useToolLogic();
 
+  const formatSql = React.useCallback(
+    (textOverride?: string) => {
+      const textToFormat = typeof textOverride === 'string' ? textOverride : input;
+
+      if (!textToFormat.trim()) {
+        setOutput('');
+        return;
+      }
+
+      // Basic SQL formatting logic (Regex based)
+      let sql = textToFormat.replace(/\s+/g, ' ').replace(/"/g, '""'); // basic cleanup
+
+      const keywords = [
+        'SELECT',
+        'FROM',
+        'WHERE',
+        'AND',
+        'OR',
+        'GROUP BY',
+        'ORDER BY',
+        'HAVING',
+        'LIMIT',
+        'INSERT INTO',
+        'VALUES',
+        'UPDATE',
+        'SET',
+        'DELETE FROM',
+        'JOIN',
+        'LEFT JOIN',
+        'RIGHT JOIN',
+        'INNER JOIN',
+        'UNION',
+        'UNION ALL',
+        'CREATE TABLE',
+        'DROP TABLE',
+        'ALTER TABLE',
+      ];
+
+      // Simple indentation
+      keywords.forEach(kw => {
+        const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+        sql = sql.replace(regex, `\n${kw}`);
+      });
+
+      // Fix first line newline
+      sql = sql.replace(/^\n/, '');
+
+      // Indent sub-parts (like after SELECT)
+      sql = sql.replace(/,/g, ',\n  ');
+
+      // Parentheses indentation
+      sql = sql.replace(/\(/g, '(\n  ').replace(/\)/g, '\n)');
+
+      setOutput(sql);
+    },
+    [input, setOutput]
+  );
+
   // Check for input in URL hash (from extension)
   React.useEffect(() => {
     const hash = window.location.hash;
@@ -33,64 +91,11 @@ export const SqlFormatter: React.FC = () => {
           formatSql(decoded);
           window.history.replaceState(null, '', window.location.pathname);
         }
-      } catch (e) {}
+      } catch (_e) {
+        // Ignore parsing errors
+      }
     }
-  }, [setInput]);
-
-  const formatSql = (textOverride?: string) => {
-    const textToFormat = typeof textOverride === 'string' ? textOverride : input;
-
-    if (!textToFormat.trim()) {
-      setOutput('');
-      return;
-    }
-
-    // Basic SQL formatting logic (Regex based)
-    let sql = textToFormat.replace(/\s+/g, ' ').replace(/"/g, '""'); // basic cleanup
-
-    const keywords = [
-      'SELECT',
-      'FROM',
-      'WHERE',
-      'AND',
-      'OR',
-      'GROUP BY',
-      'ORDER BY',
-      'HAVING',
-      'LIMIT',
-      'INSERT INTO',
-      'VALUES',
-      'UPDATE',
-      'SET',
-      'DELETE FROM',
-      'JOIN',
-      'LEFT JOIN',
-      'RIGHT JOIN',
-      'INNER JOIN',
-      'UNION',
-      'UNION ALL',
-      'CREATE TABLE',
-      'DROP TABLE',
-      'ALTER TABLE',
-    ];
-
-    // Simple indentation
-    keywords.forEach(kw => {
-      const regex = new RegExp(`\\b${kw}\\b`, 'gi');
-      sql = sql.replace(regex, `\n${kw}`);
-    });
-
-    // Fix first line newline
-    sql = sql.replace(/^\n/, '');
-
-    // Indent sub-parts (like after SELECT)
-    sql = sql.replace(/,/g, ',\n  ');
-
-    // Parentheses indentation
-    sql = sql.replace(/\(/g, '(\n  ').replace(/\)/g, '\n)');
-
-    setOutput(sql);
-  };
+  }, [setInput, formatSql]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">

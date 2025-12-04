@@ -20,7 +20,7 @@ export const ParaphrasingTool: React.FC = () => {
     try {
       const result = await paraphraseText(input, tone);
       setOutput(result);
-    } catch (error) {
+    } catch (_error) {
       setOutput('Error: Failed to paraphrase text. Please try again.');
     } finally {
       setLoading(false);

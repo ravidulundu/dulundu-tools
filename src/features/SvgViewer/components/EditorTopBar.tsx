@@ -1,13 +1,16 @@
+import { OnMount } from '@monaco-editor/react';
 import { RotateCcw, Undo, Redo, Crop, Check, Settings } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
-import { DEFAULT_SVG_CODE } from '../context/SVGContext';
+import { DEFAULT_SVG_CODE } from '../constants';
 import { optimizeSvg, prettifySvg } from '../utils/svgOptimizer';
+
+type EditorType = Parameters<OnMount>[0];
 
 interface EditorTopBarProps {
   svgCode: string;
   setSvgCode: (code: string) => void;
-  editorRef: React.RefObject<any>;
+  editorRef: React.RefObject<EditorType | null>;
   optimizationStats: {
     originalSize: number;
     optimizedSize: number;
@@ -24,27 +27,36 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
   cursorPosition,
 }) => {
   const [showDimensions, setShowDimensions] = useState(false);
-  const [dimensions, setDimensions] = useState<{
+  const [overrideDimensions, setOverrideDimensions] = useState<{
     w: string | number;
     h: string | number;
-  }>({ w: 0, h: 0 });
+  } | null>(null);
+
+  // Track previous svgCode to reset override on change
+  const [prevSvgCode, setPrevSvgCode] = useState(svgCode);
+  if (svgCode !== prevSvgCode) {
+    setPrevSvgCode(svgCode);
+    setOverrideDimensions(null);
+  }
+
   const [isPrettified, setIsPrettified] = useState(false);
   const [isOptimized, setIsOptimized] = useState(false);
 
-  // Parse dimensions from SVG code on load or change
-  useEffect(() => {
-    if (!svgCode) return;
+  // Parse dimensions from SVG code
+  const parsedDimensions = useMemo(() => {
+    if (!svgCode) return { w: 0, h: 0 };
     const parser = new DOMParser();
     const doc = parser.parseFromString(svgCode, 'image/svg+xml');
     const svg = doc.querySelector('svg');
     if (svg) {
       const width = parseInt(svg.getAttribute('width') || '0') || 0;
       const height = parseInt(svg.getAttribute('height') || '0') || 0;
-      setDimensions(prev =>
-        prev.w !== width || prev.h !== height ? { w: width, h: height } : prev
-      );
+      return { w: width, h: height };
     }
+    return { w: 0, h: 0 };
   }, [svgCode]);
+
+  const dimensions = overrideDimensions || parsedDimensions;
 
   // Close dimensions popover on Escape key
   useEffect(() => {
@@ -110,11 +122,11 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
   };
 
   const handleUndo = () => {
-    editorRef.current?.trigger('source', 'undo');
+    editorRef.current?.trigger('source', 'undo', null);
   };
 
   const handleRedo = () => {
-    editorRef.current?.trigger('source', 'redo');
+    editorRef.current?.trigger('source', 'redo', null);
   };
 
   const handlePrettify = () => {
@@ -199,7 +211,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
                     value={dimensions.w}
                     onChange={e => {
                       const val = e.target.value;
-                      setDimensions(prev => ({ ...prev, w: val }));
+                      setOverrideDimensions(prev => ({ ...(prev || parsedDimensions), w: val }));
                       const w = parseInt(val);
                       const h =
                         typeof dimensions.h === 'string'
@@ -221,7 +233,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
                     value={dimensions.h}
                     onChange={e => {
                       const val = e.target.value;
-                      setDimensions(prev => ({ ...prev, h: val }));
+                      setOverrideDimensions(prev => ({ ...(prev || parsedDimensions), h: val }));
                       const h = parseInt(val);
                       const w =
                         typeof dimensions.w === 'string'

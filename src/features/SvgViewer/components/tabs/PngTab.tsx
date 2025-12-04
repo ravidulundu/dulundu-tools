@@ -24,6 +24,9 @@ export const PngTab: React.FC<PngTabProps> = ({
   return (
     <div className="w-full h-full flex flex-col relative">
       <div
+        role="button"
+        aria-label="PNG Preview"
+        tabIndex={0}
         className="flex-1 w-full h-full flex items-center justify-center overflow-hidden relative cursor-grab active:cursor-grabbing"
         style={{
           ...(background === 'checkerboard'
@@ -39,6 +42,7 @@ export const PngTab: React.FC<PngTabProps> = ({
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseLeave}
+        onKeyDown={_e => {}} // Dummy handler for now
         ref={containerRef}
       >
         <div

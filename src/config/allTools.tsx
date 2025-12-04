@@ -5,7 +5,6 @@ import {
   Braces,
   BrainCircuit,
   Calculator,
-  Calendar,
   Clock,
   Code,
   Code2,
@@ -42,10 +41,8 @@ import {
   Fingerprint,
   CalendarClock,
   Split,
-  FileDigit,
   FileCode2,
   Terminal,
-  Box,
   FileSpreadsheet,
 } from 'lucide-react';
 

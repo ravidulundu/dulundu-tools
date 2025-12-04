@@ -1,5 +1,5 @@
 import { Cpu, Binary, Calculator, RefreshCw } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
@@ -7,21 +7,19 @@ import { ToolHeader } from '@/components/common/ToolHeader';
 export const BitwiseCalculator: React.FC = () => {
   const [a, setA] = useState<number>(0);
   const [b, setB] = useState<number>(0);
-  const [results, setResults] = useState<any>({});
 
-  useEffect(() => {
-    const safeA = a || 0;
-    const safeB = b || 0;
-    setResults({
-      and: safeA & safeB,
-      or: safeA | safeB,
-      xor: safeA ^ safeB,
-      notA: ~safeA,
-      leftShift: safeA << 1,
-      rightShift: safeA >> 1,
-      zeroFillRightShift: safeA >>> 1,
-    });
-  }, [a, b]);
+  const safeA = a || 0;
+  const safeB = b || 0;
+
+  const results = {
+    and: safeA & safeB,
+    or: safeA | safeB,
+    xor: safeA ^ safeB,
+    notA: ~safeA,
+    leftShift: safeA << 1,
+    rightShift: safeA >> 1,
+    zeroFillRightShift: safeA >>> 1,
+  };
 
   const toBin = (n: number) =>
     (n >>> 0)
@@ -54,11 +52,15 @@ export const BitwiseCalculator: React.FC = () => {
           <div className="max-w-5xl mx-auto space-y-8">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">
+                <label
+                  htmlFor="input-a"
+                  className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide"
+                >
                   Number A
                 </label>
                 <div className="space-y-3">
                   <input
+                    id="input-a"
                     type="number"
                     value={a}
                     onChange={e => setA(parseInt(e.target.value) || 0)}
@@ -70,11 +72,15 @@ export const BitwiseCalculator: React.FC = () => {
                 </div>
               </div>
               <div className="p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">
+                <label
+                  htmlFor="input-b"
+                  className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide"
+                >
                   Number B
                 </label>
                 <div className="space-y-3">
                   <input
+                    id="input-b"
                     type="number"
                     value={b}
                     onChange={e => setB(parseInt(e.target.value) || 0)}

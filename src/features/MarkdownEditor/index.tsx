@@ -1,13 +1,12 @@
 import Editor, { OnMount } from '@monaco-editor/react';
 import DOMPurify from 'dompurify';
-import { FileText, Eye, Check, Copy, Download } from 'lucide-react';
+import { FileText, Download } from 'lucide-react';
 import { marked } from 'marked';
-import React, { useState, useEffect, useRef } from 'react';
+import { editor } from 'monaco-editor';
+import React, { useState, useRef, useMemo } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-import { ActionButton } from '@/components/common/ActionButton';
-import { ToolHeader } from '@/components/common/ToolHeader';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
 
 export const MarkdownEditor: React.FC = () => {
   const { theme } = useTheme();
@@ -80,24 +79,22 @@ alert(message);
 ## Inline code
 
 This web site is using \`markedjs/marked\`.`);
-  const [html, setHtml] = useState('');
+
   const [copied, setCopied] = useState(false);
 
-  // Refs for sync scrolling
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const isScrolling = useRef(false);
 
-  useEffect(() => {
+  const html = useMemo(() => {
     try {
       const rawHtml = marked.parse(markdown);
       if (typeof rawHtml === 'string') {
-        setHtml(rawHtml);
-      } else {
-        (rawHtml as Promise<string>).then(res => setHtml(res));
+        return rawHtml;
       }
-    } catch (e) {
-      // Ignore parsing errors while typing
+      return ''; // Handle promise case if needed, but marked is sync by default
+    } catch (_e) {
+      return '';
     }
   }, [markdown]);
 

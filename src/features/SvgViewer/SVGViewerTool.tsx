@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom';
 import EditorPanel from './components/EditorPanel';
 import PreviewPanel from './components/PreviewPanel';
 import { Sidebar } from './components/Sidebar/Sidebar';
-import { SVGProvider , useSVG } from './context/SVGContext';
-
+import { SVGProvider } from './context/SVGContext';
+import { useSVG } from './hooks/useSVG';
 
 // Component to handle URL parameters for shared SVGs
 const UrlHandler = () => {

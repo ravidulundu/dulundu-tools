@@ -39,17 +39,18 @@ export const XmlJsonConverter: React.FC = () => {
 
   // XML to JSON Logic
   const xmlToJson = (xml: Node): unknown => {
-    const obj: Record<string, any> = {};
+    const obj: Record<string, unknown> = {};
 
     if (xml.nodeType === 1) {
       // element
       // do attributes
       if ((xml as Element).attributes.length > 0) {
-        obj['@attributes'] = {};
+        obj['@attributes'] = {} as Record<string, unknown>;
         for (let j = 0; j < (xml as Element).attributes.length; j++) {
           const attribute = (xml as Element).attributes.item(j);
           if (attribute) {
-            obj['@attributes'][attribute.nodeName] = attribute.nodeValue;
+            (obj['@attributes'] as Record<string, unknown>)[attribute.nodeName] =
+              attribute.nodeValue;
           }
         }
       }
@@ -73,12 +74,12 @@ export const XmlJsonConverter: React.FC = () => {
         if (typeof obj[nodeName] === 'undefined') {
           obj[nodeName] = xmlToJson(item);
         } else {
-          if (typeof obj[nodeName].push === 'undefined') {
+          if (typeof (obj[nodeName] as unknown[]).push === 'undefined') {
             const old = obj[nodeName];
             obj[nodeName] = [];
-            obj[nodeName].push(old);
+            (obj[nodeName] as unknown[]).push(old);
           }
-          obj[nodeName].push(xmlToJson(item));
+          (obj[nodeName] as unknown[]).push(xmlToJson(item));
         }
       }
     }
@@ -86,7 +87,7 @@ export const XmlJsonConverter: React.FC = () => {
   };
 
   // JSON to XML Logic
-  const jsonToXml = (json: any): string => {
+  const jsonToXml = (json: unknown): string => {
     let xml = '';
     if (typeof json === 'object' && json !== null) {
       if (Array.isArray(json)) {

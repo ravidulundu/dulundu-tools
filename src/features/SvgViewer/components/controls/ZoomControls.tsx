@@ -24,8 +24,8 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
   const handleZoomInputCommit = (value: string) => {
     const cleanVal = value.replace(/[^0-9]/g, '');
     if (cleanVal) {
-      const num = parseInt(cleanVal, 10);
-      const clampedNum = Math.min(Math.max(10, num), 1000);
+      // const num = parseInt(cleanVal, 10);
+      // const clampedNum = Math.min(Math.max(10, num), 1000);
       // Note: We'd need to expose setTransform from parent or pass callback
       // For now, this is simplified
     } else {

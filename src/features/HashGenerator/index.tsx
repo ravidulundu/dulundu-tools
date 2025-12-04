@@ -135,16 +135,27 @@ export const HashGenerator: React.FC = () => {
               />
 
               <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-3">
+                <label
+                  htmlFor="file-upload"
+                  className="block text-xs font-bold text-slate-500 uppercase mb-3"
+                >
                   Or Upload File
                 </label>
                 <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      fileInputRef.current?.click();
+                    }
+                  }}
                   className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${
                     file ? 'border-primary bg-blue-50' : 'border-gray-300 hover:bg-gray-50'
                   }`}
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <input
+                    id="file-upload"
                     ref={fileInputRef}
                     type="file"
                     onChange={handleFileChange}

@@ -46,10 +46,11 @@ export const EscapeTools: React.FC = () => {
             }
           });
           break;
-        case 'html-unescape':
+        case 'html-unescape': {
           const doc = new DOMParser().parseFromString(text, 'text/html');
           result = doc.documentElement.textContent || '';
           break;
+        }
         case 'json-escape':
           result = JSON.stringify(text).slice(1, -1);
           break;
@@ -64,7 +65,7 @@ export const EscapeTools: React.FC = () => {
           break;
       }
       setOutput(result);
-    } catch (e) {
+    } catch (_e) {
       setOutput('Error: Invalid input for this operation.');
     }
   };

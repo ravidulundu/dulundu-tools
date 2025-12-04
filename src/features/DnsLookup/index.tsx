@@ -5,10 +5,17 @@ import { ToolHeader } from '@/components/common/ToolHeader';
 
 type DnsType = 'A' | 'AAAA' | 'MX' | 'TXT' | 'NS' | 'CNAME' | 'SOA';
 
+interface DnsRecord {
+  type: number;
+  name: string;
+  TTL: number;
+  data: string;
+}
+
 export const DnsLookup: React.FC = () => {
   const [domain, setDomain] = useState('');
   const [type, setType] = useState<DnsType>('A');
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<DnsRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 

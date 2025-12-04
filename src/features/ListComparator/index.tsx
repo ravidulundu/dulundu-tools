@@ -15,33 +15,32 @@ export const ListComparator: React.FC = () => {
   const [union, setUnion] = useState<string[]>([]);
 
   useEffect(() => {
+    const compare = () => {
+      const setA = new Set(
+        listA
+          .split('\n')
+          .map(s => s.trim())
+          .filter(Boolean)
+      );
+      const setB = new Set(
+        listB
+          .split('\n')
+          .map(s => s.trim())
+          .filter(Boolean)
+      );
+
+      const intersectionRes = [...setA].filter(x => setB.has(x));
+      const aOnlyRes = [...setA].filter(x => !setB.has(x));
+      const bOnlyRes = [...setB].filter(x => !setA.has(x));
+      const unionRes = Array.from(new Set([...setA, ...setB]));
+
+      setIntersection(intersectionRes.sort());
+      setAOnly(aOnlyRes.sort());
+      setBOnly(bOnlyRes.sort());
+      setUnion(unionRes.sort());
+    };
     compare();
   }, [listA, listB]);
-
-  const compare = () => {
-    const setA = new Set(
-      listA
-        .split('\n')
-        .map(s => s.trim())
-        .filter(Boolean)
-    );
-    const setB = new Set(
-      listB
-        .split('\n')
-        .map(s => s.trim())
-        .filter(Boolean)
-    );
-
-    const intersectionRes = [...setA].filter(x => setB.has(x));
-    const aOnlyRes = [...setA].filter(x => !setB.has(x));
-    const bOnlyRes = [...setB].filter(x => !setA.has(x));
-    const unionRes = Array.from(new Set([...setA, ...setB]));
-
-    setIntersection(intersectionRes.sort());
-    setAOnly(aOnlyRes.sort());
-    setBOnly(bOnlyRes.sort());
-    setUnion(unionRes.sort());
-  };
 
   const handleClear = () => {
     setListA('');

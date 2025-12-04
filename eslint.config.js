@@ -30,8 +30,10 @@ export default tseslint.config(
         version: 'detect',
       },
       'import/resolver': {
-        typescript: true,
-        node: true,
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+        },
       },
     },
     plugins: {
@@ -104,5 +106,6 @@ export default tseslint.config(
       'no-var': 'error',
     },
   },
+
   prettier
 );

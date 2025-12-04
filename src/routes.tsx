@@ -1,8 +1,12 @@
 import React from 'react';
 
 // Helper to lazy load named exports
-const lazyLoad = (importPath: () => Promise<any>, componentName: string) => {
-  return React.lazy(() => importPath().then(module => ({ default: module[componentName] })));
+const lazyLoad = (importPath: () => Promise<Record<string, unknown>>, componentName: string) => {
+  return React.lazy(() =>
+    importPath().then(module => ({
+      default: module[componentName] as React.ComponentType<unknown>,
+    }))
+  );
 };
 
 // Tool Components

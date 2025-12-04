@@ -26,7 +26,7 @@ export const MirrorOnline: React.FC = () => {
       await fetch(target, { mode: 'no-cors', cache: 'no-cache' });
       setStatus('up');
       setMessage('Website is reachable!');
-    } catch (e) {
+    } catch (_e) {
       setStatus('down');
       setMessage('Website seems down or unreachable.');
     }
@@ -44,9 +44,15 @@ export const MirrorOnline: React.FC = () => {
         <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30 flex flex-col items-center justify-center">
           <div className="max-w-xl w-full space-y-8">
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-              <label className="block text-sm font-medium text-slate-700 mb-2">Website URL</label>
+              <label
+                htmlFor="website-url"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
+                Website URL
+              </label>
               <div className="flex gap-2">
                 <input
+                  id="website-url"
                   type="text"
                   value={url}
                   onChange={e => setUrl(e.target.value)}

@@ -18,7 +18,7 @@ export const TokenGenerator: React.FC = () => {
   const [tokens, setTokens] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
 
-  const generate = () => {
+  const generate = React.useCallback(() => {
     let charset = '';
     if (options.hex) {
       charset = '0123456789abcdef';
@@ -43,11 +43,11 @@ export const TokenGenerator: React.FC = () => {
       result.push(token);
     }
     setTokens(result);
-  };
+  }, [count, length, options]);
 
   React.useEffect(() => {
     generate();
-  }, []);
+  }, [generate]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(tokens.join('\n'));
@@ -116,9 +116,9 @@ export const TokenGenerator: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-3">
+                  <span className="block text-sm font-bold text-slate-700 mb-3">
                     Character Sets
-                  </label>
+                  </span>
                   <div className="flex flex-wrap gap-3">
                     {[
                       { id: 'lowercase', label: 'a-z' },
@@ -129,7 +129,7 @@ export const TokenGenerator: React.FC = () => {
                     ].map(opt => (
                       <button
                         key={opt.id}
-                        onClick={() => toggleOption(opt.id as any)}
+                        onClick={() => toggleOption(opt.id as keyof typeof options)}
                         className={`px-4 py-2 rounded-lg text-sm font-bold border transition-all ${
                           options[opt.id as keyof typeof options]
                             ? 'bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm'

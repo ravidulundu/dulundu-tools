@@ -13,38 +13,38 @@ export const HmacGenerator: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    const generateHmac = async () => {
+      if (!input || !secret) {
+        setHash('');
+        return;
+      }
+
+      try {
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(secret);
+        const msgData = encoder.encode(input);
+
+        const key = await crypto.subtle.importKey(
+          'raw',
+          keyData,
+          { name: 'HMAC', hash: { name: algo } },
+          false,
+          ['sign']
+        );
+
+        const signature = await crypto.subtle.sign('HMAC', key, msgData);
+        const hashArray = Array.from(new Uint8Array(signature));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+        setHash(hashHex);
+      } catch (e) {
+        console.error(e);
+        setHash('Error generating HMAC');
+      }
+    };
+
     generateHmac();
   }, [input, secret, algo]);
-
-  const generateHmac = async () => {
-    if (!input || !secret) {
-      setHash('');
-      return;
-    }
-
-    try {
-      const encoder = new TextEncoder();
-      const keyData = encoder.encode(secret);
-      const msgData = encoder.encode(input);
-
-      const key = await crypto.subtle.importKey(
-        'raw',
-        keyData,
-        { name: 'HMAC', hash: { name: algo } },
-        false,
-        ['sign']
-      );
-
-      const signature = await crypto.subtle.sign('HMAC', key, msgData);
-      const hashArray = Array.from(new Uint8Array(signature));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-      setHash(hashHex);
-    } catch (e) {
-      console.error(e);
-      setHash('Error generating HMAC');
-    }
-  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(hash);
@@ -93,9 +93,12 @@ export const HmacGenerator: React.FC = () => {
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-              <label className="block text-sm font-bold text-slate-700 mb-2">Secret Key</label>
+              <label htmlFor="secret-key" className="block text-sm font-bold text-slate-700 mb-2">
+                Secret Key
+              </label>
               <div className="relative">
                 <input
+                  id="secret-key"
                   type="text"
                   value={secret}
                   onChange={e => setSecret(e.target.value)}

@@ -3,12 +3,12 @@
  * Uses existing window.umami type from src/types.d.ts
  */
 
-export const trackEvent = (event: string, data?: Record<string, any>) => {
+export const trackEvent = (event: string, data?: Record<string, unknown>) => {
   try {
     if (window.umami) {
       window.umami.track(event, data);
     }
-  } catch (error) {
+  } catch (_error) {
     // Silently fail - don't break user experience if analytics fail
   }
 };

@@ -5,7 +5,7 @@ import { ToolHeader } from '@/components/common/ToolHeader';
 
 type UnitType = 'length' | 'weight' | 'temp';
 
-const FACTORS: any = {
+const FACTORS: Record<string, Record<string, number>> = {
   length: {
     m: 1,
     km: 0.001,
@@ -26,7 +26,7 @@ const FACTORS: any = {
   // Temp is handled specially via formula
 };
 
-const LABELS: any = {
+const LABELS: Record<string, string> = {
   m: 'Meters',
   km: 'Kilometers',
   cm: 'Centimeters',
@@ -125,16 +125,22 @@ export const UnitConverter: React.FC = () => {
           <div className="max-w-4xl w-full grid md:grid-cols-[1fr,auto,1fr] gap-6 items-center">
             {/* From */}
             <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">
+              <label
+                htmlFor="from-amount"
+                className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-3"
+              >
                 From
               </label>
               <input
+                id="from-amount"
                 type="number"
                 value={amount}
                 onChange={e => setAmount(parseFloat(e.target.value) || 0)}
                 className="w-full text-4xl font-bold bg-transparent border-b-2 border-slate-200 focus:border-primary outline-none py-2 text-slate-900 mb-6 transition-colors"
               />
               <select
+                id="from-unit"
+                aria-label="From Unit"
                 value={from}
                 onChange={e => setFrom(e.target.value)}
                 className="w-full p-3 bg-slate-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 font-medium text-slate-700 cursor-pointer hover:bg-slate-100 transition-colors"
@@ -155,13 +161,17 @@ export const UnitConverter: React.FC = () => {
 
             {/* To */}
             <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">
+              <label
+                htmlFor="to-unit"
+                className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-3"
+              >
                 To
               </label>
               <div className="w-full text-4xl font-bold py-2 text-primary mb-6 truncate border-b-2 border-transparent">
                 {Number.isInteger(convert()) ? convert() : convert().toFixed(4)}
               </div>
               <select
+                id="to-unit"
                 value={to}
                 onChange={e => setTo(e.target.value)}
                 className="w-full p-3 bg-slate-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 font-medium text-slate-700 cursor-pointer hover:bg-slate-100 transition-colors"

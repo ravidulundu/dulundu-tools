@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { HeroSection } from '@/components/home/HeroSection';
@@ -10,20 +10,18 @@ import { ALL_TOOLS } from '@/constants';
 export const Home: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState<string>('All');
 
-  // Read category from URL on mount and when URL changes
-  useEffect(() => {
-    const categoryParam = searchParams.get('category');
-    if (categoryParam) {
-      setActiveCategory(categoryParam);
-      // Scroll to top when category changes
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  const activeCategory = searchParams.get('category') || 'All';
+
+  const setActiveCategory = (category: string) => {
+    if (category === 'All') {
+      searchParams.delete('category');
+      setSearchParams(searchParams);
     } else {
-      // No category in URL = reset to 'All'
-      setActiveCategory('All');
+      setSearchParams({ ...Object.fromEntries(searchParams), category });
     }
-  }, [searchParams]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Filter tools based on search and category
   const filteredTools = useMemo(() => {

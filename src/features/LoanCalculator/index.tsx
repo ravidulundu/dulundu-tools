@@ -28,52 +28,51 @@ export const LoanCalculator: React.FC = () => {
   const [schedule, setSchedule] = useState<AmortizationYear[]>([]);
 
   useEffect(() => {
+    const calculate = () => {
+      const principal = amount;
+      const calculateInterest = rate / 100 / 12;
+      const calculatePayments = term * 12;
+
+      const x = Math.pow(1 + calculateInterest, calculatePayments);
+      const monthlyVal = (principal * x * calculateInterest) / (x - 1);
+
+      if (isFinite(monthlyVal)) {
+        setMonthly(monthlyVal);
+        setTotalPayment(monthlyVal * calculatePayments);
+        const interestTotal = monthlyVal * calculatePayments - principal;
+        setTotalInterest(interestTotal);
+
+        // Generate Yearly Schedule
+        let balance = principal;
+        const yearlyData: AmortizationYear[] = [];
+        let currentYearInterest = 0;
+        let currentYearPrincipal = 0;
+
+        for (let i = 1; i <= calculatePayments; i++) {
+          const interestPayment = balance * calculateInterest;
+          const principalPayment = monthlyVal - interestPayment;
+          balance -= principalPayment;
+          if (balance < 0) balance = 0;
+
+          currentYearInterest += interestPayment;
+          currentYearPrincipal += principalPayment;
+
+          if (i % 12 === 0) {
+            yearlyData.push({
+              year: i / 12,
+              interest: currentYearInterest,
+              principal: currentYearPrincipal,
+              balance: balance,
+            });
+            currentYearInterest = 0;
+            currentYearPrincipal = 0;
+          }
+        }
+        setSchedule(yearlyData);
+      }
+    };
     calculate();
   }, [amount, rate, term]);
-
-  const calculate = () => {
-    const principal = amount;
-    const calculateInterest = rate / 100 / 12;
-    const calculatePayments = term * 12;
-
-    const x = Math.pow(1 + calculateInterest, calculatePayments);
-    const monthlyVal = (principal * x * calculateInterest) / (x - 1);
-
-    if (isFinite(monthlyVal)) {
-      setMonthly(monthlyVal);
-      setTotalPayment(monthlyVal * calculatePayments);
-      const interestTotal = monthlyVal * calculatePayments - principal;
-      setTotalInterest(interestTotal);
-
-      // Generate Yearly Schedule
-      let balance = principal;
-      const yearlyData: AmortizationYear[] = [];
-      let currentYearInterest = 0;
-      let currentYearPrincipal = 0;
-
-      for (let i = 1; i <= calculatePayments; i++) {
-        const interestPayment = balance * calculateInterest;
-        const principalPayment = monthlyVal - interestPayment;
-        balance -= principalPayment;
-        if (balance < 0) balance = 0;
-
-        currentYearInterest += interestPayment;
-        currentYearPrincipal += principalPayment;
-
-        if (i % 12 === 0) {
-          yearlyData.push({
-            year: i / 12,
-            interest: currentYearInterest,
-            principal: currentYearPrincipal,
-            balance: balance,
-          });
-          currentYearInterest = 0;
-          currentYearPrincipal = 0;
-        }
-      }
-      setSchedule(yearlyData);
-    }
-  };
 
   const interestPercentage = totalPayment > 0 ? (totalInterest / totalPayment) * 100 : 0;
 

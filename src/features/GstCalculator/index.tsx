@@ -15,32 +15,31 @@ export const GstCalculator: React.FC = () => {
   });
 
   useEffect(() => {
+    const calculate = () => {
+      const amt = parseFloat(amount) || 0;
+
+      if (type === 'exclusive') {
+        // Add GST
+        const gstAmt = (amt * rate) / 100;
+        const totalAmt = amt + gstAmt;
+        setResult({
+          net: amt,
+          gst: gstAmt,
+          total: totalAmt,
+        });
+      } else {
+        // Remove GST (Inclusive)
+        const gstAmt = amt - amt * (100 / (100 + rate));
+        const netAmt = amt - gstAmt;
+        setResult({
+          net: netAmt,
+          gst: gstAmt,
+          total: amt,
+        });
+      }
+    };
     calculate();
   }, [amount, rate, type]);
-
-  const calculate = () => {
-    const amt = parseFloat(amount) || 0;
-
-    if (type === 'exclusive') {
-      // Add GST
-      const gstAmt = (amt * rate) / 100;
-      const totalAmt = amt + gstAmt;
-      setResult({
-        net: amt,
-        gst: gstAmt,
-        total: totalAmt,
-      });
-    } else {
-      // Remove GST (Inclusive)
-      const gstAmt = amt - amt * (100 / (100 + rate));
-      const netAmt = amt - gstAmt;
-      setResult({
-        net: netAmt,
-        gst: gstAmt,
-        total: amt,
-      });
-    }
-  };
 
   const fmt = (num: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
@@ -60,7 +59,10 @@ export const GstCalculator: React.FC = () => {
             {/* Input Section */}
             <div className="space-y-6 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">
+                <label
+                  htmlFor="initial-amount"
+                  className="block text-sm font-bold text-slate-700 mb-2"
+                >
                   Initial Amount
                 </label>
                 <div className="relative">
@@ -68,6 +70,7 @@ export const GstCalculator: React.FC = () => {
                     $
                   </span>
                   <input
+                    id="initial-amount"
                     type="number"
                     value={amount}
                     onChange={e => setAmount(e.target.value)}
@@ -78,7 +81,9 @@ export const GstCalculator: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">GST Rate (%)</label>
+                <label htmlFor="gst-rate" className="block text-sm font-bold text-slate-700 mb-2">
+                  GST Rate (%)
+                </label>
                 <div className="grid grid-cols-4 gap-2 mb-3">
                   {[5, 12, 18, 28].map(r => (
                     <button
@@ -92,6 +97,7 @@ export const GstCalculator: React.FC = () => {
                 </div>
                 <div className="relative">
                   <input
+                    id="gst-rate"
                     type="number"
                     value={rate}
                     onChange={e => setRate(parseFloat(e.target.value))}
@@ -104,10 +110,14 @@ export const GstCalculator: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">
+                <span id="calc-type-label" className="block text-sm font-bold text-slate-700 mb-2">
                   Calculation Type
-                </label>
-                <div className="grid grid-cols-2 bg-slate-100 p-1 rounded-xl">
+                </span>
+                <div
+                  role="group"
+                  aria-labelledby="calc-type-label"
+                  className="grid grid-cols-2 bg-slate-100 p-1 rounded-xl"
+                >
                   <button
                     onClick={() => setType('exclusive')}
                     className={`py-2 rounded-lg text-sm font-bold transition-all ${type === 'exclusive' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}

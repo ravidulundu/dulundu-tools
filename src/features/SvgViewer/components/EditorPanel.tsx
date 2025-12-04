@@ -1,13 +1,15 @@
-import Editor from '@monaco-editor/react';
+import Editor, { OnMount } from '@monaco-editor/react';
 import clsx from 'clsx';
 import React from 'react';
 
 import { EditorBottomBar } from './EditorBottomBar';
 import { EditorTopBar } from './EditorTopBar';
 import { ShareModal } from './ShareModal';
-import { useSVG } from '../context/SVGContext';
 import { useEditorHover } from '../hooks/useEditorHover';
+import { useSVG } from '../hooks/useSVG';
 import { optimizeSvg } from '../utils/svgOptimizer';
+
+type EditorType = Parameters<OnMount>[0];
 
 const EditorPanel = () => {
   const { svgCode, setSvgCode, optimizationStats, setOptimizationStats, setHoveredElement } =
@@ -18,8 +20,8 @@ const EditorPanel = () => {
     column: 1,
   });
   // Use state instead of ref to trigger re-render when editor mounts
-  const [editorInstance, setEditorInstance] = React.useState<any>(null);
-  const editorRef = React.useRef<any>(null); // Keep ref for other usages if needed, or sync them
+  const [editorInstance, setEditorInstance] = React.useState<EditorType | null>(null);
+  const editorRef = React.useRef<EditorType | null>(null); // Keep ref for other usages if needed, or sync them
   const [showShareModal, setShowShareModal] = React.useState(false);
   const [isDragOver, setIsDragOver] = React.useState(false);
 
@@ -39,11 +41,11 @@ const EditorPanel = () => {
     }
   }, [hoverInfo, setHoveredElement]);
 
-  const handleEditorDidMount = (editor: any) => {
+  const handleEditorDidMount: OnMount = editor => {
     editorRef.current = editor;
     setEditorInstance(editor); // Trigger re-render with editor instance
 
-    editor.onDidChangeCursorPosition((e: any) => {
+    editor.onDidChangeCursorPosition(e => {
       setCursorPosition({
         line: e.position.lineNumber,
         column: e.position.column,
@@ -71,7 +73,7 @@ const EditorPanel = () => {
       optimizedSize,
       percentage,
     });
-  }, [svgCode]);
+  }, [svgCode, setOptimizationStats]);
 
   return (
     <div className="h-full w-full bg-white dark:bg-[#1e1e1e] flex flex-col relative">
@@ -91,6 +93,8 @@ const EditorPanel = () => {
 
       {/* Editor Area */}
       <div
+        role="region"
+        aria-label="Code Editor Drop Zone"
         className={clsx(
           'flex-1 overflow-hidden transition-colors relative',
           isDragOver && 'bg-blue-50/10 ring-2 ring-inset ring-blue-500'

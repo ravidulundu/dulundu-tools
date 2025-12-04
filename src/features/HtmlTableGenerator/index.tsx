@@ -1,4 +1,4 @@
-import { Table, Copy, Check, FileCode } from 'lucide-react';
+import { Table, Copy, Check } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
@@ -15,34 +15,34 @@ export const HtmlTableGenerator: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    const generateTable = () => {
+      let html = `<table style="width: ${width}%; border-collapse: collapse;${border ? ' border: 1px solid #ccc;' : ''}">\n`;
+
+      // Header
+      if (header) {
+        html += `  <thead>\n    <tr>\n`;
+        for (let i = 0; i < cols; i++) {
+          html += `      <th style="${border ? 'border: 1px solid #ccc; ' : ''}padding: 8px;">Header ${i + 1}</th>\n`;
+        }
+        html += `    </tr>\n  </thead>\n`;
+      }
+
+      // Body
+      html += `  <tbody>\n`;
+      for (let r = 0; r < rows; r++) {
+        html += `    <tr>\n`;
+        for (let c = 0; c < cols; c++) {
+          html += `      <td style="${border ? 'border: 1px solid #ccc; ' : ''}padding: 8px;">Row ${r + 1} Col ${c + 1}</td>\n`;
+        }
+        html += `    </tr>\n`;
+      }
+      html += `  </tbody>\n</table>`;
+
+      setOutput(html);
+    };
+
     generateTable();
   }, [rows, cols, header, border, width]);
-
-  const generateTable = () => {
-    let html = `<table style="width: ${width}%; border-collapse: collapse;${border ? ' border: 1px solid #ccc;' : ''}">\n`;
-
-    // Header
-    if (header) {
-      html += `  <thead>\n    <tr>\n`;
-      for (let i = 0; i < cols; i++) {
-        html += `      <th style="${border ? 'border: 1px solid #ccc; ' : ''}padding: 8px;">Header ${i + 1}</th>\n`;
-      }
-      html += `    </tr>\n  </thead>\n`;
-    }
-
-    // Body
-    html += `  <tbody>\n`;
-    for (let r = 0; r < rows; r++) {
-      html += `    <tr>\n`;
-      for (let c = 0; c < cols; c++) {
-        html += `      <td style="${border ? 'border: 1px solid #ccc; ' : ''}padding: 8px;">Row ${r + 1} Col ${c + 1}</td>\n`;
-      }
-      html += `    </tr>\n`;
-    }
-    html += `  </tbody>\n</table>`;
-
-    setOutput(html);
-  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output);

@@ -72,8 +72,15 @@ export const PaletteExtractor: React.FC = () => {
         <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30 flex flex-col items-center">
           <div className="max-w-4xl w-full">
             <div
+              role="button"
+              tabIndex={0}
               className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-slate-50 transition-all cursor-pointer mb-8 relative bg-white"
               onClick={() => fileInputRef.current?.click()}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  fileInputRef.current?.click();
+                }
+              }}
             >
               <input
                 type="file"
@@ -128,7 +135,7 @@ export const PaletteExtractor: React.FC = () => {
 
 const ColorCard: React.FC<{ hex: string }> = ({ hex }) => {
   const [copied, setCopied] = useState(false);
-  const handleCopy = (e: React.MouseEvent) => {
+  const handleCopy = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation();
     navigator.clipboard.writeText(hex);
     setCopied(true);
@@ -137,8 +144,15 @@ const ColorCard: React.FC<{ hex: string }> = ({ hex }) => {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
       onClick={handleCopy}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleCopy(e);
+        }
+      }}
     >
       <div className="h-24 w-full relative" style={{ backgroundColor: hex }}>
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">

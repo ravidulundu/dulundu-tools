@@ -28,11 +28,11 @@ export const measureComponentRender = (componentName: string) => {
           performance.measure(measureName, startMark, endMark);
           const measure = performance.getEntriesByName(measureName)[0];
           if (import.meta.env.DEV) {
-            console.log(
+            console.warn(
               `[Performance] ${componentName} rendered in ${measure.duration.toFixed(2)}ms`
             );
           }
-        } catch (e) {
+        } catch (_e) {
           // Silently fail if marks don't exist
         }
       },
@@ -52,8 +52,8 @@ export const logPageLoadTime = () => {
       )[0] as PerformanceNavigationTiming;
       if (navigation) {
         const pageLoadTime = navigation.loadEventEnd - navigation.fetchStart;
-        console.log(`[Performance] Page load time: ${pageLoadTime.toFixed(2)}ms`);
-        console.log(
+        console.warn(`[Performance] Page load time: ${pageLoadTime.toFixed(2)}ms`);
+        console.warn(
           `[Performance] DOM Content Loaded: ${(navigation.domContentLoadedEventEnd - navigation.fetchStart).toFixed(2)}ms`
         );
       }

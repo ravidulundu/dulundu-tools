@@ -25,13 +25,13 @@
 
 We offer **100+ tools** across various categories:
 
-*   **Formatters & Beautifiers:** JSON, SQL, XML, HTML, CSS, JavaScript, PHP, Lua...
-*   **Converters:** Base64, Image (PNG/JPG/WebP), Color (HEX/RGB/HSL), Unit, Timestamp...
-*   **Generators:** UUID, Hash (MD5/SHA), QR Code, Lorem Ipsum, Password, Meta Tags...
-*   **Encoders/Decoders:** URL, HTML Entities, JWT Decoder, Gzip...
-*   **AI Assistant:** Smart code debugging and explanation powered by Google Gemini.
-*   **And much more:** Regex Tester, Diff Viewer, Cron Generator, Chmod Calculator...
-*   **Chrome Extension:** Access all tools directly from your browser toolbar with smart clipboard detection and context menu integration.
+- **Formatters & Beautifiers:** JSON, SQL, XML, HTML, CSS, JavaScript, PHP, Lua...
+- **Converters:** Base64, Image (PNG/JPG/WebP), Color (HEX/RGB/HSL), Unit, Timestamp...
+- **Generators:** UUID, Hash (MD5/SHA), QR Code, Lorem Ipsum, Password, Meta Tags...
+- **Encoders/Decoders:** URL, HTML Entities, JWT Decoder, Gzip...
+- **AI Assistant:** Smart code debugging and explanation powered by Google Gemini.
+- **And much more:** Regex Tester, Diff Viewer, Cron Generator, Chmod Calculator...
+- **Chrome Extension:** Access all tools directly from your browser toolbar with smart clipboard detection and context menu integration.
 
 ## 🧩 Chrome Extension
 
@@ -40,56 +40,81 @@ Dulundu.tools is now available as a powerful Chrome Extension!
 <img src="extension/public/icons/icon128.png" align="right" width="100" alt="Extension Icon">
 
 **Key Features:**
-*   **Spotlight Search:** Press `Cmd/Ctrl+Shift+K` (or click the icon) to instantly search and launch tools.
-*   **Smart Clipboard:** The extension automatically detects content in your clipboard (JSON, Base64, Timestamp) and suggests the right tool.
-*   **Context Menu:** Right-click on any selected text on any website to Format JSON, Decode Base64, or Convert Timestamps instantly.
-*   **Dashboard:** View your IP, current Unix timestamp, recent tools, and favorites in one place.
+
+- **Spotlight Search:** Press `Cmd/Ctrl+Shift+K` (or click the icon) to instantly search and launch tools.
+- **Smart Clipboard:** The extension automatically detects content in your clipboard (JSON, Base64, Timestamp) and suggests the right tool.
+- **Context Menu:** Right-click on any selected text on any website to Format JSON, Decode Base64, or Convert Timestamps instantly.
+- **Dashboard:** View your IP, current Unix timestamp, recent tools, and favorites in one place.
 
 [**Download Extension**](https://dulundu.tools/extension/dulundu-tools-extension-v1.zip) (Manual Installation)
 
 ## 🌟 Why Dulundu.tools?
 
-*   **Open Source:** Transparent and community-driven.
-*   **Client-Side Execution:** Secure by design. No server-side data processing for standard tools.
-*   **Modern UI:** Built with React, Tailwind CSS, and a focus on user experience.
-*   **Dark Mode:** Easy on the eyes for late-night coding sessions.
-*   **Responsive:** Works perfectly on desktop, tablet, and mobile.
+- **Open Source:** Transparent and community-driven.
+- **Client-Side Execution:** Secure by design. No server-side data processing for standard tools.
+- **Modern UI:** Built with React, Tailwind CSS, and a focus on user experience.
+- **Dark Mode:** Easy on the eyes for late-night coding sessions.
+- **Responsive:** Works perfectly on desktop, tablet, and mobile.
 
 ## 🛠️ Tech Stack
 
-*   **Framework:** [React](https://reactjs.org/) (Vite)
-*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-*   **Icons:** [Lucide React](https://lucide.dev/)
-*   **Routing:** [React Router](https://reactrouter.com/)
-*   **AI:** [Google Gemini API](https://deepmind.google/technologies/gemini/)
+- **Framework:** [React](https://reactjs.org/) (Vite)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Routing:** [React Router](https://reactrouter.com/)
+- **AI:** [Google Gemini API](https://deepmind.google/technologies/gemini/)
 
 ## 🏃‍♂️ Running Locally
 
 Want to run it on your own machine or contribute?
 
 1.  **Clone the repository:**
+
     ```bash
     git clone https://github.com/ravidulundu/dulundu-tools.git
     cd dulundu-tools
     ```
 
 2.  **Install dependencies:**
+
     ```bash
     npm install
     ```
 
 3.  **Set up Environment Variables:**
     Create a `.env` file in the root directory and add your Gemini API key (optional, for AI features):
+
     ```env
     VITE_GEMINI_API_KEY=your_api_key_here
     ```
 
 4.  **Start the development server:**
+
     ```bash
     npm run dev
     ```
 
-5.  Open `http://localhost:3000` in your browser.
+5.  **Build for Production:**
+
+    ```bash
+    npm run build
+    ```
+
+6.  **Lint & Format:**
+
+    ```bash
+    npm run lint      # Check for issues
+    npm run format    # Auto-format code
+    ```
+
+7.  **Docker Build:**
+
+    ```bash
+    docker build -t dulundu-tools .
+    docker run -p 3000:3000 dulundu-tools
+    ```
+
+8.  Open `http://localhost:3000` in your browser.
 
 ## 🤝 Contributing
 

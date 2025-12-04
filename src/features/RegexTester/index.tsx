@@ -1,9 +1,15 @@
-import { Regex, Flag, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Regex, Flag, CheckCircle, AlertCircle } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
 import { Button } from '@/components/common/Button';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+
+interface Match {
+  index: number;
+  value: string;
+  groups: string[];
+}
 
 export const RegexTester: React.FC = () => {
   const [pattern, setPattern] = useState('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
@@ -11,48 +17,50 @@ export const RegexTester: React.FC = () => {
   const [text, setText] = useState(
     'Contact us at support@example.com or sales@example.org for more info.'
   );
-  const [matches, setMatches] = useState<any[]>([]);
+  const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const testRegex = () => {
+      try {
+        if (!pattern) {
+          setMatches([]);
+          setError(null);
+          return;
+        }
+
+        const regex = new RegExp(pattern, flags);
+        const newMatches: Match[] = [];
+
+        if (!regex.global && text.match(regex)) {
+          const m = text.match(regex);
+          if (m && m.index !== undefined) {
+            newMatches.push({ index: m.index, value: m[0], groups: m.slice(1) });
+          }
+        } else {
+          let match;
+          let limit = 1000;
+          while ((match = regex.exec(text)) !== null) {
+            newMatches.push({
+              index: match.index,
+              value: match[0],
+              groups: match.slice(1),
+            });
+            if (match.index === regex.lastIndex) regex.lastIndex++;
+            if (--limit < 0) break;
+          }
+        }
+
+        setMatches(newMatches);
+        setError(null);
+      } catch (e) {
+        setError((e as Error).message);
+        setMatches([]);
+      }
+    };
+
     testRegex();
   }, [pattern, flags, text]);
-
-  const testRegex = () => {
-    try {
-      if (!pattern) {
-        setMatches([]);
-        setError(null);
-        return;
-      }
-
-      const regex = new RegExp(pattern, flags);
-      const newMatches = [];
-
-      if (!regex.global && text.match(regex)) {
-        const m = text.match(regex);
-        if (m) newMatches.push({ index: m.index, value: m[0], groups: m.slice(1) });
-      } else {
-        let match;
-        let limit = 1000;
-        while ((match = regex.exec(text)) !== null) {
-          newMatches.push({
-            index: match.index,
-            value: match[0],
-            groups: match.slice(1),
-          });
-          if (match.index === regex.lastIndex) regex.lastIndex++;
-          if (--limit < 0) break;
-        }
-      }
-
-      setMatches(newMatches);
-      setError(null);
-    } catch (e) {
-      setError((e as Error).message);
-      setMatches([]);
-    }
-  };
 
   const highlightText = () => {
     if (!text || matches.length === 0) return text;

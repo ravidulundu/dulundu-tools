@@ -55,10 +55,13 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
           })}
 
           {/* Developer Tools Mega Menu */}
-          <div
-            className="relative px-4 py-2 cursor-pointer"
+          <button
+            className="relative px-4 py-2 cursor-pointer bg-transparent border-none"
             onMouseEnter={() => setMegaMenuOpen(true)}
             onMouseLeave={() => setMegaMenuOpen(false)}
+            onClick={() => setMegaMenuOpen(!megaMenuOpen)}
+            aria-expanded={megaMenuOpen}
+            type="button"
           >
             <span className="text-sm font-medium flex items-center text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
               Developer Tools{' '}
@@ -76,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
                 <MegaMenu isOpen={megaMenuOpen} onClose={() => setMegaMenuOpen(false)} />
               )}
             </Suspense>
-          </div>
+          </button>
         </nav>
 
         {/* Right: Actions (4 Icons: Github, Discord, Chat, Sun) */}
@@ -106,15 +109,14 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
           </a>
 
           {/* Discussions */}
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => window.open('#', '_blank')}
             className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all"
             title="Discussions"
+            type="button"
           >
             <MessageSquare size={20} />
-          </a>
+          </button>
 
           {/* Theme Toggle */}
           <button

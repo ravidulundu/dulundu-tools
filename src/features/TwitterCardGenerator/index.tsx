@@ -54,8 +54,14 @@ export const TwitterCardGenerator: React.FC = () => {
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit overflow-y-auto max-h-full">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Card Type</label>
+                  <label
+                    htmlFor="card-type"
+                    className="block text-sm font-bold text-slate-700 mb-2"
+                  >
+                    Card Type
+                  </label>
                   <select
+                    id="card-type"
                     value={type}
                     onChange={e => setType(e.target.value)}
                     className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -66,10 +72,14 @@ export const TwitterCardGenerator: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                  <label
+                    htmlFor="site-username"
+                    className="block text-sm font-bold text-slate-700 mb-2"
+                  >
                     Site Username
                   </label>
                   <input
+                    id="site-username"
                     type="text"
                     value={site}
                     onChange={e => setSite(e.target.value)}
@@ -77,8 +87,14 @@ export const TwitterCardGenerator: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
+                  <label
+                    htmlFor="card-title"
+                    className="block text-sm font-bold text-slate-700 mb-2"
+                  >
+                    Title
+                  </label>
                   <input
+                    id="card-title"
                     type="text"
                     value={title}
                     onChange={e => setTitle(e.target.value)}
@@ -86,8 +102,14 @@ export const TwitterCardGenerator: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Description</label>
+                  <label
+                    htmlFor="card-desc"
+                    className="block text-sm font-bold text-slate-700 mb-2"
+                  >
+                    Description
+                  </label>
                   <textarea
+                    id="card-desc"
                     value={desc}
                     onChange={e => setDesc(e.target.value)}
                     className="w-full p-3 h-24 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
@@ -96,8 +118,14 @@ export const TwitterCardGenerator: React.FC = () => {
                   <p className="text-xs text-right text-slate-400 mt-1">{desc.length}/200</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Image URL</label>
+                  <label
+                    htmlFor="image-url"
+                    className="block text-sm font-bold text-slate-700 mb-2"
+                  >
+                    Image URL
+                  </label>
                   <input
+                    id="image-url"
                     type="text"
                     value={image}
                     onChange={e => setImage(e.target.value)}

@@ -1,24 +1,23 @@
 import { Monitor, Cpu, Globe, RefreshCw, Search } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import UAParser from 'ua-parser-js';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const UaParser: React.FC = () => {
   const [uaString, setUaString] = useState(navigator.userAgent);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<UAParser.IResult | null>(() => {
+    return new UAParser(navigator.userAgent).getResult();
+  });
 
-  useEffect(() => {
-    parse();
-  }, []);
-
-  const parse = () => {
+  const parse = React.useCallback(() => {
     const parser = new UAParser(uaString);
     setResult(parser.getResult());
-  };
+  }, [uaString]);
 
   const setToCurrent = () => {
     setUaString(navigator.userAgent);
+    // Use timeout to ensure state update is processed
     setTimeout(() => {
       const parser = new UAParser(navigator.userAgent);
       setResult(parser.getResult());
@@ -36,9 +35,12 @@ export const UaParser: React.FC = () => {
 
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col">
           <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6">
-            <label className="block text-sm font-bold text-slate-700 mb-2">User Agent String</label>
+            <label htmlFor="ua-input" className="block text-sm font-bold text-slate-700 mb-2">
+              User Agent String
+            </label>
             <div className="flex gap-2">
               <input
+                id="ua-input"
                 type="text"
                 value={uaString}
                 onChange={e => setUaString(e.target.value)}
@@ -67,27 +69,27 @@ export const UaParser: React.FC = () => {
                   icon={Globe}
                   title="Browser"
                   data={[
-                    { label: 'Name', value: result.browser.name },
-                    { label: 'Version', value: result.browser.version },
-                    { label: 'Major', value: result.browser.major },
+                    { label: 'Name', value: result.browser.name || 'N/A' },
+                    { label: 'Version', value: result.browser.version || 'N/A' },
+                    { label: 'Major', value: result.browser.major || 'N/A' },
                   ]}
                 />
                 <InfoCard
                   icon={Monitor}
                   title="OS"
                   data={[
-                    { label: 'Name', value: result.os.name },
-                    { label: 'Version', value: result.os.version },
+                    { label: 'Name', value: result.os.name || 'N/A' },
+                    { label: 'Version', value: result.os.version || 'N/A' },
                   ]}
                 />
                 <InfoCard
                   icon={Cpu}
                   title="Device"
                   data={[
-                    { label: 'Vendor', value: result.device.vendor },
-                    { label: 'Model', value: result.device.model },
+                    { label: 'Vendor', value: result.device.vendor || 'N/A' },
+                    { label: 'Model', value: result.device.model || 'N/A' },
                     { label: 'Type', value: result.device.type || 'Desktop' },
-                    { label: 'CPU', value: result.cpu.architecture },
+                    { label: 'CPU', value: result.cpu.architecture || 'N/A' },
                   ]}
                 />
 
@@ -124,7 +126,7 @@ export const UaParser: React.FC = () => {
 };
 
 const InfoCard: React.FC<{
-  icon: any;
+  icon: React.ElementType;
   title: string;
   data: { label: string; value: string }[];
 }> = ({ icon: Icon, title, data }) => (

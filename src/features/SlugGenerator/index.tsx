@@ -10,10 +10,6 @@ export const SlugGenerator: React.FC = () => {
   const [slug, setSlug] = useState('');
   const [copied, setCopied] = useState(false);
 
-  React.useEffect(() => {
-    generateSlug(input);
-  }, [input]);
-
   const generateSlug = (val: string) => {
     const res = val
       .toLowerCase()
@@ -23,6 +19,10 @@ export const SlugGenerator: React.FC = () => {
       .replace(/^-+|-+$/g, '');
     setSlug(res);
   };
+
+  React.useEffect(() => {
+    generateSlug(input);
+  }, [input]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(slug);

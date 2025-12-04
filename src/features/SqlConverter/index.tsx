@@ -1,13 +1,4 @@
-import {
-  Database,
-  ArrowRight,
-  Copy,
-  Check,
-  Trash2,
-  ArrowLeftRight,
-  Upload,
-  Download,
-} from 'lucide-react';
+import { Database, Copy, Check, Trash2, ArrowLeftRight, Upload, Download } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
@@ -67,7 +58,7 @@ export const SqlConverter: React.FC = () => {
           return val;
         });
 
-        const obj: any = {};
+        const obj: Record<string, string | number | null> = {};
         columns.forEach((col, idx) => {
           obj[col] = vals[idx];
         });
@@ -90,7 +81,7 @@ export const SqlConverter: React.FC = () => {
         setOutput(csvRows.join('\n'));
       }
       setError(null);
-    } catch (e) {
+    } catch (_e) {
       setError("Error parsing SQL. Supports basic 'INSERT INTO table (cols) VALUES ...' format.");
     }
   };

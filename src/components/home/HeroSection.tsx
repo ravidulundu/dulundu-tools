@@ -1,6 +1,5 @@
-import { Zap, Search, ArrowRight } from 'lucide-react';
+import { Zap, Search } from 'lucide-react';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 interface HeroSectionProps {
   searchTerm: string;

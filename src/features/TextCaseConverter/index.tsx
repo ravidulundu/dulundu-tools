@@ -1,4 +1,4 @@
-import { Type, ArrowRight, Copy, Check, Trash2 } from 'lucide-react';
+import { Type, Copy, Check, Trash2 } from 'lucide-react';
 import React from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';

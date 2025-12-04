@@ -10,6 +10,25 @@ export const UrlEncoder: React.FC = () => {
   const { input, setInput, output, setOutput, copied, handleCopy, handleClear } = useToolLogic();
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
 
+  const process = React.useCallback(
+    (text: string, currentMode: 'encode' | 'decode') => {
+      try {
+        if (!text) {
+          setOutput('');
+          return;
+        }
+        if (currentMode === 'encode') {
+          setOutput(encodeURIComponent(text));
+        } else {
+          setOutput(decodeURIComponent(text));
+        }
+      } catch (_e) {
+        setOutput('Error: Invalid URL format for decoding');
+      }
+    },
+    [setOutput]
+  );
+
   // Check for input in URL hash (from extension)
   React.useEffect(() => {
     const hash = window.location.hash;
@@ -32,25 +51,11 @@ export const UrlEncoder: React.FC = () => {
 
           window.history.replaceState(null, '', window.location.pathname);
         }
-      } catch (e) {}
-    }
-  }, [setInput]);
-
-  const process = (text: string, currentMode: 'encode' | 'decode') => {
-    try {
-      if (!text) {
-        setOutput('');
-        return;
+      } catch (_e) {
+        // Ignore parsing errors from hash
       }
-      if (currentMode === 'encode') {
-        setOutput(encodeURIComponent(text));
-      } else {
-        setOutput(decodeURIComponent(text));
-      }
-    } catch (e) {
-      setOutput('Error: Invalid URL format for decoding');
     }
-  };
+  }, [setInput, process]);
 
   const handleInputChange = (newVal: string) => {
     setInput(newVal);

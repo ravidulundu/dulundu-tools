@@ -78,10 +78,14 @@ export const RandomGenerator: React.FC = () => {
                   <>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                        <label
+                          htmlFor="min-value"
+                          className="block text-sm font-bold text-slate-700 mb-2"
+                        >
                           Min Value
                         </label>
                         <input
+                          id="min-value"
                           type="number"
                           value={min}
                           onChange={e => setMin(parseInt(e.target.value))}
@@ -89,10 +93,14 @@ export const RandomGenerator: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                        <label
+                          htmlFor="max-value"
+                          className="block text-sm font-bold text-slate-700 mb-2"
+                        >
                           Max Value
                         </label>
                         <input
+                          id="max-value"
                           type="number"
                           value={max}
                           onChange={e => setMax(parseInt(e.target.value))}
@@ -103,10 +111,14 @@ export const RandomGenerator: React.FC = () => {
                   </>
                 ) : (
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">
+                    <label
+                      htmlFor="str-length"
+                      className="block text-sm font-bold text-slate-700 mb-2"
+                    >
                       String Length
                     </label>
                     <input
+                      id="str-length"
                       type="number"
                       value={strLength}
                       onChange={e => setStrLength(parseInt(e.target.value))}
@@ -116,10 +128,11 @@ export const RandomGenerator: React.FC = () => {
                 )}
 
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                  <label htmlFor="quantity" className="block text-sm font-bold text-slate-700 mb-2">
                     Quantity to Generate
                   </label>
                   <input
+                    id="quantity"
                     type="number"
                     value={count}
                     onChange={e => setCount(Math.min(100, Math.max(1, parseInt(e.target.value))))}

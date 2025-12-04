@@ -1,4 +1,4 @@
-import { Grid, ChevronDown } from 'lucide-react';
+import { Grid } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 

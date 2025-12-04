@@ -278,7 +278,7 @@ app.get('/api/share/:id', asyncHandler(async (req, res) => {
         }
 
         res.json(data);
-    } catch (error) {
+    } catch (_error) {
         logger.warn(`Share not found: ${id}`);
         res.status(404).json({ error: 'Share not found' });
     }
@@ -290,12 +290,13 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-// ========== GLOBAL ERROR HANDLER ==========
-app.use((err, req, res, next) => {
-    logger.error('Unhandled Error:', err);
-    res.status(500).json({
-        error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message
-    });
+// Error handling middleware
+app.use((_error, req, res, _next) => {
+  logger.error('Unhandled error:', _error);
+  res.status(500).json({ 
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'development' ? _error.message : undefined
+  });
 });
 
 // ========== SERVER START ==========

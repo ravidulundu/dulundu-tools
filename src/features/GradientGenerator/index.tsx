@@ -68,7 +68,12 @@ export const GradientGenerator: React.FC = () => {
               {/* Controls */}
               <div className="space-y-6 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Color 1</label>
+                  <label
+                    htmlFor="color-1"
+                    className="block text-sm font-medium text-slate-700 mb-2"
+                  >
+                    Color 1
+                  </label>
                   <div className="flex items-center space-x-3">
                     <input
                       type="color"
@@ -77,6 +82,7 @@ export const GradientGenerator: React.FC = () => {
                       className="w-12 h-12 rounded-lg cursor-pointer border-0 p-0"
                     />
                     <input
+                      id="color-1"
                       type="text"
                       value={color1}
                       onChange={e => setColor1(e.target.value)}
@@ -86,7 +92,12 @@ export const GradientGenerator: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Color 2</label>
+                  <label
+                    htmlFor="color-2"
+                    className="block text-sm font-medium text-slate-700 mb-2"
+                  >
+                    Color 2
+                  </label>
                   <div className="flex items-center space-x-3">
                     <input
                       type="color"
@@ -95,6 +106,7 @@ export const GradientGenerator: React.FC = () => {
                       className="w-12 h-12 rounded-lg cursor-pointer border-0 p-0"
                     />
                     <input
+                      id="color-2"
                       type="text"
                       value={color2}
                       onChange={e => setColor2(e.target.value)}
@@ -104,10 +116,14 @@ export const GradientGenerator: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label
+                    htmlFor="angle-input"
+                    className="block text-sm font-medium text-slate-700 mb-2"
+                  >
                     Angle ({angle}°)
                   </label>
                   <input
+                    id="angle-input"
                     type="range"
                     min="0"
                     max="360"

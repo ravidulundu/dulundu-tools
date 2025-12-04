@@ -4,8 +4,23 @@ import React, { useState, useEffect } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
 
+interface IpData {
+  ip: string;
+  userAgent: string;
+  language: string;
+  screen: string;
+  window: string;
+  platform: string;
+  cores: number | string;
+  memory: string;
+}
+
+interface NavigatorWithMemory extends Navigator {
+  deviceMemory?: number;
+}
+
 export const MyIp: React.FC = () => {
-  const [ipData, setIpData] = useState<any>(null);
+  const [ipData, setIpData] = useState<IpData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
@@ -23,12 +38,12 @@ export const MyIp: React.FC = () => {
         window: `${window.innerWidth} x ${window.innerHeight}`,
         platform: navigator.platform,
         cores: navigator.hardwareConcurrency || 'Unknown',
-        memory: (navigator as any).deviceMemory
-          ? `~${(navigator as any).deviceMemory} GB`
+        memory: (navigator as NavigatorWithMemory).deviceMemory
+          ? `~${(navigator as NavigatorWithMemory).deviceMemory} GB`
           : 'Unknown',
       });
       setError('');
-    } catch (e) {
+    } catch (_e) {
       setError('Failed to retrieve IP address. Likely due to an ad-blocker or network issue.');
     } finally {
       setLoading(false);

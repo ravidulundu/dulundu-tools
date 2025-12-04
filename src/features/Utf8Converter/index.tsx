@@ -1,4 +1,4 @@
-import { Type, Copy, Check, ArrowRightLeft } from 'lucide-react';
+import { Type, Copy, Check } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
@@ -18,81 +18,84 @@ export const Utf8Converter: React.FC = () => {
 
   const [copied, setCopied] = useState('');
 
-  const convert = (val: string, format: Format) => {
-    setInput(val);
-    if (!val.trim()) {
-      setText('');
-      setHex('');
-      setBin('');
-      setDec('');
-      return;
-    }
-
-    try {
-      let bytes: Uint8Array | null = null;
-
-      if (format === 'text') {
-        const encoder = new TextEncoder();
-        bytes = encoder.encode(val);
-      } else if (format === 'hex') {
-        // Remove spaces and \x prefix
-        const clean = val.replace(/[\s\\x]/g, '');
-        if (clean.length % 2 !== 0) throw new Error('Invalid Hex');
-        const arr = [];
-        for (let i = 0; i < clean.length; i += 2) {
-          arr.push(parseInt(clean.substr(i, 2), 16));
-        }
-        bytes = new Uint8Array(arr);
-      } else if (format === 'bin') {
-        const clean = val.replace(/\s/g, '');
-        if (clean.length % 8 !== 0) throw new Error('Invalid Binary');
-        const arr = [];
-        for (let i = 0; i < clean.length; i += 8) {
-          arr.push(parseInt(clean.substr(i, 8), 2));
-        }
-        bytes = new Uint8Array(arr);
-      } else if (format === 'dec') {
-        const arr = val
-          .trim()
-          .split(/\s+/)
-          .map(n => parseInt(n, 10));
-        bytes = new Uint8Array(arr);
+  const convert = React.useCallback(
+    (val: string, format: Format) => {
+      setInput(val);
+      if (!val.trim()) {
+        setText('');
+        setHex('');
+        setBin('');
+        setDec('');
+        return;
       }
 
-      if (bytes) {
-        const decoder = new TextDecoder();
+      try {
+        let bytes: Uint8Array | null = null;
 
-        // Update all fields except the input one to avoid cursor jumping/formatting issues
-        if (format !== 'text') setText(decoder.decode(bytes));
-
-        if (format !== 'hex') {
-          let h = '';
-          bytes.forEach(b => (h += `\\x${b.toString(16).padStart(2, '0').toUpperCase()}`));
-          setHex(h);
+        if (format === 'text') {
+          const encoder = new TextEncoder();
+          bytes = encoder.encode(val);
+        } else if (format === 'hex') {
+          // Remove spaces and \x prefix
+          const clean = val.replace(/[\s\\x]/g, '');
+          if (clean.length % 2 !== 0) throw new Error('Invalid Hex');
+          const arr = [];
+          for (let i = 0; i < clean.length; i += 2) {
+            arr.push(parseInt(clean.substr(i, 2), 16));
+          }
+          bytes = new Uint8Array(arr);
+        } else if (format === 'bin') {
+          const clean = val.replace(/\s/g, '');
+          if (clean.length % 8 !== 0) throw new Error('Invalid Binary');
+          const arr = [];
+          for (let i = 0; i < clean.length; i += 8) {
+            arr.push(parseInt(clean.substr(i, 8), 2));
+          }
+          bytes = new Uint8Array(arr);
+        } else if (format === 'dec') {
+          const arr = val
+            .trim()
+            .split(/\s+/)
+            .map(n => parseInt(n, 10));
+          bytes = new Uint8Array(arr);
         }
 
-        if (format !== 'bin') {
-          let b = '';
-          bytes.forEach(byte => (b += `${byte.toString(2).padStart(8, '0')} `));
-          setBin(b.trim());
-        }
+        if (bytes) {
+          const decoder = new TextDecoder();
 
-        if (format !== 'dec') {
-          let d = '';
-          bytes.forEach(byte => (d += `${byte} `));
-          setDec(d.trim());
+          // Update all fields except the input one to avoid cursor jumping/formatting issues
+          if (format !== 'text') setText(decoder.decode(bytes));
+
+          if (format !== 'hex') {
+            let h = '';
+            bytes.forEach(b => (h += `\\x${b.toString(16).padStart(2, '0').toUpperCase()}`));
+            setHex(h);
+          }
+
+          if (format !== 'bin') {
+            let b = '';
+            bytes.forEach(byte => (b += `${byte.toString(2).padStart(8, '0')} `));
+            setBin(b.trim());
+          }
+
+          if (format !== 'dec') {
+            let d = '';
+            bytes.forEach(byte => (d += `${byte} `));
+            setDec(d.trim());
+          }
         }
+      } catch (_e) {
+        // Invalid input, just clear other fields or show error state
+        // For now, we keep previous valid values or clear if empty
       }
-    } catch (e) {
-      // Invalid input, just clear other fields or show error state
-      // For now, we keep previous valid values or clear if empty
-    }
-  };
+    },
+    [setInput]
+  );
 
   // Initial conversion
   useEffect(() => {
     convert(input, 'text');
-  }, []);
+  }, [convert, input]);
 
   const handleInputChange = (val: string) => {
     setInput(val);

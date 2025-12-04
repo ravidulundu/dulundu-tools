@@ -48,7 +48,7 @@ export const CodeFormatter: React.FC = () => {
         .replace(/\n\s*\n/g, '\n');
     } else if (lang === 'html') {
       let pad = 0;
-      result = result.replace(/>\s*</g, '><').replace(/(>)(<)(\/*)/g, '$1\r\n$2$3');
+      result = result.replace(/>\s*</g, '><').replace(new RegExp('(>)(<)(/*)', 'g'), '$1\r\n$2$3');
 
       let formatted = '';
       result.split('\r\n').forEach(node => {
@@ -56,7 +56,7 @@ export const CodeFormatter: React.FC = () => {
         if (node.match(/.+<\/\w[^>]*>$/)) indent = 0;
         else if (node.match(/^<\/\w/)) {
           if (pad !== 0) pad -= 1;
-        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) indent = 1;
+        } else if (node.match(new RegExp('^<\\w[^>]*[^/]>.*$'))) indent = 1;
         else indent = 0;
 
         formatted += '  '.repeat(pad) + node + '\r\n';

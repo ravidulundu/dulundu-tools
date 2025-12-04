@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { Minus, Plus, Download, Copy, Share2, Upload } from 'lucide-react';
+import { Minus, Plus, Download, Copy } from 'lucide-react';
 import React from 'react';
 
-import { useSVG } from '../context/SVGContext';
+import { useSVG } from '../hooks/useSVG';
 
 const BottomBar = () => {
   const { scale, setScale, background, setBackground } = useSVG();

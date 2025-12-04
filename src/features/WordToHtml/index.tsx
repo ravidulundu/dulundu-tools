@@ -1,4 +1,4 @@
-import { FileText, Code, Copy, Check, Trash2 } from 'lucide-react';
+import { FileText, Copy, Check, Trash2 } from 'lucide-react';
 import React, { useState, useRef } from 'react';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
@@ -31,9 +31,9 @@ export const WordToHtml: React.FC = () => {
         <div className="p-6 grid md:grid-cols-2 gap-6">
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-medium text-slate-700">
+              <div className="block text-sm font-medium text-slate-700">
                 Visual Editor (Paste here)
-              </label>
+              </div>
               <button
                 onClick={() => {
                   if (editorRef.current) {
@@ -56,9 +56,12 @@ export const WordToHtml: React.FC = () => {
           </div>
 
           <div className="flex flex-col h-full">
-            <label className="block text-sm font-medium text-slate-700 mb-2">HTML Output</label>
+            <label htmlFor="html-output" className="block text-sm font-medium text-slate-700 mb-2">
+              HTML Output
+            </label>
             <div className="relative flex-1">
               <textarea
+                id="html-output"
                 readOnly
                 value={html}
                 className="w-full h-full p-4 font-mono text-sm bg-[#1e293b] text-gray-50 border border-slate-700 rounded-xl resize-none outline-none min-h-[400px]"

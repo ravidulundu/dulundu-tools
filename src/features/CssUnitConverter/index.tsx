@@ -1,5 +1,5 @@
-import { Ruler, RefreshCw, Trash2 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { Ruler, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
@@ -20,20 +20,38 @@ export const CssUnitConverter: React.FC = () => {
 
   const format = (num: number) => num.toFixed(2).replace(/\.?0+$/, '');
 
+  const clearAll = () => {
+    setPx('');
+    setRem('');
+    setEm('');
+    setPercent('');
+    setVw('');
+    setVh('');
+    setVmin('');
+    setVmax('');
+  };
+
+  const calculateFromPx = React.useCallback(
+    (val: string) => {
+      const num = parseFloat(val);
+      if (!isNaN(num)) {
+        setRem(format(num / base));
+        setEm(format(num / base));
+        setPercent(format((num / base) * 100));
+        setVw(format((num / viewportWidth) * 100));
+        setVh(format((num / viewportHeight) * 100));
+        setVmin(format((num / Math.min(viewportWidth, viewportHeight)) * 100));
+        setVmax(format((num / Math.max(viewportWidth, viewportHeight)) * 100));
+      } else {
+        clearAll();
+      }
+    },
+    [base, viewportWidth, viewportHeight]
+  );
+
   const updateFromPx = (val: string) => {
     setPx(val);
-    const num = parseFloat(val);
-    if (!isNaN(num)) {
-      setRem(format(num / base));
-      setEm(format(num / base));
-      setPercent(format((num / base) * 100));
-      setVw(format((num / viewportWidth) * 100));
-      setVh(format((num / viewportHeight) * 100));
-      setVmin(format((num / Math.min(viewportWidth, viewportHeight)) * 100));
-      setVmax(format((num / Math.max(viewportWidth, viewportHeight)) * 100));
-    } else {
-      clearAll();
-    }
+    calculateFromPx(val);
   };
 
   const updateFromRem = (val: string) => {
@@ -106,25 +124,43 @@ export const CssUnitConverter: React.FC = () => {
     }
   };
 
-  const clearAll = () => {
-    setPx('');
-    setRem('');
-    setEm('');
-    setPercent('');
-    setVw('');
-    setVh('');
-    setVmin('');
-    setVmax('');
-  };
-
   const handleClear = () => {
     clearAll();
   };
 
-  // Re-calculate when base or viewport changes
-  useEffect(() => {
-    if (px) updateFromPx(px);
-  }, [base, viewportWidth, viewportHeight]);
+  const handleBaseChange = (val: string) => {
+    const newBase = Math.max(1, parseFloat(val) || 16);
+    setBase(newBase);
+    // Recalculate from current px
+    const num = parseFloat(px);
+    if (!isNaN(num)) {
+      setRem(format(num / newBase));
+      setEm(format(num / newBase));
+      setPercent(format((num / newBase) * 100));
+    }
+  };
+
+  const handleViewportWidthChange = (val: string) => {
+    const newWidth = Math.max(1, parseFloat(val) || 1920);
+    setViewportWidth(newWidth);
+    const num = parseFloat(px);
+    if (!isNaN(num)) {
+      setVw(format((num / newWidth) * 100));
+      setVmin(format((num / Math.min(newWidth, viewportHeight)) * 100));
+      setVmax(format((num / Math.max(newWidth, viewportHeight)) * 100));
+    }
+  };
+
+  const handleViewportHeightChange = (val: string) => {
+    const newHeight = Math.max(1, parseFloat(val) || 1080);
+    setViewportHeight(newHeight);
+    const num = parseFloat(px);
+    if (!isNaN(num)) {
+      setVh(format((num / newHeight) * 100));
+      setVmin(format((num / Math.min(viewportWidth, newHeight)) * 100));
+      setVmax(format((num / Math.max(viewportWidth, newHeight)) * 100));
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
@@ -139,12 +175,15 @@ export const CssUnitConverter: React.FC = () => {
         <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
           <div className="flex flex-wrap gap-3">
             <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <label className="text-sm font-medium text-slate-600">Base Size:</label>
+              <label htmlFor="base-size" className="text-sm font-medium text-slate-600">
+                Base Size:
+              </label>
               <div className="flex items-center">
                 <input
+                  id="base-size"
                   type="number"
                   value={base}
-                  onChange={e => setBase(Math.max(1, parseFloat(e.target.value) || 16))}
+                  onChange={e => handleBaseChange(e.target.value)}
                   className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
                 />
                 <span className="ml-1 text-xs text-slate-500 font-bold">px</span>
@@ -152,28 +191,33 @@ export const CssUnitConverter: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <label className="text-sm font-medium text-slate-600">Viewport:</label>
+              <span className="text-sm font-medium text-slate-600">Viewport:</span>
               <div className="flex items-center gap-2">
                 <div className="flex items-center">
-                  <span className="mr-1 text-xs text-slate-400 font-bold">W:</span>
+                  <label htmlFor="viewport-width" className="mr-1 text-xs text-slate-400 font-bold">
+                    W:
+                  </label>
                   <input
+                    id="viewport-width"
                     type="number"
                     value={viewportWidth}
-                    onChange={e =>
-                      setViewportWidth(Math.max(1, parseFloat(e.target.value) || 1920))
-                    }
+                    onChange={e => handleViewportWidthChange(e.target.value)}
                     className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
                   />
                 </div>
                 <span className="text-slate-300">x</span>
                 <div className="flex items-center">
-                  <span className="mr-1 text-xs text-slate-400 font-bold">H:</span>
+                  <label
+                    htmlFor="viewport-height"
+                    className="mr-1 text-xs text-slate-400 font-bold"
+                  >
+                    H:
+                  </label>
                   <input
+                    id="viewport-height"
                     type="number"
                     value={viewportHeight}
-                    onChange={e =>
-                      setViewportHeight(Math.max(1, parseFloat(e.target.value) || 1080))
-                    }
+                    onChange={e => handleViewportHeightChange(e.target.value)}
                     className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
                   />
                 </div>

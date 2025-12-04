@@ -17,9 +17,9 @@ export const TermsOfService: React.FC = () => {
 
         <h2>1. Acceptance of Terms</h2>
         <p>
-          By accessing and using Dulundu.tools ("the Service"), you accept and agree to be bound by
-          the terms and provision of this agreement. If you do not agree to these Terms of Service,
-          please do not use the Service.
+          By accessing and using Dulundu.tools (&quot;the Service&quot;), you accept and agree to be
+          bound by the terms and provision of this agreement. If you do not agree to these Terms of
+          Service, please do not use the Service.
         </p>
 
         <h2>2. Description of Service</h2>
@@ -137,8 +137,8 @@ export const TermsOfService: React.FC = () => {
 
         <h2>10. Disclaimer of Warranties</h2>
         <p>
-          THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER
-          EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO:
+          THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTIES
+          OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO:
         </p>
         <ul>
           <li>Accuracy or completeness of results</li>

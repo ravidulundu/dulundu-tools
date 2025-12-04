@@ -10,7 +10,7 @@ export const WordpressPasswordHash: React.FC = () => {
   const [password, setPassword] = useState('');
   const [hash, setHash] = useState('');
   const [copied, setCopied] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
 
   const generateHash = async () => {
     if (!password) return;

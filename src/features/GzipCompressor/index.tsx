@@ -59,7 +59,7 @@ export const GzipCompressor: React.FC = () => {
       } else {
         // Decompress
         const buffer = base64ToBuffer(input);
-        const stream = new Blob([buffer as any]).stream();
+        const stream = new Blob([buffer as unknown as BlobPart]).stream();
         const decompressedStream = stream.pipeThrough(new DecompressionStream('gzip'));
         const response = new Response(decompressedStream);
         const text = await response.text();

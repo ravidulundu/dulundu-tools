@@ -1,4 +1,3 @@
-import { Copy, Check } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface ShareModalProps {
@@ -95,10 +94,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
               placeholder="Untitled SVG"
             />
             <div className="flex items-center gap-4 mb-6">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="expiration-select"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Link expires
               </label>
               <select
+                id="expiration-select"
                 value={expiration}
                 onChange={e => setExpiration(e.target.value)}
                 className="flex-1 px-3 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-300 dark:border-gray-700 rounded-md text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -129,7 +132,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Share "{svgName}"
+                Share &quot;{svgName}&quot;
               </h3>
               <button
                 onClick={onClose}

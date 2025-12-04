@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
 
+import type { editor } from 'monaco-editor';
+
 export interface HoverInfo {
   lineNumber: number;
   elementType: string;
   elementIndex: number;
 }
 
-export const useEditorHover = (editor: any) => {
+export const useEditorHover = (editorInstance: editor.IStandaloneCodeEditor | null) => {
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
 
   useEffect(() => {
-    if (!editor) return;
+    if (!editorInstance) return;
 
     // Listen to mouse move events for hover effect
-    const disposable = editor.onMouseMove((e: any) => {
+    const disposable = editorInstance.onMouseMove((e: editor.IEditorMouseEvent) => {
       // Check if we have a target position (hovering over text)
       if (e.target && e.target.position) {
         const lineNumber = e.target.position.lineNumber;
-        const model = editor.getModel();
+        const model = editorInstance.getModel();
         if (!model) return;
 
         // Get content of the hovered line
@@ -81,7 +83,7 @@ export const useEditorHover = (editor: any) => {
     return () => {
       disposable?.dispose();
     };
-  }, [editor]);
+  }, [editorInstance]);
 
   return hoverInfo;
 };

@@ -5,7 +5,6 @@ import { SetURLSearchParams } from 'react-router-dom';
 import { ToolDef } from '../../types';
 import { ToolCard } from '../ToolCard';
 
-
 interface ToolGridProps {
   isDirectoryView: boolean;
   popularTools: ToolDef[];
@@ -80,9 +79,8 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
               No tools found
             </h3>
-            <p className="text-slate-500 dark:text-slate-400 max-w-md text-center">
-              We couldn't find any tools matching "{searchTerm}". Try checking your spelling or
-              browsing by category.
+            <p className="text-slate-500 dark:text-slate-400">
+              No tools found matching &quot;{searchTerm}&quot;
             </p>
             <button
               onClick={() => {

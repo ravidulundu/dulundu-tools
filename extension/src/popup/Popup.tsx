@@ -1,77 +1,81 @@
-import {
-  Search,
-  Command,
-  Sparkles,
-  ArrowRight,
-  Clock,
-  Star,
-  History,
-} from "lucide-react";
-import { useState, useMemo, useEffect } from "react";
-
-import { ALL_TOOLS } from "@/constants";
+import { ALL_TOOLS } from '@/constants';
+import { Search, Command, Sparkles, ArrowRight, Clock, Star, History } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 // Helper to detect content type (Same as before)
 const detectContent = (text: string) => {
   if (!text || text.length > 10000) return null;
   const trimmed = text.trim();
   if (
-    (trimmed.startsWith("{") || trimmed.startsWith("[")) &&
-    (trimmed.endsWith("}") || trimmed.endsWith("]"))
+    (trimmed.startsWith('{') || trimmed.startsWith('[')) &&
+    (trimmed.endsWith('}') || trimmed.endsWith(']'))
   ) {
     try {
       JSON.parse(trimmed);
-      return { type: "json", label: "Format JSON", toolId: "json-formatter" };
-    } catch (e) {}
+      return { type: 'json', label: 'Format JSON', toolId: 'json-formatter' };
+    } catch (_e) {
+      // Ignore JSON parse errors
+    }
   }
   if (/^\d{10}(\d{3})?$/.test(trimmed))
     return {
-      type: "date",
-      label: "Convert Timestamp",
-      toolId: "date-converter",
+      type: 'date',
+      label: 'Convert Timestamp',
+      toolId: 'date-converter',
     };
-  if (
-    trimmed.length > 20 &&
-    /^[A-Za-z0-9+/]*={0,2}$/.test(trimmed) &&
-    trimmed.length % 4 === 0
-  ) {
+  if (trimmed.length > 20 && /^[A-Za-z0-9+/]*={0,2}$/.test(trimmed) && trimmed.length % 4 === 0) {
     try {
       if (/[\x20-\x7E]/.test(atob(trimmed)))
         return {
-          type: "base64",
-          label: "Decode Base64",
-          toolId: "base64-converter",
+          type: 'base64',
+          label: 'Decode Base64',
+          toolId: 'base64-converter',
         };
-    } catch (e) {}
+    } catch (_e) {
+      // Ignore Base64 errors
+    }
   }
   return null;
 };
 
+interface Tool {
+  id: string;
+  name: string;
+  description: string;
+  path: string;
+  icon: React.ElementType;
+  tags?: string[];
+}
+
 const Popup = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [smartAction, setSmartAction] = useState<{
     type: string;
     label: string;
     toolId: string;
   } | null>(null);
-  const [clipboardPreview, setClipboardPreview] = useState("");
-  const [recents, setRecents] = useState<string[]>([]);
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [now, setNow] = useState(Math.floor(Date.now() / 1000));
+  const [clipboardPreview, setClipboardPreview] = useState('');
+  const [recents, setRecents] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('dulundu_recents');
+      return saved ? JSON.parse(saved) : [];
+    } catch (_e) {
+      return [];
+    }
+  });
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('dulundu_favs');
+      return saved ? JSON.parse(saved) : [];
+    } catch (_e) {
+      return [];
+    }
+  });
+  const [now, setNow] = useState(() => Math.floor(Date.now() / 1000));
 
-  // Load state
+  // Clock ticker
   useEffect(() => {
-    const savedRecents = localStorage.getItem("dulundu_recents");
-    if (savedRecents) setRecents(JSON.parse(savedRecents));
-
-    const savedFavs = localStorage.getItem("dulundu_favs");
-    if (savedFavs) setFavorites(JSON.parse(savedFavs));
-
-    // Clock ticker
-    const interval = setInterval(
-      () => setNow(Math.floor(Date.now() / 1000)),
-      1000
-    );
+    const interval = setInterval(() => setNow(Math.floor(Date.now() / 1000)), 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -84,68 +88,66 @@ const Popup = () => {
           const detected = detectContent(text);
           if (detected) {
             setSmartAction(detected);
-            setClipboardPreview(
-              text.substring(0, 40) + (text.length > 40 ? "..." : "")
-            );
+            setClipboardPreview(text.substring(0, 40) + (text.length > 40 ? '...' : ''));
           }
         }
-      } catch (e) {}
+      } catch (_e) {
+        // Ignore clipboard errors
+      }
     };
     checkClipboard();
-    window.addEventListener("focus", checkClipboard);
+    window.addEventListener('focus', checkClipboard);
     const timer = setTimeout(checkClipboard, 100);
     return () => {
-      window.removeEventListener("focus", checkClipboard);
+      window.removeEventListener('focus', checkClipboard);
       clearTimeout(timer);
     };
   }, []);
 
   const handleToolClick = (path: string, id: string, input?: string) => {
     // Update recents
-    const newRecents = [id, ...recents.filter((r) => r !== id)].slice(0, 4);
+    const newRecents = [id, ...recents.filter(r => r !== id)].slice(0, 4);
     setRecents(newRecents);
-    localStorage.setItem("dulundu_recents", JSON.stringify(newRecents));
+    localStorage.setItem('dulundu_recents', JSON.stringify(newRecents));
 
     const baseUrl = import.meta.env.VITE_APP_URL;
     if (!baseUrl) {
-      console.error("VITE_APP_URL not configured");
+      console.error('VITE_APP_URL not configured');
       return;
     }
-    const url = input
-      ? `${baseUrl}${path}#input=${input}`
-      : `${baseUrl}${path}`;
+    const url = input ? `${baseUrl}${path}#input=${input}` : `${baseUrl}${path}`;
     chrome.tabs.create({ url });
   };
 
-  const toggleFavorite = (e: React.MouseEvent, id: string) => {
+  const toggleFavorite = (e: React.MouseEvent | React.KeyboardEvent, id: string) => {
     e.stopPropagation();
-    const newFavs = favorites.includes(id)
-      ? favorites.filter((f) => f !== id)
-      : [...favorites, id];
+    const newFavs = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id];
     setFavorites(newFavs);
-    localStorage.setItem("dulundu_favs", JSON.stringify(newFavs));
+    localStorage.setItem('dulundu_favs', JSON.stringify(newFavs));
   };
 
   const filteredTools = useMemo(() => {
-    if (!search.trim()) return ALL_TOOLS.slice(0, 20); // Show more by default
+    if (!search.trim()) return (ALL_TOOLS as Tool[]).slice(0, 20); // Show more by default
     const lowerSearch = search.toLowerCase();
-    return ALL_TOOLS.filter(
-      (tool) =>
-        tool.name.toLowerCase().includes(lowerSearch) ||
-        tool.description.toLowerCase().includes(lowerSearch) ||
-        tool.tags?.some((tag) => tag.toLowerCase().includes(lowerSearch))
-    ).slice(0, 20);
+    return (ALL_TOOLS as Tool[])
+      .filter(
+        tool =>
+          tool.name.toLowerCase().includes(lowerSearch) ||
+          tool.description.toLowerCase().includes(lowerSearch) ||
+          tool.tags?.some(tag => tag.toLowerCase().includes(lowerSearch))
+      )
+      .slice(0, 20);
   }, [search]);
 
   const recentTools = useMemo(
     () =>
-      ALL_TOOLS.filter((t) => recents.includes(t.id)).sort(
-        (a, b) => recents.indexOf(a.id) - recents.indexOf(b.id)
-      ),
+      (ALL_TOOLS as Tool[])
+        .filter(t => recents.includes(t.id))
+        .sort((a, b) => recents.indexOf(a.id) - recents.indexOf(b.id)),
     [recents]
   );
   const favoriteTools = useMemo(
-    () => ALL_TOOLS.filter((t) => favorites.includes(t.id)),
+    () => (ALL_TOOLS as Tool[]).filter(t => favorites.includes(t.id)),
     [favorites]
   );
 
@@ -161,6 +163,13 @@ const Popup = () => {
               navigator.clipboard.writeText(now.toString());
               // Simple visual feedback could be added here
             }}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                navigator.clipboard.writeText(now.toString());
+              }
+            }}
+            role="button"
+            tabIndex={0}
             title="Click to copy Unix Timestamp"
           >
             <Clock size={12} className="text-primary" />
@@ -176,21 +185,31 @@ const Popup = () => {
         {smartAction && !search && (
           <div
             onClick={async () => {
-              const tool = ALL_TOOLS.find((t) => t.id === smartAction.toolId);
+              const tool = ALL_TOOLS.find(t => t.id === smartAction.toolId);
               if (tool) {
                 try {
                   const text = await navigator.clipboard.readText();
-                  if (text)
-                    handleToolClick(
-                      tool.path,
-                      tool.id,
-                      encodeURIComponent(text)
-                    );
-                } catch (e) {
+                  if (text) handleToolClick(tool.path, tool.id, encodeURIComponent(text));
+                } catch (_e) {
                   handleToolClick(tool.path, tool.id);
                 }
               }
             }}
+            onKeyDown={async e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                const tool = ALL_TOOLS.find(t => t.id === smartAction.toolId);
+                if (tool) {
+                  try {
+                    const text = await navigator.clipboard.readText();
+                    if (text) handleToolClick(tool.path, tool.id, encodeURIComponent(text));
+                  } catch (_e) {
+                    handleToolClick(tool.path, tool.id);
+                  }
+                }
+              }
+            }}
+            role="button"
+            tabIndex={0}
             className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-lg p-3 cursor-pointer hover:shadow-md transition-all group"
           >
             <div className="flex items-center justify-between mb-1">
@@ -210,16 +229,14 @@ const Popup = () => {
         )}
 
         <div className="relative">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-            size={18}
-          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input
             type="text"
             placeholder="Search tools (e.g. JSON, Base64)..."
             className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border-none rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 transition-all"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value)}
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
           />
         </div>
@@ -234,11 +251,10 @@ const Popup = () => {
             {favorites.length > 0 && (
               <div className="col-span-2 space-y-1">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 flex items-center gap-1">
-                  <Star size={10} className="fill-yellow-400 text-yellow-400" />{" "}
-                  Favorites
+                  <Star size={10} className="fill-yellow-400 text-yellow-400" /> Favorites
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
-                  {favoriteTools.map((tool) => (
+                  {favoriteTools.map(tool => (
                     <button
                       key={tool.id}
                       onClick={() => handleToolClick(tool.path, tool.id)}
@@ -247,9 +263,7 @@ const Popup = () => {
                       <div className="p-1.5 bg-yellow-50 text-yellow-600 rounded">
                         <tool.icon size={14} />
                       </div>
-                      <span className="text-xs font-medium truncate">
-                        {tool.name}
-                      </span>
+                      <span className="text-xs font-medium truncate">{tool.name}</span>
                     </button>
                   ))}
                 </div>
@@ -263,7 +277,7 @@ const Popup = () => {
                   <History size={10} /> Recently Used
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
-                  {recentTools.map((tool) => (
+                  {recentTools.map(tool => (
                     <button
                       key={tool.id}
                       onClick={() => handleToolClick(tool.path, tool.id)}
@@ -272,9 +286,7 @@ const Popup = () => {
                       <div className="p-1.5 bg-slate-50 text-slate-500 rounded">
                         <tool.icon size={14} />
                       </div>
-                      <span className="text-xs font-medium truncate">
-                        {tool.name}
-                      </span>
+                      <span className="text-xs font-medium truncate">{tool.name}</span>
                     </button>
                   ))}
                 </div>
@@ -291,7 +303,7 @@ const Popup = () => {
             </h4>
           )}
           {filteredTools.length > 0 ? (
-            filteredTools.map((tool) => (
+            filteredTools.map(tool => (
               <button
                 key={tool.id}
                 onClick={() => handleToolClick(tool.path, tool.id)}
@@ -302,30 +314,28 @@ const Popup = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-sm text-slate-800 truncate">
-                      {tool.name}
-                    </h3>
+                    <h3 className="font-semibold text-sm text-slate-800 truncate">{tool.name}</h3>
                   </div>
-                  <p className="text-[10px] text-slate-500 truncate">
-                    {tool.description}
-                  </p>
+                  <p className="text-[10px] text-slate-500 truncate">{tool.description}</p>
                 </div>
 
                 {/* Favorite Button */}
                 <div
-                  onClick={(e) => toggleFavorite(e, tool.id)}
+                  onClick={e => toggleFavorite(e, tool.id)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      toggleFavorite(e, tool.id);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                   className={`p-1.5 rounded-full hover:bg-slate-100 transition-colors ${
                     favorites.includes(tool.id)
-                      ? "text-yellow-400"
-                      : "text-slate-300 opacity-0 group-hover:opacity-100"
+                      ? 'text-yellow-400'
+                      : 'text-slate-300 opacity-0 group-hover:opacity-100'
                   }`}
                 >
-                  <Star
-                    size={14}
-                    className={
-                      favorites.includes(tool.id) ? "fill-current" : ""
-                    }
-                  />
+                  <Star size={14} className={favorites.includes(tool.id) ? 'fill-current' : ''} />
                 </div>
               </button>
             ))

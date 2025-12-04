@@ -1,15 +1,16 @@
+/* eslint-disable import/order */
 import MDEditor from '@uiw/react-md-editor';
-import React, { useState, useEffect, useRef } from 'react';
+import { HelpCircle } from 'lucide-react';
+import React, { useState } from 'react';
 
+// Components
+import { SEO } from '@/components/SEO';
 import { ConfirmationModal } from './components/ConfirmationModal';
 import { PreviewAndRaw } from './components/PreviewAndRaw';
 import { SECTIONS, Section } from './data/sections';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
 
 import './MDEditor.css';
-import { SEO } from '@/components/SEO';
-
-import { HelpCircle } from 'lucide-react';
 
 // Extended Section interface to track inclusion state
 interface ExtendedSection extends Section {
@@ -36,38 +37,19 @@ export const ReadmeGenerator = () => {
   const [draggedSectionId, setDraggedSectionId] = useState<string | null>(null);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
 
-  // Track previous sections to detect changes
-  const prevSectionsRef = useRef<ExtendedSection[]>([]);
-
-  // Update fullMarkdown when sections change (add/remove/reorder)
-  useEffect(() => {
-    const prevSections = prevSectionsRef.current;
-    const currentSections = sections;
-
-    // Check if sections actually changed (not just a re-render)
-    const sectionsChanged =
-      prevSections.length !== currentSections.length ||
-      prevSections.some(
-        (prev, idx) =>
-          prev.id !== currentSections[idx]?.id ||
-          prev.isIncluded !== currentSections[idx]?.isIncluded
-      );
-
-    if (sectionsChanged) {
-      // Regenerate markdown from selected sections
-      const combined = currentSections
-        .filter(s => s.isIncluded)
-        .map(s => s.content)
-        .join('\n\n');
-      setFullMarkdown(combined);
-
-      // Update ref for next comparison
-      prevSectionsRef.current = currentSections;
-    }
-  }, [sections]);
+  // Helper to update markdown based on sections
+  const updateMarkdownFromSections = (currentSections: ExtendedSection[]) => {
+    const combined = currentSections
+      .filter(s => s.isIncluded)
+      .map(s => s.content)
+      .join('\n\n');
+    setFullMarkdown(combined);
+  };
 
   const handleToggleSection = (id: string) => {
-    setSections(prev => prev.map(s => (s.id === id ? { ...s, isIncluded: !s.isIncluded } : s)));
+    const newSections = sections.map(s => (s.id === id ? { ...s, isIncluded: !s.isIncluded } : s));
+    setSections(newSections);
+    updateMarkdownFromSections(newSections);
   };
 
   const handleAddCustomSection = () => {
@@ -78,7 +60,9 @@ export const ReadmeGenerator = () => {
       content: `## Custom Section\n\nAdd your content here.`,
       isIncluded: true,
     };
-    setSections([customSection, ...sections]);
+    const newSections = [customSection, ...sections];
+    setSections(newSections);
+    updateMarkdownFromSections(newSections);
   };
 
   const handleReset = () => {
@@ -86,7 +70,8 @@ export const ReadmeGenerator = () => {
   };
 
   const confirmReset = () => {
-    setSections(prev => prev.map(s => ({ ...s, isIncluded: false })));
+    const newSections = sections.map(s => ({ ...s, isIncluded: false }));
+    setSections(newSections);
     setFullMarkdown('');
     setIsResetModalOpen(false);
   };
@@ -118,20 +103,12 @@ export const ReadmeGenerator = () => {
     newSections.splice(targetIndex, 0, removed);
 
     setSections(newSections);
+    updateMarkdownFromSections(newSections);
     setDraggedSectionId(null);
   };
 
   const handleDragEnd = () => {
     setDraggedSectionId(null);
-  };
-
-  const handleCopyRaw = async () => {
-    try {
-      await navigator.clipboard.writeText(fullMarkdown);
-      // You could add a toast notification here
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
   };
 
   return (
@@ -163,6 +140,13 @@ export const ReadmeGenerator = () => {
               onDrop={e => handleDrop(e, section.id)}
               onDragEnd={handleDragEnd}
               onClick={() => handleToggleSection(section.id)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleToggleSection(section.id);
+                }
+              }}
+              role="button"
+              tabIndex={0}
               className={`
                 group relative flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer select-none transition-all
                 hover:bg-gray-100 dark:hover:bg-gray-800/50
@@ -175,6 +159,9 @@ export const ReadmeGenerator = () => {
 
               {/* Checkbox for inclusion status */}
               <div
+                role="checkbox"
+                aria-checked={section.isIncluded}
+                tabIndex={0}
                 className={`w-4 h-4 rounded border flex items-center justify-center transition-colors
                   ${
                     section.isIncluded
@@ -185,6 +172,12 @@ export const ReadmeGenerator = () => {
                 onClick={e => {
                   e.stopPropagation();
                   handleToggleSection(section.id);
+                }}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.stopPropagation();
+                    handleToggleSection(section.id);
+                  }
                 }}
               >
                 <svg
@@ -249,7 +242,7 @@ export const ReadmeGenerator = () => {
             <div data-color-mode={isDarkMode ? 'dark' : 'light'} style={{ height: '100%' }}>
               <MDEditor
                 value={fullMarkdown}
-                onChange={setFullMarkdown}
+                onChange={val => setFullMarkdown(val || '')}
                 preview="edit"
                 hideToolbar={false}
                 height="100%"

@@ -95,15 +95,17 @@ export const BcryptGenerator: React.FC = () => {
             </button>
 
             <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <label className="text-xs font-bold text-slate-500 uppercase">Rounds:</label>
-              <input
-                type="number"
-                min="4"
-                max="15"
-                value={rounds}
-                onChange={e => setRounds(parseInt(e.target.value))}
-                className="w-12 bg-transparent text-sm font-bold text-slate-700 outline-none text-center"
-              />
+              <label className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase">
+                Rounds:
+                <input
+                  type="number"
+                  min="4"
+                  max="15"
+                  value={rounds}
+                  onChange={e => setRounds(parseInt(e.target.value))}
+                  className="w-12 bg-transparent text-sm font-bold text-slate-700 outline-none text-center"
+                />
+              </label>
             </div>
           </div>
 
@@ -155,16 +157,18 @@ export const BcryptGenerator: React.FC = () => {
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-2">
-                    Hash to check
+                  <label className="block">
+                    <span className="block text-xs font-bold text-slate-500 uppercase mb-2">
+                      Hash to check
+                    </span>
+                    <input
+                      type="text"
+                      value={compareHash}
+                      onChange={e => setCompareHash(e.target.value)}
+                      className="w-full p-3 bg-slate-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm"
+                      placeholder="$2a$10$..."
+                    />
                   </label>
-                  <input
-                    type="text"
-                    value={compareHash}
-                    onChange={e => setCompareHash(e.target.value)}
-                    className="w-full p-3 bg-slate-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm"
-                    placeholder="$2a$10$..."
-                  />
                 </div>
 
                 <div className="flex items-center justify-between">

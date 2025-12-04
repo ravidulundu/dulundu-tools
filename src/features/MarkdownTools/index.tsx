@@ -48,7 +48,7 @@ export const MarkdownTools: React.FC = () => {
         } else {
           (html as Promise<string>).then(res => setOutput(res));
         }
-      } catch (e) {
+      } catch (_e) {
         setOutput('Error converting Markdown');
       }
     } else {

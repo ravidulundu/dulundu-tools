@@ -15,7 +15,7 @@ export const PasswordGenerator: React.FC = () => {
   });
   const [copied, setCopied] = useState(false);
 
-  const generatePassword = () => {
+  const generatePassword = React.useCallback(() => {
     const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lower = 'abcdefghijklmnopqrstuvwxyz';
     const nums = '0123456789';
@@ -38,11 +38,11 @@ export const PasswordGenerator: React.FC = () => {
     }
     setPassword(generated);
     setCopied(false);
-  };
+  }, [length, options]);
 
   React.useEffect(() => {
     generatePassword();
-  }, [length, options]);
+  }, [generatePassword]);
 
   const toggleOption = (key: keyof typeof options) => {
     setOptions(prev => ({ ...prev, [key]: !prev[key] }));
@@ -101,12 +101,15 @@ export const PasswordGenerator: React.FC = () => {
             <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
               <div className="mb-8">
                 <div className="flex justify-between items-center mb-3">
-                  <label className="font-bold text-slate-700">Password Length</label>
+                  <label htmlFor="password-length" className="font-bold text-slate-700">
+                    Password Length
+                  </label>
                   <span className="text-primary font-bold bg-blue-50 px-3 py-1 rounded-lg text-sm">
                     {length} characters
                   </span>
                 </div>
                 <input
+                  id="password-length"
                   type="range"
                   min="4"
                   max="64"
@@ -125,7 +128,7 @@ export const PasswordGenerator: React.FC = () => {
                 ].map(opt => (
                   <button
                     key={opt.key}
-                    onClick={() => toggleOption(opt.key as any)}
+                    onClick={() => toggleOption(opt.key as keyof typeof options)}
                     className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
                       options[opt.key as keyof typeof options]
                         ? 'bg-blue-50 border-primary/30 text-primary shadow-sm'

@@ -54,7 +54,7 @@ export const CsvXmlConverter: React.FC = () => {
 
       setOutput(xml);
       setError(null);
-    } catch (e) {
+    } catch (_e) {
       setError('Error parsing CSV. Ensure format is correct.');
     }
   };

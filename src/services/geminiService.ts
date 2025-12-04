@@ -12,7 +12,6 @@ const checkRateLimit = (): { allowed: boolean; error?: string } => {
 
     // 1. Check if currently blocked
     if (blockedUntil && now < blockedUntil) {
-      const releaseDate = new Date(blockedUntil).toLocaleTimeString();
       return {
         allowed: false,
         error: `⛔ Abuse detected. You are blocked from using AI features until tomorrow.`,
@@ -47,7 +46,7 @@ const checkRateLimit = (): { allowed: boolean; error?: string } => {
     // 5. Save state
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ blockedUntil, minuteStart, minuteCount }));
     return { allowed: true };
-  } catch (e) {
+  } catch (_e) {
     // Fallback if localStorage fails (e.g. private mode restrictions)
     return { allowed: true };
   }

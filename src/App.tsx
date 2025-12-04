@@ -2,11 +2,12 @@ import React, { Suspense } from 'react';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 
 import { Analytics } from './components/Analytics';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Layout } from './components/Layout';
 import { Loading } from './components/Loading';
 import { ScrollToTop } from './components/ScrollToTop';
 import { SeoManager } from './components/SeoManager';
-import { ThemeProvider } from './contexts/ThemeContext';
+import { ThemeProvider } from './contexts/ThemeProvider';
 import { routes } from './routes';
 
 const AppRoutes = () => {
@@ -17,14 +18,21 @@ const AppRoutes = () => {
 const App: React.FC = () => {
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <ScrollToTop />
         <Layout>
           <Analytics />
           <SeoManager />
-          <Suspense fallback={<Loading />}>
-            <AppRoutes />
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<Loading />}>
+              <AppRoutes />
+            </Suspense>
+          </ErrorBoundary>
         </Layout>
       </BrowserRouter>
     </ThemeProvider>

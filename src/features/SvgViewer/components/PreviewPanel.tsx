@@ -1,18 +1,10 @@
-import Editor from '@monaco-editor/react';
 import clsx from 'clsx';
 import DOMPurify from 'dompurify';
-import { ZoomIn, ZoomOut, Maximize2, Download, Copy } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize2, Download } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { useSVG } from '../context/SVGContext';
-import {
-  svgToReact,
-  svgToDataUri,
-  svgToPng,
-  svgToReactNative,
-  generateDataUris,
-  formatBytes,
-} from '../utils/svgExporter';
+import { useSVG } from '../hooks/useSVG';
+import { svgToReact, svgToPng, svgToReactNative } from '../utils/svgExporter';
 import { CodeTab } from './tabs/CodeTab';
 import { DataUriTab } from './tabs/DataUriTab';
 import { PngTab } from './tabs/PngTab';
@@ -217,8 +209,17 @@ export const PreviewPanel = () => {
           <div className="w-full h-full bg-gray-50 dark:bg-[#1e1e1e] flex flex-col relative">
             {/* ... Preview content ... */}
             <div
+              role="button"
+              aria-label="SVG Preview Area"
+              tabIndex={0}
+              onKeyDown={e => {
+                if (e.key === 'ArrowUp') setTransform(p => ({ ...p, y: p.y - 10 }));
+                if (e.key === 'ArrowDown') setTransform(p => ({ ...p, y: p.y + 10 }));
+                if (e.key === 'ArrowLeft') setTransform(p => ({ ...p, x: p.x - 10 }));
+                if (e.key === 'ArrowRight') setTransform(p => ({ ...p, x: p.x + 10 }));
+              }}
               className={clsx(
-                'flex-1 flex items-center justify-center overflow-hidden relative',
+                'flex-1 flex items-center justify-center overflow-hidden relative outline-none',
                 isDragging ? 'cursor-grabbing' : 'cursor-grab'
               )}
               style={{
@@ -262,23 +263,23 @@ export const PreviewPanel = () => {
                       __html: DOMPurify.sanitize(
                         (() => {
                           let processed = svgCode
-                            .replace(/\<\?xml[^?]*\?\>/gi, '') // Remove XML declaration
-                            .replace(/\<!DOCTYPE[^\>]*\>\s*/gi, '') // Remove DOCTYPE
-                            .replace(/\<!--[\s\S]*?--\>/g, '') // Remove comments
+                            .replace(/<\?xml[^?]*\?>/gi, '') // Remove XML declaration
+                            .replace(/<!DOCTYPE[^>]*>\s*/gi, '') // Remove DOCTYPE
+                            .replace(/<!--[\s\S]*?-->/g, '') // Remove comments
                             .trim();
 
                           // If width/height missing but viewBox exists, inject them
-                          const hasWidth = /\<svg[^\>]*\swidth\s*=/i.test(processed);
-                          const hasHeight = /\<svg[^\>]*\sheight\s*=/i.test(processed);
+                          const hasWidth = /<svg[^>]*\swidth\s*=/i.test(processed);
+                          const hasHeight = /<svg[^>]*\sheight\s*=/i.test(processed);
 
                           if (!hasWidth && !hasHeight) {
                             const viewBoxMatch = processed.match(
-                              /viewBox=[\"']\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\s*[\"']/i
+                              /viewBox=["']\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\s*["']/i
                             );
                             if (viewBoxMatch) {
                               const [, , , w, h] = viewBoxMatch;
                               processed = processed.replace(
-                                /\<svg/i,
+                                /<svg/i,
                                 `<svg width="${w}" height="${h}"`
                               );
                             }

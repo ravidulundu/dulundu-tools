@@ -35,7 +35,7 @@ export const QrcodeGenerator: React.FC = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    } catch (e) {
+    } catch (_e) {
       alert("Could not download image. Please try right-clicking the image and 'Save Image As'.");
     }
   };
@@ -65,7 +65,7 @@ export const QrcodeGenerator: React.FC = () => {
       } else {
         setScanError('No QR code found in the image.');
       }
-    } catch (err) {
+    } catch (_err) {
       setScanError('Error connecting to decoding service.');
     } finally {
       setIsScanning(false);
@@ -108,9 +108,15 @@ export const QrcodeGenerator: React.FC = () => {
             <div className="max-w-4xl w-full grid md:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="space-y-6">
                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Content</label>
+                  <label
+                    htmlFor="qr-content"
+                    className="block text-sm font-bold text-slate-700 mb-2"
+                  >
+                    Content
+                  </label>
                   <div className="relative">
                     <textarea
+                      id="qr-content"
                       value={text}
                       onChange={e => setText(e.target.value)}
                       className="w-full p-4 bg-slate-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-inner min-h-[120px] resize-none transition-all"
@@ -121,8 +127,14 @@ export const QrcodeGenerator: React.FC = () => {
 
                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm grid gap-6">
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Size (px)</label>
+                    <label
+                      htmlFor="qr-size"
+                      className="block text-sm font-bold text-slate-700 mb-2"
+                    >
+                      Size (px)
+                    </label>
                     <input
+                      id="qr-size"
                       type="number"
                       value={size}
                       onChange={e => setSize(Number(e.target.value))}
@@ -133,11 +145,15 @@ export const QrcodeGenerator: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">
+                      <label
+                        htmlFor="qr-fg-color"
+                        className="block text-sm font-bold text-slate-700 mb-2"
+                      >
                         Foreground
                       </label>
                       <div className="flex items-center space-x-2 bg-slate-50 p-2 rounded-xl border border-gray-200">
                         <input
+                          id="qr-fg-color"
                           type="color"
                           value={`#${color}`}
                           onChange={e => setColor(e.target.value.substring(1))}
@@ -152,11 +168,15 @@ export const QrcodeGenerator: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">
+                      <label
+                        htmlFor="qr-bg-color"
+                        className="block text-sm font-bold text-slate-700 mb-2"
+                      >
                         Background
                       </label>
                       <div className="flex items-center space-x-2 bg-slate-50 p-2 rounded-xl border border-gray-200">
                         <input
+                          id="qr-bg-color"
                           type="color"
                           value={`#${bgColor}`}
                           onChange={e => setBgColor(e.target.value.substring(1))}
@@ -245,9 +265,9 @@ export const QrcodeGenerator: React.FC = () => {
 
                 {scanResult && (
                   <div className="mt-8 text-left animate-in fade-in zoom-in duration-300">
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">
+                    <span className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">
                       Decoded Content
-                    </label>
+                    </span>
                     <div className="p-4 bg-green-50 border border-green-200 rounded-xl break-all font-mono text-slate-800 shadow-sm">
                       {scanResult}
                     </div>

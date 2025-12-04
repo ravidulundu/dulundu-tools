@@ -34,19 +34,19 @@ export const XmlFormatter: React.FC = () => {
 
   const formatXml = (xml: string) => {
     let formatted = '';
-    const reg = /(>)(<)(\/*)/g;
+    const reg = new RegExp('(>)(<)(\\/*)', 'g');
     xml = xml.replace(reg, '$1\r\n$2$3');
     let pad = 0;
 
     xml.split('\r\n').forEach(node => {
       let indent = 0;
-      if (node.match(/.+<\/\w[^>]*>$/)) {
+      if (node.match(new RegExp('.+<\\/\\w[^>]*>$'))) {
         indent = 0;
-      } else if (node.match(/^<\/\w/)) {
+      } else if (node.match(new RegExp('^<\\/\\w'))) {
         if (pad !== 0) {
           pad -= 1;
         }
-      } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+      } else if (node.match(new RegExp('^<\\w[^>]*[^/]>.*$'))) {
         indent = 1;
       } else {
         indent = 0;

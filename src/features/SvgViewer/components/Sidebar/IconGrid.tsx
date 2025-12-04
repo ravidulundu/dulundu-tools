@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { getIconSvg } from '../../services/iconify';
 
@@ -18,7 +18,6 @@ export const IconGrid: React.FC<IconGridProps> = ({ icons, onSelectIcon }) => {
     let active = true;
 
     const loadIcons = async () => {
-      const newIcons: Record<string, string> = {};
       // Fetch in batches or individually
       // For performance, we'll just fetch the ones we don't have yet
       const iconsToFetch = icons.filter(icon => !loadedIcons[icon]);

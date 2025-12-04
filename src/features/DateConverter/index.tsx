@@ -1,63 +1,74 @@
-import { Calendar, Clock, RefreshCw, ArrowRight, Copy, Check } from 'lucide-react';
+import { Calendar, Clock, Copy, Check } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
 
 export const DateConverter: React.FC = () => {
-  const [timestamp, setTimestamp] = useState<number>(Math.floor(Date.now() / 1000));
-  const [iso, setIso] = useState('');
-  const [local, setLocal] = useState('');
-  const [utc, setUtc] = useState('');
-
-  useEffect(() => {
+  const [timestamp, setTimestamp] = useState<number>(() => {
     // Check for input in URL hash (from extension)
-    const hash = window.location.hash;
-    if (hash.includes('input=')) {
-      try {
-        const params = new URLSearchParams(hash.substring(1));
-        const inputParam = params.get('input');
-        if (inputParam) {
-          const decoded = decodeURIComponent(inputParam);
-          // Try to parse as number (timestamp)
-          const ts = parseInt(decoded);
-          if (!isNaN(ts)) {
-            handleTsChange(decoded); // Reuse existing logic
-            window.history.replaceState(null, '', window.location.pathname);
-            return; // Skip default updateFromTs
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      if (hash.includes('input=')) {
+        try {
+          const params = new URLSearchParams(hash.substring(1));
+          const inputParam = params.get('input');
+          if (inputParam) {
+            const decoded = decodeURIComponent(inputParam);
+            const ts = parseInt(decoded);
+            if (!isNaN(ts)) {
+              // Clear hash after consuming
+              window.history.replaceState(null, '', window.location.pathname);
+              // Heuristic to detect milliseconds vs seconds
+              if (ts > 100000000000) {
+                return Math.floor(ts / 1000);
+              }
+              return ts;
+            }
           }
+        } catch (_e) {
+          // Ignore parsing errors
         }
-      } catch (e) {}
-    }
-
-    updateFromTs(timestamp);
-  }, []);
-
-  const updateFromTs = (ts: number) => {
-    setTimestamp(ts);
-    const date = new Date(ts * 1000);
-    setIso(date.toISOString());
-    setLocal(date.toLocaleString());
-    setUtc(date.toUTCString());
-  };
-
-  const handleTsChange = (val: string) => {
-    const num = parseInt(val);
-    if (!isNaN(num)) {
-      // Heuristic to detect milliseconds vs seconds
-      if (num > 100000000000) {
-        updateFromTs(Math.floor(num / 1000));
-      } else {
-        updateFromTs(num);
       }
     }
-  };
+    return Math.floor(Date.now() / 1000);
+  });
+
+  const date = new Date(timestamp * 1000);
+  const iso = date.toISOString();
+  const local = date.toLocaleString();
+  const utc = date.toUTCString();
+
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const updateFromTs = React.useCallback((ts: number) => {
+    setTimestamp(ts);
+  }, []);
+
+  const handleTsChange = React.useCallback(
+    (val: string) => {
+      const num = parseInt(val);
+      if (!isNaN(num)) {
+        // Heuristic to detect milliseconds vs seconds
+        if (num > 100000000000) {
+          updateFromTs(Math.floor(num / 1000));
+        } else {
+          updateFromTs(num);
+        }
+      }
+    },
+    [updateFromTs]
+  );
 
   const handleIsoChange = (val: string) => {
-    setIso(val);
-    const date = new Date(val);
-    if (!isNaN(date.getTime())) {
-      updateFromTs(Math.floor(date.getTime() / 1000));
+    const d = new Date(val);
+    if (!isNaN(d.getTime())) {
+      setTimestamp(Math.floor(d.getTime() / 1000));
     }
   };
 
@@ -85,11 +96,15 @@ export const DateConverter: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-6">
               {/* Epoch Input */}
               <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide">
+                <label
+                  htmlFor="epoch-input"
+                  className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide"
+                >
                   Unix Timestamp (Seconds)
                 </label>
                 <div className="flex gap-2">
                   <input
+                    id="epoch-input"
                     type="number"
                     value={timestamp}
                     onChange={e => handleTsChange(e.target.value)}
@@ -103,10 +118,14 @@ export const DateConverter: React.FC = () => {
 
               {/* ISO Input */}
               <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide">
+                <label
+                  htmlFor="iso-input"
+                  className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide"
+                >
                   ISO 8601 Date
                 </label>
                 <input
+                  id="iso-input"
                   type="text"
                   value={iso}
                   onChange={e => handleIsoChange(e.target.value)}
@@ -132,7 +151,7 @@ export const DateConverter: React.FC = () => {
                 <ResultRow
                   label="Relative"
                   value={(() => {
-                    const diff = Date.now() - timestamp * 1000;
+                    const diff = now - timestamp * 1000;
                     const rtf = new Intl.RelativeTimeFormat('en', {
                       numeric: 'auto',
                     });

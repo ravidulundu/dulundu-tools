@@ -175,7 +175,7 @@ export const HttpStatusCodes: React.FC = () => {
 
             {filtered.length === 0 && (
               <div className="text-center py-12 text-slate-400">
-                <p>No status codes found matching "{search}"</p>
+                <p>No status codes found matching &quot;{search}&quot;</p>
               </div>
             )}
           </div>

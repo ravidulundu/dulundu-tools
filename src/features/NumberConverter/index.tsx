@@ -1,4 +1,4 @@
-import { Binary, ArrowRight, RefreshCw, Trash2 } from 'lucide-react';
+import { Binary, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
@@ -42,7 +42,7 @@ export const NumberConverter: React.FC = () => {
         if (type !== 'hex') setHex(decimalValue.toString(16).toUpperCase());
         if (type !== 'oct') setOct(decimalValue.toString(8));
       }
-    } catch (e) {
+    } catch (_e) {
       // Ignore errors for invalid intermediate inputs
     }
   };
@@ -85,7 +85,9 @@ export const NumberConverter: React.FC = () => {
                   <input
                     type="text"
                     value={item.val}
-                    onChange={e => update(e.target.value, item.type as any)}
+                    onChange={e =>
+                      update(e.target.value, item.type as 'dec' | 'bin' | 'hex' | 'oct')
+                    }
                     className="w-full p-4 bg-white text-slate-900 border border-gray-200 rounded-xl font-mono outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm"
                     placeholder={item.ph}
                   />

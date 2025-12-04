@@ -61,7 +61,7 @@ describe('performance utils', () => {
       // Mock window.addEventListener
       vi.spyOn(window, 'addEventListener').mockImplementation((event, handler) => {
         if (event === 'load') {
-          (handler as any)();
+          (handler as () => void)();
         }
       });
     });

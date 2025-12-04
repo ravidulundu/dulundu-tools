@@ -17,9 +17,9 @@ export const PrivacyPolicy: React.FC = () => {
 
         <h2>1. Introduction</h2>
         <p>
-          Dulundu.tools ("we", "our", or "us") is committed to protecting your privacy. This Privacy
-          Policy explains how we collect, use, and safeguard your information when you use our
-          Service.
+          Dulundu.tools (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to
+          protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard
+          your information when you use our Service.
         </p>
         <p>
           <strong>Key Principle:</strong> We minimize data collection and process most data
@@ -62,10 +62,10 @@ export const PrivacyPolicy: React.FC = () => {
           <li>Your prompt is sent to Google Gemini AI for processing</li>
           <li>Responses are generated and returned to you</li>
           <li>We do NOT store prompts or responses</li>
-          <li>Google's AI may process data according to their privacy policy</li>
+          <li>Google&apos;s AI may process data according to their privacy policy</li>
         </ul>
 
-        <h2>3. Data We DON'T Collect</h2>
+        <h2>3. Data We DON&apos;T Collect</h2>
         <ul>
           <li>❌ Email addresses (no account required)</li>
           <li>❌ Names or personal identifiers</li>
@@ -230,7 +230,7 @@ export const PrivacyPolicy: React.FC = () => {
           </tbody>
         </table>
 
-        <h2>12. Children's Privacy</h2>
+        <h2>12. Children&apos;s Privacy</h2>
         <p>
           Our Service is not directed to individuals under 13. We do not knowingly collect personal
           information from children. If you believe a child has provided us with personal
@@ -240,8 +240,8 @@ export const PrivacyPolicy: React.FC = () => {
         <h2>13. Changes to Privacy Policy</h2>
         <p>
           We may update this Privacy Policy from time to time. Changes will be posted on this page
-          with an updated "Last Updated" date. Continued use of the Service constitutes acceptance
-          of changes.
+          with an updated &quot;Last Updated&quot; date. Continued use of the Service constitutes
+          acceptance of changes.
         </p>
 
         <h2>14. Contact Us</h2>

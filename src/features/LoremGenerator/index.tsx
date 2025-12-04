@@ -5,33 +5,38 @@ import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
 
+const LOREM_TEXT = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+  'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.',
+  'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.',
+  'Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.',
+];
+
 export const LoremGenerator: React.FC = () => {
   const [paragraphs, setParagraphs] = useState(3);
-  const [output, setOutput] = useState('');
+
   const [copied, setCopied] = useState(false);
 
-  const LOREM_TEXT = [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
-    'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.',
-    'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.',
-    'Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.',
-  ];
+  const [version, setVersion] = useState(0);
 
-  const generateLorem = () => {
+  const output = React.useMemo(() => {
     const result = [];
     for (let i = 0; i < paragraphs; i++) {
-      const text = LOREM_TEXT[i % LOREM_TEXT.length];
+      // Use version to change the starting index or shuffle if desired,
+      // but for now just keeping it simple as per original logic.
+      // To make 'Regenerate' work, we could offset by version.
+      const text = LOREM_TEXT[(i + version) % LOREM_TEXT.length];
       result.push(text);
     }
-    setOutput(result.join('\n\n'));
+    return result.join('\n\n');
+  }, [paragraphs, version]);
+
+  const handleRegenerate = () => {
+    setVersion(v => v + 1);
     setCopied(false);
   };
-
-  React.useEffect(() => {
-    generateLorem();
-  }, [paragraphs]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output);
@@ -64,7 +69,7 @@ export const LoremGenerator: React.FC = () => {
             />
           </div>
           <button
-            onClick={generateLorem}
+            onClick={handleRegenerate}
             className="px-4 py-2 bg-white border border-gray-300 text-slate-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center font-medium shadow-sm text-sm"
           >
             <RefreshCw size={16} className="mr-2" />

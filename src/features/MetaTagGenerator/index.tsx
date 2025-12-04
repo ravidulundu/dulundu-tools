@@ -10,7 +10,7 @@ export const MetaTagGenerator: React.FC = () => {
   const [description, setDescription] = useState('');
   const [keywords, setKeywords] = useState('');
   const [author, setAuthor] = useState('');
-  const [viewport, setViewport] = useState('width=device-width, initial-scale=1.0');
+  const [viewport] = useState('width=device-width, initial-scale=1.0');
   const [robots, setRobots] = useState('index, follow');
   const [copied, setCopied] = useState(false);
 
@@ -66,8 +66,11 @@ export const MetaTagGenerator: React.FC = () => {
             {/* Form Area - Scrollable */}
             <div className="overflow-y-auto pr-2 space-y-4">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Page Title</label>
+                <label htmlFor="page-title" className="block text-sm font-bold text-slate-700 mb-2">
+                  Page Title
+                </label>
                 <input
+                  id="page-title"
                   type="text"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
@@ -81,8 +84,14 @@ export const MetaTagGenerator: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Description</label>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-bold text-slate-700 mb-2"
+                >
+                  Description
+                </label>
                 <textarea
+                  id="description"
                   value={description}
                   onChange={e => setDescription(e.target.value)}
                   className="w-full p-3 h-24 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all"
@@ -97,8 +106,11 @@ export const MetaTagGenerator: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Keywords</label>
+                <label htmlFor="keywords" className="block text-sm font-bold text-slate-700 mb-2">
+                  Keywords
+                </label>
                 <input
+                  id="keywords"
                   type="text"
                   value={keywords}
                   onChange={e => setKeywords(e.target.value)}
@@ -109,8 +121,11 @@ export const MetaTagGenerator: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Author</label>
+                  <label htmlFor="author" className="block text-sm font-bold text-slate-700 mb-2">
+                    Author
+                  </label>
                   <input
+                    id="author"
                     type="text"
                     value={author}
                     onChange={e => setAuthor(e.target.value)}
@@ -118,8 +133,11 @@ export const MetaTagGenerator: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Robots</label>
+                  <label htmlFor="robots" className="block text-sm font-bold text-slate-700 mb-2">
+                    Robots
+                  </label>
                   <select
+                    id="robots"
                     value={robots}
                     onChange={e => setRobots(e.target.value)}
                     className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"

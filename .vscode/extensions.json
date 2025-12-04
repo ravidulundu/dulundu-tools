@@ -2,6 +2,11 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "usernamehw.errorlens"
+    "bradlc.vscode-tailwindcss",
+    "dsznajder.es7-react-js-snippets",
+    "formulahendry.auto-rename-tag",
+    "mikestead.dotenv",
+    "christian-kohler.path-intellisense",
+    "pkief.material-icon-theme"
   ]
 }
