@@ -8,7 +8,7 @@ import { ThemeProvider } from '@/contexts/ThemeProvider';
 describe('SeoManager', () => {
   it('renders without crashing', () => {
     render(
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ThemeProvider>
           <SeoManager />
         </ThemeProvider>

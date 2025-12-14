@@ -9,7 +9,7 @@ import { ToolCategory } from '@/types';
 describe('CategoryCard', () => {
   it('renders without crashing', () => {
     render(
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ThemeProvider>
           <CategoryCard category={ToolCategory.CONVERTERS} />
         </ThemeProvider>

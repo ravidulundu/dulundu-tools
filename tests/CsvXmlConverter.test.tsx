@@ -7,7 +7,7 @@ import { CsvXmlConverter } from '@/features/CsvXmlConverter';
 
 const renderWithProviders = (component) => {
   return render(
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <ThemeProvider>{component}</ThemeProvider>
     </BrowserRouter>
   );

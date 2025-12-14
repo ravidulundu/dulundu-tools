@@ -8,7 +8,7 @@ import { ThemeProvider } from '@/contexts/ThemeProvider';
 describe('MegaMenu', () => {
   it('renders without crashing when open', () => {
     render(
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ThemeProvider>
           <MegaMenu isOpen={true} onClose={vi.fn()} />
         </ThemeProvider>

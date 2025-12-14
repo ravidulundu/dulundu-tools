@@ -14,10 +14,10 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, '../'),
-            '@features': path.resolve(__dirname, '../features'),
-            '@components': path.resolve(__dirname, '../components'),
-            '@utils': path.resolve(__dirname, '../utils'),
+            '@': path.resolve(__dirname, '../src'),
+            '@features': path.resolve(__dirname, '../src/features'),
+            '@components': path.resolve(__dirname, '../src/components'),
+            '@utils': path.resolve(__dirname, '../src/utils'),
         },
     },
     server: {
