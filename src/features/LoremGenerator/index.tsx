@@ -46,7 +46,7 @@ export const LoremGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={FileText}
           title="Lorem Ipsum Generator"
@@ -54,9 +54,9 @@ export const LoremGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex-1 max-w-md flex items-center gap-4">
-            <label className="text-sm font-medium text-slate-700 whitespace-nowrap">
+            <label className="text-sm font-medium text-foreground-secondary whitespace-nowrap">
               Paragraphs: {paragraphs}
             </label>
             <input
@@ -65,12 +65,12 @@ export const LoremGenerator: React.FC = () => {
               max="20"
               value={paragraphs}
               onChange={e => setParagraphs(parseInt(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+              className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary"
             />
           </div>
           <button
             onClick={handleRegenerate}
-            className="px-4 py-2 bg-white border border-gray-300 text-slate-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center font-medium shadow-sm text-sm"
+            className="px-4 py-2 bg-card border border-border text-foreground-secondary rounded-lg hover:bg-background-secondary transition-colors flex items-center font-medium shadow-sm text-sm"
           >
             <RefreshCw size={16} className="mr-2" />
             Regenerate
@@ -78,7 +78,7 @@ export const LoremGenerator: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <CodeEditor
             value={output}
             label="Generated Text"

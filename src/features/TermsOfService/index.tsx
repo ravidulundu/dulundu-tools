@@ -13,7 +13,7 @@ export const TermsOfService: React.FC = () => {
       <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
 
       <div className="prose prose-slate max-w-none">
-        <p className="text-sm text-gray-500 mb-8">Last Updated: December 2, 2024</p>
+        <p className="text-sm text-foreground-muted mb-8">Last Updated: December 2, 2024</p>
 
         <h2>1. Acceptance of Terms</h2>
         <p>

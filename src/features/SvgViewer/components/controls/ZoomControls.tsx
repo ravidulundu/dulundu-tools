@@ -35,19 +35,19 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[10px] text-gray-400 mr-2 hidden sm:inline-block whitespace-nowrap">
+      <span className="text-[10px] text-foreground-muted mr-2 hidden sm:inline-block whitespace-nowrap">
         Use Ctrl + Scroll to zoom
       </span>
       <button
         onClick={onZoomOut}
-        className="p-1.5 text-gray-500 hover:text-gray-700 transition-colors"
+        className="p-1.5 text-foreground-muted hover:text-foreground transition-colors"
         title="Zoom Out"
       >
         <ZoomOut className="w-4 h-4" />
       </button>
       <input
         type="text"
-        className="text-xs font-mono text-gray-600 w-[50px] text-center bg-transparent border border-transparent hover:border-gray-300 rounded focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all"
+        className="text-xs font-mono text-foreground-secondary w-[50px] text-center bg-transparent border border-transparent hover:border-border rounded focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all"
         value={zoomInputValue}
         onChange={e => setZoomInputValue(e.target.value)}
         onKeyDown={e => {
@@ -65,14 +65,14 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
       />
       <button
         onClick={onZoomIn}
-        className="p-1.5 text-gray-500 hover:text-gray-700 transition-colors"
+        className="p-1.5 text-foreground-muted hover:text-foreground transition-colors"
         title="Zoom In"
       >
         <ZoomIn className="w-4 h-4" />
       </button>
       <button
         onClick={onReset}
-        className="p-1.5 text-gray-500 hover:text-gray-700 transition-colors"
+        className="p-1.5 text-foreground-muted hover:text-foreground transition-colors"
         title="Reset Zoom"
       >
         <Maximize2 className="w-4 h-4" />

@@ -59,7 +59,7 @@ export const HmacGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Shield}
           title="HMAC Generator"
@@ -67,13 +67,13 @@ export const HmacGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
-          <div className="flex bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
+          <div className="flex bg-card border border-border p-1 rounded-lg shadow-sm">
             {['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'].map(a => (
               <button
                 key={a}
                 onClick={() => setAlgo(a)}
-                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${algo === a ? 'bg-primary text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${algo === a ? 'bg-primary text-white shadow-sm' : 'text-foreground-muted hover:text-foreground-secondary'}`}
               >
                 {a}
               </button>
@@ -82,7 +82,7 @@ export const HmacGenerator: React.FC = () => {
 
           <button
             onClick={handleClear}
-            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-foreground-muted hover:text-danger hover:bg-danger-light rounded-lg transition-colors"
             title="Clear All"
           >
             <Trash2 size={20} />
@@ -90,10 +90,10 @@ export const HmacGenerator: React.FC = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 overflow-y-auto">
           <div className="max-w-4xl mx-auto space-y-6">
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-              <label htmlFor="secret-key" className="block text-sm font-bold text-slate-700 mb-2">
+            <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
+              <label htmlFor="secret-key" className="block text-sm font-bold text-foreground-secondary mb-2">
                 Secret Key
               </label>
               <div className="relative">
@@ -102,11 +102,11 @@ export const HmacGenerator: React.FC = () => {
                   type="text"
                   value={secret}
                   onChange={e => setSecret(e.target.value)}
-                  className="w-full p-3 pl-10 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                  className="w-full p-3 pl-10 bg-background-secondary border border-border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
                   placeholder="Enter secret key..."
                 />
                 <Key
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-muted"
                   size={16}
                 />
               </div>

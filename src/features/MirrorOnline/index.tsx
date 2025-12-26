@@ -34,19 +34,19 @@ export const MirrorOnline: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Globe}
           title="Website Status Checker"
           description="Check if a website is online or offline"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30 flex flex-col items-center justify-center">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-background-secondary/30 flex flex-col items-center justify-center">
           <div className="max-w-xl w-full space-y-8">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+            <div className="bg-card p-8 rounded-2xl shadow-sm border border-border">
               <label
                 htmlFor="website-url"
-                className="block text-sm font-medium text-slate-700 mb-2"
+                className="block text-sm font-medium text-foreground-secondary mb-2"
               >
                 Website URL
               </label>
@@ -57,7 +57,7 @@ export const MirrorOnline: React.FC = () => {
                   value={url}
                   onChange={e => setUrl(e.target.value)}
                   placeholder="example.com"
-                  className="flex-1 p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-slate-900"
+                  className="flex-1 p-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-foreground"
                   onKeyDown={e => e.key === 'Enter' && checkStatus()}
                 />
                 <button
@@ -87,7 +87,7 @@ export const MirrorOnline: React.FC = () => {
               )}
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 flex items-start">
+            <div className="bg-primary-light p-4 rounded-xl border border-border flex items-start">
               <AlertCircle size={20} className="text-blue-600 mr-3 mt-0.5 shrink-0" />
               <p className="text-sm text-blue-800">
                 <strong>Note:</strong> This tool performs a client-side check from your browser.

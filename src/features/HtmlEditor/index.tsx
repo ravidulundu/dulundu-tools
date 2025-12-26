@@ -31,7 +31,7 @@ export const HtmlEditor: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Code}
           title="Real-time HTML Editor"
@@ -40,8 +40,8 @@ export const HtmlEditor: React.FC = () => {
 
         <div className="flex-1 grid md:grid-cols-2 h-full overflow-hidden">
           {/* Editors */}
-          <div className="flex flex-col border-r border-gray-200 bg-slate-50 h-full overflow-hidden">
-            <div className="flex-1 flex flex-col min-h-0 border-b border-gray-200">
+          <div className="flex flex-col border-r border-border bg-background-secondary h-full overflow-hidden">
+            <div className="flex-1 flex flex-col min-h-0 border-b border-border">
               <CodeEditor
                 value={html}
                 onChange={setHtml}
@@ -80,8 +80,8 @@ export const HtmlEditor: React.FC = () => {
           </div>
 
           {/* Preview */}
-          <div className="flex flex-col bg-white h-full overflow-hidden">
-            <div className="px-4 py-2 bg-slate-100 border-b border-gray-200 text-xs font-bold text-slate-500 uppercase flex items-center justify-between">
+          <div className="flex flex-col bg-card h-full overflow-hidden">
+            <div className="px-4 py-2 bg-background-secondary border-b border-border text-xs font-bold text-foreground-muted uppercase flex items-center justify-between">
               <div className="flex items-center">
                 <Eye size={14} className="mr-2" /> Preview
               </div>
@@ -97,13 +97,13 @@ export const HtmlEditor: React.FC = () => {
                   document.body.removeChild(a);
                   URL.revokeObjectURL(url);
                 }}
-                className="text-slate-500 hover:text-primary transition-colors"
+                className="text-foreground-muted hover:text-primary transition-colors"
                 title="Download Result"
               >
                 <Download size={14} />
               </button>
             </div>
-            <div className="flex-1 bg-white relative">
+            <div className="flex-1 bg-card relative">
               <iframe
                 srcDoc={srcDoc}
                 title="preview"

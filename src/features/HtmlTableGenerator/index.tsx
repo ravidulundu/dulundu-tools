@@ -52,7 +52,7 @@ export const HtmlTableGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Table}
           title="HTML Table Generator"
@@ -61,10 +61,10 @@ export const HtmlTableGenerator: React.FC = () => {
 
         <div className="flex-1 overflow-hidden grid md:grid-cols-[300px,1fr]">
           {/* Controls - Sidebar */}
-          <div className="p-6 bg-slate-50 border-r border-gray-200 overflow-y-auto">
+          <div className="p-6 bg-background-secondary border-r border-border overflow-y-auto">
             <div className="space-y-8">
               <div>
-                <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                <label className="flex justify-between text-sm font-bold text-foreground-secondary mb-2">
                   <span>Rows</span>
                   <span className="text-primary">{rows}</span>
                 </label>
@@ -74,12 +74,12 @@ export const HtmlTableGenerator: React.FC = () => {
                   max="20"
                   value={rows}
                   onChange={e => setRows(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                  className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary"
                 />
               </div>
 
               <div>
-                <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                <label className="flex justify-between text-sm font-bold text-foreground-secondary mb-2">
                   <span>Columns</span>
                   <span className="text-primary">{cols}</span>
                 </label>
@@ -89,12 +89,12 @@ export const HtmlTableGenerator: React.FC = () => {
                   max="10"
                   value={cols}
                   onChange={e => setCols(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                  className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary"
                 />
               </div>
 
               <div>
-                <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                <label className="flex justify-between text-sm font-bold text-foreground-secondary mb-2">
                   <span>Width</span>
                   <span className="text-primary">{width}%</span>
                 </label>
@@ -104,35 +104,35 @@ export const HtmlTableGenerator: React.FC = () => {
                   max="100"
                   value={width}
                   onChange={e => setWidth(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                  className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary"
                 />
               </div>
 
-              <div className="space-y-4 pt-4 border-t border-gray-200">
-                <label className="flex items-center p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition-colors">
+              <div className="space-y-4 pt-4 border-t border-border">
+                <label className="flex items-center p-3 bg-card rounded-lg border border-border cursor-pointer hover:border-primary transition-colors">
                   <input
                     type="checkbox"
                     checked={header}
                     onChange={e => setHeader(e.target.checked)}
-                    className="w-5 h-5 text-primary rounded focus:ring-primary/50 border-gray-300"
+                    className="w-5 h-5 text-primary rounded focus:ring-primary/50 border-border"
                   />
-                  <span className="ml-3 text-sm text-slate-700 font-medium">Include Header</span>
+                  <span className="ml-3 text-sm text-foreground-secondary font-medium">Include Header</span>
                 </label>
-                <label className="flex items-center p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-primary transition-colors">
+                <label className="flex items-center p-3 bg-card rounded-lg border border-border cursor-pointer hover:border-primary transition-colors">
                   <input
                     type="checkbox"
                     checked={border}
                     onChange={e => setBorder(e.target.checked)}
-                    className="w-5 h-5 text-primary rounded focus:ring-primary/50 border-gray-300"
+                    className="w-5 h-5 text-primary rounded focus:ring-primary/50 border-border"
                   />
-                  <span className="ml-3 text-sm text-slate-700 font-medium">Add Borders</span>
+                  <span className="ml-3 text-sm text-foreground-secondary font-medium">Add Borders</span>
                 </label>
               </div>
             </div>
           </div>
 
           {/* Output */}
-          <div className="p-4 md:p-6 flex flex-col h-full bg-white overflow-hidden">
+          <div className="p-4 md:p-6 flex flex-col h-full bg-card overflow-hidden">
             <CodeEditor
               value={output}
               label="Generated Code"

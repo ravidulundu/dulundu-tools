@@ -88,21 +88,21 @@ export const TextStyler: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Type}
           title="Text Styler"
           description="Generate fancy Unicode text for social media"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 flex flex-col">
           <div className="mb-6">
             <input
               type="text"
               value={text}
               onChange={e => setText(e.target.value)}
               placeholder="Type your text here..."
-              className="w-full p-4 text-lg border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white shadow-sm"
+              className="w-full p-4 text-lg border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-card shadow-sm"
             />
           </div>
 
@@ -113,13 +113,13 @@ export const TextStyler: React.FC = () => {
                 return (
                   <div
                     key={style.name}
-                    className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:border-primary/50 hover:shadow-sm transition-all group"
+                    className="flex items-center justify-between p-4 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-sm transition-all group"
                   >
                     <div>
-                      <p className="text-xs text-slate-400 font-medium uppercase mb-1">
+                      <p className="text-xs text-foreground-muted font-medium uppercase mb-1">
                         {style.name}
                       </p>
-                      <p className="text-lg text-slate-800 font-medium break-all">{styledText}</p>
+                      <p className="text-lg text-foreground font-medium break-all">{styledText}</p>
                     </div>
                     <ActionButton
                       onClick={() => handleCopy(styledText, index)}
@@ -128,7 +128,7 @@ export const TextStyler: React.FC = () => {
                       className={
                         copiedIndex === index
                           ? 'text-green-500'
-                          : 'text-slate-400 hover:text-primary'
+                          : 'text-foreground-muted hover:text-primary'
                       }
                       title="Copy"
                     />

@@ -164,7 +164,7 @@ export const CssUnitConverter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Ruler}
           title="CSS Unit Converter"
@@ -172,10 +172,10 @@ export const CssUnitConverter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex flex-wrap gap-3">
-            <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <label htmlFor="base-size" className="text-sm font-medium text-slate-600">
+            <div className="flex items-center gap-3 bg-background-secondary px-3 py-1.5 rounded-lg border border-border">
+              <label htmlFor="base-size" className="text-sm font-medium text-foreground-secondary">
                 Base Size:
               </label>
               <div className="flex items-center">
@@ -184,17 +184,17 @@ export const CssUnitConverter: React.FC = () => {
                   type="number"
                   value={base}
                   onChange={e => handleBaseChange(e.target.value)}
-                  className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
+                  className="w-16 bg-transparent font-bold text-foreground outline-none text-center border-b border-border focus:border-primary"
                 />
-                <span className="ml-1 text-xs text-slate-500 font-bold">px</span>
+                <span className="ml-1 text-xs text-foreground-muted font-bold">px</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <span className="text-sm font-medium text-slate-600">Viewport:</span>
+            <div className="flex items-center gap-3 bg-background-secondary px-3 py-1.5 rounded-lg border border-border">
+              <span className="text-sm font-medium text-foreground-secondary">Viewport:</span>
               <div className="flex items-center gap-2">
                 <div className="flex items-center">
-                  <label htmlFor="viewport-width" className="mr-1 text-xs text-slate-400 font-bold">
+                  <label htmlFor="viewport-width" className="mr-1 text-xs text-foreground-muted font-bold">
                     W:
                   </label>
                   <input
@@ -202,14 +202,14 @@ export const CssUnitConverter: React.FC = () => {
                     type="number"
                     value={viewportWidth}
                     onChange={e => handleViewportWidthChange(e.target.value)}
-                    className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
+                    className="w-16 bg-transparent font-bold text-foreground outline-none text-center border-b border-border focus:border-primary"
                   />
                 </div>
-                <span className="text-slate-300">x</span>
+                <span className="text-foreground-muted">x</span>
                 <div className="flex items-center">
                   <label
                     htmlFor="viewport-height"
-                    className="mr-1 text-xs text-slate-400 font-bold"
+                    className="mr-1 text-xs text-foreground-muted font-bold"
                   >
                     H:
                   </label>
@@ -218,7 +218,7 @@ export const CssUnitConverter: React.FC = () => {
                     type="number"
                     value={viewportHeight}
                     onChange={e => handleViewportHeightChange(e.target.value)}
-                    className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
+                    className="w-16 bg-transparent font-bold text-foreground outline-none text-center border-b border-border focus:border-primary"
                   />
                 </div>
               </div>
@@ -228,7 +228,7 @@ export const CssUnitConverter: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-background-secondary/30">
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
               {
@@ -294,9 +294,9 @@ export const CssUnitConverter: React.FC = () => {
             ].map(unit => (
               <div
                 key={unit.label}
-                className={`bg-white p-4 md:p-6 rounded-xl border border-gray-200 shadow-sm transition-all hover:shadow-md ${unit.colSpan}`}
+                className={`bg-card p-4 md:p-6 rounded-xl border border-border shadow-sm transition-all hover:shadow-md ${unit.colSpan}`}
               >
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide">
+                <label className="block text-xs font-bold text-foreground-muted uppercase mb-3 tracking-wide">
                   {unit.label}
                 </label>
                 <input
@@ -304,7 +304,7 @@ export const CssUnitConverter: React.FC = () => {
                   value={unit.val}
                   onChange={e => unit.fn(e.target.value)}
                   step={unit.step}
-                  className="w-full text-2xl md:text-3xl font-bold text-slate-800 outline-none border-b-2 border-slate-100 focus:border-primary py-2 bg-transparent transition-colors placeholder-slate-200"
+                  className="w-full text-2xl md:text-3xl font-bold text-foreground outline-none border-b-2 border-border focus:border-primary py-2 bg-transparent transition-colors placeholder-foreground-muted"
                   placeholder="0"
                 />
               </div>

@@ -26,16 +26,16 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     md: 'text-sm px-4 py-2.5 rounded-lg',
   };
 
-  // Color variants (Tailwind v3 compatible)
+  // Color variants using semantic theme colors
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm',
+    primary: 'bg-primary text-primary-foreground hover:bg-primary-hover focus:ring-primary shadow-sm',
     secondary:
-      'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 focus:ring-slate-500 shadow-sm',
-    success: 'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500 shadow-sm',
+      'bg-card text-foreground-secondary border border-border hover:bg-background-secondary focus:ring-secondary shadow-sm',
+    success: 'bg-success text-white hover:opacity-90 focus:ring-success shadow-sm',
     danger:
-      'bg-white text-red-600 border border-red-200 hover:bg-red-50 focus:ring-red-500 shadow-sm',
+      'bg-card text-danger border border-danger/30 hover:bg-danger-light focus:ring-danger shadow-sm',
     ghost:
-      'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus:ring-slate-500',
+      'bg-transparent text-foreground-secondary hover:bg-background-secondary hover:text-foreground focus:ring-secondary',
   };
 
   return (

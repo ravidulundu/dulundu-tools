@@ -78,7 +78,7 @@ export const DateConverter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Calendar}
           title="Date & Epoch Converter"
@@ -86,19 +86,19 @@ export const DateConverter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
+        <div className="p-3 bg-card border-b border-border flex justify-end">
           <ActionButton onClick={setToNow} icon={Clock} label="Set to Now" variant="secondary" />
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 overflow-y-auto">
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               {/* Epoch Input */}
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+              <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                 <label
                   htmlFor="epoch-input"
-                  className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide"
+                  className="block text-xs font-bold text-foreground-muted uppercase mb-3 tracking-wide"
                 >
                   Unix Timestamp (Seconds)
                 </label>
@@ -108,19 +108,19 @@ export const DateConverter: React.FC = () => {
                     type="number"
                     value={timestamp}
                     onChange={e => handleTsChange(e.target.value)}
-                    className="flex-1 p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg text-slate-800"
+                    className="flex-1 p-3 bg-background-secondary border border-border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg text-foreground"
                   />
                 </div>
-                <p className="text-xs text-slate-400 mt-2">
+                <p className="text-xs text-foreground-muted mt-2">
                   Supports seconds or milliseconds (auto-detected)
                 </p>
               </div>
 
               {/* ISO Input */}
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+              <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                 <label
                   htmlFor="iso-input"
-                  className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide"
+                  className="block text-xs font-bold text-foreground-muted uppercase mb-3 tracking-wide"
                 >
                   ISO 8601 Date
                 </label>
@@ -129,18 +129,18 @@ export const DateConverter: React.FC = () => {
                   type="text"
                   value={iso}
                   onChange={e => handleIsoChange(e.target.value)}
-                  className="w-full p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg text-slate-800"
+                  className="w-full p-3 bg-background-secondary border border-border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-lg text-foreground"
                   placeholder="YYYY-MM-DDTHH:mm:ss.sssZ"
                 />
-                <p className="text-xs text-slate-400 mt-2">Standard exchange format</p>
+                <p className="text-xs text-foreground-muted mt-2">Standard exchange format</p>
               </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-              <div className="p-4 bg-slate-50 border-b border-gray-200 font-bold text-slate-700 text-sm uppercase tracking-wide">
+            <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
+              <div className="p-4 bg-background-secondary border-b border-border font-bold text-foreground-secondary text-sm uppercase tracking-wide">
                 Converted Results
               </div>
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-border">
                 <ResultRow label="Local Time" value={local} />
                 <ResultRow label="UTC / GMT" value={utc} />
                 <ResultRow
@@ -184,15 +184,15 @@ const ResultRow: React.FC<{ label: string; value: string }> = ({ label, value })
   };
 
   return (
-    <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-slate-50/50 transition-colors group">
-      <span className="text-sm font-medium text-slate-500 mb-1 md:mb-0">{label}</span>
+    <div className="p-4 flex flex-col md:flex-row md:items-center justify-between hover:bg-background-secondary/50 transition-colors group">
+      <span className="text-sm font-medium text-foreground-muted mb-1 md:mb-0">{label}</span>
       <div className="flex items-center gap-3">
-        <span className="font-mono text-slate-800 font-bold text-lg">{value}</span>
+        <span className="font-mono text-foreground font-bold text-lg">{value}</span>
         <ActionButton
           onClick={handleCopy}
           icon={copied ? Check : Copy}
           variant="ghost"
-          className={copied ? 'text-green-500' : 'text-slate-400 hover:text-primary'}
+          className={copied ? 'text-green-500' : 'text-foreground-muted hover:text-primary'}
           title="Copy"
         />
       </div>

@@ -144,51 +144,51 @@ This web site is using \`markedjs/marked\`.`);
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-64px)] w-full bg-white dark:bg-[#0d1117]">
+    <div className="flex flex-col h-[calc(100vh-64px)] w-full bg-card">
       {/* Toolbar matching theme colors */}
-      <div className="flex items-center justify-between px-4 py-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-sm border-b border-gray-200 dark:border-slate-800 shrink-0 transition-colors duration-200">
+      <div className="flex items-center justify-between px-4 py-2 bg-card text-foreground-secondary text-sm border-b border-border shrink-0 transition-colors duration-200">
         <div className="flex items-center gap-4">
-          <span className="font-bold text-slate-800 dark:text-white">Markdown Live Preview</span>
+          <span className="font-bold text-foreground">Markdown Live Preview</span>
           <button
             onClick={() =>
               setMarkdown(
                 '# Markdown syntax guide\n\n## Headers\n\n# This is a Heading h1\n## This is a Heading h2\n###### This is a Heading h6\n\n## Emphasis\n\n*This text will be italic*\n_This will also be italic_\n\n**This text will be bold**\n__This will also be bold__\n\n_You **can** combine them_\n\n## Lists\n\n### Unordered\n\n* Item 1\n* Item 2\n* Item 2a\n* Item 2b\n    * Item 3a\n    * Item 3b\n\n### Ordered\n\n1. Item 1\n2. Item 2\n3. Item 3\n    1. Item 3a\n    2. Item 3b\n\n## Images\n\n![Dulundu Tools Logo](/favicon.svg "Dulundu Tools Logo")\n\n## Links\n\nYou may be using [Dulundu Tools](https://dulundu.tools/).\n\n## Blockquotes\n\n> Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.\n>\n>> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.\n\n## Tables\n\n| Left columns  | Right columns |\n| ------------- |:-------------:|\n| left foo      | right foo     |\n| left bar      | right bar     |\n| left baz      | right baz     |\n\n## Blocks of code\n\n```\nlet message = \'Hello world\';\nalert(message);\n```\n\n## Inline code\n\nThis web site is using `markedjs/marked`.'
               )
             }
-            className="hover:text-primary dark:hover:text-white transition-colors"
+            className="hover:text-primary transition-colors"
           >
             Reset
           </button>
           <button
             onClick={handleCopy}
-            className="hover:text-primary dark:hover:text-white transition-colors"
+            className="hover:text-primary transition-colors"
           >
             {copied ? 'Copied!' : 'Copy'}
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <label className="flex items-center gap-2 cursor-pointer select-none hover:text-primary dark:hover:text-white transition-colors">
+          <label className="flex items-center gap-2 cursor-pointer select-none hover:text-primary transition-colors">
             <input
               type="checkbox"
               defaultChecked={true}
               onChange={e => {
                 isScrolling.current = !e.target.checked;
               }}
-              className="rounded border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-slate-800 text-primary focus:ring-offset-white dark:focus:ring-offset-slate-900"
+              className="rounded border-border bg-background-secondary text-primary focus:ring-offset-background"
             />
             Sync scroll
           </label>
-          <div className="h-4 w-px bg-gray-300 dark:bg-gray-700 mx-2" />
+          <div className="h-4 w-px bg-border mx-2" />
           <button
             onClick={() => handleDownload(markdown, 'document.md', 'text/markdown')}
-            className="hover:text-primary dark:hover:text-white transition-colors"
+            className="hover:text-primary transition-colors"
             title="Download Markdown"
           >
             <Download size={16} />
           </button>
           <button
             onClick={() => handleDownload(html, 'document.html', 'text/html')}
-            className="hover:text-primary dark:hover:text-white transition-colors"
+            className="hover:text-primary transition-colors"
             title="Download HTML"
           >
             <FileText size={16} />
@@ -223,21 +223,21 @@ This web site is using \`markedjs/marked\`.`);
             </div>
           </Panel>
 
-          <PanelResizeHandle className="w-1 bg-gray-200 dark:bg-gray-700 hover:bg-blue-500 transition-colors cursor-col-resize" />
+          <PanelResizeHandle className="w-1 bg-border hover:bg-primary transition-colors cursor-col-resize" />
 
           {/* Preview */}
           <Panel defaultSize={50} minSize={20}>
-            <div className="flex flex-col h-full bg-white dark:bg-[#0d1117] overflow-hidden">
+            <div className="flex flex-col h-full bg-card overflow-hidden">
               <div
                 ref={previewRef}
                 onScroll={handlePreviewScroll}
-                className="flex-1 p-8 overflow-y-auto prose prose-slate dark:prose-invert max-w-none 
-                  prose-headings:font-semibold prose-headings:border-b prose-headings:border-gray-200 dark:prose-headings:border-gray-800 prose-headings:pb-2 prose-headings:mt-6 prose-headings:mb-4
+                className="flex-1 p-8 overflow-y-auto prose max-w-none
+                  prose-headings:font-semibold prose-headings:border-b prose-headings:border-border prose-headings:pb-2 prose-headings:mt-6 prose-headings:mb-4
                   prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
-                  prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
-                  prose-code:text-slate-800 dark:prose-code:text-slate-200 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
-                  prose-pre:bg-slate-100 dark:prose-pre:bg-[#161b22] prose-pre:text-slate-900 dark:prose-pre:text-slate-100 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-800
-                  prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-700 prose-blockquote:text-gray-600 dark:prose-blockquote:text-gray-400 prose-blockquote:pl-4 prose-blockquote:italic"
+                  prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                  prose-code:text-foreground prose-code:bg-background-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
+                  prose-pre:bg-background-secondary prose-pre:text-foreground prose-pre:border prose-pre:border-border
+                  prose-blockquote:border-l-4 prose-blockquote:border-border prose-blockquote:text-foreground-secondary prose-blockquote:pl-4 prose-blockquote:italic"
               >
                 <div
                   dangerouslySetInnerHTML={{

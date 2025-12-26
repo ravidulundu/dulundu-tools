@@ -40,17 +40,17 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
   };
 
   return (
-    <div className="w-1/2 bg-gray-50 dark:bg-slate-900 h-full flex flex-col border-l border-gray-200 dark:border-gray-800">
+    <div className="w-1/2 bg-background-secondary h-full flex flex-col border-l border-border">
       {/* Header with Tabs and Download */}
-      <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900">
+      <div className="border-b border-border bg-card">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex gap-1">
             <button
               onClick={() => setActiveTab('preview')}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 activeTab === 'preview'
-                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
-                  : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-foreground-secondary hover:text-foreground hover:bg-background-secondary'
               }`}
             >
               Preview
@@ -59,8 +59,8 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
               onClick={() => setActiveTab('raw')}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 activeTab === 'raw'
-                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
-                  : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-foreground-secondary hover:text-foreground hover:bg-background-secondary'
               }`}
             >
               Raw
@@ -72,8 +72,8 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
               onClick={handleCopy}
               className={`px-3 py-1.5 rounded-md transition-colors text-xs font-medium flex items-center gap-2 ${
                 copySuccess
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                  : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
+                  ? 'bg-success/10 text-success'
+                  : 'bg-background-secondary text-foreground-secondary hover:bg-background-secondary/80'
               }`}
             >
               {copySuccess ? (
@@ -139,34 +139,34 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-slate-900">
+      <div className="flex-1 overflow-y-auto p-4 bg-background-secondary">
         {activeTab === 'preview' ? (
-          <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 min-h-full">
+          <div className="bg-card rounded-lg border border-border p-4 min-h-full">
             <div
-              className="prose prose-slate max-w-none 
-                prose-headings:text-slate-900 dark:prose-headings:text-slate-100
-                prose-p:text-slate-700 dark:prose-p:text-slate-300
-                prose-a:text-blue-600 dark:prose-a:text-blue-400
-                prose-strong:text-slate-900 dark:prose-strong:text-slate-100
-                prose-code:text-slate-900 dark:prose-code:text-blue-300
-                prose-code:bg-gray-100 dark:prose-code:bg-slate-900/50
-                prose-pre:bg-gray-100 dark:prose-pre:bg-slate-900 
-                prose-pre:text-slate-900 dark:prose-pre:text-slate-100
-                prose-pre:border prose-pre:border-gray-300 dark:prose-pre:border-gray-600
-                prose-li:text-slate-700 dark:prose-li:text-slate-300
-                prose-table:text-slate-700 dark:prose-table:text-slate-300
-                prose-th:text-slate-900 dark:prose-th:text-slate-100"
+              className="prose prose-slate max-w-none
+                prose-headings:text-foreground
+                prose-p:text-foreground-secondary
+                prose-a:text-primary
+                prose-strong:text-foreground
+                prose-code:text-foreground
+                prose-code:bg-background-secondary
+                prose-pre:bg-background-secondary
+                prose-pre:text-foreground
+                prose-pre:border prose-pre:border-border
+                prose-li:text-foreground-secondary
+                prose-table:text-foreground-secondary
+                prose-th:text-foreground"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(
                   html ||
-                    '<p class="text-gray-500 dark:text-slate-400">No sections selected. Click sections on the left to add them to your README.</p>'
+                    '<p class="text-foreground-muted">No sections selected. Click sections on the left to add them to your README.</p>'
                 ),
               }}
             />
           </div>
         ) : (
-          <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 min-h-full">
-            <pre className="text-sm text-slate-800 dark:text-slate-200 font-mono whitespace-pre-wrap break-words leading-relaxed">
+          <div className="bg-card rounded-lg border border-border p-4 min-h-full">
+            <pre className="text-sm text-foreground font-mono whitespace-pre-wrap break-words leading-relaxed">
               {markdown ||
                 '# No sections selected\n\nClick sections on the left to add them to your README.'}
             </pre>

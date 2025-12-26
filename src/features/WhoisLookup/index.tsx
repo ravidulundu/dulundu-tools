@@ -52,7 +52,7 @@ export const WhoisLookup: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Globe}
           title="Whois Lookup"
@@ -60,7 +60,7 @@ export const WhoisLookup: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex flex-col gap-3">
+        <div className="p-3 bg-card border-b border-border flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <div className="flex-1 relative">
               <input
@@ -69,10 +69,10 @@ export const WhoisLookup: React.FC = () => {
                 onChange={e => setDomain(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && lookup()}
                 placeholder="example.com"
-                className="w-full p-2 pl-9 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
+                className="w-full p-2 pl-9 bg-background-secondary border border-border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
               />
               <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-muted"
                 size={16}
               />
             </div>
@@ -92,7 +92,7 @@ export const WhoisLookup: React.FC = () => {
           </div>
 
           {error && (
-            <div className="flex items-center text-red-600 text-sm font-medium bg-red-50 px-3 py-2 rounded-lg border border-red-100 animate-in fade-in slide-in-from-top-1">
+            <div className="flex items-center text-danger text-sm font-medium bg-danger-light px-3 py-2 rounded-lg border border-danger/20 animate-in fade-in slide-in-from-top-1">
               <AlertCircle size={16} className="mr-2 flex-shrink-0" />
               <span className="truncate">{error}</span>
             </div>
@@ -100,32 +100,32 @@ export const WhoisLookup: React.FC = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           {data ? (
             <div className="h-full grid md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar">
-                <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                  <h3 className="font-bold text-slate-700 mb-4 border-b border-gray-100 pb-2 text-sm uppercase tracking-wide">
+                <div className="bg-card p-5 rounded-xl border border-border shadow-sm">
+                  <h3 className="font-bold text-foreground-secondary mb-4 border-b border-border pb-2 text-sm uppercase tracking-wide">
                     Status
                   </h3>
                   <ul className="space-y-3 text-sm">
                     <li className="flex justify-between items-center">
-                      <span className="text-slate-500">Handle</span>{' '}
-                      <span className="font-mono bg-slate-50 px-2 py-0.5 rounded border border-gray-100">
+                      <span className="text-foreground-muted">Handle</span>{' '}
+                      <span className="font-mono bg-background-secondary px-2 py-0.5 rounded border border-border">
                         {data.handle}
                       </span>
                     </li>
                     <li className="flex justify-between items-center">
-                      <span className="text-slate-500">Name</span>{' '}
+                      <span className="text-foreground-muted">Name</span>{' '}
                       <span className="font-mono font-bold text-primary">{data.ldhName}</span>
                     </li>
                     <li className="flex flex-col mt-2 gap-2">
-                      <span className="text-slate-500">Status Flags</span>
+                      <span className="text-foreground-muted">Status Flags</span>
                       <div className="flex flex-wrap gap-1.5">
                         {data.status?.map(s => (
                           <span
                             key={s}
-                            className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-xs border border-blue-100 font-medium"
+                            className="px-2 py-1 bg-primary-light text-primary rounded-md text-xs border border-primary/20 font-medium"
                           >
                             {s}
                           </span>
@@ -135,20 +135,20 @@ export const WhoisLookup: React.FC = () => {
                   </ul>
                 </div>
 
-                <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                  <h3 className="font-bold text-slate-700 mb-4 border-b border-gray-100 pb-2 text-sm uppercase tracking-wide">
+                <div className="bg-card p-5 rounded-xl border border-border shadow-sm">
+                  <h3 className="font-bold text-foreground-secondary mb-4 border-b border-border pb-2 text-sm uppercase tracking-wide">
                     Events
                   </h3>
                   <ul className="space-y-3 text-sm">
                     {data.events?.map(e => (
                       <li
                         key={e.eventAction}
-                        className="flex justify-between items-center group hover:bg-slate-50 p-1.5 rounded-lg transition-colors -mx-1.5 px-1.5"
+                        className="flex justify-between items-center group hover:bg-background-secondary p-1.5 rounded-lg transition-colors -mx-1.5 px-1.5"
                       >
-                        <span className="text-slate-500 capitalize font-medium">
+                        <span className="text-foreground-muted capitalize font-medium">
                           {e.eventAction.replace(' last', '')}
                         </span>
-                        <span className="font-mono text-slate-700">
+                        <span className="font-mono text-foreground-secondary">
                           {new Date(e.eventDate).toLocaleDateString()}
                         </span>
                       </li>
@@ -168,7 +168,7 @@ export const WhoisLookup: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-slate-400">
+            <div className="h-full flex flex-col items-center justify-center text-foreground-muted">
               <Globe size={48} className="mb-4 opacity-20" />
               <p className="text-sm font-medium">Enter a domain to see registration details</p>
             </div>

@@ -89,6 +89,7 @@ app.use((req, res, next) => {
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     res.setHeader('X-XSS-Protection', '1; mode=block');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     next();
 });
 
@@ -288,9 +289,9 @@ app.post('/api/share', shareLimiter, asyncHandler(async (req, res) => {
         return res.status(400).json({ error: 'Content too large (max 5MB)' });
     }
 
-    // Generate a short ID (8 chars)
+    // Generate a secure ID (16 chars = 64 bits of entropy)
     const { randomBytes } = await import('crypto');
-    const id = randomBytes(4).toString('hex');
+    const id = randomBytes(8).toString('hex');
     
     const filePath = path.join(SHARES_DIR, `${id}.json`);
     

@@ -32,9 +32,11 @@ export const PasswordGenerator: React.FC = () => {
       return;
     }
 
+    const randomBuffer = new Uint32Array(length);
+    window.crypto.getRandomValues(randomBuffer);
     let generated = '';
     for (let i = 0; i < length; i++) {
-      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+      generated += chars.charAt(randomBuffer[i] % chars.length);
     }
     setPassword(generated);
     setCopied(false);
@@ -57,7 +59,7 @@ export const PasswordGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Lock}
           title="Password Generator"
@@ -65,7 +67,7 @@ export const PasswordGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <button
             onClick={generatePassword}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
@@ -76,15 +78,15 @@ export const PasswordGenerator: React.FC = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col items-center justify-center">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 flex flex-col items-center justify-center">
           <div className="max-w-3xl w-full flex flex-col gap-8">
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl blur-xl transition-all group-hover:blur-2xl"></div>
-              <div className="relative bg-white p-8 md:p-12 rounded-2xl border border-gray-200 shadow-sm text-center">
-                <div className="text-4xl md:text-5xl font-mono font-bold text-slate-800 break-all tracking-wider mb-2">
+              <div className="relative bg-card p-8 md:p-12 rounded-2xl border border-border shadow-sm text-center">
+                <div className="text-4xl md:text-5xl font-mono font-bold text-foreground break-all tracking-wider mb-2">
                   {password}
                 </div>
-                <p className="text-slate-400 text-sm font-medium">Strength: Strong</p>
+                <p className="text-foreground-muted text-sm font-medium">Strength: Strong</p>
 
                 <div className="absolute top-4 right-4">
                   <ActionButton
@@ -98,13 +100,13 @@ export const PasswordGenerator: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+            <div className="bg-card rounded-xl p-6 border border-border shadow-sm">
               <div className="mb-8">
                 <div className="flex justify-between items-center mb-3">
-                  <label htmlFor="password-length" className="font-bold text-slate-700">
+                  <label htmlFor="password-length" className="font-bold text-foreground-secondary">
                     Password Length
                   </label>
-                  <span className="text-primary font-bold bg-blue-50 px-3 py-1 rounded-lg text-sm">
+                  <span className="text-primary font-bold bg-primary-light px-3 py-1 rounded-lg text-sm">
                     {length} characters
                   </span>
                 </div>
@@ -115,7 +117,7 @@ export const PasswordGenerator: React.FC = () => {
                   max="64"
                   value={length}
                   onChange={e => setLength(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-600"
+                  className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary hover:accent-primary-hover"
                 />
               </div>
 
@@ -131,8 +133,8 @@ export const PasswordGenerator: React.FC = () => {
                     onClick={() => toggleOption(opt.key as keyof typeof options)}
                     className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
                       options[opt.key as keyof typeof options]
-                        ? 'bg-blue-50 border-primary/30 text-primary shadow-sm'
-                        : 'bg-white border-gray-100 text-slate-400 hover:border-gray-200'
+                        ? 'bg-primary-light border-primary/30 text-primary shadow-sm'
+                        : 'bg-card border-border text-foreground-muted hover:border-border-secondary'
                     }`}
                   >
                     <span className="font-bold text-sm">{opt.label}</span>

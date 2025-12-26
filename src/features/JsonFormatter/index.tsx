@@ -104,7 +104,7 @@ export const JsonFormatter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={FileJson}
           title="JSON Formatter"
@@ -112,17 +112,17 @@ export const JsonFormatter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-2">
             <button
               onClick={() => processJson('beautify')}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-sm"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors font-medium text-sm"
             >
               Beautify
             </button>
             <button
               onClick={() => processJson('minify')}
-              className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors font-medium text-sm"
+              className="px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground-secondary transition-colors font-medium text-sm"
             >
               Minify
             </button>
@@ -153,7 +153,7 @@ export const JsonFormatter: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <div className="flex flex-col h-full">
               <CodeEditor
@@ -164,7 +164,7 @@ export const JsonFormatter: React.FC = () => {
                 theme="light"
               />
               {error && (
-                <div className="mt-2 flex items-center text-red-600 text-sm font-medium bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
+                <div className="mt-2 flex items-center text-danger text-sm font-medium bg-danger-light px-3 py-1.5 rounded-lg border border-danger/20">
                   <AlertCircle size={16} className="mr-2 flex-shrink-0" />
                   <span className="truncate">{error}</span>
                 </div>

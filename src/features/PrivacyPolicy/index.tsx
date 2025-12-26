@@ -13,7 +13,7 @@ export const PrivacyPolicy: React.FC = () => {
       <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
 
       <div className="prose prose-slate max-w-none">
-        <p className="text-sm text-gray-500 mb-8">Last Updated: December 2, 2024</p>
+        <p className="text-sm text-foreground-muted mb-8">Last Updated: December 2, 2024</p>
 
         <h2>1. Introduction</h2>
         <p>
@@ -200,7 +200,7 @@ export const PrivacyPolicy: React.FC = () => {
         <h2>11. Third-Party Services</h2>
         <table className="min-w-full border">
           <thead>
-            <tr className="bg-gray-50">
+            <tr className="bg-background-secondary">
               <th className="border p-2">Service</th>
               <th className="border p-2">Purpose</th>
               <th className="border p-2">Data Shared</th>

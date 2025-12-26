@@ -143,7 +143,7 @@ export const XmlJsonConverter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         {/* Header */}
         <ToolHeader
           icon={ArrowRightLeft}
@@ -152,8 +152,8 @@ export const XmlJsonConverter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-4 items-center justify-between">
-          <div className="flex bg-slate-100 p-1 rounded-lg">
+        <div className="p-3 bg-card border-b border-border flex flex-wrap gap-4 items-center justify-between">
+          <div className="flex bg-background-secondary p-1 rounded-lg">
             <Button
               onClick={() => setMode('xml-json')}
               variant="ghost"
@@ -161,8 +161,8 @@ export const XmlJsonConverter: React.FC = () => {
               icon={FileCode}
               className={
                 mode === 'xml-json'
-                  ? 'bg-white text-primary shadow-sm hover:bg-white'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-card text-primary shadow-sm hover:bg-card'
+                  : 'text-foreground-secondary hover:text-foreground'
               }
             >
               XML to JSON
@@ -174,8 +174,8 @@ export const XmlJsonConverter: React.FC = () => {
               icon={FileJson}
               className={
                 mode === 'json-xml'
-                  ? 'bg-white text-primary shadow-sm hover:bg-white'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-card text-primary shadow-sm hover:bg-card'
+                  : 'text-foreground-secondary hover:text-foreground'
               }
             >
               JSON to XML
@@ -213,7 +213,7 @@ export const XmlJsonConverter: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <div className="flex flex-col h-full">
               <CodeEditor

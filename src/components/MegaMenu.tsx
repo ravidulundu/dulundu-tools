@@ -68,15 +68,15 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-[900px] bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-100 dark:border-slate-700 transition-all duration-200 transform p-6 z-50 ${
+      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-[900px] bg-card rounded-xl shadow-2xl border border-border transition-all duration-200 transform p-6 z-50 ${
         isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'
       }`}
     >
       {/* Invisible bridge to prevent menu from closing when moving mouse from nav to menu */}
       <div className="absolute -top-4 left-0 w-full h-4"></div>
 
-      <div className="flex items-center justify-between mb-4 border-b border-gray-100 dark:border-slate-700 pb-3">
-        <h3 className="font-bold text-slate-800 dark:text-white flex items-center">
+      <div className="flex items-center justify-between mb-4 border-b border-border pb-3">
+        <h3 className="font-bold text-foreground flex items-center">
           <Grid size={18} className="mr-2 text-primary" />
           All Categories
         </h3>
@@ -95,7 +95,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
               <Link
                 key={category}
                 to={categoryToPath[category] || '/'}
-                className="text-[13px] text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 px-2 py-1.5 rounded-lg transition-colors truncate block"
+                className="text-[13px] text-foreground-secondary hover:text-primary hover:bg-primary-light px-2 py-1.5 rounded-lg transition-colors truncate block"
                 title={category}
                 onClick={onClose}
               >
@@ -106,8 +106,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
         ))}
       </div>
 
-      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
-        <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">
+      <div className="mt-4 pt-4 border-t border-border">
+        <h4 className="text-xs font-bold text-foreground-muted uppercase tracking-wide mb-2">
           Popular Tools
         </h4>
         <div className="flex flex-wrap gap-2">
@@ -117,7 +117,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
               <Link
                 key={tool.id}
                 to={tool.path}
-                className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-1 rounded hover:bg-primary hover:text-white transition-colors"
+                className="text-xs bg-background-secondary text-foreground-secondary px-2 py-1 rounded hover:bg-primary hover:text-primary-foreground transition-colors"
                 onClick={onClose}
               >
                 {tool.name}

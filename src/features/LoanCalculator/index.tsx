@@ -86,20 +86,20 @@ export const LoanCalculator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={DollarSign}
           title="Loan Calculator"
           description="Professional Mortgage & Amortization Calculator"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 overflow-y-auto">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 md:gap-12">
             {/* LEFT: Inputs */}
             <div className="lg:col-span-4 space-y-8">
-              <div className="p-6 bg-white rounded-2xl border border-gray-200 shadow-sm space-y-6">
+              <div className="p-6 bg-card rounded-2xl border border-border shadow-sm space-y-6">
                 <div>
-                  <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                  <label className="flex justify-between text-sm font-bold text-foreground-secondary mb-2">
                     <span>Loan Amount</span>
                     <span className="text-primary">{fmt(amount)}</span>
                   </label>
@@ -110,23 +110,23 @@ export const LoanCalculator: React.FC = () => {
                     step="5000"
                     value={amount}
                     onChange={e => setAmount(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary mb-3"
+                    className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary mb-3"
                   />
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-muted font-bold">
                       $
                     </span>
                     <input
                       type="number"
                       value={amount}
                       onChange={e => setAmount(Number(e.target.value))}
-                      className="w-full pl-8 p-3 bg-white text-slate-900 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none font-bold shadow-sm"
+                      className="w-full pl-8 p-3 bg-card text-foreground border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none font-bold shadow-sm"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                  <label className="flex justify-between text-sm font-bold text-foreground-secondary mb-2">
                     <span>Interest Rate</span>
                     <span className="text-primary">{rate}%</span>
                   </label>
@@ -137,23 +137,23 @@ export const LoanCalculator: React.FC = () => {
                     step="0.1"
                     value={rate}
                     onChange={e => setRate(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary mb-3"
+                    className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary mb-3"
                   />
                   <div className="relative">
                     <input
                       type="number"
                       value={rate}
                       onChange={e => setRate(Number(e.target.value))}
-                      className="w-full p-3 bg-white text-slate-900 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none font-bold shadow-sm"
+                      className="w-full p-3 bg-card text-foreground border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none font-bold shadow-sm"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground-muted font-bold">
                       %
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="flex justify-between text-sm font-bold text-slate-700 mb-2">
+                  <label className="flex justify-between text-sm font-bold text-foreground-secondary mb-2">
                     <span>Loan Term</span>
                     <span className="text-primary">{term} Years</span>
                   </label>
@@ -164,16 +164,16 @@ export const LoanCalculator: React.FC = () => {
                     step="1"
                     value={term}
                     onChange={e => setTerm(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary mb-3"
+                    className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary mb-3"
                   />
                   <div className="relative">
                     <input
                       type="number"
                       value={term}
                       onChange={e => setTerm(Number(e.target.value))}
-                      className="w-full p-3 bg-white text-slate-900 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none font-bold shadow-sm"
+                      className="w-full p-3 bg-card text-foreground border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none font-bold shadow-sm"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground-muted font-bold">
                       Years
                     </span>
                   </div>
@@ -185,8 +185,8 @@ export const LoanCalculator: React.FC = () => {
             <div className="lg:col-span-8 space-y-8">
               {/* Hero Stats */}
               <div className="grid md:grid-cols-2 gap-6 items-center">
-                <div className="bg-blue-50/50 rounded-2xl p-6 border border-blue-100 flex flex-col justify-center h-full">
-                  <span className="text-slate-500 font-medium text-sm uppercase tracking-wider mb-2">
+                <div className="bg-primary-light/50 rounded-2xl p-6 border border-primary/20 flex flex-col justify-center h-full">
+                  <span className="text-foreground-muted font-medium text-sm uppercase tracking-wider mb-2">
                     Monthly Payment
                   </span>
                   <div className="flex items-baseline space-x-1">
@@ -194,11 +194,11 @@ export const LoanCalculator: React.FC = () => {
                       ${monthly.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">Principal & Interest only</p>
+                  <p className="text-xs text-foreground-muted mt-2">Principal & Interest only</p>
                 </div>
 
                 {/* Donut Chart Visualization */}
-                <div className="flex items-center justify-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="flex items-center justify-center bg-card p-4 rounded-2xl border border-border shadow-sm relative overflow-hidden">
                   {/* Conic Gradient: Primary (Blue) for Principal, Slate-200 (Light Gray) for Interest */}
                   <div
                     className="relative w-40 h-40 rounded-full flex items-center justify-center"
@@ -206,24 +206,24 @@ export const LoanCalculator: React.FC = () => {
                       background: `conic-gradient(#3b82f6 ${100 - interestPercentage}%, #cbd5e1 0)`,
                     }}
                   >
-                    <div className="w-28 h-28 bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
-                      <PieChart className="text-slate-300 mb-1" size={24} />
-                      <span className="text-xs font-bold text-slate-400">Ratio</span>
+                    <div className="w-28 h-28 bg-card rounded-full flex flex-col items-center justify-center shadow-inner">
+                      <PieChart className="text-foreground-muted mb-1" size={24} />
+                      <span className="text-xs font-bold text-foreground-muted">Ratio</span>
                     </div>
                   </div>
                   <div className="ml-6 space-y-3">
                     <div className="flex items-center">
                       <span className="w-3 h-3 rounded-full bg-primary mr-2"></span>
                       <div>
-                        <p className="text-xs text-slate-500">Principal</p>
-                        <p className="font-bold text-slate-800">{fmt(amount)}</p>
+                        <p className="text-xs text-foreground-muted">Principal</p>
+                        <p className="font-bold text-foreground">{fmt(amount)}</p>
                       </div>
                     </div>
                     <div className="flex items-center">
-                      <span className="w-3 h-3 rounded-full bg-slate-300 mr-2"></span>
+                      <span className="w-3 h-3 rounded-full bg-border mr-2"></span>
                       <div>
-                        <p className="text-xs text-slate-500">Interest</p>
-                        <p className="font-bold text-slate-800">{fmt(totalInterest)}</p>
+                        <p className="text-xs text-foreground-muted">Interest</p>
+                        <p className="font-bold text-foreground">{fmt(totalInterest)}</p>
                       </div>
                     </div>
                   </div>
@@ -232,40 +232,40 @@ export const LoanCalculator: React.FC = () => {
 
               {/* Breakdown Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 rounded-xl border border-gray-200 bg-white flex flex-col items-center text-center hover:border-primary/30 transition-colors">
-                  <div className="p-2 bg-blue-50 text-primary rounded-lg mb-2">
+                <div className="p-4 rounded-xl border border-border bg-card flex flex-col items-center text-center hover:border-primary/30 transition-colors">
+                  <div className="p-2 bg-primary-light text-primary rounded-lg mb-2">
                     <CircleDollarSign size={20} />
                   </div>
-                  <p className="text-xs text-slate-500 font-medium">Total Cost</p>
-                  <p className="text-lg font-bold text-slate-800">{fmt(totalPayment)}</p>
+                  <p className="text-xs text-foreground-muted font-medium">Total Cost</p>
+                  <p className="text-lg font-bold text-foreground">{fmt(totalPayment)}</p>
                 </div>
-                <div className="p-4 rounded-xl border border-gray-200 bg-white flex flex-col items-center text-center hover:border-primary/30 transition-colors">
-                  <div className="p-2 bg-blue-50 text-primary rounded-lg mb-2">
+                <div className="p-4 rounded-xl border border-border bg-card flex flex-col items-center text-center hover:border-primary/30 transition-colors">
+                  <div className="p-2 bg-primary-light text-primary rounded-lg mb-2">
                     <TrendingDown size={20} />
                   </div>
-                  <p className="text-xs text-slate-500 font-medium">Principal Paid</p>
-                  <p className="text-lg font-bold text-slate-800">{fmt(amount)}</p>
+                  <p className="text-xs text-foreground-muted font-medium">Principal Paid</p>
+                  <p className="text-lg font-bold text-foreground">{fmt(amount)}</p>
                 </div>
-                <div className="p-4 rounded-xl border border-gray-200 bg-white flex flex-col items-center text-center hover:border-primary/30 transition-colors">
-                  <div className="p-2 bg-blue-50 text-primary rounded-lg mb-2">
+                <div className="p-4 rounded-xl border border-border bg-card flex flex-col items-center text-center hover:border-primary/30 transition-colors">
+                  <div className="p-2 bg-primary-light text-primary rounded-lg mb-2">
                     <TrendingUp size={20} />
                   </div>
-                  <p className="text-xs text-slate-500 font-medium">Interest Paid</p>
-                  <p className="text-lg font-bold text-slate-800">{fmt(totalInterest)}</p>
+                  <p className="text-xs text-foreground-muted font-medium">Interest Paid</p>
+                  <p className="text-lg font-bold text-foreground">{fmt(totalInterest)}</p>
                 </div>
               </div>
 
               {/* Amortization Table */}
-              <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
-                <div className="bg-slate-50 p-4 border-b border-gray-200 flex items-center justify-between">
-                  <h3 className="font-bold text-slate-700 flex items-center">
+              <div className="border border-border rounded-xl overflow-hidden shadow-sm bg-card">
+                <div className="bg-background-secondary p-4 border-b border-border flex items-center justify-between">
+                  <h3 className="font-bold text-foreground-secondary flex items-center">
                     <Calendar size={18} className="mr-2 text-primary" />
                     Yearly Amortization Schedule
                   </h3>
                 </div>
                 <div className="max-h-[300px] overflow-y-auto">
                   <table className="w-full text-sm text-left">
-                    <thead className="bg-slate-50 text-slate-500 sticky top-0">
+                    <thead className="bg-background-secondary text-foreground-muted sticky top-0">
                       <tr>
                         <th className="px-4 py-3 font-medium">Year</th>
                         <th className="px-4 py-3 font-medium text-right">Interest</th>
@@ -273,17 +273,17 @@ export const LoanCalculator: React.FC = () => {
                         <th className="px-4 py-3 font-medium text-right">Balance</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100">
+                    <tbody className="divide-y divide-border">
                       {schedule.map(row => (
-                        <tr key={row.year} className="hover:bg-slate-50 transition-colors">
-                          <td className="px-4 py-3 font-medium text-slate-700">Year {row.year}</td>
-                          <td className="px-4 py-3 text-right text-slate-500">
+                        <tr key={row.year} className="hover:bg-background-secondary transition-colors">
+                          <td className="px-4 py-3 font-medium text-foreground-secondary">Year {row.year}</td>
+                          <td className="px-4 py-3 text-right text-foreground-muted">
                             {fmt(row.interest)}
                           </td>
-                          <td className="px-4 py-3 text-right text-slate-500">
+                          <td className="px-4 py-3 text-right text-foreground-muted">
                             {fmt(row.principal)}
                           </td>
-                          <td className="px-4 py-3 text-right font-bold text-slate-800">
+                          <td className="px-4 py-3 text-right font-bold text-foreground">
                             {fmt(row.balance)}
                           </td>
                         </tr>

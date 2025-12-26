@@ -93,7 +93,7 @@ export const EscapeTools: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Code}
           title="String Escaper & Encoder"
@@ -101,7 +101,7 @@ export const EscapeTools: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-2 justify-between items-center">
+        <div className="p-3 bg-card border-b border-border flex flex-wrap gap-2 justify-between items-center">
           <div className="flex flex-wrap gap-2">
             {[
               { id: 'html-escape', label: 'HTML Escape' },
@@ -117,7 +117,7 @@ export const EscapeTools: React.FC = () => {
                 className={`px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all ${
                   mode === opt.id
                     ? 'bg-primary text-white shadow-md'
-                    : 'bg-slate-50 border border-gray-200 text-slate-600 hover:border-primary hover:text-primary'
+                    : 'bg-background-secondary border border-border text-foreground-secondary hover:border-primary hover:text-primary'
                 }`}
               >
                 {opt.label}
@@ -127,7 +127,7 @@ export const EscapeTools: React.FC = () => {
 
           <button
             onClick={handleClear}
-            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-foreground-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
             title="Clear All"
           >
             <Trash2 size={20} />
@@ -135,7 +135,7 @@ export const EscapeTools: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <CodeEditor
               value={input}

@@ -53,7 +53,7 @@ export const WordCounter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Type}
           title="Word Counter"
@@ -61,29 +61,29 @@ export const WordCounter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-2 overflow-x-auto pb-1 md:pb-0">
             <button
               onClick={() => transformText('upper')}
-              className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-gray-200 text-slate-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 bg-background-secondary hover:bg-background-secondary border border-border text-foreground-secondary rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
             >
               UPPERCASE
             </button>
             <button
               onClick={() => transformText('lower')}
-              className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-gray-200 text-slate-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 bg-background-secondary hover:bg-background-secondary border border-border text-foreground-secondary rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
             >
               lowercase
             </button>
             <button
               onClick={() => transformText('capital')}
-              className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-gray-200 text-slate-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 bg-background-secondary hover:bg-background-secondary border border-border text-foreground-secondary rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
             >
               Capitalize Words
             </button>
             <button
               onClick={() => transformText('sentence')}
-              className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-gray-200 text-slate-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 bg-background-secondary hover:bg-background-secondary border border-border text-foreground-secondary rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
             >
               Sentence case
             </button>
@@ -95,7 +95,7 @@ export const WordCounter: React.FC = () => {
         </div>
 
         {/* Stats Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-gray-200 border-b border-gray-200">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-border border-b border-border">
           {[
             { label: 'Words', value: stats.words },
             { label: 'Characters', value: stats.chars },
@@ -103,18 +103,18 @@ export const WordCounter: React.FC = () => {
             { label: 'Lines', value: stats.lines },
             { label: 'Paragraphs', value: stats.paragraphs },
           ].map(stat => (
-            <div key={stat.label} className="bg-white p-3 text-center">
-              <div className="text-xl md:text-2xl font-bold text-slate-800">
+            <div key={stat.label} className="bg-card p-3 text-center">
+              <div className="text-xl md:text-2xl font-bold text-foreground">
                 {stat.value.toLocaleString()}
               </div>
-              <div className="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider">
+              <div className="text-[10px] md:text-xs font-bold text-foreground-muted uppercase tracking-wider">
                 {stat.label}
               </div>
             </div>
           ))}
         </div>
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <CodeEditor
             value={textVal}
             onChange={setTextVal}

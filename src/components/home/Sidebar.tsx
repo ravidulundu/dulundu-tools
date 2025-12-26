@@ -25,7 +25,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <>
       {/* Sidebar Categories (Desktop) */}
       <aside className="hidden lg:block w-64 shrink-0 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2 custom-scrollbar">
-        <h3 className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-4 px-2">
+        <h3 className="text-xs font-bold text-foreground-secondary uppercase tracking-wider mb-4 px-2">
           Categories
         </h3>
         <nav className="space-y-1">
@@ -34,7 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
               activeCategory === 'All'
                 ? 'bg-primary text-white shadow-md shadow-primary/20'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                : 'text-foreground-secondary hover:bg-background-secondary'
             }`}
           >
             <span className="flex items-center">
@@ -44,7 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={`text-xs px-1.5 py-0.5 rounded-md ${
                 activeCategory === 'All'
                   ? 'bg-white/20 text-white'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+                  : 'bg-background-secondary text-foreground-secondary'
               }`}
             >
               {ALL_TOOLS.length}
@@ -58,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeCategory === category
                   ? 'bg-primary text-white shadow-md shadow-primary/20'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  : 'text-foreground-secondary hover:bg-background-secondary'
               }`}
             >
               <span>{category}</span>
@@ -66,7 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 className={`text-xs px-1.5 py-0.5 rounded-md ${
                   activeCategory === category
                     ? 'bg-white/20 text-white'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+                    : 'bg-background-secondary text-foreground-secondary'
                 }`}
               >
                 {categoryInfo[category].count}
@@ -84,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             className={`flex-shrink-0 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
               activeCategory === 'All'
                 ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700'
+                : 'bg-card text-foreground-secondary border border-border'
             }`}
           >
             All Tools
@@ -96,7 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={`flex-shrink-0 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                 activeCategory === category
                   ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700'
+                  : 'bg-card text-foreground-secondary border border-border'
               }`}
             >
               {category}

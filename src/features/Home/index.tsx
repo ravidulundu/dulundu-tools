@@ -78,7 +78,7 @@ export const Home: React.FC = () => {
   }, [categoryInfo]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors duration-200 pb-20">
+    <div className="min-h-screen bg-background-secondary transition-colors duration-200 pb-20">
       <SEO
         title="Dulundu Tools - Ultimate Developer Utilities Collection"
         description="Access 100+ free developer tools including JSON Formatter, Base64 Converter, SQL Beautifier, AI Code Helper, and more. Fast, secure, and client-side."

@@ -59,10 +59,10 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const themeClasses =
     theme === 'dark'
-      ? 'border-gray-800 bg-[#1e293b] text-gray-50'
+      ? 'border-border-secondary bg-code-bg text-code-fg'
       : disabled
-        ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
-        : 'border-primary/30 bg-white text-slate-900 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary';
+        ? 'border-border bg-background-secondary text-foreground-subtle cursor-not-allowed'
+        : 'border-primary/30 bg-card text-foreground focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary';
 
   // Calculate stats
   const charCount = value.length;
@@ -104,8 +104,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           <div
             className={`select-none py-4 px-2 text-right border-r ${
               theme === 'dark'
-                ? 'border-gray-700 text-gray-500 bg-[#1a2332]'
-                : 'border-gray-200 text-gray-400 bg-gray-50'
+                ? 'border-border-secondary text-foreground-subtle bg-background-tertiary'
+                : 'border-border text-foreground-subtle bg-background-secondary'
             }`}
             style={{
               minWidth: '3rem',
@@ -129,7 +129,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             placeholder={placeholder}
             className={`flex-1 p-4 font-mono text-sm outline-none resize-none leading-relaxed ${
               theme === 'dark'
-                ? 'bg-[#1e293b] text-gray-50 selection:bg-blue-500/30'
+                ? 'bg-code-bg text-code-fg selection:bg-primary/30'
                 : 'bg-transparent text-inherit'
             }`}
           />
@@ -147,7 +147,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         placeholder={placeholder}
         className={`w-full h-full p-4 font-mono text-sm outline-none resize-none leading-relaxed ${
           theme === 'dark'
-            ? 'bg-[#1e293b] text-gray-50 selection:bg-blue-500/30'
+            ? 'bg-code-bg text-code-fg selection:bg-primary/30'
             : 'bg-transparent text-inherit'
         }`}
       />
@@ -158,12 +158,12 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     <div className="flex flex-col h-full min-h-[300px]">
       {(label || actions || showCopyButton) && (
         <div className="flex justify-between items-center mb-2">
-          {label && <label className="block text-sm font-bold text-slate-700">{label}</label>}
+          {label && <label className="block text-sm font-bold text-foreground-secondary">{label}</label>}
           <div className="flex gap-2">
             {showCopyButton && value && (
               <button
                 onClick={handleCopy}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors bg-gray-100 hover:bg-gray-200 text-gray-700"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors bg-background-secondary hover:bg-background-tertiary text-foreground-secondary"
                 title="Copy to clipboard"
               >
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -185,7 +185,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       {showStats && value && (
         <div
           className={`mt-2 text-xs ${
-            theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+            theme === 'dark' ? 'text-foreground-subtle' : 'text-foreground-muted'
           } flex gap-4`}
         >
           <span>Characters: {charCount.toLocaleString()}</span>

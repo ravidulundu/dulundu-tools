@@ -76,7 +76,7 @@ const EditorPanel = () => {
   }, [svgCode, setOptimizationStats]);
 
   return (
-    <div className="h-full w-full bg-white dark:bg-[#1e1e1e] flex flex-col relative">
+    <div className="h-full w-full bg-card flex flex-col relative">
       <ShareModal
         isOpen={showShareModal}
         onClose={() => setShowShareModal(false)}

@@ -42,11 +42,11 @@ export const DiffViewer: React.FC = () => {
 
       if (oldLine === newLine) {
         result.push(
-          <div key={i} className="flex border-b border-gray-100 hover:bg-gray-50 group">
-            <div className="w-12 p-1 text-right text-gray-400 text-xs select-none border-r border-gray-200 bg-gray-50 font-mono pr-2">
+          <div key={i} className="flex border-b border-border hover:bg-background-secondary group">
+            <div className="w-12 p-1 text-right text-foreground-muted text-xs select-none border-r border-border bg-background-secondary font-mono pr-2">
               {i + 1}
             </div>
-            <div className="flex-1 p-1 pl-4 font-mono text-sm text-slate-600 overflow-x-auto whitespace-pre">
+            <div className="flex-1 p-1 pl-4 font-mono text-sm text-foreground-secondary overflow-x-auto whitespace-pre">
               {oldLine}
             </div>
           </div>
@@ -56,12 +56,12 @@ export const DiffViewer: React.FC = () => {
           result.push(
             <div
               key={`d-${i}`}
-              className="flex bg-red-50/50 border-b border-red-100 hover:bg-red-50 transition-colors"
+              className="flex bg-danger-light/50 border-b border-border hover:bg-danger-light transition-colors"
             >
-              <div className="w-12 p-1 text-right text-red-400 text-xs select-none border-r border-red-200 bg-red-50 font-mono pr-2">
+              <div className="w-12 p-1 text-right text-danger text-xs select-none border-r border-border bg-danger-light font-mono pr-2">
                 -
               </div>
-              <div className="flex-1 p-1 pl-4 font-mono text-sm text-red-700 overflow-x-auto whitespace-pre">
+              <div className="flex-1 p-1 pl-4 font-mono text-sm text-danger overflow-x-auto whitespace-pre">
                 {oldLine}
               </div>
             </div>
@@ -71,12 +71,12 @@ export const DiffViewer: React.FC = () => {
           result.push(
             <div
               key={`a-${i}`}
-              className="flex bg-green-50/50 border-b border-green-100 hover:bg-green-50 transition-colors"
+              className="flex bg-success-light/50 border-b border-border hover:bg-success-light transition-colors"
             >
-              <div className="w-12 p-1 text-right text-green-400 text-xs select-none border-r border-green-200 bg-green-50 font-mono pr-2">
+              <div className="w-12 p-1 text-right text-success text-xs select-none border-r border-border bg-success-light font-mono pr-2">
                 +
               </div>
-              <div className="flex-1 p-1 pl-4 font-mono text-sm text-green-700 overflow-x-auto whitespace-pre">
+              <div className="flex-1 p-1 pl-4 font-mono text-sm text-success overflow-x-auto whitespace-pre">
                 {newLine}
               </div>
             </div>
@@ -95,7 +95,7 @@ export const DiffViewer: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-full">
+      <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden flex flex-col h-full">
         <ToolHeader
           icon={ArrowRightLeft}
           title="Diff Viewer"
@@ -103,7 +103,7 @@ export const DiffViewer: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 border-b border-gray-100 flex justify-end space-x-2">
+        <div className="p-3 border-b border-border flex justify-end space-x-2">
           {diff && (
             <ActionButton
               onClick={() => setDiff(null)}
@@ -151,7 +151,7 @@ export const DiffViewer: React.FC = () => {
 
         {/* Input Area - Only show if no diff computed yet */}
         {!diff ? (
-          <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+          <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
             <div className="grid md:grid-cols-2 gap-4 h-full">
               <CodeEditor
                 value={oldText}
@@ -171,9 +171,9 @@ export const DiffViewer: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col min-h-0 bg-white">
-            <div className="p-2 bg-slate-100 border-b border-gray-200 flex justify-between items-center px-4">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+          <div className="flex-1 flex flex-col min-h-0 bg-card">
+            <div className="p-2 bg-background-secondary border-b border-border flex justify-between items-center px-4">
+              <span className="text-xs font-bold text-foreground-muted uppercase tracking-wider">
                 Comparison Result
               </span>
             </div>

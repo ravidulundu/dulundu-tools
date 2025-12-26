@@ -50,7 +50,7 @@ export const CronGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Clock}
           title="Cron Generator"
@@ -60,7 +60,7 @@ export const CronGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => {
@@ -70,7 +70,7 @@ export const CronGenerator: React.FC = () => {
                 setMonth('*');
                 setWeek('*');
               }}
-              className="px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-xs font-medium hover:bg-slate-100 transition-colors"
+              className="px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-xs font-medium hover:bg-background-secondary transition-colors"
             >
               Every Minute
             </button>
@@ -82,7 +82,7 @@ export const CronGenerator: React.FC = () => {
                 setMonth('*');
                 setWeek('*');
               }}
-              className="px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-xs font-medium hover:bg-slate-100 transition-colors"
+              className="px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-xs font-medium hover:bg-background-secondary transition-colors"
             >
               Hourly
             </button>
@@ -94,7 +94,7 @@ export const CronGenerator: React.FC = () => {
                 setMonth('*');
                 setWeek('*');
               }}
-              className="px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-xs font-medium hover:bg-slate-100 transition-colors"
+              className="px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-xs font-medium hover:bg-background-secondary transition-colors"
             >
               Daily (Midnight)
             </button>
@@ -106,7 +106,7 @@ export const CronGenerator: React.FC = () => {
                 setMonth('*');
                 setWeek('0');
               }}
-              className="px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-xs font-medium hover:bg-slate-100 transition-colors"
+              className="px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-xs font-medium hover:bg-background-secondary transition-colors"
             >
               Weekly (Sunday)
             </button>
@@ -114,7 +114,7 @@ export const CronGenerator: React.FC = () => {
 
           <button
             onClick={handleClear}
-            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-foreground-muted hover:text-danger hover:bg-danger-light rounded-lg transition-colors"
             title="Reset"
           >
             <Trash2 size={20} />
@@ -122,14 +122,14 @@ export const CronGenerator: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="h-full flex flex-col gap-6">
             {/* Result Display */}
-            <div className="bg-slate-900 rounded-2xl p-8 text-center relative group shadow-lg flex-shrink-0">
-              <div className="text-4xl md:text-5xl font-mono font-bold text-white mb-3 tracking-widest">
+            <div className="bg-background-dark rounded-2xl p-8 text-center relative group shadow-lg flex-shrink-0">
+              <div className="text-4xl md:text-5xl font-mono font-bold text-foreground-inverse mb-3 tracking-widest">
                 {expression}
               </div>
-              <p className="text-slate-400 font-medium">{humanReadable()}</p>
+              <p className="text-foreground-muted font-medium">{humanReadable()}</p>
               <div className="absolute top-4 right-4">
                 <ActionButton
                   icon={copied ? Check : Copy}
@@ -152,18 +152,18 @@ export const CronGenerator: React.FC = () => {
               ].map(field => (
                 <div
                   key={field.label}
-                  className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col"
+                  className="bg-card p-4 rounded-xl border border-border shadow-sm flex flex-col"
                 >
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-3 text-center tracking-wider">
+                  <label className="block text-xs font-bold text-foreground-muted uppercase mb-3 text-center tracking-wider">
                     {field.label}
                   </label>
                   <input
                     type="text"
                     value={field.val}
                     onChange={e => field.set(e.target.value)}
-                    className="w-full text-center p-3 bg-slate-50 border border-gray-200 rounded-lg font-mono font-bold text-xl text-slate-800 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all mb-auto"
+                    className="w-full text-center p-3 bg-background-secondary border border-border rounded-lg font-mono font-bold text-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all mb-auto"
                   />
-                  <p className="text-[10px] text-center text-slate-400 mt-3 font-medium bg-slate-50 py-1 rounded-md">
+                  <p className="text-[10px] text-center text-foreground-muted mt-3 font-medium bg-background-secondary py-1 rounded-md">
                     {field.range}
                   </p>
                 </div>

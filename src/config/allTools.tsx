@@ -366,14 +366,6 @@ export const ALL_TOOLS: ToolDef[] = [
     icon: Binary,
   },
   {
-    id: 'coming-soon',
-    name: 'Coming Soon',
-    description: 'More tools are on the way.',
-    category: ToolCategory.OTHER,
-    path: '/coming-soon',
-    icon: Clock,
-  },
-  {
     id: 'svg-viewer',
     name: 'SVG Viewer & Editor',
     description: 'View, edit and optimize SVGs.',

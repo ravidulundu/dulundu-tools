@@ -14,7 +14,7 @@ interface CodeTabProps {
 
 export const CodeTab: React.FC<CodeTabProps> = ({ code, language = 'typescript' }) => {
   return (
-    <div className="w-full h-full bg-white overflow-auto">
+    <div className="w-full h-full bg-card overflow-auto">
       <SyntaxHighlighter
         language={language}
         style={atomOneLight}
@@ -29,7 +29,7 @@ export const CodeTab: React.FC<CodeTabProps> = ({ code, language = 'typescript' 
         lineNumberStyle={{
           minWidth: '2.5em',
           paddingRight: '1em',
-          color: '#9ca3af', // gray-400
+          color: 'var(--color-foreground-muted)',
           textAlign: 'right',
         }}
         wrapLines={true}

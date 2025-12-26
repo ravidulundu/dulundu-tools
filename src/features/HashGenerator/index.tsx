@@ -93,7 +93,7 @@ export const HashGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={ShieldCheck}
           title="Hash Generator"
@@ -101,8 +101,8 @@ export const HashGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
-          <div className="flex bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
+          <div className="flex bg-card border border-border p-1 rounded-lg shadow-sm">
             {['MD5', 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'].map(a => (
               <button
                 key={a}
@@ -110,7 +110,7 @@ export const HashGenerator: React.FC = () => {
                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                   algo === a
                     ? 'bg-primary text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700'
+                    : 'text-foreground-muted hover:text-foreground-secondary'
                 }`}
               >
                 {a}
@@ -122,7 +122,7 @@ export const HashGenerator: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <div className="flex flex-col h-full gap-4">
               <CodeEditor
@@ -134,10 +134,10 @@ export const HashGenerator: React.FC = () => {
                 disabled={!!file}
               />
 
-              <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+              <div className="bg-card p-4 rounded-xl border border-border shadow-sm">
                 <label
                   htmlFor="file-upload"
-                  className="block text-xs font-bold text-slate-500 uppercase mb-3"
+                  className="block text-xs font-bold text-foreground-muted uppercase mb-3"
                 >
                   Or Upload File
                 </label>
@@ -150,7 +150,7 @@ export const HashGenerator: React.FC = () => {
                     }
                   }}
                   className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${
-                    file ? 'border-primary bg-blue-50' : 'border-gray-300 hover:bg-gray-50'
+                    file ? 'border-primary bg-primary-light' : 'border-border hover:bg-background-secondary'
                   }`}
                   onClick={() => fileInputRef.current?.click()}
                 >
@@ -163,12 +163,12 @@ export const HashGenerator: React.FC = () => {
                   />
                   {file ? (
                     <div className="text-sm">
-                      <p className="font-bold text-slate-800">{file.name}</p>
-                      <p className="text-slate-500">{(file.size / 1024).toFixed(2)} KB</p>
+                      <p className="font-bold text-foreground">{file.name}</p>
+                      <p className="text-foreground-muted">{(file.size / 1024).toFixed(2)} KB</p>
                       <p className="text-primary mt-2">Click to change</p>
                     </div>
                   ) : (
-                    <p className="text-sm text-slate-500 font-medium">Click to select a file</p>
+                    <p className="text-sm text-foreground-muted font-medium">Click to select a file</p>
                   )}
                 </div>
               </div>

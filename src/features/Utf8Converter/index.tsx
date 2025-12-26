@@ -110,7 +110,7 @@ export const Utf8Converter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Type}
           title="UTF-8 Converter"
@@ -118,9 +118,9 @@ export const Utf8Converter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex items-center gap-4">
-          <span className="text-sm font-medium text-slate-600">Input Format:</span>
-          <div className="flex bg-slate-100 p-1 rounded-lg">
+        <div className="p-3 bg-card border-b border-border flex items-center gap-4">
+          <span className="text-sm font-medium text-foreground-secondary">Input Format:</span>
+          <div className="flex bg-background-secondary p-1 rounded-lg">
             {(['text', 'hex', 'bin', 'dec'] as Format[]).map(f => (
               <button
                 key={f}
@@ -143,8 +143,8 @@ export const Utf8Converter: React.FC = () => {
                 }}
                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all capitalize ${
                   inputFormat === f
-                    ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700'
+                    ? 'bg-card text-primary shadow-sm'
+                    : 'text-foreground-muted hover:text-foreground-secondary'
                 }`}
               >
                 {f === 'bin' ? 'Binary' : f === 'dec' ? 'Decimal' : f}
@@ -153,7 +153,7 @@ export const Utf8Converter: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 flex flex-col">
           <div className="mb-6">
             <CodeEditor
               value={input}

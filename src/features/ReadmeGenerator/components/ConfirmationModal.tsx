@@ -19,9 +19,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-800 w-full max-w-md p-6 transform transition-all scale-100">
+      <div className="bg-card rounded-lg shadow-xl border border-border w-full max-w-md p-6 transform transition-all scale-100">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-red-100 dark:bg-red-900/20 rounded-full text-red-600 dark:text-red-400">
+          <div className="p-2 bg-destructive/10 rounded-full text-destructive">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -38,15 +38,15 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               <line x1="12" y1="17" x2="12.01" y2="17" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+          <h3 className="text-lg font-semibold text-foreground">{title}</h3>
         </div>
 
-        <p className="text-gray-600 dark:text-gray-300 mb-6">{message}</p>
+        <p className="text-foreground-secondary mb-6">{message}</p>
 
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors"
+            className="px-4 py-2 text-sm font-medium text-foreground-secondary bg-background-secondary hover:bg-background-secondary/80 rounded-md transition-colors"
           >
             Cancel
           </button>

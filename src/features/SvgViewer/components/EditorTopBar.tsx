@@ -156,12 +156,12 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
   };
 
   return (
-    <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-[#1e1e1e] border-b border-gray-200 dark:border-gray-800">
+    <div className="flex items-center justify-between px-4 py-2 bg-background-secondary border-b border-border">
       {/* Left Tools */}
       <div className="flex items-center gap-4">
         <button
           onClick={handleReset}
-          className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="text-foreground-secondary hover:text-foreground transition-colors"
           title="Reset"
         >
           <RotateCcw className="w-3.5 h-3.5" />
@@ -170,14 +170,14 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
         <div className="flex items-center gap-1">
           <button
             onClick={handleUndo}
-            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="text-foreground-secondary hover:text-foreground transition-colors"
             title="Undo"
           >
             <Undo className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={handleRedo}
-            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="text-foreground-secondary hover:text-foreground transition-colors"
             title="Redo"
           >
             <Redo className="w-3.5 h-3.5" />
@@ -187,7 +187,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
         <div className="relative">
           <button
             onClick={() => setShowDimensions(!showDimensions)}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 text-foreground-secondary hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-background-secondary"
           >
             <Crop className="w-3.5 h-3.5" />
             <span className="text-xs font-mono">
@@ -197,13 +197,13 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
 
           {/* Dimensions Popover */}
           {showDimensions && (
-            <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-[#252526] border border-gray-300 dark:border-gray-700 rounded-md shadow-xl p-3 z-50">
-              <div className="text-[10px] font-bold text-gray-600 dark:text-gray-500 mb-2 tracking-wider">
+            <div className="absolute top-full left-0 mt-2 w-48 bg-card border border-border rounded-md shadow-xl p-3 z-50">
+              <div className="text-[10px] font-bold text-foreground-secondary mb-2 tracking-wider">
                 DIMENSIONS
               </div>
               <div className="flex gap-2">
                 <div className="flex-1 relative">
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs font-medium">
+                  <div className="absolute left-2 top-1/2 -translate-y-1/2 text-foreground-muted text-xs font-medium">
                     W
                   </div>
                   <input
@@ -221,11 +221,11 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
                         updateSvgDimensions(w, h);
                       }
                     }}
-                    className="w-full bg-[#1e1e1e] border border-gray-700 rounded px-2 py-1 pl-6 text-xs text-gray-300 focus:outline-none focus:border-blue-500"
+                    className="w-full bg-background-secondary border border-border rounded px-2 py-1 pl-6 text-xs text-foreground-secondary focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div className="flex-1 relative">
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs font-medium">
+                  <div className="absolute left-2 top-1/2 -translate-y-1/2 text-foreground-muted text-xs font-medium">
                     H
                   </div>
                   <input
@@ -243,7 +243,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
                         updateSvgDimensions(w, h);
                       }
                     }}
-                    className="w-full bg-[#1e1e1e] border border-gray-700 rounded px-2 py-1 pl-6 text-xs text-gray-300 focus:outline-none focus:border-blue-500"
+                    className="w-full bg-background-secondary border border-border rounded px-2 py-1 pl-6 text-xs text-foreground-secondary focus:outline-none focus:border-primary"
                   />
                 </div>
               </div>
@@ -255,8 +255,8 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
           onClick={handlePrettify}
           className={`flex items-center gap-1 text-xs font-medium transition-colors ${
             isPrettified
-              ? 'text-blue-500'
-              : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+              ? 'text-primary'
+              : 'text-foreground-secondary hover:text-foreground'
           }`}
         >
           {isPrettified && <Check className="w-3.5 h-3.5" />}
@@ -267,14 +267,14 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
           onClick={handleOptimize}
           className={`flex items-center gap-1 text-xs font-medium transition-colors ${
             isOptimized
-              ? 'text-green-500'
-              : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+              ? 'text-success'
+              : 'text-foreground-secondary hover:text-foreground'
           }`}
         >
           {isOptimized && <Check className="w-3.5 h-3.5" />}
           {isOptimized ? 'Optimized' : 'Optimize'}
           {!isOptimized && optimizationStats && optimizationStats.percentage > 0 && (
-            <span className="ml-1 text-[10px] bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full">
+            <span className="ml-1 text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full">
               -{optimizationStats.percentage}%
             </span>
           )}
@@ -282,22 +282,22 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
 
         {/* Optimization Stats Display - Compact */}
         {optimizationStats && optimizationStats.percentage > 0 && (
-          <div className="flex items-center gap-1 px-2 py-0.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded text-[10px] whitespace-nowrap">
-            <span className="text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-1 px-2 py-0.5 bg-success/10 border border-success/20 rounded text-[10px] whitespace-nowrap">
+            <span className="text-foreground-secondary">
               {optimizationStats.originalSize}b
             </span>
-            <span className="text-green-600 dark:text-green-400">→</span>
-            <span className="text-gray-600 dark:text-gray-400">
+            <span className="text-success">→</span>
+            <span className="text-foreground-secondary">
               {optimizationStats.optimizedSize}b
             </span>
-            <span className="text-green-600 dark:text-green-500 font-semibold">
+            <span className="text-success font-semibold">
               -{optimizationStats.percentage}%
             </span>
           </div>
         )}
 
         <button
-          className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="text-foreground-secondary hover:text-foreground transition-colors"
           title="Settings"
         >
           <Settings className="w-3.5 h-3.5" />
@@ -306,13 +306,13 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
 
       {/* Right Stats */}
       <div className="flex items-center gap-4">
-        <span className="text-xs text-gray-600 dark:text-gray-500 font-mono">
+        <span className="text-xs text-foreground-secondary font-mono">
           Line {cursorPosition.line}:{cursorPosition.column}
         </span>
 
         <button
           onClick={handleClear}
-          className="text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+          className="text-xs font-medium text-foreground-secondary hover:text-foreground transition-colors px-2 py-1 hover:bg-background-secondary rounded"
         >
           Clear
         </button>
