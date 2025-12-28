@@ -73,7 +73,7 @@ export const CsvXmlConverter: React.FC = () => {
           <div className="flex gap-2">
             <button
               onClick={convert}
-              className="flex items-center px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md text-sm"
+              className="flex items-center px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md text-sm"
             >
               Convert <ArrowRight size={16} className="ml-2" />
             </button>

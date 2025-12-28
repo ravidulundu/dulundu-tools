@@ -30,10 +30,12 @@ function generateSitemap() {
     // Add static pages
     STATIC_PAGES.forEach(p => paths.add(p));
 
+    const today = new Date().toISOString().split('T')[0];
     const urls = Array.from(paths).map(p => {
         return `
   <url>
     <loc>${BASE_URL}${p}</loc>
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${p === '/' ? '1.0' : '0.8'}</priority>
   </url>`;

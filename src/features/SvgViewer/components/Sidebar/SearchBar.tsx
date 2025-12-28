@@ -23,7 +23,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onSearch,
         onChange={e => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search icons (e.g. 'home', 'user')..."
-        className="w-full bg-background-secondary border border-border text-foreground text-sm rounded-md pl-9 pr-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-foreground-muted"
+        className="w-full bg-background-secondary border border-border text-foreground text-sm rounded-md pl-9 pr-4 py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 placeholder-foreground-muted"
       />
       <div className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-muted">
         {isLoading ? (

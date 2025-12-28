@@ -2,7 +2,7 @@ import { Grid, Heart } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { ALL_TOOLS } from '../constants';
+import { ALL_TOOLS } from '@/config/allTools';
 
 interface MobileMenuProps {
   onClose: () => void;

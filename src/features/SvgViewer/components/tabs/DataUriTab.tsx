@@ -21,7 +21,7 @@ export const DataUriTab: React.FC<DataUriTabProps> = ({ svgCode }) => {
                 onClick={() => {
                   navigator.clipboard.writeText(data.value);
                 }}
-                className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
               >
                 Copy
               </button>

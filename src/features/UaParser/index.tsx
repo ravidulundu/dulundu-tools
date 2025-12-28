@@ -49,14 +49,14 @@ export const UaParser: React.FC = () => {
               />
               <button
                 onClick={parse}
-                className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 font-bold shadow-sm flex items-center"
+                className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 font-bold shadow-sm flex items-center"
               >
                 <Search size={18} className="mr-2" /> Parse
               </button>
             </div>
             <button
               onClick={setToCurrent}
-              className="mt-2 text-xs font-medium text-primary hover:text-blue-700 hover:underline flex items-center"
+              className="mt-2 text-xs font-medium text-primary hover:text-primary/80 hover:underline flex items-center"
             >
               <RefreshCw size={12} className="mr-1" /> Use my current User Agent
             </button>

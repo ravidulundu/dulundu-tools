@@ -1,5 +1,5 @@
 import { Zap, Search } from 'lucide-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 interface HeroSectionProps {
   searchTerm: string;
@@ -7,6 +7,11 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ searchTerm, setSearchTerm }) => {
+  const isMac = useMemo(
+    () => typeof navigator !== 'undefined' && navigator.platform.includes('Mac'),
+    []
+  );
+
   return (
     <div className="bg-card border-b border-border relative z-20 transition-colors duration-200">
       {/* Background Wrapper with Overflow Hidden */}
@@ -25,7 +30,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ searchTerm, setSearchT
       <div className="container mx-auto px-4 py-16 text-center max-w-4xl relative z-10">
         <div className="inline-flex items-center space-x-2 bg-primary-light text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-8 animate-fade-in border border-primary/20">
           <Zap size={16} fill="currentColor" />
-          <span>100+ Free Developer Tools</span>
+          <span>95+ Free Developer Tools</span>
         </div>
         <h1 className="text-5xl md:text-7xl font-black text-foreground mb-6 tracking-tight leading-tight">
           Dulundu
@@ -53,8 +58,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ searchTerm, setSearchT
               onChange={e => {
                 setSearchTerm(e.target.value);
               }}
-              className="w-full p-6 pl-16 rounded-2xl border border-border bg-transparent text-xl text-foreground outline-none transition-all placeholder:text-foreground-muted font-medium"
+              className="w-full p-6 pl-16 pr-20 rounded-2xl border border-border bg-transparent text-xl text-foreground outline-none transition-all placeholder:text-foreground-muted font-medium"
             />
+            <div className="absolute inset-y-0 right-0 pr-6 flex items-center pointer-events-none">
+              <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-background-secondary text-foreground-muted text-sm rounded-lg border border-border font-mono">
+                {isMac ? '⌘' : 'Ctrl+'}K
+              </kbd>
+            </div>
           </div>
         </div>
 

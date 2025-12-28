@@ -92,7 +92,7 @@ export const DnsLookup: React.FC = () => {
             <button
               onClick={lookup}
               disabled={loading || !domain}
-              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm"
+              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm"
             >
               {loading ? <RefreshCw className="animate-spin mr-2" size={16} /> : 'Lookup'}
             </button>

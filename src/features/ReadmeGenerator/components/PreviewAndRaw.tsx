@@ -115,7 +115,7 @@ export const PreviewAndRaw: React.FC<PreviewAndRawProps> = ({ markdown }) => {
             </button>
             <button
               onClick={handleDownload}
-              className="px-3 py-1.5 bg-primary text-white rounded-md hover:bg-blue-600 transition-colors text-xs font-medium flex items-center gap-2"
+              className="px-3 py-1.5 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors text-xs font-medium flex items-center gap-2"
             >
               <span>Download</span>
               <svg

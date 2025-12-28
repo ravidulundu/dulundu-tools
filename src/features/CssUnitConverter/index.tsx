@@ -172,56 +172,49 @@ export const CssUnitConverter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
-          <div className="flex flex-wrap gap-3">
-            <div className="flex items-center gap-3 bg-background-secondary px-3 py-1.5 rounded-lg border border-border">
-              <label htmlFor="base-size" className="text-sm font-medium text-foreground-secondary">
-                Base Size:
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Base Size */}
+            <div className="flex items-center gap-2">
+              <label htmlFor="base-size" className="text-sm font-medium text-foreground-secondary whitespace-nowrap">
+                Base:
               </label>
-              <div className="flex items-center">
+              <div className="relative">
                 <input
                   id="base-size"
                   type="number"
                   value={base}
                   onChange={e => handleBaseChange(e.target.value)}
-                  className="w-16 bg-transparent font-bold text-foreground outline-none text-center border-b border-border focus:border-primary"
+                  className="w-20 px-3 py-1.5 pr-8 bg-background-secondary border border-border rounded-lg text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 />
-                <span className="ml-1 text-xs text-foreground-muted font-bold">px</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-foreground-muted">px</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 bg-background-secondary px-3 py-1.5 rounded-lg border border-border">
-              <span className="text-sm font-medium text-foreground-secondary">Viewport:</span>
-              <div className="flex items-center gap-2">
-                <div className="flex items-center">
-                  <label htmlFor="viewport-width" className="mr-1 text-xs text-foreground-muted font-bold">
-                    W:
-                  </label>
-                  <input
-                    id="viewport-width"
-                    type="number"
-                    value={viewportWidth}
-                    onChange={e => handleViewportWidthChange(e.target.value)}
-                    className="w-16 bg-transparent font-bold text-foreground outline-none text-center border-b border-border focus:border-primary"
-                  />
-                </div>
-                <span className="text-foreground-muted">x</span>
-                <div className="flex items-center">
-                  <label
-                    htmlFor="viewport-height"
-                    className="mr-1 text-xs text-foreground-muted font-bold"
-                  >
-                    H:
-                  </label>
-                  <input
-                    id="viewport-height"
-                    type="number"
-                    value={viewportHeight}
-                    onChange={e => handleViewportHeightChange(e.target.value)}
-                    className="w-16 bg-transparent font-bold text-foreground outline-none text-center border-b border-border focus:border-primary"
-                  />
-                </div>
-              </div>
+            <div className="w-px h-6 bg-border" />
+
+            {/* Viewport */}
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-foreground-secondary whitespace-nowrap">
+                Viewport:
+              </label>
+              <input
+                id="viewport-width"
+                type="number"
+                value={viewportWidth}
+                onChange={e => handleViewportWidthChange(e.target.value)}
+                aria-label="Viewport Width"
+                className="w-20 px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              />
+              <span className="text-foreground-muted text-sm">×</span>
+              <input
+                id="viewport-height"
+                type="number"
+                value={viewportHeight}
+                onChange={e => handleViewportHeightChange(e.target.value)}
+                aria-label="Viewport Height"
+                className="w-20 px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              />
             </div>
           </div>
           <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />

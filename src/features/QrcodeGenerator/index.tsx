@@ -77,7 +77,7 @@ export const QrcodeGenerator: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
-        <ToolHeader icon={QrCode} title="QR Code Tool" description="Generate and Scan QR codes" />
+        <ToolHeader icon={QrCode} title="QR Code Generator" description="Generate and Scan QR codes" />
 
         {/* Tabs */}
         <div className="flex border-b border-border">
@@ -211,7 +211,7 @@ export const QrcodeGenerator: React.FC = () => {
 
                 <button
                   onClick={downloadQr}
-                  className="flex items-center px-6 py-3 bg-primary text-white rounded-xl hover:bg-blue-600 transition-colors font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  className="flex items-center px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                 >
                   <Download size={20} className="mr-2" /> Download PNG
                 </button>
@@ -277,7 +277,7 @@ export const QrcodeGenerator: React.FC = () => {
                           navigator.clipboard.writeText(scanResult);
                           alert('Copied to clipboard!');
                         }}
-                        className="text-sm font-medium text-primary hover:text-blue-700 hover:underline"
+                        className="text-sm font-medium text-primary hover:text-primary/80 hover:underline"
                       >
                         Copy Content
                       </button>

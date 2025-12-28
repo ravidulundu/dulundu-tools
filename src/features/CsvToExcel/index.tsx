@@ -39,7 +39,7 @@ export const CsvToExcel: React.FC = () => {
           <button
             onClick={downloadCSV}
             disabled={!input.trim()}
-            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md flex items-center disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md flex items-center disabled:opacity-50 disabled:cursor-not-allowed text-sm"
           >
             Download .CSV <Download size={16} className="ml-2" />
           </button>

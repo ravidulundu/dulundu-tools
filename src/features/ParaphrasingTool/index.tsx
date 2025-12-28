@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
-import { paraphraseText } from '@/services/geminiService';
+import { paraphraseText } from '@/services/aiService';
 
 export const ParaphrasingTool: React.FC = () => {
   const [input, setInput] = useState('');
@@ -44,7 +44,7 @@ export const ParaphrasingTool: React.FC = () => {
         <ToolHeader
           icon={PenTool}
           title="Paraphrasing Tool"
-          description="Rewrite text with AI (Gemini)"
+          description="Rewrite and rephrase text with AI"
         />
 
         {/* Toolbar */}
@@ -68,7 +68,7 @@ export const ParaphrasingTool: React.FC = () => {
             <button
               onClick={handleParaphrase}
               disabled={loading || !input.trim()}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition-colors font-medium shadow-sm flex items-center text-sm"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-colors font-medium shadow-sm flex items-center text-sm"
             >
               {loading ? (
                 <Loader2 size={16} className="animate-spin mr-1.5" />

@@ -1,6 +1,8 @@
-import { Code2, Menu, Sun, Moon, Github, MessageSquare, ChevronDown, X, Heart } from 'lucide-react';
+import { Code2, Menu, Sun, Moon, Github, MessageSquare, ChevronDown, X, Heart, Keyboard } from 'lucide-react';
 import React, { useState, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
+import { formatShortcut } from '@/hooks/useKeyboardShortcuts';
 
 const MegaMenu = React.lazy(() => import('./MegaMenu'));
 const MobileMenu = React.lazy(() => import('./MobileMenu'));
@@ -8,9 +10,10 @@ const MobileMenu = React.lazy(() => import('./MobileMenu'));
 interface HeaderProps {
   darkMode: boolean;
   toggleTheme: () => void;
+  onShortcutsClick?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
+export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme, onShortcutsClick }) => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
@@ -82,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
           </button>
         </nav>
 
-        {/* Right: Actions (4 Icons: Github, Discord, Chat, Sun) */}
+        {/* Right: Actions */}
         <div className="flex items-center space-x-3 shrink-0">
           {/* Donate Button (Desktop) */}
           <a
@@ -99,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
 
           {/* Github */}
           <a
-            href="https://github.com/ravidulundu/"
+            href="https://github.com/ravidulundu/dulundu-tools"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 text-foreground-muted hover:text-foreground hover:bg-background-secondary rounded-lg transition-all"
@@ -118,11 +121,22 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
             <MessageSquare size={20} />
           </button>
 
+          {/* Keyboard Shortcuts */}
+          {onShortcutsClick && (
+            <button
+              onClick={onShortcutsClick}
+              className="hidden md:flex p-2 text-foreground-muted hover:text-primary hover:bg-primary-light rounded-lg transition-all"
+              title={`Keyboard Shortcuts (${formatShortcut('mod+/')})`}
+            >
+              <Keyboard size={20} />
+            </button>
+          )}
+
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             className="p-2 text-foreground-muted hover:text-warning hover:bg-warning-light rounded-lg transition-all"
-            title="Toggle Theme"
+            title={`Toggle Theme (${formatShortcut('mod+d')})`}
           >
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
           </button>

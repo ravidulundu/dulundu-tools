@@ -141,7 +141,7 @@ export const SharelinkGenerator: React.FC = () => {
 
                 <button
                   onClick={generateLink}
-                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 transition-colors font-bold shadow-md flex items-center justify-center"
+                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-bold shadow-md flex items-center justify-center"
                 >
                   <Share2 size={18} className="mr-2" /> Generate Link
                 </button>

@@ -5,10 +5,16 @@ import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
 import { useToolLogic } from '@/hooks/useToolLogic';
+import { useToolShortcuts } from '@/hooks/useToolShortcuts';
 
 export const UrlEncoder: React.FC = () => {
   const { input, setInput, output, setOutput, copied, handleCopy, handleClear } = useToolLogic();
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
+
+  useToolShortcuts({
+    onCopy: handleCopy,
+    onClear: handleClear,
+  });
 
   const process = React.useCallback(
     (text: string, currentMode: 'encode' | 'decode') => {

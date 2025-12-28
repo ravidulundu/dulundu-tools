@@ -44,8 +44,8 @@ export const TwitterCardGenerator: React.FC = () => {
           icon={Twitter}
           title="Twitter Card Generator"
           description="Create meta tags for social media previews"
-          iconBgColor="bg-blue-100"
-          iconColor="text-blue-500"
+          iconBgColor="bg-primary-light"
+          iconColor="text-primary"
         />
 
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">

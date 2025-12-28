@@ -1,12 +1,16 @@
-import { Wand2, ArrowRight, Copy, Check, Trash2, Upload, Download } from 'lucide-react';
-import React from 'react';
+import { Code2, Wand2, Minimize2, Copy, Check, Trash2, Upload, Download } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
-export const LuaBeautifier: React.FC = () => {
+type FormatMode = 'beautify' | 'minify';
+
+export const LuaFormatter: React.FC = () => {
+  const [mode, setMode] = useState<FormatMode>('beautify');
+
   const {
     input,
     setInput,
@@ -23,12 +27,8 @@ export const LuaBeautifier: React.FC = () => {
       'function factorial(n) if n==0 then return 1 else return n*factorial(n-1) end end',
   });
 
-  const beautifyLua = (code: string) => {
+  const beautifyLua = useCallback((code: string): string => {
     let formatted = code;
-
-    // Very basic indentation logic
-    // 1. Add newlines after 'then', 'do', 'repeat', 'else'
-    // 2. Add newlines before 'end', 'until', 'else', 'elseif'
 
     // Normalize spaces
     formatted = formatted.replace(/\s+/g, ' ');
@@ -57,7 +57,6 @@ export const LuaBeautifier: React.FC = () => {
 
         // Increase indent for opening blocks
         if (line.match(/^(function|if|while|repeat|for|else|elseif|do)/) && !line.match(/\send$/)) {
-          // Check if it's not a single line function/if (heuristic)
           if (!line.includes('end')) {
             indentLevel++;
           }
@@ -68,29 +67,84 @@ export const LuaBeautifier: React.FC = () => {
       .join('\n');
 
     return result.trim();
-  };
+  }, []);
 
-  const handleFormat = () => {
-    setOutput(beautifyLua(input));
+  const minifyLua = useCallback((code: string): string => {
+    let minified = code;
+
+    // Remove comments
+    minified = minified.replace(/--.*$/gm, '');
+    minified = minified.replace(/--\[\[[\s\S]*?\]\]/g, '');
+
+    // Remove whitespace
+    minified = minified
+      .split('\n')
+      .map(l => l.trim())
+      .filter(l => l)
+      .join(' ');
+
+    // Remove spaces around symbols
+    minified = minified.replace(/\s*([=+\-*/%^#<>~,(){}])\s*/g, '$1');
+
+    return minified.trim();
+  }, []);
+
+  const handleFormat = useCallback(() => {
+    if (mode === 'beautify') {
+      setOutput(beautifyLua(input));
+    } else {
+      setOutput(minifyLua(input));
+    }
+  }, [mode, input, beautifyLua, minifyLua, setOutput]);
+
+  const toggleMode = () => {
+    setMode(prev => (prev === 'beautify' ? 'minify' : 'beautify'));
+    setOutput('');
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
-          icon={Wand2}
-          title="Lua Beautifier"
-          description="Format Lua code with proper indentation"
+          icon={Code2}
+          title="Lua Formatter"
+          description="Beautify or minify Lua code with proper formatting"
         />
 
         {/* Toolbar */}
         <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            {/* Mode Toggle */}
+            <div className="flex bg-background-secondary rounded-lg p-1 border border-border">
+              <button
+                onClick={() => { setMode('beautify'); setOutput(''); }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  mode === 'beautify'
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'text-foreground-secondary hover:text-foreground'
+                }`}
+              >
+                <Wand2 size={14} />
+                Beautify
+              </button>
+              <button
+                onClick={() => { setMode('minify'); setOutput(''); }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  mode === 'minify'
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'text-foreground-secondary hover:text-foreground'
+                }`}
+              >
+                <Minimize2 size={14} />
+                Minify
+              </button>
+            </div>
+
             <button
               onClick={handleFormat}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+              className="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-600 transition-colors font-medium shadow-sm flex items-center text-sm"
             >
-              Beautify <ArrowRight size={16} className="ml-1.5" />
+              {mode === 'beautify' ? 'Format' : 'Compress'}
             </button>
           </div>
 
@@ -119,6 +173,7 @@ export const LuaBeautifier: React.FC = () => {
           </div>
         </div>
 
+        {/* Editor Area */}
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <CodeEditor
@@ -126,14 +181,16 @@ export const LuaBeautifier: React.FC = () => {
               onChange={setInput}
               label="Lua Input"
               placeholder="Paste Lua code here..."
+              language="lua"
               theme="light"
             />
 
             <CodeEditor
               value={output}
-              label="Formatted Output"
+              label={mode === 'beautify' ? 'Formatted Output' : 'Minified Output'}
               placeholder="Result will appear here..."
               readOnly
+              language="lua"
               theme="dark"
               actions={
                 output && (
@@ -141,7 +198,12 @@ export const LuaBeautifier: React.FC = () => {
                     <ActionButton
                       icon={Download}
                       label="Save"
-                      onClick={() => handleDownload('formatted.lua', 'text/x-lua')}
+                      onClick={() =>
+                        handleDownload(
+                          mode === 'beautify' ? 'formatted.lua' : 'minified.lua',
+                          'text/x-lua'
+                        )
+                      }
                       variant="secondary"
                     />
                     <ActionButton

@@ -1,4 +1,4 @@
-import { Code2, Heart } from 'lucide-react';
+import { Code2, Heart, Github } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
             </div>
             <p className="text-foreground-muted text-sm leading-relaxed">
               The ultimate suite of developer utilities. Beautify, convert, generate, and debug with
-              our collection of 100+ free tools.
+              our collection of 95+ free tools.
             </p>
           </div>
 
@@ -73,32 +73,36 @@ export const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/?category=Formatters%20%26%20Beautifiers"
-                  className="hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors flex items-center group"
                 >
+                  <span className="w-1.5 h-1.5 rounded-full bg-foreground-subtle mr-2 group-hover:bg-primary transition-colors"></span>
                   Formatters & Beautifiers
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/?category=Generators"
-                  className="hover:text-primary transition-colors"
+                  to="/?category=JSON%20Tools"
+                  className="hover:text-primary transition-colors flex items-center group"
                 >
-                  Generators
+                  <span className="w-1.5 h-1.5 rounded-full bg-foreground-subtle mr-2 group-hover:bg-primary transition-colors"></span>
+                  JSON Tools
                 </Link>
               </li>
               <li>
                 <Link
                   to="/?category=Converters"
-                  className="hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors flex items-center group"
                 >
+                  <span className="w-1.5 h-1.5 rounded-full bg-foreground-subtle mr-2 group-hover:bg-primary transition-colors"></span>
                   Converters
                 </Link>
               </li>
               <li>
                 <Link
                   to="/?category=Cryptography"
-                  className="hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors flex items-center group"
                 >
+                  <span className="w-1.5 h-1.5 rounded-full bg-foreground-subtle mr-2 group-hover:bg-primary transition-colors"></span>
                   Cryptography
                 </Link>
               </li>
@@ -122,12 +126,14 @@ export const Footer: React.FC = () => {
                 </a>
               </li>
               <li className="pt-2">
-                <Link
-                  to="/coming-soon"
+                <a
+                  href="https://github.com/ravidulundu/dulundu-tools/issues"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:text-primary transition-colors"
                 >
-                  Contact Us
-                </Link>
+                  Contact / Feedback
+                </a>
               </li>
               <li>
                 <Link
@@ -152,6 +158,15 @@ export const Footer: React.FC = () => {
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-foreground-muted">
           <p>&copy; {new Date().getFullYear()} Dulundu.tools. Free for Developers.</p>
           <div className="flex items-center space-x-6 mt-4 md:mt-0">
+            <a
+              href="https://github.com/ravidulundu/dulundu-tools"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 hover:text-foreground transition-colors"
+            >
+              <Github size={16} />
+              <span>GitHub</span>
+            </a>
             <span className="flex items-center">
               Made with{' '}
               <span className="inline-flex items-center justify-center w-4 h-4 mx-1">

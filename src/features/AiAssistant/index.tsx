@@ -1,7 +1,7 @@
 import { BrainCircuit, Send, Loader2, Sparkles, Copy, Check } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { generateCodeHelp } from '@/services/geminiService';
+import { generateCodeHelp } from '@/services/aiService';
 
 export const AiAssistant: React.FC = () => {
   const [prompt, setPrompt] = useState('');
@@ -31,13 +31,13 @@ export const AiAssistant: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
         <div className="p-6 border-b border-border flex items-center space-x-3 bg-background-secondary/50">
-          <div className="p-2 bg-blue-100 text-primary rounded-lg">
+          <div className="p-2 bg-primary-light text-primary rounded-lg">
             <BrainCircuit size={24} />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-foreground">AI Code Assistant</h1>
             <p className="text-sm text-foreground-muted">
-              Powered by Google Gemini - Ask anything about code
+              AI-powered assistant - Ask anything about code
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ export const AiAssistant: React.FC = () => {
                 <span>{copied ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
-            <div className="p-6 overflow-x-auto bg-[#0d1117] text-foreground">
+            <div className="p-6 overflow-x-auto bg-background-dark text-foreground-inverse">
               <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed">{result}</pre>
             </div>
           </div>

@@ -69,7 +69,7 @@ export const IconGrid: React.FC<IconGridProps> = ({ icons, onSelectIcon }) => {
             }
           }}
           onClick={() => loadedIcons[iconName] && onSelectIcon(loadedIcons[iconName])}
-          className="aspect-square flex items-center justify-center bg-background-secondary hover:bg-background-tertiary border border-transparent hover:border-blue-500/50 rounded transition-all group relative cursor-grab active:cursor-grabbing"
+          className="aspect-square flex items-center justify-center bg-background-secondary hover:bg-background-tertiary border border-transparent hover:border-primary/50 rounded transition-all group relative cursor-grab active:cursor-grabbing"
           title={iconName}
         >
           {loadedIcons[iconName] ? (

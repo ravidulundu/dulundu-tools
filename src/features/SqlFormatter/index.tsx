@@ -104,8 +104,8 @@ export const SqlFormatter: React.FC = () => {
           icon={Database}
           title="SQL Formatter"
           description="Beautify complex SQL queries"
-          iconBgColor="bg-blue-100"
-          iconColor="text-blue-600"
+          iconBgColor="bg-primary-light"
+          iconColor="text-primary"
         />
 
         {/* Toolbar */}

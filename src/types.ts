@@ -54,6 +54,23 @@ export interface ToolDef {
   path: string;
   icon: LucideIcon;
   popular?: boolean;
-  isNew?: boolean;
+  isNew?: boolean; // Manual override - if true, always shows as new
+  addedDate?: string; // ISO date string (YYYY-MM-DD) - auto computes isNew if within 30 days
   tags?: string[]; // Additional keywords for better search
+}
+
+// Helper to check if a tool should show "New" badge
+export function isToolNew(tool: ToolDef): boolean {
+  // Manual override takes precedence
+  if (tool.isNew === true) return true;
+  if (tool.isNew === false) return false;
+
+  // Auto-compute based on addedDate (within last 30 days)
+  if (tool.addedDate) {
+    const addedTime = new Date(tool.addedDate).getTime();
+    const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    return addedTime > thirtyDaysAgo;
+  }
+
+  return false;
 }

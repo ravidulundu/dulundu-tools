@@ -1,11 +1,14 @@
 import { LucideIcon } from 'lucide-react';
-import React from 'react';
+import React, { useMemo } from 'react';
+
+import { formatShortcut } from '@/hooks/useKeyboardShortcuts';
 
 interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: LucideIcon;
   label?: string;
   variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'ghost';
   size?: 'sm' | 'md';
+  shortcut?: string;
 }
 
 export const ActionButton: React.FC<ActionButtonProps> = ({
@@ -13,9 +16,19 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   label,
   variant = 'primary',
   size = 'sm',
+  shortcut,
   className = '',
   ...props
 }) => {
+  const tooltipText = useMemo(() => {
+    if (props.title) return props.title;
+    if (!label && !shortcut) return undefined;
+
+    const parts: string[] = [];
+    if (label) parts.push(label);
+    if (shortcut) parts.push(`(${formatShortcut(shortcut)})`);
+    return parts.join(' ');
+  }, [label, shortcut, props.title]);
   // Base classes for layout and interaction
   const baseClasses =
     'inline-flex items-center justify-center font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
@@ -38,10 +51,12 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
       'bg-transparent text-foreground-secondary hover:bg-background-secondary hover:text-foreground focus:ring-secondary',
   };
 
+  const formattedShortcut = shortcut ? formatShortcut(shortcut) : null;
+
   return (
     <button
       className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
-      title={props.title || label}
+      title={tooltipText}
       {...props}
     >
       <Icon
@@ -49,6 +64,11 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         className={label ? (size === 'sm' ? 'mr-1.5' : 'mr-2') : ''}
       />
       {label}
+      {formattedShortcut && (
+        <kbd className="hidden sm:inline-flex ml-2 px-1.5 py-0.5 text-[10px] font-medium bg-black/10 dark:bg-white/10 rounded opacity-70">
+          {formattedShortcut}
+        </kbd>
+      )}
     </button>
   );
 };

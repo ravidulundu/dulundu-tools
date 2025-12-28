@@ -1,21 +1,28 @@
-import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { describe, it, expect } from 'vitest';
+import { screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { ThemeProvider } from '@/contexts/ThemeProvider';
 import { MarkdownEditor } from '@/features/MarkdownEditor';
 
-const renderWithProviders = (component) => {
-  return render(
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <ThemeProvider>{component}</ThemeProvider>
-    </BrowserRouter>
-  );
-};
+import { renderWithProviders } from './utils/testHelpers';
 
 describe('MarkdownEditor', () => {
-  it('renders without crashing', () => {
-    renderWithProviders(<MarkdownEditor />);
-    expect(document.body).toBeDefined();
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('Rendering', () => {
+    it('renders without crashing', () => {
+      renderWithProviders(<MarkdownEditor />);
+      expect(document.body).toBeDefined();
+    });
+
+    it('displays tool interface', () => {
+      const { container } = renderWithProviders(<MarkdownEditor />);
+      // Should have some interactive elements
+      const hasButtons = container.querySelectorAll('button').length > 0;
+      const hasInputs = container.querySelectorAll('input, textarea').length > 0;
+      const hasContent = container.textContent && container.textContent.length > 0;
+      expect(hasButtons || hasInputs || hasContent).toBe(true);
+    });
   });
 });

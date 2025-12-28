@@ -105,7 +105,7 @@ export const RsaGenerator: React.FC = () => {
           <button
             onClick={generateKeys}
             disabled={loading}
-            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center disabled:opacity-70 text-sm"
+            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-sm flex items-center disabled:opacity-70 text-sm"
           >
             {loading ? (
               <RefreshCw size={16} className="animate-spin mr-2" />

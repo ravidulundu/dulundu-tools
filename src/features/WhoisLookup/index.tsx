@@ -79,7 +79,7 @@ export const WhoisLookup: React.FC = () => {
             <button
               onClick={lookup}
               disabled={loading}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium disabled:opacity-50 text-sm flex items-center"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium disabled:opacity-50 text-sm flex items-center"
             >
               {loading ? (
                 <RefreshCw className="animate-spin mr-1.5" size={16} />

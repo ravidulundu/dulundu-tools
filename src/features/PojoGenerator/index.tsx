@@ -138,7 +138,7 @@ export const PojoGenerator: React.FC = () => {
           <div className="flex gap-2">
             <button
               onClick={() => generateJava(input)}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm font-medium flex items-center text-sm"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors shadow-sm font-medium flex items-center text-sm"
             >
               <Wand2 size={16} className="mr-1.5" /> Generate
             </button>

@@ -2,8 +2,11 @@ import { TrendingUp, Grid, Zap, Search } from 'lucide-react';
 import React from 'react';
 import { SetURLSearchParams } from 'react-router-dom';
 
+import { useToolHistoryContext } from '@/contexts/ToolHistoryContext';
+
 import { ToolDef } from '../../types';
 import { ToolCard } from '../ToolCard';
+import { FavoritesSection } from './FavoritesSection';
 
 interface ToolGridProps {
   isDirectoryView: boolean;
@@ -14,6 +17,8 @@ interface ToolGridProps {
   setSearchTerm: (term: string) => void;
   setSearchParams: SetURLSearchParams;
   setActiveCategory: (category: string) => void;
+  favoriteTools: ToolDef[];
+  recentTools: ToolDef[];
 }
 
 export const ToolGrid: React.FC<ToolGridProps> = ({
@@ -25,9 +30,20 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
   setSearchTerm,
   setSearchParams,
   setActiveCategory,
+  favoriteTools,
+  recentTools,
 }) => {
+  const { toggleFavorite, isFavorite } = useToolHistoryContext();
   return (
     <main className="flex-1 min-w-0 px-2 lg:px-0">
+      {/* Favorites & Recent Section (Only on 'All' view) */}
+      {isDirectoryView && (
+        <FavoritesSection
+          favoriteTools={favoriteTools}
+          recentTools={recentTools}
+        />
+      )}
+
       {/* Popular Section (Only on 'All' view) */}
       {isDirectoryView && (
         <section className="mb-10 animate-fade-in">
@@ -41,7 +57,14 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {popularTools.map(tool => (
-              <ToolCard key={tool.id} tool={tool} variant="mini" />
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                variant="mini"
+                showFavorite
+                isFavorite={isFavorite(tool.id)}
+                onFavoriteToggle={() => toggleFavorite(tool.id)}
+              />
             ))}
           </div>
         </section>
@@ -68,7 +91,13 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
         {filteredTools.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
             {filteredTools.map(tool => (
-              <ToolCard key={tool.id} tool={tool} />
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                showFavorite
+                isFavorite={isFavorite(tool.id)}
+                onFavoriteToggle={() => toggleFavorite(tool.id)}
+              />
             ))}
           </div>
         ) : (

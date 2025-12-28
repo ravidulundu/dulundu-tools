@@ -27,7 +27,7 @@ export const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
           className={clsx(
             'w-6 h-6 rounded border-2 transition-all',
             currentBackground === bg
-              ? 'border-blue-500 ring-2 ring-blue-500/20'
+              ? 'border-primary ring-2 ring-primary/20'
               : 'border-border hover:border-border'
           )}
           title={bg}

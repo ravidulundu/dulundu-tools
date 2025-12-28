@@ -8,6 +8,7 @@ import { Loading } from './components/Loading';
 import { ScrollToTop } from './components/ScrollToTop';
 import { SeoManager } from './components/SeoManager';
 import { ThemeProvider } from './contexts/ThemeProvider';
+import { ToolHistoryProvider } from './contexts/ToolHistoryContext';
 import { routes } from './routes';
 
 const AppRoutes = () => {
@@ -18,23 +19,25 @@ const AppRoutes = () => {
 const App: React.FC = () => {
   return (
     <ThemeProvider>
-      <BrowserRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
-        <ScrollToTop />
-        <Layout>
-          <Analytics />
-          <SeoManager />
-          <ErrorBoundary>
-            <Suspense fallback={<Loading />}>
-              <AppRoutes />
-            </Suspense>
-          </ErrorBoundary>
-        </Layout>
-      </BrowserRouter>
+      <ToolHistoryProvider>
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
+          <ScrollToTop />
+          <Layout>
+            <Analytics />
+            <SeoManager />
+            <ErrorBoundary>
+              <Suspense fallback={<Loading />}>
+                <AppRoutes />
+              </Suspense>
+            </ErrorBoundary>
+          </Layout>
+        </BrowserRouter>
+      </ToolHistoryProvider>
     </ThemeProvider>
   );
 };

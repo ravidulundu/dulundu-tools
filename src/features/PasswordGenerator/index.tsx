@@ -1,8 +1,21 @@
 import { Lock, RefreshCw, Copy, Check } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
+import { PresetSelector } from '@/components/common/PresetSelector';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolPresets, Preset } from '@/hooks/useToolPresets';
+import { useToolShortcuts } from '@/hooks/useToolShortcuts';
+
+interface PasswordSettings {
+  length: number;
+  options: {
+    uppercase: boolean;
+    lowercase: boolean;
+    numbers: boolean;
+    symbols: boolean;
+  };
+}
 
 export const PasswordGenerator: React.FC = () => {
   const [password, setPassword] = useState('');
@@ -15,7 +28,21 @@ export const PasswordGenerator: React.FC = () => {
   });
   const [copied, setCopied] = useState(false);
 
-  const generatePassword = React.useCallback(() => {
+  const { presets, addPreset, deletePreset } = useToolPresets<PasswordSettings>('password-generator');
+
+  const handlePresetSelect = useCallback((preset: Preset<PasswordSettings>) => {
+    setLength(preset.settings.length);
+    setOptions(preset.settings.options);
+  }, []);
+
+  const handlePresetSave = useCallback(
+    (name: string) => {
+      addPreset(name, { length, options });
+    },
+    [addPreset, length, options]
+  );
+
+  const generatePassword = useCallback(() => {
     const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lower = 'abcdefghijklmnopqrstuvwxyz';
     const nums = '0123456789';
@@ -50,12 +77,17 @@ export const PasswordGenerator: React.FC = () => {
     setOptions(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (!password) return;
     navigator.clipboard.writeText(password);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
+  }, [password]);
+
+  useToolShortcuts({
+    onExecute: generatePassword,
+    onCopy: handleCopy,
+  });
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
@@ -70,11 +102,18 @@ export const PasswordGenerator: React.FC = () => {
         <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <button
             onClick={generatePassword}
-            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-sm flex items-center text-sm"
           >
             <RefreshCw size={16} className="mr-1.5" />
             Generate New Password
           </button>
+
+          <PresetSelector
+            presets={presets}
+            onSelect={handlePresetSelect}
+            onSave={handlePresetSave}
+            onDelete={deletePreset}
+          />
         </div>
 
         {/* Content Area */}

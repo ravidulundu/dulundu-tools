@@ -1,9 +1,10 @@
 import { Shuffle, RefreshCw, Copy, Check, Trash2, Download } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolShortcuts } from '@/hooks/useToolShortcuts';
 
 export const UuidGenerator: React.FC = () => {
   const [uuids, setUuids] = useState<string[]>([]);
@@ -27,7 +28,7 @@ export const UuidGenerator: React.FC = () => {
     }
   };
 
-  const handleGenerate = React.useCallback(() => {
+  const handleGenerate = useCallback(() => {
     const newUuids = Array(count)
       .fill(null)
       .map(() => generateUUID());
@@ -35,17 +36,23 @@ export const UuidGenerator: React.FC = () => {
     setCopied(false);
   }, [count]);
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (uuids.length === 0) return;
     navigator.clipboard.writeText(uuids.join('\n'));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
+  }, [uuids]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setUuids([]);
     setCopied(false);
-  };
+  }, []);
+
+  useToolShortcuts({
+    onExecute: handleGenerate,
+    onCopy: handleCopy,
+    onClear: handleClear,
+  });
 
   // Generate on first load
   React.useEffect(() => {
@@ -78,7 +85,7 @@ export const UuidGenerator: React.FC = () => {
 
             <button
               onClick={handleGenerate}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-sm flex items-center text-sm"
             >
               <RefreshCw size={16} className="mr-1.5" />
               Generate

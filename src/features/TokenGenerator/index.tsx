@@ -144,7 +144,7 @@ export const TokenGenerator: React.FC = () => {
 
                 <button
                   onClick={generate}
-                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 font-bold shadow-md flex items-center justify-center"
+                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-primary/90 font-bold shadow-md flex items-center justify-center"
                 >
                   <RefreshCw size={18} className="mr-2" /> Generate Tokens
                 </button>

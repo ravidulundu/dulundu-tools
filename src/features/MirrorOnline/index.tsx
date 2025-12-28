@@ -1,34 +1,82 @@
-import { Globe, RefreshCw, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Globe, RefreshCw, CheckCircle, XCircle, Server } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
 
+interface CheckResult {
+  online: boolean;
+  status?: number;
+  statusText?: string;
+  error?: string;
+  errorCode?: string;
+  url?: string;
+}
+
 export const MirrorOnline: React.FC = () => {
   const [url, setUrl] = useState('');
   const [status, setStatus] = useState<'idle' | 'checking' | 'up' | 'down' | 'error'>('idle');
-  const [message, setMessage] = useState('');
+  const [result, setResult] = useState<CheckResult | null>(null);
 
   const checkStatus = async () => {
     if (!url) return;
 
-    let target = url;
-    if (!target.startsWith('http')) {
-      target = 'https://' + target;
-    }
-
     setStatus('checking');
-    setMessage('');
+    setResult(null);
 
     try {
-      // We use no-cors mode because most sites block CORS.
-      // An opaque response (type: 'opaque') usually means the server is reachable.
-      // A network error usually means it's down or DNS failed.
-      await fetch(target, { mode: 'no-cors', cache: 'no-cache' });
-      setStatus('up');
-      setMessage('Website is reachable!');
-    } catch (_e) {
-      setStatus('down');
-      setMessage('Website seems down or unreachable.');
+      const response = await fetch('/api/check-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url.trim() }),
+      });
+
+      // Handle non-JSON responses
+      const text = await response.text();
+      if (!text) {
+        throw new Error('Server returned empty response. Is the backend running?');
+      }
+
+      let data: CheckResult;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error('Invalid server response');
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Request failed');
+      }
+
+      setResult(data);
+      setStatus(data.online ? 'up' : 'down');
+    } catch (e) {
+      setStatus('error');
+      setResult({
+        online: false,
+        error: e instanceof Error ? e.message : 'Failed to check URL',
+        errorCode: 'REQUEST_FAILED',
+      });
+    }
+  };
+
+  const getStatusMessage = () => {
+    if (!result) return '';
+
+    if (result.online) {
+      return `Online (${result.status} ${result.statusText})`;
+    }
+
+    switch (result.errorCode) {
+      case 'TIMEOUT':
+        return 'Timeout - Server took too long to respond';
+      case 'DNS_ERROR':
+        return 'DNS Error - Domain not found';
+      case 'CONNECTION_REFUSED':
+        return 'Connection refused - Server not accepting connections';
+      case 'CONNECTION_RESET':
+        return 'Connection reset - Server closed connection';
+      default:
+        return result.error || 'Website unreachable';
     }
   };
 
@@ -37,7 +85,7 @@ export const MirrorOnline: React.FC = () => {
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Globe}
-          title="Website Status Checker"
+          title="Is It Down?"
           description="Check if a website is online or offline"
         />
 
@@ -57,13 +105,13 @@ export const MirrorOnline: React.FC = () => {
                   value={url}
                   onChange={e => setUrl(e.target.value)}
                   placeholder="example.com"
-                  className="flex-1 p-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-foreground"
+                  className="flex-1 p-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all bg-background text-foreground placeholder:text-foreground-muted"
                   onKeyDown={e => e.key === 'Enter' && checkStatus()}
                 />
                 <button
                   onClick={checkStatus}
                   disabled={status === 'checking' || !url}
-                  className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-blue-600 disabled:opacity-50 transition-colors font-bold shadow-sm flex items-center"
+                  className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50 transition-colors font-bold shadow-sm flex items-center"
                 >
                   {status === 'checking' ? (
                     <RefreshCw size={20} className="animate-spin" />
@@ -73,26 +121,32 @@ export const MirrorOnline: React.FC = () => {
                 </button>
               </div>
 
-              {status !== 'idle' && status !== 'checking' && (
+              {status !== 'idle' && status !== 'checking' && result && (
                 <div
-                  className={`mt-6 p-4 rounded-xl border flex items-center justify-center space-x-3 animate-in fade-in slide-in-from-top-2 ${
-                    status === 'up'
-                      ? 'bg-green-50 border-green-200 text-green-700'
-                      : 'bg-red-50 border-red-200 text-red-700'
+                  className={`mt-6 p-4 rounded-xl border flex flex-col items-center justify-center space-y-2 animate-in fade-in slide-in-from-top-2 ${
+                    result.online
+                      ? 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
+                      : 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
                   }`}
                 >
-                  {status === 'up' ? <CheckCircle size={24} /> : <XCircle size={24} />}
-                  <span className="font-bold text-lg">{message}</span>
+                  <div className="flex items-center space-x-3">
+                    {result.online ? <CheckCircle size={24} /> : <XCircle size={24} />}
+                    <span className="font-bold text-lg">{result.online ? 'Online' : 'Offline'}</span>
+                  </div>
+                  <span className="text-sm opacity-80">{getStatusMessage()}</span>
+                  {result.url && (
+                    <span className="text-xs opacity-60 font-mono">{result.url}</span>
+                  )}
                 </div>
               )}
             </div>
 
-            <div className="bg-primary-light p-4 rounded-xl border border-border flex items-start">
-              <AlertCircle size={20} className="text-blue-600 mr-3 mt-0.5 shrink-0" />
-              <p className="text-sm text-blue-800">
-                <strong>Note:</strong> This tool performs a client-side check from your browser.
-                Some websites might block these requests or appear down due to browser security
-                policies (CORS) or ad blockers.
+            <div className="bg-primary-light dark:bg-primary/10 p-4 rounded-xl border border-border flex items-start">
+              <Server size={20} className="text-primary mr-3 mt-0.5 shrink-0" />
+              <p className="text-sm text-primary-foreground dark:text-primary">
+                <strong>Server-side check:</strong> This tool performs the check from our server,
+                bypassing browser CORS restrictions for more accurate results. Rate limited to 10
+                requests per minute.
               </p>
             </div>
           </div>

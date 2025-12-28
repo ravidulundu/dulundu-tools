@@ -182,7 +182,7 @@ export const ImageConverter: React.FC = () => {
                   </div>
                   <button
                     onClick={convertImage}
-                    className="w-full md:w-auto px-8 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium flex items-center justify-center"
+                    className="w-full md:w-auto px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center justify-center"
                   >
                     <RefreshCw size={20} className="mr-2" /> Convert
                   </button>
@@ -279,7 +279,7 @@ export const ImageConverter: React.FC = () => {
                             : `data:image/png;base64,${base64Input}`
                         }
                         download="decoded-image.png"
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center text-sm font-medium"
+                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center text-sm font-medium"
                       >
                         <Download size={16} className="mr-2" /> Download Image
                       </a>

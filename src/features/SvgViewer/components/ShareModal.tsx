@@ -90,7 +90,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
               type="text"
               value={svgName}
               onChange={e => setSvgName(e.target.value)}
-              className="w-full px-3 py-2 bg-background-secondary border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+              className="w-full px-3 py-2 bg-background-secondary border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary mb-4"
               placeholder="Untitled SVG"
             />
             <div className="flex items-center gap-4 mb-6">
@@ -104,7 +104,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
                 id="expiration-select"
                 value={expiration}
                 onChange={e => setExpiration(e.target.value)}
-                className="flex-1 px-3 py-2 bg-background-secondary border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-3 py-2 bg-background-secondary border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               >
                 <option value="1 Hour">1 Hour</option>
                 <option value="24 Hours">24 Hours</option>
@@ -122,7 +122,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
               <button
                 onClick={handleSaveAndShare}
                 disabled={isSaving}
-                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSaving ? 'Saving...' : 'Save'}
               </button>
@@ -153,7 +153,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
               />
               <button
                 onClick={handleCopyUrl}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors min-w-[80px]"
+                className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-md transition-colors min-w-[80px]"
               >
                 {isUrlCopied ? 'Copied!' : 'Copy'}
               </button>

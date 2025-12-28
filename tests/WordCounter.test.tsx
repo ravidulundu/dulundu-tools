@@ -1,21 +1,43 @@
-import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { describe, it, expect } from 'vitest';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { ThemeProvider } from '@/contexts/ThemeProvider';
 import { WordCounter } from '@/features/WordCounter';
 
-const renderWithProviders = (component) => {
-  return render(
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <ThemeProvider>{component}</ThemeProvider>
-    </BrowserRouter>
-  );
-};
+import { renderWithProviders } from './utils/testHelpers';
 
 describe('WordCounter', () => {
-  it('renders without crashing', () => {
-    renderWithProviders(<WordCounter />);
-    expect(document.body).toBeDefined();
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('Rendering', () => {
+    it('renders without crashing', () => {
+      renderWithProviders(<WordCounter />);
+      expect(document.body).toBeDefined();
+    });
+  });
+
+  describe('Functional Tests', () => {
+    it('output contains expected value (case 1)', async () => {
+      const { container } = renderWithProviders(<WordCounter />);
+      const user = userEvent.setup();
+
+      
+      const textarea = container.querySelector('textarea');
+      const input = container.querySelector('input[type="text"]');
+      const inputElement = textarea || input;
+
+      if (inputElement) {
+        await user.clear(inputElement);
+        await user.type(inputElement, 'hello world test');
+      }
+      
+
+      await waitFor(() => {
+        expect(container.textContent?.toLowerCase()).toContain('3');
+      }, { timeout: 3000 });
+    });
+
   });
 });

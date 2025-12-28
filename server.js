@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { GoogleGenAI } from '@google/genai';
+import Groq from 'groq-sdk';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -109,11 +110,11 @@ app.use((req, res, next) => {
     next();
 });
 
-// Rate Limiter for AI endpoints
+// Rate Limiter for AI endpoints - strict limits (not a chatbot!)
 const aiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100,
-    message: { error: 'Too many requests from this IP, please try again after 15 minutes' },
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 20, // 20 requests per hour per IP
+    message: { error: 'AI rate limit reached. This tool is for code help, not general chat. Try again in an hour.' },
     standardHeaders: true,
     legacyHeaders: false,
 });
@@ -123,6 +124,15 @@ const shareLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
     max: 50, // 50 shares per hour per IP
     message: { error: 'Too many share requests, please try again later' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// Rate Limiter for URL check endpoint (prevent abuse)
+const urlCheckLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 10, // 10 requests per minute per IP
+    message: { error: 'Too many URL check requests, please try again later' },
     standardHeaders: true,
     legacyHeaders: false,
 });
@@ -156,13 +166,59 @@ app.use(express.static(path.join(__dirname, 'dist'), {
     }
 }));
 
-// ========== GEMINI AI SETUP ==========
-const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+// ========== AI PROVIDERS SETUP ==========
+// Groq (primary) - Higher rate limits
+const groqApiKey = process.env.GROQ_API_KEY;
+const groq = groqApiKey ? new Groq({ apiKey: groqApiKey }) : null;
 
-if (!ai) {
-    logger.error('AI not initialized: Missing API key');
+// Gemini (fallback)
+const geminiApiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+const gemini = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
+
+if (!groq && !gemini) {
+    logger.error('AI not initialized: Missing both GROQ_API_KEY and GEMINI_API_KEY');
+} else {
+    logger.info(`AI providers: Groq=${!!groq}, Gemini=${!!gemini}`);
 }
+
+// AI Provider Abstraction - tries Groq first, then falls back to Gemini
+const callAI = async (prompt) => {
+    // Try Groq first (higher rate limits)
+    if (groq) {
+        try {
+            const response = await groq.chat.completions.create({
+                model: 'llama-3.3-70b-versatile',
+                messages: [{ role: 'user', content: prompt }],
+                max_tokens: 4096,
+            });
+            return {
+                text: response.choices[0]?.message?.content || 'No response',
+                provider: 'groq'
+            };
+        } catch (error) {
+            logger.warn(`Groq failed, falling back to Gemini: ${error.message}`);
+        }
+    }
+
+    // Fallback to Gemini
+    if (gemini) {
+        try {
+            const response = await gemini.models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents: prompt,
+            });
+            const text = response.text ?
+                (typeof response.text === 'function' ? response.text() : response.text) :
+                (response.candidates?.[0]?.content?.parts?.[0]?.text || 'No response');
+            return { text, provider: 'gemini' };
+        } catch (error) {
+            logger.error(`Gemini also failed: ${error.message}`);
+            throw error;
+        }
+    }
+
+    throw new Error('No AI provider available');
+};
 
 // Async error wrapper
 const asyncHandler = (fn) => (req, res, next) => {
@@ -171,7 +227,7 @@ const asyncHandler = (fn) => (req, res, next) => {
 
 // ========== AI ENDPOINTS ==========
 app.post('/api/ai/generate', aiLimiter, asyncHandler(async (req, res) => {
-    if (!ai) {
+    if (!groq && !gemini) {
         throw new Error('AI service not configured');
     }
 
@@ -181,29 +237,26 @@ app.post('/api/ai/generate', aiLimiter, asyncHandler(async (req, res) => {
         return res.status(400).json({ error: 'Valid prompt is required' });
     }
 
-    if (prompt.length > 10000) {
-        return res.status(400).json({ error: 'Prompt too long (max 10000 characters)' });
+    if (prompt.length > 3000) {
+        return res.status(400).json({ error: 'Prompt too long (max 3000 characters). Keep it focused on code help.' });
     }
 
     logger.debug(`AI generate request: ${language || 'code'}`);
 
-    const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: `You are an expert developer assistant. The user needs help with ${language || 'code'}. 
-      
-      Task: ${prompt}
-      
-      Provide a clean, well-commented code solution or explanation. If generating code, wrap it in markdown code blocks. Keep the text concise.`,
-    });
+    const systemPrompt = `You are an expert developer assistant. The user needs help with ${language || 'code'}.
 
-    const generatedText = response.text ? (typeof response.text === 'function' ? response.text() : response.text) :
-        (response.candidates?.[0]?.content?.parts?.[0]?.text || "No response text found.");
+Task: ${prompt}
 
-    res.json({ text: generatedText });
+Provide a clean, well-commented code solution or explanation. If generating code, wrap it in markdown code blocks. Keep the text concise.`;
+
+    const result = await callAI(systemPrompt);
+    logger.debug(`AI response from: ${result.provider}`);
+
+    res.json({ text: result.text });
 }));
 
 app.post('/api/ai/paraphrase', aiLimiter, asyncHandler(async (req, res) => {
-    if (!ai) {
+    if (!groq && !gemini) {
         throw new Error('AI service not configured');
     }
 
@@ -213,23 +266,97 @@ app.post('/api/ai/paraphrase', aiLimiter, asyncHandler(async (req, res) => {
         return res.status(400).json({ error: 'Valid text is required' });
     }
 
-    if (text.length > 10000) {
-        return res.status(400).json({ error: 'Text too long (max 10000 characters)' });
+    if (text.length > 2000) {
+        return res.status(400).json({ error: 'Text too long (max 2000 characters). Keep it to a paragraph.' });
     }
 
-    const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: `You are an expert writer. Paraphrase the following text to be more ${tone || 'professional'}. Keep the meaning the same but improve clarity and flow.
-      
-      Text: "${text}"
-      
-      Output only the paraphrased text.`,
-    });
+    const systemPrompt = `You are an expert writer. Paraphrase the following text to be more ${tone || 'professional'}. Keep the meaning the same but improve clarity and flow.
 
-    const generatedText = response.text ? (typeof response.text === 'function' ? response.text() : response.text) :
-        (response.candidates?.[0]?.content?.parts?.[0]?.text || "No response text found.");
+Text: "${text}"
 
-    res.json({ text: generatedText });
+Output only the paraphrased text.`;
+
+    const result = await callAI(systemPrompt);
+    logger.debug(`AI response from: ${result.provider}`);
+
+    res.json({ text: result.text });
+}));
+
+// ========== URL CHECK ENDPOINT ==========
+app.post('/api/check-url', urlCheckLimiter, asyncHandler(async (req, res) => {
+    const { url } = req.body;
+
+    if (!url || typeof url !== 'string' || url.trim().length === 0) {
+        return res.status(400).json({ error: 'Valid URL is required' });
+    }
+
+    // Basic URL validation
+    let targetUrl = url.trim();
+    if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+        targetUrl = 'https://' + targetUrl;
+    }
+
+    try {
+        new URL(targetUrl);
+    } catch {
+        return res.status(400).json({ error: 'Invalid URL format' });
+    }
+
+    logger.debug(`URL check request: ${targetUrl}`);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+    try {
+        const response = await fetch(targetUrl, {
+            method: 'HEAD',
+            signal: controller.signal,
+            headers: {
+                'User-Agent': 'Dulundu-Tools-HealthCheck/1.0'
+            },
+            redirect: 'follow'
+        });
+
+        clearTimeout(timeoutId);
+
+        res.json({
+            online: true,
+            status: response.status,
+            statusText: response.statusText,
+            url: targetUrl
+        });
+    } catch (error) {
+        clearTimeout(timeoutId);
+
+        // Determine error type
+        let errorMessage = 'Unknown error';
+        let errorCode = 'UNKNOWN';
+
+        if (error.name === 'AbortError') {
+            errorMessage = 'Request timed out (10s)';
+            errorCode = 'TIMEOUT';
+        } else if (error.cause?.code === 'ENOTFOUND') {
+            errorMessage = 'Domain not found (DNS error)';
+            errorCode = 'DNS_ERROR';
+        } else if (error.cause?.code === 'ECONNREFUSED') {
+            errorMessage = 'Connection refused';
+            errorCode = 'CONNECTION_REFUSED';
+        } else if (error.cause?.code === 'ECONNRESET') {
+            errorMessage = 'Connection reset';
+            errorCode = 'CONNECTION_RESET';
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+
+        logger.debug(`URL check failed for ${targetUrl}: ${errorCode}`);
+
+        res.json({
+            online: false,
+            error: errorMessage,
+            errorCode,
+            url: targetUrl
+        });
+    }
 }));
 
 // ========== SHARE ENDPOINTS ==========
