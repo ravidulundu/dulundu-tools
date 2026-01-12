@@ -1,49 +1,77 @@
-# Snyk (https://snyk.io) policy file
-# Security review completed: 2026-01-12
-# Reviewed by: Code security audit
-
-version: v1.25.0
-
-# Ignore rules for false positives and accepted risks
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  # SSRF in server.js - PROTECTED via isPrivateUrl() function
-  # Private IP ranges, localhost, and internal domains are blocked
   SNYK-JS-FETCH-174687:
     - '*':
-        reason: 'SSRF protection implemented via isPrivateUrl() function that blocks private IPs, localhost, and internal domains'
+        reason: >-
+          SSRF protection implemented via isPrivateUrl() function that blocks
+          private IPs, localhost, and internal domains
         expires: 2027-01-12T00:00:00.000Z
         created: 2026-01-12T00:00:00.000Z
-
-  # ReDoS in RegexTester - PROTECTED via timeout and length limits
-  # Pattern length limit: 500 chars, Text limit: 50000 chars, Timeout: 3 seconds
   SNYK-JS-REGEXP-174686:
     - '*':
-        reason: 'ReDoS protection implemented with pattern/text length limits and 3-second execution timeout'
+        reason: >-
+          ReDoS protection implemented with pattern/text length limits and
+          3-second execution timeout
         expires: 2027-01-12T00:00:00.000Z
         created: 2026-01-12T00:00:00.000Z
-
-  # DOM XSS warnings - FALSE POSITIVES (safe patterns)
-  # These use Blob URLs, DOMPurify sanitization, or hardcoded trusted APIs
   SNYK-JS-DOMXSS-174688:
     - '*':
-        reason: 'False positives: Blob URLs for downloads are safe, DOMPurify is used for SVG, QR API is hardcoded trusted source'
+        reason: >-
+          False positives: Blob URLs for downloads are safe, DOMPurify is used
+          for SVG, QR API is hardcoded trusted source
         expires: 2027-01-12T00:00:00.000Z
         created: 2026-01-12T00:00:00.000Z
-
-  # elliptic vulnerability - ACCEPTED RISK (low severity, transitive dependency)
-  # From vite-plugin-node-polyfills, only used at build time
   SNYK-JS-ELLIPTIC-7577916:
     - '*':
-        reason: 'Low severity, transitive dependency from vite-plugin-node-polyfills (build-time only). No fix available without breaking changes.'
+        reason: >-
+          Low severity, transitive dependency from vite-plugin-node-polyfills
+          (build-time only). No fix available without breaking changes.
         expires: 2027-01-12T00:00:00.000Z
         created: 2026-01-12T00:00:00.000Z
-
-  # Path Traversal in generate-functional-tests.mjs - ACCEPTED (dev script only)
   SNYK-JS-PATHTRAV-174689:
     - '*':
-        reason: 'Development script only, not exposed in production. Input is from developer CLI, not untrusted users.'
+        reason: >-
+          Development script only, not exposed in production. Input is from
+          developer CLI, not untrusted users.
         expires: 2027-01-12T00:00:00.000Z
         created: 2026-01-12T00:00:00.000Z
-
-# Patch section (empty - no patches needed)
+  c5790672-d423-434a-8851-ce7c6d4bc072:
+    - '*':
+        reason: >-
+          Protected with timeout (3s) and length limits (500 chars pattern, 50k
+          text). Runtime protection not visible to SAST.
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T16:52:35.262Z
+  7e8b56fc-c719-41ae-87f6-6d2c18cecfad:
+    - '*':
+        reason: Protected with timeout and length limits
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T16:52:51.367Z
+  b6c4f4f3-0c67-4653-97e3-67b9f7d36caf:
+    - '*':
+        reason: Protected with timeout and length limits
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T16:52:53.508Z
+  b2c50f66-b99d-4b1f-b501-770d2665386b:
+    - '*':
+        reason: False positive - DOMPurify sanitization used
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T16:53:13.062Z
+  9f0f0dba-c90a-4d97-838f-ec4302bdff6c:
+    - '*':
+        reason: False positive - Blob URL download pattern is safe
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T16:53:15.305Z
+  e58ee0ab-5569-4e14-88c9-084d0e9b416b:
+    - '*':
+        reason: False positive - Hardcoded trusted API
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T16:53:17.273Z
+  06b49c1d-f1b2-45e5-ac8e-f4814b4310da:
+    - '*':
+        reason: False positive - Hardcoded trusted API
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T16:53:19.896Z
 patch: {}
