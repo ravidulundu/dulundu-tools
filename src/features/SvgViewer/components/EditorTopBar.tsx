@@ -1,6 +1,6 @@
 import { OnMount } from '@monaco-editor/react';
-import { RotateCcw, Undo, Redo, Crop, Check, Settings } from 'lucide-react';
-import React, { useState, useEffect, useMemo } from 'react';
+import { Check, Crop, Redo, RotateCcw, Settings, Undo } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { DEFAULT_SVG_CODE } from '../constants';
 import { optimizeSvg, prettifySvg } from '../utils/svgOptimizer';
@@ -82,7 +82,13 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
     let openTag = svgTagMatch[0];
 
     const updateAttr = (tag: string, attr: string, value: number) => {
-      const regex = new RegExp(`(\\s|^)${attr}\\s*=\\s*"[^"]*"`);
+      // Validate attr is an allowed attribute (defense in depth)
+      const allowedAttrs = ['width', 'height', 'viewBox', 'x', 'y'];
+      if (!allowedAttrs.includes(attr)) return tag;
+
+      // Escape for safety (though validated above)
+      const escapedAttr = attr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(\\s|^)${escapedAttr}\\s*=\\s*"[^"]*"`);
       if (regex.test(tag)) {
         return tag.replace(regex, `$1${attr}="${value}"`);
       } else {
@@ -254,9 +260,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
         <button
           onClick={handlePrettify}
           className={`flex items-center gap-1 text-xs font-medium transition-colors ${
-            isPrettified
-              ? 'text-primary'
-              : 'text-foreground-secondary hover:text-foreground'
+            isPrettified ? 'text-primary' : 'text-foreground-secondary hover:text-foreground'
           }`}
         >
           {isPrettified && <Check className="w-3.5 h-3.5" />}
@@ -266,9 +270,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
         <button
           onClick={handleOptimize}
           className={`flex items-center gap-1 text-xs font-medium transition-colors ${
-            isOptimized
-              ? 'text-success'
-              : 'text-foreground-secondary hover:text-foreground'
+            isOptimized ? 'text-success' : 'text-foreground-secondary hover:text-foreground'
           }`}
         >
           {isOptimized && <Check className="w-3.5 h-3.5" />}
@@ -283,16 +285,10 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
         {/* Optimization Stats Display - Compact */}
         {optimizationStats && optimizationStats.percentage > 0 && (
           <div className="flex items-center gap-1 px-2 py-0.5 bg-success/10 border border-success/20 rounded text-[10px] whitespace-nowrap">
-            <span className="text-foreground-secondary">
-              {optimizationStats.originalSize}b
-            </span>
+            <span className="text-foreground-secondary">{optimizationStats.originalSize}b</span>
             <span className="text-success">→</span>
-            <span className="text-foreground-secondary">
-              {optimizationStats.optimizedSize}b
-            </span>
-            <span className="text-success font-semibold">
-              -{optimizationStats.percentage}%
-            </span>
+            <span className="text-foreground-secondary">{optimizationStats.optimizedSize}b</span>
+            <span className="text-success font-semibold">-{optimizationStats.percentage}%</span>
           </div>
         )}
 

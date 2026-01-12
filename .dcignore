@@ -31,3 +31,6 @@ tests/
 # Documentation
 *.md
 docs/
+
+# Extension (separate project)
+extension/
