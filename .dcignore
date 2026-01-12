@@ -1,0 +1,33 @@
+# Snyk Code ignore file
+# Syntax: same as .gitignore
+
+# Build output
+dist/
+build/
+
+# Dependencies
+node_modules/
+
+# Development scripts (not in production)
+scripts/
+
+# Test files
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__/
+tests/
+
+# Config files
+*.config.js
+*.config.mjs
+*.config.ts
+
+# IDE and editor
+.vscode/
+.idea/
+
+# Documentation
+*.md
+docs/
