@@ -564,12 +564,22 @@ app.get(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    // Basic validation to prevent directory traversal
-    if (!/^[a-f0-9]+$/i.test(id)) {
+    // Strict validation to prevent directory traversal
+    // Only allow alphanumeric hex characters (UUID format)
+    if (!/^[a-f0-9]+$/i.test(id) || id.length > 64) {
       return res.status(400).json({ error: 'Invalid ID format' });
     }
 
+    // Construct path and verify it's within SHARES_DIR
     const filePath = path.join(SHARES_DIR, `${id}.json`);
+    const resolvedPath = path.resolve(filePath);
+    const resolvedSharesDir = path.resolve(SHARES_DIR);
+
+    // Security: Ensure path doesn't escape SHARES_DIR
+    if (!resolvedPath.startsWith(resolvedSharesDir)) {
+      logger.warn(`Path traversal attempt blocked: ${id}`);
+      return res.status(400).json({ error: 'Invalid ID' });
+    }
 
     try {
       const dataStr = await fs.promises.readFile(filePath, 'utf-8');

@@ -1,4 +1,4 @@
-import { Database, Copy, Check, Trash2, Play, Upload, Download } from 'lucide-react';
+import { Check, Copy, Database, Download, Play, Trash2, Upload } from 'lucide-react';
 import React from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
@@ -58,9 +58,11 @@ export const SqlFormatter: React.FC = () => {
         'ALTER TABLE',
       ];
 
-      // Simple indentation
+      // Simple indentation - escape keywords for safe regex
       keywords.forEach(kw => {
-        const regex = new RegExp(`\\b${kw}\\b`, 'gi');
+        // Keywords are hardcoded, but escape for defense in depth
+        const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
         sql = sql.replace(regex, `\n${kw}`);
       });
 

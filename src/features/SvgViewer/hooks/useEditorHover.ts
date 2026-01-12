@@ -61,7 +61,39 @@ export const useEditorHover = (editorInstance: editor.IStandaloneCodeEditor | nu
           // Remove comments to avoid false counts
           const textBeforeNoComments = textBefore.replace(/<!--[\s\S]*?-->/g, '');
 
-          const regex = new RegExp(`<${elementType}[^>]*>`, 'gi');
+          // Validate elementType is a known SVG element (defense in depth)
+          const allowedElements = [
+            'path',
+            'circle',
+            'rect',
+            'ellipse',
+            'polygon',
+            'polyline',
+            'line',
+            'g',
+            'text',
+            'use',
+            'image',
+            'defs',
+            'symbol',
+            'marker',
+            'mask',
+            'pattern',
+            'clippath',
+            'lineargradient',
+            'radialgradient',
+            'stop',
+            'svg',
+          ];
+          const lowerType = elementType.toLowerCase();
+          if (!allowedElements.includes(lowerType)) {
+            setHoverInfo(null);
+            return;
+          }
+
+          // Escape for safety (though validated above)
+          const escapedType = lowerType.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const regex = new RegExp(`<${escapedType}[^>]*>`, 'gi');
           const matches = textBeforeNoComments.match(regex);
           const elementIndex = matches ? matches.length : 0;
 
