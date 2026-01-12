@@ -1,5 +1,5 @@
-import { Image, Upload, Download, RefreshCw, FileImage, Copy, Check } from 'lucide-react';
-import React, { useState, useRef } from 'react';
+import { Check, Copy, Download, FileImage, Image, RefreshCw, Upload } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
@@ -151,7 +151,9 @@ export const ImageConverter: React.FC = () => {
                 ) : (
                   <div className="flex flex-col items-center text-foreground-muted">
                     <Upload size={48} className="mb-4" />
-                    <p className="text-lg font-medium text-foreground-secondary">Click to Upload Image</p>
+                    <p className="text-lg font-medium text-foreground-secondary">
+                      Click to Upload Image
+                    </p>
                     <p className="text-sm">Supports JPG, PNG, WEBP, BMP</p>
                   </div>
                 )}
@@ -247,22 +249,41 @@ export const ImageConverter: React.FC = () => {
                   </div>
                   <div className="flex-1 flex items-center justify-center p-4 bg-background-secondary/50 overflow-hidden relative">
                     {base64Input ? (
-                      <img
-                        src={
-                          base64Input.startsWith('data:')
-                            ? base64Input
-                            : `data:image/png;base64,${base64Input}`
+                      (() => {
+                        // XSS Protection: Validate base64 input format
+                        const isValidDataUri =
+                          base64Input.startsWith('data:image/') ||
+                          /^[A-Za-z0-9+/=]+$/.test(base64Input.trim());
+
+                        if (!isValidDataUri) {
+                          return (
+                            <div className="text-danger flex flex-col items-center">
+                              <p className="text-sm font-medium">Invalid base64 format</p>
+                              <p className="text-xs text-foreground-muted mt-1">
+                                Must be a valid data URI or base64 string
+                              </p>
+                            </div>
+                          );
                         }
-                        alt="Preview"
-                        className="max-w-full max-h-full object-contain rounded-lg shadow-sm"
-                        onError={e => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                          // Could add error state here
-                        }}
-                        onLoad={e => {
-                          (e.target as HTMLImageElement).style.display = 'block';
-                        }}
-                      />
+
+                        const imgSrc = base64Input.startsWith('data:')
+                          ? base64Input
+                          : `data:image/png;base64,${base64Input}`;
+
+                        return (
+                          <img
+                            src={imgSrc}
+                            alt="Preview"
+                            className="max-w-full max-h-full object-contain rounded-lg shadow-sm"
+                            onError={e => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                            onLoad={e => {
+                              (e.target as HTMLImageElement).style.display = 'block';
+                            }}
+                          />
+                        );
+                      })()
                     ) : (
                       <div className="text-foreground-muted flex flex-col items-center">
                         <Image size={48} className="mb-2 opacity-50" />
@@ -270,21 +291,30 @@ export const ImageConverter: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  {base64Input && (
-                    <div className="p-4 border-t border-border bg-card flex justify-end">
-                      <a
-                        href={
-                          base64Input.startsWith('data:')
-                            ? base64Input
-                            : `data:image/png;base64,${base64Input}`
-                        }
-                        download="decoded-image.png"
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center text-sm font-medium"
-                      >
-                        <Download size={16} className="mr-2" /> Download Image
-                      </a>
-                    </div>
-                  )}
+                  {base64Input &&
+                    (() => {
+                      const isValidDataUri =
+                        base64Input.startsWith('data:image/') ||
+                        /^[A-Za-z0-9+/=]+$/.test(base64Input.trim());
+
+                      if (!isValidDataUri) return null;
+
+                      const downloadSrc = base64Input.startsWith('data:')
+                        ? base64Input
+                        : `data:image/png;base64,${base64Input}`;
+
+                      return (
+                        <div className="p-4 border-t border-border bg-card flex justify-end">
+                          <a
+                            href={downloadSrc}
+                            download="decoded-image.png"
+                            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center text-sm font-medium"
+                          >
+                            <Download size={16} className="mr-2" /> Download Image
+                          </a>
+                        </div>
+                      );
+                    })()}
                 </div>
               </div>
             )}

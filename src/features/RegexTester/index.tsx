@@ -1,5 +1,5 @@
-import { Regex, Flag, CheckCircle, AlertCircle } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { AlertCircle, CheckCircle, Flag, Regex } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 import { Button } from '@/components/common/Button';
 import { CodeEditor } from '@/components/common/CodeEditor';
@@ -20,6 +20,12 @@ export const RegexTester: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  // ReDoS Protection Constants
+  const MAX_PATTERN_LENGTH = 500;
+  const MAX_TEXT_LENGTH = 50000;
+  const MAX_MATCHES = 1000;
+  const REGEX_TIMEOUT_MS = 3000;
+
   useEffect(() => {
     const testRegex = () => {
       try {
@@ -29,8 +35,25 @@ export const RegexTester: React.FC = () => {
           return;
         }
 
+        // ReDoS Protection: Pattern length limit
+        if (pattern.length > MAX_PATTERN_LENGTH) {
+          setError(`Pattern too long (max ${MAX_PATTERN_LENGTH} characters)`);
+          setMatches([]);
+          return;
+        }
+
+        // ReDoS Protection: Text length limit
+        if (text.length > MAX_TEXT_LENGTH) {
+          setError(`Text too long (max ${MAX_TEXT_LENGTH} characters)`);
+          setMatches([]);
+          return;
+        }
+
         const regex = new RegExp(pattern, flags);
         const newMatches: Match[] = [];
+
+        // Execute regex with timeout protection
+        const startTime = performance.now();
 
         if (!regex.global && text.match(regex)) {
           const m = text.match(regex);
@@ -39,8 +62,15 @@ export const RegexTester: React.FC = () => {
           }
         } else {
           let match;
-          let limit = 1000;
+          let limit = MAX_MATCHES;
           while ((match = regex.exec(text)) !== null) {
+            // ReDoS Protection: Timeout check
+            if (performance.now() - startTime > REGEX_TIMEOUT_MS) {
+              setError('Regex execution timeout - pattern may be too complex');
+              setMatches([]);
+              return;
+            }
+
             newMatches.push({
               index: match.index,
               value: match[0],
@@ -210,7 +240,9 @@ export const RegexTester: React.FC = () => {
                             <td className="p-3 font-mono font-bold text-foreground-secondary break-all">
                               {m.value}
                             </td>
-                            <td className="p-3 text-foreground-muted font-mono text-xs">{m.index}</td>
+                            <td className="p-3 text-foreground-muted font-mono text-xs">
+                              {m.index}
+                            </td>
                             <td className="p-3 text-foreground-muted">
                               {m.groups && m.groups.length > 0 ? (
                                 <span className="flex flex-wrap gap-1">
