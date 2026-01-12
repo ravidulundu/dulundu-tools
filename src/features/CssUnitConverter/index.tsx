@@ -164,7 +164,7 @@ export const CssUnitConverter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Ruler}
           title="CSS Unit Converter"
@@ -172,63 +172,56 @@ export const CssUnitConverter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
-          <div className="flex flex-wrap gap-3">
-            <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <label htmlFor="base-size" className="text-sm font-medium text-slate-600">
-                Base Size:
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Base Size */}
+            <div className="flex items-center gap-2">
+              <label htmlFor="base-size" className="text-sm font-medium text-foreground-secondary whitespace-nowrap">
+                Base:
               </label>
-              <div className="flex items-center">
+              <div className="relative">
                 <input
                   id="base-size"
                   type="number"
                   value={base}
                   onChange={e => handleBaseChange(e.target.value)}
-                  className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
+                  className="w-20 px-3 py-1.5 pr-8 bg-background-secondary border border-border rounded-lg text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 />
-                <span className="ml-1 text-xs text-slate-500 font-bold">px</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-foreground-muted">px</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <span className="text-sm font-medium text-slate-600">Viewport:</span>
-              <div className="flex items-center gap-2">
-                <div className="flex items-center">
-                  <label htmlFor="viewport-width" className="mr-1 text-xs text-slate-400 font-bold">
-                    W:
-                  </label>
-                  <input
-                    id="viewport-width"
-                    type="number"
-                    value={viewportWidth}
-                    onChange={e => handleViewportWidthChange(e.target.value)}
-                    className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
-                  />
-                </div>
-                <span className="text-slate-300">x</span>
-                <div className="flex items-center">
-                  <label
-                    htmlFor="viewport-height"
-                    className="mr-1 text-xs text-slate-400 font-bold"
-                  >
-                    H:
-                  </label>
-                  <input
-                    id="viewport-height"
-                    type="number"
-                    value={viewportHeight}
-                    onChange={e => handleViewportHeightChange(e.target.value)}
-                    className="w-16 bg-transparent font-bold text-slate-800 outline-none text-center border-b border-slate-300 focus:border-primary"
-                  />
-                </div>
-              </div>
+            <div className="w-px h-6 bg-border" />
+
+            {/* Viewport */}
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-foreground-secondary whitespace-nowrap">
+                Viewport:
+              </label>
+              <input
+                id="viewport-width"
+                type="number"
+                value={viewportWidth}
+                onChange={e => handleViewportWidthChange(e.target.value)}
+                aria-label="Viewport Width"
+                className="w-20 px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              />
+              <span className="text-foreground-muted text-sm">×</span>
+              <input
+                id="viewport-height"
+                type="number"
+                value={viewportHeight}
+                onChange={e => handleViewportHeightChange(e.target.value)}
+                aria-label="Viewport Height"
+                className="w-20 px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              />
             </div>
           </div>
           <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-background-secondary/30">
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
               {
@@ -294,9 +287,9 @@ export const CssUnitConverter: React.FC = () => {
             ].map(unit => (
               <div
                 key={unit.label}
-                className={`bg-white p-4 md:p-6 rounded-xl border border-gray-200 shadow-sm transition-all hover:shadow-md ${unit.colSpan}`}
+                className={`bg-card p-4 md:p-6 rounded-xl border border-border shadow-sm transition-all hover:shadow-md ${unit.colSpan}`}
               >
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-3 tracking-wide">
+                <label className="block text-xs font-bold text-foreground-muted uppercase mb-3 tracking-wide">
                   {unit.label}
                 </label>
                 <input
@@ -304,7 +297,7 @@ export const CssUnitConverter: React.FC = () => {
                   value={unit.val}
                   onChange={e => unit.fn(e.target.value)}
                   step={unit.step}
-                  className="w-full text-2xl md:text-3xl font-bold text-slate-800 outline-none border-b-2 border-slate-100 focus:border-primary py-2 bg-transparent transition-colors placeholder-slate-200"
+                  className="w-full text-2xl md:text-3xl font-bold text-foreground outline-none border-b-2 border-border focus:border-primary py-2 bg-transparent transition-colors placeholder-foreground-muted"
                   placeholder="0"
                 />
               </div>

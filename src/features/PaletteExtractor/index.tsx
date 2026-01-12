@@ -62,19 +62,19 @@ export const PaletteExtractor: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Palette}
           title="Image Palette Extractor"
           description="Extract dominant colors from any image"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30 flex flex-col items-center">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-background-secondary/30 flex flex-col items-center">
           <div className="max-w-4xl w-full">
             <div
               role="button"
               tabIndex={0}
-              className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-slate-50 transition-all cursor-pointer mb-8 relative bg-white"
+              className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:bg-background-secondary transition-all cursor-pointer mb-8 relative bg-card"
               onClick={() => fileInputRef.current?.click()}
               onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -103,18 +103,18 @@ export const PaletteExtractor: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <div className="flex flex-col items-center text-slate-400 py-8">
-                  <div className="p-4 bg-slate-100 rounded-full mb-4">
-                    <ImageIcon size={32} className="text-slate-400" />
+                <div className="flex flex-col items-center text-foreground-muted py-8">
+                  <div className="p-4 bg-background-secondary rounded-full mb-4">
+                    <ImageIcon size={32} className="text-foreground-muted" />
                   </div>
-                  <p className="text-lg font-medium text-slate-600">Click to Upload Image</p>
+                  <p className="text-lg font-medium text-foreground-secondary">Click to Upload Image</p>
                   <p className="text-sm">JPG, PNG, WEBP supported</p>
                 </div>
               )}
             </div>
 
             {loading && (
-              <div className="text-center text-slate-500 font-medium animate-pulse">
+              <div className="text-center text-foreground-muted font-medium animate-pulse">
                 Analyzing colors...
               </div>
             )}
@@ -146,7 +146,7 @@ const ColorCard: React.FC<{ hex: string }> = ({ hex }) => {
     <div
       role="button"
       tabIndex={0}
-      className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
+      className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
       onClick={handleCopy}
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -156,17 +156,17 @@ const ColorCard: React.FC<{ hex: string }> = ({ hex }) => {
     >
       <div className="h-24 w-full relative" style={{ backgroundColor: hex }}>
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">
-          <span className="bg-white/90 text-slate-800 text-xs font-bold px-2 py-1 rounded shadow-sm">
+          <span className="bg-card/90 text-foreground text-xs font-bold px-2 py-1 rounded shadow-sm">
             Click to Copy
           </span>
         </div>
       </div>
       <div className="p-3 flex justify-between items-center">
-        <span className="font-mono font-bold text-slate-700 uppercase">{hex}</span>
+        <span className="font-mono font-bold text-foreground-secondary uppercase">{hex}</span>
         {copied ? (
           <Check size={16} className="text-green-500" />
         ) : (
-          <Copy size={16} className="text-slate-400 group-hover:text-primary transition-colors" />
+          <Copy size={16} className="text-foreground-muted group-hover:text-primary transition-colors" />
         )}
       </div>
     </div>

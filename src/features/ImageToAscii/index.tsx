@@ -71,14 +71,14 @@ export const ImageToAscii: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={ImageIcon}
           title="Image to ASCII"
           description="Convert images to text art"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 overflow-y-auto">
           <div className="max-w-4xl mx-auto space-y-6 h-full flex flex-col">
             <div className="flex flex-col items-center justify-center">
               <input
@@ -90,7 +90,7 @@ export const ImageToAscii: React.FC = () => {
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="px-8 py-4 border-2 border-dashed border-primary/30 bg-white text-primary rounded-xl hover:bg-blue-50 transition-colors flex flex-col items-center w-full max-w-md"
+                className="px-8 py-4 border-2 border-dashed border-primary/30 bg-card text-primary rounded-xl hover:bg-primary-light transition-colors flex flex-col items-center w-full max-w-md"
               >
                 <Upload size={32} className="mb-2" />
                 <span className="font-bold">Upload Image</span>

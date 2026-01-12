@@ -72,7 +72,7 @@ export const TokenGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Key}
           title="Token Generator"
@@ -81,14 +81,14 @@ export const TokenGenerator: React.FC = () => {
           iconColor="text-emerald-600"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-6 h-full">
             {/* Controls */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit">
+            <div className="bg-card p-6 rounded-xl border border-border shadow-sm h-fit">
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">
+                    <label className="block text-sm font-bold text-foreground-secondary mb-2">
                       Length ({length})
                     </label>
                     <input
@@ -97,11 +97,11 @@ export const TokenGenerator: React.FC = () => {
                       max="128"
                       value={length}
                       onChange={e => setLength(parseInt(e.target.value))}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                      className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">
+                    <label className="block text-sm font-bold text-foreground-secondary mb-2">
                       Quantity ({count})
                     </label>
                     <input
@@ -110,13 +110,13 @@ export const TokenGenerator: React.FC = () => {
                       max="20"
                       value={count}
                       onChange={e => setCount(parseInt(e.target.value))}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                      className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <span className="block text-sm font-bold text-slate-700 mb-3">
+                  <span className="block text-sm font-bold text-foreground-secondary mb-3">
                     Character Sets
                   </span>
                   <div className="flex flex-wrap gap-3">
@@ -132,8 +132,8 @@ export const TokenGenerator: React.FC = () => {
                         onClick={() => toggleOption(opt.id as keyof typeof options)}
                         className={`px-4 py-2 rounded-lg text-sm font-bold border transition-all ${
                           options[opt.id as keyof typeof options]
-                            ? 'bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm'
-                            : 'bg-white border-gray-200 text-slate-400 hover:border-gray-300'
+                            ? 'bg-success-light border-success/30 text-success shadow-sm'
+                            : 'bg-card border-border text-foreground-muted hover:border-foreground-muted'
                         }`}
                       >
                         {opt.label}
@@ -144,7 +144,7 @@ export const TokenGenerator: React.FC = () => {
 
                 <button
                   onClick={generate}
-                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 font-bold shadow-md flex items-center justify-center"
+                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-primary/90 font-bold shadow-md flex items-center justify-center"
                 >
                   <RefreshCw size={18} className="mr-2" /> Generate Tokens
                 </button>

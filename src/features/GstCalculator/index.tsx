@@ -46,7 +46,7 @@ export const GstCalculator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={DollarSign}
           title="GST Calculator"
@@ -54,19 +54,19 @@ export const GstCalculator: React.FC = () => {
         />
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 overflow-y-auto">
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
             {/* Input Section */}
-            <div className="space-y-6 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div className="space-y-6 bg-card p-6 rounded-xl border border-border shadow-sm">
               <div>
                 <label
                   htmlFor="initial-amount"
-                  className="block text-sm font-bold text-slate-700 mb-2"
+                  className="block text-sm font-bold text-foreground-secondary mb-2"
                 >
                   Initial Amount
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground-muted font-bold">
                     $
                   </span>
                   <input
@@ -74,14 +74,14 @@ export const GstCalculator: React.FC = () => {
                     type="number"
                     value={amount}
                     onChange={e => setAmount(e.target.value)}
-                    className="w-full pl-8 p-4 bg-slate-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-lg font-bold text-slate-800 transition-all"
+                    className="w-full pl-8 p-4 bg-background-secondary border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-lg font-bold text-foreground transition-all"
                     placeholder="0.00"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="gst-rate" className="block text-sm font-bold text-slate-700 mb-2">
+                <label htmlFor="gst-rate" className="block text-sm font-bold text-foreground-secondary mb-2">
                   GST Rate (%)
                 </label>
                 <div className="grid grid-cols-4 gap-2 mb-3">
@@ -89,7 +89,7 @@ export const GstCalculator: React.FC = () => {
                     <button
                       key={r}
                       onClick={() => setRate(r)}
-                      className={`py-2 rounded-lg text-sm font-bold transition-all ${rate === r ? 'bg-primary text-white shadow-md' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-gray-200'}`}
+                      className={`py-2 rounded-lg text-sm font-bold transition-all ${rate === r ? 'bg-primary text-white shadow-md' : 'bg-background-secondary text-foreground-secondary hover:bg-background-secondary border border-border'}`}
                     >
                       {r}%
                     </button>
@@ -101,32 +101,32 @@ export const GstCalculator: React.FC = () => {
                     type="number"
                     value={rate}
                     onChange={e => setRate(parseFloat(e.target.value))}
-                    className="w-full p-3 bg-slate-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-bold text-slate-800 transition-all"
+                    className="w-full p-3 bg-background-secondary border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-bold text-foreground transition-all"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground-muted font-bold">
                     %
                   </span>
                 </div>
               </div>
 
               <div>
-                <span id="calc-type-label" className="block text-sm font-bold text-slate-700 mb-2">
+                <span id="calc-type-label" className="block text-sm font-bold text-foreground-secondary mb-2">
                   Calculation Type
                 </span>
                 <div
                   role="group"
                   aria-labelledby="calc-type-label"
-                  className="grid grid-cols-2 bg-slate-100 p-1 rounded-xl"
+                  className="grid grid-cols-2 bg-background-secondary p-1 rounded-xl"
                 >
                   <button
                     onClick={() => setType('exclusive')}
-                    className={`py-2 rounded-lg text-sm font-bold transition-all ${type === 'exclusive' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                    className={`py-2 rounded-lg text-sm font-bold transition-all ${type === 'exclusive' ? 'bg-card text-primary shadow-sm' : 'text-foreground-muted hover:text-foreground-secondary'}`}
                   >
                     Add GST (Exclusive)
                   </button>
                   <button
                     onClick={() => setType('inclusive')}
-                    className={`py-2 rounded-lg text-sm font-bold transition-all ${type === 'inclusive' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                    className={`py-2 rounded-lg text-sm font-bold transition-all ${type === 'inclusive' ? 'bg-card text-primary shadow-sm' : 'text-foreground-muted hover:text-foreground-secondary'}`}
                   >
                     Remove GST (Inclusive)
                   </button>
@@ -135,22 +135,22 @@ export const GstCalculator: React.FC = () => {
             </div>
 
             {/* Result Section */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm flex flex-col justify-center space-y-6 h-full">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                <span className="text-slate-500 font-medium">Net Amount</span>
-                <span className="text-lg font-bold text-slate-700">{fmt(result.net)}</span>
+            <div className="bg-card rounded-2xl p-6 border border-border shadow-sm flex flex-col justify-center space-y-6 h-full">
+              <div className="flex justify-between items-center pb-4 border-b border-border">
+                <span className="text-foreground-muted font-medium">Net Amount</span>
+                <span className="text-lg font-bold text-foreground-secondary">{fmt(result.net)}</span>
               </div>
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                <span className="text-slate-500 font-medium">GST Amount ({rate}%)</span>
+              <div className="flex justify-between items-center pb-4 border-b border-border">
+                <span className="text-foreground-muted font-medium">GST Amount ({rate}%)</span>
                 <span className="text-lg font-bold text-primary">{fmt(result.gst)}</span>
               </div>
               <div className="flex justify-between items-center pt-2">
-                <span className="text-slate-700 font-bold text-lg">Total Amount</span>
-                <span className="text-3xl font-extrabold text-slate-900">{fmt(result.total)}</span>
+                <span className="text-foreground-secondary font-bold text-lg">Total Amount</span>
+                <span className="text-3xl font-extrabold text-foreground">{fmt(result.total)}</span>
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-auto">
-                <p className="text-xs text-blue-600 leading-relaxed">
+              <div className="bg-primary-light p-4 rounded-xl border border-border mt-auto">
+                <p className="text-xs text-primary leading-relaxed">
                   {type === 'exclusive'
                     ? `To calculate GST, multiply ${fmt(parseFloat(amount))} by ${rate}%. Add the result to the original amount.`
                     : `To remove GST, divide ${fmt(parseFloat(amount))} by (1 + ${rate / 100}). The difference is the GST component.`}

@@ -38,15 +38,15 @@ export const ToolDirectory: React.FC<ToolDirectoryProps> = ({ tools }) => {
         return (
           <div
             key={category}
-            className="flex flex-col bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 h-full"
+            className="flex flex-col bg-card rounded-xl border border-border shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 h-full"
           >
             {/* Category Header */}
-            <div className="px-5 py-4 border-b border-gray-100 bg-slate-50/50 flex items-center">
+            <div className="px-5 py-4 border-b border-border bg-background-secondary/50 flex items-center">
               <span className="w-2 h-2 rounded-full bg-primary mr-3"></span>
-              <h3 className="font-bold text-slate-800 text-lg truncate" title={category}>
+              <h3 className="font-bold text-foreground text-lg truncate" title={category}>
                 {category}
               </h3>
-              <span className="ml-auto text-xs font-semibold text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
+              <span className="ml-auto text-xs font-semibold text-foreground-muted bg-background-secondary px-2 py-1 rounded-full">
                 {categoryTools.length}
               </span>
             </div>

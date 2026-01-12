@@ -1,6 +1,8 @@
-import { Code2, Menu, Sun, Moon, Github, MessageSquare, ChevronDown, X, Heart } from 'lucide-react';
+import { Code2, Menu, Sun, Moon, Github, MessageSquare, ChevronDown, X, Heart, Keyboard } from 'lucide-react';
 import React, { useState, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
+import { formatShortcut } from '@/hooks/useKeyboardShortcuts';
 
 const MegaMenu = React.lazy(() => import('./MegaMenu'));
 const MobileMenu = React.lazy(() => import('./MobileMenu'));
@@ -8,9 +10,10 @@ const MobileMenu = React.lazy(() => import('./MobileMenu'));
 interface HeaderProps {
   darkMode: boolean;
   toggleTheme: () => void;
+  onShortcutsClick?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
+export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme, onShortcutsClick }) => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
@@ -23,14 +26,14 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
   ];
 
   return (
-    <header className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 sticky top-0 z-50 shadow-sm/50 transition-colors duration-200">
+    <header className="bg-card border-b border-border sticky top-0 z-50 shadow-sm/50 transition-colors duration-200">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Left: Logo */}
         <Link to="/" className="flex items-center space-x-2 group shrink-0">
-          <div className="bg-primary text-white p-1.5 rounded-lg group-hover:bg-blue-600 transition-colors shadow-sm">
+          <div className="bg-primary text-primary-foreground p-1.5 rounded-lg hover:bg-primary-hover transition-colors shadow-sm">
             <Code2 size={22} />
           </div>
-          <span className="text-lg font-bold text-slate-800 dark:text-white tracking-tight">
+          <span className="text-lg font-bold text-foreground tracking-tight">
             Dulundu<span className="text-primary">.tools</span>
           </span>
         </Link>
@@ -45,8 +48,8 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
                 to={link.path}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-primary font-semibold'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-gray-50 dark:hover:bg-slate-800'
+                    ? 'bg-primary-light text-primary font-semibold'
+                    : 'text-foreground-secondary hover:text-primary hover:bg-background-secondary'
                 }`}
               >
                 {link.name}
@@ -63,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
             aria-expanded={megaMenuOpen}
             type="button"
           >
-            <span className="text-sm font-medium flex items-center text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+            <span className="text-sm font-medium flex items-center text-foreground-secondary hover:text-primary transition-colors">
               Developer Tools{' '}
               <ChevronDown
                 size={14}
@@ -82,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
           </button>
         </nav>
 
-        {/* Right: Actions (4 Icons: Github, Discord, Chat, Sun) */}
+        {/* Right: Actions */}
         <div className="flex items-center space-x-3 shrink-0">
           {/* Donate Button (Desktop) */}
           <a
@@ -99,10 +102,10 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
 
           {/* Github */}
           <a
-            href="https://github.com/ravidulundu/"
+            href="https://github.com/ravidulundu/dulundu-tools"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all"
+            className="p-2 text-foreground-muted hover:text-foreground hover:bg-background-secondary rounded-lg transition-all"
             title="GitHub"
           >
             <Github size={20} />
@@ -111,18 +114,29 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
           {/* Discussions */}
           <button
             onClick={() => window.open('#', '_blank')}
-            className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all"
+            className="p-2 text-foreground-muted hover:text-foreground hover:bg-background-secondary rounded-lg transition-all"
             title="Discussions"
             type="button"
           >
             <MessageSquare size={20} />
           </button>
 
+          {/* Keyboard Shortcuts */}
+          {onShortcutsClick && (
+            <button
+              onClick={onShortcutsClick}
+              className="hidden md:flex p-2 text-foreground-muted hover:text-primary hover:bg-primary-light rounded-lg transition-all"
+              title={`Keyboard Shortcuts (${formatShortcut('mod+/')})`}
+            >
+              <Keyboard size={20} />
+            </button>
+          )}
+
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 text-slate-500 dark:text-slate-400 hover:text-orange-500 dark:hover:text-yellow-400 hover:bg-orange-50 dark:hover:bg-yellow-400/10 rounded-lg transition-all"
-            title="Toggle Theme"
+            className="p-2 text-foreground-muted hover:text-warning hover:bg-warning-light rounded-lg transition-all"
+            title={`Toggle Theme (${formatShortcut('mod+d')})`}
           >
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
           </button>
@@ -130,7 +144,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-slate-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg ml-1"
+            className="md:hidden p-2 text-foreground-secondary hover:bg-background-secondary rounded-lg ml-1"
             aria-label="Toggle mobile menu"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

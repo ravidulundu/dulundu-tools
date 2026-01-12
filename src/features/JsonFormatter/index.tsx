@@ -1,10 +1,11 @@
 import { Copy, Trash2, AlertCircle, FileJson, Check, Upload, Download, Wrench } from 'lucide-react';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
 import { useToolLogic } from '@/hooks/useToolLogic';
+import { useToolShortcuts } from '@/hooks/useToolShortcuts';
 
 export const JsonFormatter: React.FC = () => {
   const {
@@ -52,24 +53,35 @@ export const JsonFormatter: React.FC = () => {
     }
   }, [setInput, setOutput, setError]);
 
-  const processJson = (mode: 'beautify' | 'minify') => {
-    if (!input.trim()) {
-      setOutput('');
-      setError(null);
-      return;
-    }
-    try {
-      const parsed = JSON.parse(input);
-      if (mode === 'beautify') {
-        setOutput(JSON.stringify(parsed, null, 2));
-      } else {
-        setOutput(JSON.stringify(parsed));
+  const processJson = useCallback(
+    (mode: 'beautify' | 'minify') => {
+      if (!input.trim()) {
+        setOutput('');
+        setError(null);
+        return;
       }
-      setError(null);
-    } catch (e) {
-      setError((e as Error).message);
-    }
-  };
+      try {
+        const parsed = JSON.parse(input);
+        if (mode === 'beautify') {
+          setOutput(JSON.stringify(parsed, null, 2));
+        } else {
+          setOutput(JSON.stringify(parsed));
+        }
+        setError(null);
+      } catch (e) {
+        setError((e as Error).message);
+      }
+    },
+    [input, setOutput, setError]
+  );
+
+  // Keyboard shortcuts: Ctrl+Enter to beautify, Ctrl+L to clear, etc.
+  useToolShortcuts({
+    onExecute: () => processJson('beautify'),
+    onClear: handleClear,
+    onCopy: handleCopy,
+    onDownload: () => handleDownload('formatted.json', 'application/json'),
+  });
 
   const fixJson = () => {
     if (!input.trim()) return;
@@ -104,7 +116,7 @@ export const JsonFormatter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={FileJson}
           title="JSON Formatter"
@@ -112,22 +124,25 @@ export const JsonFormatter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-2">
             <button
               onClick={() => processJson('beautify')}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-sm"
+              title="Beautify (Ctrl+Enter)"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors font-medium text-sm"
             >
               Beautify
             </button>
             <button
               onClick={() => processJson('minify')}
-              className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors font-medium text-sm"
+              title="Minify"
+              className="px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground-secondary transition-colors font-medium text-sm"
             >
               Minify
             </button>
             <button
               onClick={fixJson}
+              title="Auto-Fix broken JSON"
               className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm flex items-center"
             >
               <Wrench size={16} className="mr-1" /> Auto-Fix
@@ -148,12 +163,18 @@ export const JsonFormatter: React.FC = () => {
               label="Upload"
               variant="secondary"
             />
-            <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
+            <ActionButton
+              onClick={handleClear}
+              icon={Trash2}
+              label="Clear"
+              variant="danger"
+              shortcut="mod+l"
+            />
           </div>
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <div className="flex flex-col h-full">
               <CodeEditor
@@ -164,7 +185,7 @@ export const JsonFormatter: React.FC = () => {
                 theme="light"
               />
               {error && (
-                <div className="mt-2 flex items-center text-red-600 text-sm font-medium bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
+                <div className="mt-2 flex items-center text-danger text-sm font-medium bg-danger-light px-3 py-1.5 rounded-lg border border-danger/20">
                   <AlertCircle size={16} className="mr-2 flex-shrink-0" />
                   <span className="truncate">{error}</span>
                 </div>
@@ -185,12 +206,14 @@ export const JsonFormatter: React.FC = () => {
                       label="Save"
                       onClick={() => handleDownload('formatted.json', 'application/json')}
                       variant="secondary"
+                      shortcut="mod+s"
                     />
                     <ActionButton
                       icon={copied ? Check : Copy}
                       label={copied ? 'Copied' : 'Copy'}
                       onClick={handleCopy}
                       variant={copied ? 'success' : 'primary'}
+                      shortcut="mod+shift+c"
                     />
                   </>
                 )

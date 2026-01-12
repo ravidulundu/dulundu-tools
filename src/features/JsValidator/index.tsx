@@ -47,7 +47,7 @@ export const JsValidator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={ShieldCheck}
           title="JS Validator"
@@ -55,16 +55,16 @@ export const JsValidator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
-          <div className="flex bg-slate-100 p-1 rounded-lg">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
+          <div className="flex bg-background-secondary p-1 rounded-lg">
             {(['js', 'jsx', 'ts', 'tsx'] as Lang[]).map(l => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
                 className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all uppercase ${
                   lang === l
-                    ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700'
+                    ? 'bg-card text-primary shadow-sm'
+                    : 'text-foreground-muted hover:text-foreground-secondary'
                 }`}
               >
                 {l}
@@ -75,7 +75,7 @@ export const JsValidator: React.FC = () => {
           <div className="flex gap-2">
             <button
               onClick={validate}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm font-medium flex items-center text-sm"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors shadow-sm font-medium flex items-center text-sm"
             >
               <Play size={16} className="mr-1.5" /> Validate
             </button>
@@ -89,7 +89,7 @@ export const JsValidator: React.FC = () => {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="p-2 text-slate-600 hover:text-primary hover:bg-blue-50 rounded-lg transition-colors"
+              className="p-2 text-foreground-secondary hover:text-primary hover:bg-primary-light rounded-lg transition-colors"
               title="Upload File"
             >
               <Upload size={20} />
@@ -97,7 +97,7 @@ export const JsValidator: React.FC = () => {
 
             <button
               onClick={handleClear}
-              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-2 text-foreground-muted hover:text-danger hover:bg-danger-light rounded-lg transition-colors"
               title="Clear All"
             >
               <Trash2 size={20} />
@@ -105,7 +105,7 @@ export const JsValidator: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 flex flex-col">
           <div className="flex-1 min-h-0">
             <CodeEditor
               value={code}
@@ -121,13 +121,13 @@ export const JsValidator: React.FC = () => {
             <div
               className={`mt-6 p-4 rounded-xl border flex items-start animate-in fade-in slide-in-from-bottom-2 ${
                 result.valid
-                  ? 'bg-green-50 border-green-200 text-green-800'
-                  : 'bg-red-50 border-red-200 text-red-800'
+                  ? 'bg-success-light border-success text-success'
+                  : 'bg-danger-light border-danger text-danger'
               }`}
             >
               <div
                 className={`p-2 rounded-full mr-3 ${
-                  result.valid ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                  result.valid ? 'bg-success-light text-success' : 'bg-danger-light text-danger'
                 }`}
               >
                 {result.valid ? <CheckCircle size={20} /> : <AlertTriangle size={20} />}

@@ -186,16 +186,16 @@ export const PreviewPanel = () => {
   }, [activeTab, svgCode, pngScale]);
 
   return (
-    <div className="h-full flex flex-col bg-gray-50 dark:bg-[#1e1e1e]">
+    <div className="h-full flex flex-col bg-background-secondary">
       {/* Top Bar - Tabs */}
-      <div className="h-10 border-b border-gray-200 dark:border-gray-800 bg-white flex items-center px-2 gap-1 overflow-x-auto">
+      <div className="h-10 border-b border-border bg-card flex items-center px-2 gap-1 overflow-x-auto">
         {tabs.map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={clsx(
               'px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap',
-              activeTab === tab ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-100'
+              activeTab === tab ? 'bg-primary/10 text-primary' : 'text-foreground-muted hover:bg-background-secondary'
             )}
           >
             {tab}
@@ -206,7 +206,7 @@ export const PreviewPanel = () => {
       {/* Content Area */}
       <div className="flex-1 min-h-0 relative">
         {activeTab === 'Preview' ? (
-          <div className="w-full h-full bg-gray-50 dark:bg-[#1e1e1e] flex flex-col relative">
+          <div className="w-full h-full bg-background-secondary flex flex-col relative">
             {/* ... Preview content ... */}
             <div
               role="button"
@@ -297,7 +297,7 @@ export const PreviewPanel = () => {
                   `}</style>
                 </div>
               ) : (
-                <div className="flex items-center justify-center text-gray-400 text-sm">
+                <div className="flex items-center justify-center text-foreground-muted text-sm">
                   No SVG loaded
                 </div>
               )}
@@ -321,7 +321,7 @@ export const PreviewPanel = () => {
             onMouseLeave={handleMouseLeave}
           />
         ) : (
-          <div className="flex items-center justify-center text-gray-400 text-sm">
+          <div className="flex items-center justify-center text-foreground-muted text-sm">
             {activeTab} content coming soon...
           </div>
         )}
@@ -346,13 +346,13 @@ export const PreviewPanel = () => {
       </div>
 
       {/* Bottom Bar - Controls */}
-      <div className="h-12 border-t border-gray-200 bg-white flex items-center justify-between px-4">
+      <div className="h-12 border-t border-border bg-card flex items-center justify-between px-4">
         {/* Left Group: Background, Scale, Download */}
         <div className="flex items-center gap-6">
           {/* Background (Only for Preview and PNG) */}
           {(activeTab === 'Preview' || activeTab === 'PNG') && (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 mr-2">Background:</span>
+              <span className="text-xs text-foreground-muted mr-2">Background:</span>
               {backgrounds.map(bg => (
                 <button
                   key={bg}
@@ -360,14 +360,14 @@ export const PreviewPanel = () => {
                   className={clsx(
                     'w-6 h-6 rounded border-2 transition-all',
                     background === bg
-                      ? 'border-blue-500 ring-2 ring-blue-500/20'
-                      : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-primary ring-2 ring-primary/20'
+                      : 'border-border hover:border-foreground-muted'
                   )}
                   title={bg}
                 >
                   {bg === 'white' && <div className="w-full h-full bg-white rounded-sm" />}
                   {bg === 'black' && <div className="w-full h-full bg-black rounded-sm" />}
-                  {bg === 'transparent' && <div className="w-full h-full bg-gray-200 rounded-sm" />}
+                  {bg === 'transparent' && <div className="w-full h-full bg-background-secondary rounded-sm" />}
                   {bg === 'checkerboard' && (
                     <div
                       className="w-full h-full rounded-sm"
@@ -386,13 +386,13 @@ export const PreviewPanel = () => {
           {/* Scale Selector (Only for PNG) */}
           {activeTab === 'PNG' && (
             <>
-              <div className="h-4 w-px bg-gray-300" />
+              <div className="h-4 w-px bg-border" />
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500">Scale:</span>
+                <span className="text-xs text-foreground-muted">Scale:</span>
                 <select
                   value={pngScale}
                   onChange={e => setPngScale(Number(e.target.value))}
-                  className="text-xs bg-gray-50 border border-gray-200 rounded px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                  className="text-xs bg-background-secondary border border-border rounded px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary text-foreground-secondary"
                 >
                   <option value={0.5}>0.5x</option>
                   <option value={1}>1x</option>
@@ -449,7 +449,7 @@ export const PreviewPanel = () => {
                 URL.revokeObjectURL(url);
               }
             }}
-            className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors whitespace-nowrap"
+            className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded transition-colors whitespace-nowrap"
             title={
               activeTab === 'PNG'
                 ? 'Download PNG'
@@ -469,19 +469,19 @@ export const PreviewPanel = () => {
 
         {/* Right: Zoom */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-gray-400 mr-2 hidden sm:inline-block whitespace-nowrap">
+          <span className="text-[10px] text-foreground-muted mr-2 hidden sm:inline-block whitespace-nowrap">
             Use Ctrl + Scroll to zoom
           </span>
           <button
             onClick={handleZoomOut}
-            className="p-1.5 text-gray-500 hover:text-gray-700 transition-colors"
+            className="p-1.5 text-foreground-muted hover:text-foreground transition-colors"
             title="Zoom Out"
           >
             <ZoomOut className="w-4 h-4" />
           </button>
           <input
             type="text"
-            className="text-xs font-mono text-gray-600 w-[50px] text-center bg-transparent border border-transparent hover:border-gray-300 rounded focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all"
+            className="text-xs font-mono text-foreground-secondary w-[50px] text-center bg-transparent border border-transparent hover:border-border rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
             value={zoomInputValue}
             onChange={e => setZoomInputValue(e.target.value)}
             onKeyDown={e => {
@@ -502,14 +502,14 @@ export const PreviewPanel = () => {
           />
           <button
             onClick={handleZoomIn}
-            className="p-1.5 text-gray-500 hover:text-gray-700 transition-colors"
+            className="p-1.5 text-foreground-muted hover:text-foreground transition-colors"
             title="Zoom In"
           >
             <ZoomIn className="w-4 h-4" />
           </button>
           <button
             onClick={handleResetZoom}
-            className="p-1.5 text-gray-500 hover:text-gray-700 transition-colors"
+            className="p-1.5 text-foreground-muted hover:text-foreground transition-colors"
             title="Reset Zoom"
           >
             <Maximize2 className="w-4 h-4" />

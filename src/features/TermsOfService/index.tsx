@@ -10,10 +10,10 @@ export const TermsOfService: React.FC = () => {
         description="Terms of Service and acceptable use policy for Dulundu.tools developer utilities."
       />
 
-      <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
+      <h1 className="text-4xl font-bold mb-8 text-foreground">Terms of Service</h1>
 
-      <div className="prose prose-slate max-w-none">
-        <p className="text-sm text-gray-500 mb-8">Last Updated: December 2, 2024</p>
+      <div className="max-w-none text-foreground-secondary [&_h2]:text-foreground [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:text-foreground [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_p]:mb-4 [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ul]:space-y-2 [&_li]:leading-relaxed [&_strong]:text-foreground [&_strong]:font-semibold [&_a]:text-primary [&_a]:hover:underline">
+        <p className="text-sm text-foreground-muted mb-8">Last Updated: December 28, 2025</p>
 
         <h2>1. Acceptance of Terms</h2>
         <p>
@@ -93,7 +93,7 @@ export const TermsOfService: React.FC = () => {
         </ul>
         <p>
           Contact:{' '}
-          <a href="mailto:privacy@dulundu.tools" className="text-blue-600">
+          <a href="mailto:privacy@dulundu.tools" className="text-primary hover:text-primary/80">
             privacy@dulundu.tools
           </a>
         </p>
@@ -131,7 +131,7 @@ export const TermsOfService: React.FC = () => {
             data)
           </li>
           <li>
-            <strong>Google Gemini AI:</strong> For AI-powered features (data not stored)
+            <strong>AI Providers:</strong> For AI-powered features (data not stored)
           </li>
         </ul>
 
@@ -176,7 +176,7 @@ export const TermsOfService: React.FC = () => {
         <p>If you have any questions about these Terms, please contact us at:</p>
         <p>
           <strong>Email:</strong>{' '}
-          <a href="mailto:legal@dulundu.tools" className="text-blue-600">
+          <a href="mailto:legal@dulundu.tools" className="text-primary hover:text-primary/80">
             legal@dulundu.tools
           </a>
           <br />

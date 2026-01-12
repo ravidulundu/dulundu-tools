@@ -59,20 +59,20 @@ export const SharelinkGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Share2}
           title="Share Link Generator"
           description="Create custom share links for social media"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-6 h-full">
             {/* Input Area */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit overflow-y-auto max-h-full">
+            <div className="bg-card p-6 rounded-xl border border-border shadow-sm h-fit overflow-y-auto max-h-full">
               <div className="space-y-6">
                 <div>
-                  <span className="block text-sm font-bold text-slate-700 mb-2">Platform</span>
+                  <span className="block text-sm font-bold text-foreground-secondary mb-2">Platform</span>
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       'twitter',
@@ -92,7 +92,7 @@ export const SharelinkGenerator: React.FC = () => {
                         className={`px-3 py-2 rounded-lg text-xs font-bold capitalize transition-all border ${
                           platform === p
                             ? 'bg-primary text-white border-primary shadow-md'
-                            : 'bg-slate-50 text-slate-600 border-gray-200 hover:border-primary hover:bg-white'
+                            : 'bg-background-secondary text-foreground-secondary border-border hover:border-primary hover:bg-card'
                         }`}
                       >
                         {p}
@@ -103,7 +103,7 @@ export const SharelinkGenerator: React.FC = () => {
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label htmlFor="url-input" className="block text-sm font-bold text-slate-700">
+                    <label htmlFor="url-input" className="block text-sm font-bold text-foreground-secondary">
                       URL to Share
                     </label>
                     <button
@@ -118,7 +118,7 @@ export const SharelinkGenerator: React.FC = () => {
                     type="text"
                     value={url}
                     onChange={e => setUrl(e.target.value)}
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-slate-900 bg-slate-50"
+                    className="w-full p-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-foreground bg-background-secondary"
                     placeholder="https://example.com"
                   />
                 </div>
@@ -126,7 +126,7 @@ export const SharelinkGenerator: React.FC = () => {
                 <div>
                   <label
                     htmlFor="message-input"
-                    className="block text-sm font-bold text-slate-700 mb-2"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
                   >
                     Message / Title (Optional)
                   </label>
@@ -134,14 +134,14 @@ export const SharelinkGenerator: React.FC = () => {
                     id="message-input"
                     value={text}
                     onChange={e => setText(e.target.value)}
-                    className="w-full p-3 h-24 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-slate-900 bg-slate-50"
+                    className="w-full p-3 h-24 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-foreground bg-background-secondary"
                     placeholder="Check this out!"
                   />
                 </div>
 
                 <button
                   onClick={generateLink}
-                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-blue-600 transition-colors font-bold shadow-md flex items-center justify-center"
+                  className="w-full py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-bold shadow-md flex items-center justify-center"
                 >
                   <Share2 size={18} className="mr-2" /> Generate Link
                 </button>

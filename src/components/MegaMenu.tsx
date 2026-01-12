@@ -1,129 +1,121 @@
-import { Grid } from 'lucide-react';
-import React, { useMemo } from 'react';
+import {
+  Braces,
+  Binary,
+  Key,
+  Hash,
+  Link2,
+  Regex,
+  KeyRound,
+  GitCompare,
+  Palette,
+  Clock,
+  Code,
+  QrCode,
+  Lock,
+  FileText,
+  FileJson,
+  Database,
+  FileCode,
+  Globe,
+  Fingerprint,
+  ArrowRightLeft,
+  Sparkles,
+  Grid,
+} from 'lucide-react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-
-import { ALL_TOOLS } from '../constants';
 
 interface MegaMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+// Developer'ların en çok kullandığı araçlar - gruplandırılmış
+const developerTools = {
+  'Format & Validate': [
+    { name: 'JSON Formatter', path: '/json-formatter', icon: Braces },
+    { name: 'SQL Formatter', path: '/sql-formatter', icon: Database },
+    { name: 'XML Formatter', path: '/xml-formatter', icon: FileCode },
+    { name: 'Code Beautifier', path: '/code-formatter', icon: Code },
+    { name: 'JS Validator', path: '/js-validator', icon: FileJson },
+  ],
+  'Encode & Decode': [
+    { name: 'Base64 Converter', path: '/base64-converter', icon: Binary },
+    { name: 'URL Encoder', path: '/url-encoder', icon: Link2 },
+    { name: 'JWT Debugger', path: '/jwt-decoder', icon: KeyRound },
+    { name: 'HTML Escape', path: '/escape-tools', icon: FileText },
+  ],
+  Generate: [
+    { name: 'UUID Generator', path: '/uuid-generator', icon: Fingerprint },
+    { name: 'Password Generator', path: '/password-generator', icon: Lock },
+    { name: 'Hash & HMAC Generator', path: '/hash-generator', icon: Hash },
+    { name: 'QR Code Generator', path: '/qrcode-generator', icon: QrCode },
+    { name: 'Lorem Ipsum Generator', path: '/lorem-ipsum', icon: FileText },
+  ],
+  Convert: [
+    { name: 'YAML Converter', path: '/yaml-converter', icon: ArrowRightLeft },
+    { name: 'XML <> JSON', path: '/xml-json-converter', icon: ArrowRightLeft },
+    { name: 'Date Converter', path: '/date-converter', icon: Clock },
+    { name: 'Color Converter', path: '/color-converter', icon: Palette },
+    { name: 'Number Converter', path: '/number-converter', icon: Hash },
+  ],
+  'Test & Debug': [
+    { name: 'Regex Tester', path: '/regex-tester', icon: Regex },
+    { name: 'Text Diff', path: '/diff-viewer', icon: GitCompare },
+    { name: 'DNS Lookup', path: '/dns-lookup', icon: Globe },
+    { name: 'Bcrypt Generator', path: '/bcrypt-generator', icon: Key },
+    { name: 'AI Code Helper', path: '/ai-assistant', icon: Sparkles },
+  ],
+};
+
 const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
-  // Get first tool path for each category
-  const categoryToPath = useMemo(() => {
-    const mapping: Record<string, string> = {};
-    ALL_TOOLS.forEach(tool => {
-      if (!mapping[tool.category]) {
-        mapping[tool.category] = tool.path;
-      }
-    });
-    return mapping;
-  }, []);
-
-  // exact list provided by user, organized into columns for the mega menu
-  const menuColumns = [
-    [
-      'Finance Tools',
-      'Formatters & Beautifiers',
-      'Image Converter Tools',
-      'IP Tools',
-      'JSON Tools',
-      'TSV Tools',
-      'XML Tools',
-      'YAML Tools',
-    ],
-    [
-      'Color Tools',
-      'CSV Tools',
-      'CSS Tools',
-      'HTML Tools',
-      'Javascript Tools',
-      'Number Tools',
-      'SQL Tools',
-      'Unit Tools',
-    ],
-    [
-      'Base64 Tools',
-      'Cryptography',
-      'Escape Unescape Tools',
-      'Minifiers',
-      'Random Tools',
-      'String Tools',
-      'UTF Tools',
-      'Validators',
-    ],
-    [
-      'Compress Decompress',
-      'CSS Generators',
-      'CSS Unit Converter Tools',
-      'HTML Generators',
-      'Other Tools',
-      'POJO Tools',
-      'Random Generators',
-      'Text Style Tools',
-      'Twitter Tools',
-    ],
-  ];
-
   return (
     <div
-      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-[900px] bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-100 dark:border-slate-700 transition-all duration-200 transform p-6 z-50 ${
+      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-[820px] bg-card rounded-xl shadow-2xl border border-border transition-all duration-200 transform p-5 z-50 ${
         isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'
       }`}
     >
-      {/* Invisible bridge to prevent menu from closing when moving mouse from nav to menu */}
-      <div className="absolute -top-4 left-0 w-full h-4"></div>
+      {/* Invisible bridge */}
+      <div className="absolute -top-4 left-0 w-full h-4" />
 
-      <div className="flex items-center justify-between mb-4 border-b border-gray-100 dark:border-slate-700 pb-3">
-        <h3 className="font-bold text-slate-800 dark:text-white flex items-center">
-          <Grid size={18} className="mr-2 text-primary" />
-          All Categories
+      <div className="flex items-center justify-between mb-4 border-b border-border pb-3">
+        <h3 className="font-bold text-foreground flex items-center text-sm">
+          <Grid size={16} className="mr-2 text-primary" />
+          Quick Access
         </h3>
         <Link
           to="/"
           className="text-xs font-semibold text-primary hover:underline"
           onClick={onClose}
         >
-          View Full Directory &rarr;
+          Browse All Tools &rarr;
         </Link>
       </div>
-      <div className="grid grid-cols-4 gap-8">
-        {menuColumns.map((column, colIndex) => (
-          <div key={colIndex} className="flex flex-col space-y-1">
-            {column.map(category => (
-              <Link
-                key={category}
-                to={categoryToPath[category] || '/'}
-                className="text-[13px] text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 px-2 py-1.5 rounded-lg transition-colors truncate block"
-                title={category}
-                onClick={onClose}
-              >
-                {category}
-              </Link>
-            ))}
+
+      <div className="grid grid-cols-5 gap-4">
+        {Object.entries(developerTools).map(([groupName, tools]) => (
+          <div key={groupName}>
+            <h4 className="text-[11px] font-bold text-foreground-muted uppercase tracking-wide mb-2 px-1">
+              {groupName}
+            </h4>
+            <div className="flex flex-col">
+              {tools.map(tool => (
+                <Link
+                  key={tool.path}
+                  to={tool.path}
+                  className="flex items-center gap-2 text-[13px] text-foreground-secondary hover:text-primary hover:bg-primary-light px-2 py-1.5 rounded-lg transition-colors group"
+                  onClick={onClose}
+                >
+                  <tool.icon
+                    size={14}
+                    className="text-foreground-muted group-hover:text-primary shrink-0"
+                  />
+                  <span className="truncate">{tool.name}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         ))}
-      </div>
-
-      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
-        <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">
-          Popular Tools
-        </h4>
-        <div className="flex flex-wrap gap-2">
-          {ALL_TOOLS.filter(t => t.popular)
-            .slice(0, 8)
-            .map(tool => (
-              <Link
-                key={tool.id}
-                to={tool.path}
-                className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-1 rounded hover:bg-primary hover:text-white transition-colors"
-                onClick={onClose}
-              >
-                {tool.name}
-              </Link>
-            ))}
-        </div>
       </div>
     </div>
   );

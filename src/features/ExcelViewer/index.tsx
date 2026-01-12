@@ -60,14 +60,14 @@ export const ExcelViewer: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={FileSpreadsheet}
           title="Excel / CSV Viewer"
           description="View CSV data in a table format"
         />
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <Button onClick={handleLoad} disabled={!input.trim()} variant="primary" icon={Table}>
             Load Table
           </Button>
@@ -75,7 +75,7 @@ export const ExcelViewer: React.FC = () => {
           <ActionButton onClick={handleClear} variant="danger" label="Clear" icon={Trash2} />
         </div>
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           {data.length === 0 ? (
             <div className="h-full flex flex-col">
               <CodeEditor
@@ -89,16 +89,16 @@ export const ExcelViewer: React.FC = () => {
           ) : (
             <div className="h-full flex flex-col animate-in fade-in slide-in-from-bottom-4">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-slate-700">Table View ({data.length} rows)</h3>
+                <h3 className="font-bold text-foreground-secondary">Table View ({data.length} rows)</h3>
               </div>
-              <div className="flex-1 overflow-auto border border-gray-200 rounded-xl bg-white shadow-sm">
-                <table className="w-full text-sm text-left text-slate-600">
-                  <thead className="text-xs text-slate-700 uppercase bg-slate-50 sticky top-0 z-10">
+              <div className="flex-1 overflow-auto border border-border rounded-xl bg-card shadow-sm">
+                <table className="w-full text-sm text-left text-foreground-secondary">
+                  <thead className="text-xs text-foreground-secondary uppercase bg-background-secondary sticky top-0 z-10">
                     <tr>
                       {data[0]?.map((header, i) => (
                         <th
                           key={i}
-                          className="px-6 py-3 border-b border-gray-200 whitespace-nowrap bg-slate-50"
+                          className="px-6 py-3 border-b border-border whitespace-nowrap bg-background-secondary"
                         >
                           {header}
                         </th>
@@ -109,7 +109,7 @@ export const ExcelViewer: React.FC = () => {
                     {data.slice(1).map((row, i) => (
                       <tr
                         key={i}
-                        className="bg-white border-b border-gray-100 hover:bg-slate-50 transition-colors"
+                        className="bg-card border-b border-border hover:bg-background-secondary transition-colors"
                       >
                         {row.map((cell, j) => (
                           <td key={j} className="px-6 py-4 whitespace-nowrap">

@@ -39,24 +39,24 @@ export const TwitterCardGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Twitter}
           title="Twitter Card Generator"
           description="Create meta tags for social media previews"
-          iconBgColor="bg-blue-100"
-          iconColor="text-blue-500"
+          iconBgColor="bg-primary-light"
+          iconColor="text-primary"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid lg:grid-cols-2 gap-6 h-full">
             {/* Form */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit overflow-y-auto max-h-full">
+            <div className="bg-card p-6 rounded-xl border border-border shadow-sm h-fit overflow-y-auto max-h-full">
               <div className="space-y-6">
                 <div>
                   <label
                     htmlFor="card-type"
-                    className="block text-sm font-bold text-slate-700 mb-2"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
                   >
                     Card Type
                   </label>
@@ -64,7 +64,7 @@ export const TwitterCardGenerator: React.FC = () => {
                     id="card-type"
                     value={type}
                     onChange={e => setType(e.target.value)}
-                    className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="w-full p-3 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   >
                     <option value="summary">Summary</option>
                     <option value="summary_large_image">Summary Large Image</option>
@@ -74,7 +74,7 @@ export const TwitterCardGenerator: React.FC = () => {
                 <div>
                   <label
                     htmlFor="site-username"
-                    className="block text-sm font-bold text-slate-700 mb-2"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
                   >
                     Site Username
                   </label>
@@ -83,13 +83,13 @@ export const TwitterCardGenerator: React.FC = () => {
                     type="text"
                     value={site}
                     onChange={e => setSite(e.target.value)}
-                    className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="w-full p-3 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="card-title"
-                    className="block text-sm font-bold text-slate-700 mb-2"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
                   >
                     Title
                   </label>
@@ -98,13 +98,13 @@ export const TwitterCardGenerator: React.FC = () => {
                     type="text"
                     value={title}
                     onChange={e => setTitle(e.target.value)}
-                    className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="w-full p-3 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="card-desc"
-                    className="block text-sm font-bold text-slate-700 mb-2"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
                   >
                     Description
                   </label>
@@ -112,15 +112,15 @@ export const TwitterCardGenerator: React.FC = () => {
                     id="card-desc"
                     value={desc}
                     onChange={e => setDesc(e.target.value)}
-                    className="w-full p-3 h-24 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+                    className="w-full p-3 h-24 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
                     maxLength={200}
                   />
-                  <p className="text-xs text-right text-slate-400 mt-1">{desc.length}/200</p>
+                  <p className="text-xs text-right text-foreground-muted mt-1">{desc.length}/200</p>
                 </div>
                 <div>
                   <label
                     htmlFor="image-url"
-                    className="block text-sm font-bold text-slate-700 mb-2"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
                   >
                     Image URL
                   </label>
@@ -129,7 +129,7 @@ export const TwitterCardGenerator: React.FC = () => {
                     type="text"
                     value={image}
                     onChange={e => setImage(e.target.value)}
-                    className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="w-full p-3 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   />
                 </div>
               </div>
@@ -137,30 +137,30 @@ export const TwitterCardGenerator: React.FC = () => {
 
             {/* Preview & Code */}
             <div className="flex flex-col h-full gap-6 overflow-hidden">
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex-shrink-0">
-                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center">
+              <div className="bg-card p-6 rounded-xl border border-border shadow-sm flex-shrink-0">
+                <h3 className="text-sm font-bold text-foreground-muted uppercase tracking-wide mb-4 flex items-center">
                   <Eye size={16} className="mr-2" /> Live Preview
                 </h3>
 
                 {/* Card Preview Container */}
-                <div className="max-w-md mx-auto bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                <div className="max-w-md mx-auto bg-card rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow cursor-pointer">
                   {type === 'summary_large_image' && (
                     <div
-                      className="h-48 bg-gray-100 bg-cover bg-center"
+                      className="h-48 bg-background-secondary bg-cover bg-center"
                       style={{ backgroundImage: `url(${image})` }}
                     ></div>
                   )}
                   <div className={`p-4 ${type === 'summary' ? 'flex items-start' : ''}`}>
                     {type === 'summary' && (
                       <div
-                        className="w-24 h-24 bg-gray-100 rounded-lg bg-cover bg-center mr-4 flex-shrink-0"
+                        className="w-24 h-24 bg-background-secondary rounded-lg bg-cover bg-center mr-4 flex-shrink-0"
                         style={{ backgroundImage: `url(${image})` }}
                       ></div>
                     )}
                     <div>
-                      <h4 className="font-bold text-slate-900 leading-tight mb-1">{title}</h4>
-                      <p className="text-sm text-slate-600 line-clamp-2 mb-2">{desc}</p>
-                      <p className="text-xs text-slate-400">{site.replace('@', '')}.com</p>
+                      <h4 className="font-bold text-foreground leading-tight mb-1">{title}</h4>
+                      <p className="text-sm text-foreground-secondary line-clamp-2 mb-2">{desc}</p>
+                      <p className="text-xs text-foreground-muted">{site.replace('@', '')}.com</p>
                     </div>
                   </div>
                 </div>

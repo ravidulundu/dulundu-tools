@@ -75,7 +75,7 @@ export const MarkdownTools: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={FileText}
           title="Markdown Converter"
@@ -83,11 +83,11 @@ export const MarkdownTools: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex items-center gap-2">
             <button
               onClick={toggleMode}
-              className="flex items-center px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors text-sm font-medium"
+              className="flex items-center px-4 py-2 bg-background-secondary text-foreground-secondary rounded-lg hover:bg-background transition-colors text-sm font-medium"
             >
               <ArrowLeftRight size={16} className="mr-2" />
               {mode === 'md-to-html' ? 'Markdown → HTML' : 'HTML → Markdown'}
@@ -96,13 +96,13 @@ export const MarkdownTools: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={handleConvert}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors font-medium shadow-sm flex items-center text-sm"
             >
               Convert <Code size={16} className="ml-2" />
             </button>
             <button
               onClick={handleClear}
-              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-2 text-foreground-muted hover:text-danger hover:bg-danger-light rounded-lg transition-colors"
               title="Clear All"
             >
               <Trash2 size={20} />
@@ -111,7 +111,7 @@ export const MarkdownTools: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <CodeEditor
               value={input}

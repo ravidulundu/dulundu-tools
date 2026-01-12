@@ -75,7 +75,7 @@ export const CodeMinifier: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Minimize2}
           title="HTML/CSS/JS Minifier"
@@ -83,14 +83,14 @@ export const CodeMinifier: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
-          <div className="flex bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
+          <div className="flex bg-card border border-border p-1 rounded-lg shadow-sm">
             <button
               onClick={() => setLang('html')}
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                 lang === 'html'
                   ? 'bg-primary text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-foreground-muted hover:text-foreground-secondary'
               }`}
             >
               HTML
@@ -100,7 +100,7 @@ export const CodeMinifier: React.FC = () => {
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                 lang === 'css'
                   ? 'bg-primary text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-foreground-muted hover:text-foreground-secondary'
               }`}
             >
               CSS
@@ -110,7 +110,7 @@ export const CodeMinifier: React.FC = () => {
               className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                 lang === 'js'
                   ? 'bg-primary text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-foreground-muted hover:text-foreground-secondary'
               }`}
             >
               JS
@@ -121,7 +121,7 @@ export const CodeMinifier: React.FC = () => {
             <button
               onClick={minify}
               disabled={!input.trim()}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center text-sm"
             >
               <Minimize2 size={16} className="mr-1.5" />
               Minify
@@ -146,7 +146,7 @@ export const CodeMinifier: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <CodeEditor
               value={input}

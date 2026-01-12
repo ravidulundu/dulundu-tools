@@ -98,7 +98,6 @@ const BitwiseCalculator = lazyLoad(
   'BitwiseCalculator'
 );
 const BcryptGenerator = lazyLoad(() => import('./features/BcryptGenerator'), 'BcryptGenerator');
-const HmacGenerator = lazyLoad(() => import('./features/HmacGenerator'), 'HmacGenerator');
 const SlugGenerator = lazyLoad(() => import('./features/SlugGenerator'), 'SlugGenerator');
 
 // Batch 8 (Final)
@@ -115,8 +114,7 @@ const RemovePunctuation = lazyLoad(
   'RemovePunctuation'
 );
 const HtmlEditor = lazyLoad(() => import('./features/HtmlEditor'), 'HtmlEditor');
-const LuaMinifier = lazyLoad(() => import('./features/LuaMinifier'), 'LuaMinifier');
-const LuaBeautifier = lazyLoad(() => import('./features/LuaBeautifier'), 'LuaBeautifier');
+const LuaFormatter = lazyLoad(() => import('./features/LuaFormatter'), 'LuaFormatter');
 const PhpFormatter = lazyLoad(() => import('./features/PhpFormatter'), 'PhpFormatter');
 const WordpressPasswordHash = lazyLoad(
   () => import('./features/WordpressPasswordHash'),
@@ -199,7 +197,7 @@ export const routes = [
   { path: '/markdown-editor', element: <MarkdownEditor /> },
   { path: '/bitwise-calculator', element: <BitwiseCalculator /> },
   { path: '/bcrypt-generator', element: <BcryptGenerator /> },
-  { path: '/hmac-generator', element: <HmacGenerator /> },
+  { path: '/hmac-generator', element: <HashGenerator /> },  // Redirect to unified HashGenerator
   { path: '/slug-generator', element: <SlugGenerator /> },
   { path: '/rsa-generator', element: <RsaGenerator /> },
   { path: '/token-generator', element: <TokenGenerator /> },
@@ -209,8 +207,9 @@ export const routes = [
   { path: '/number-sorter', element: <NumberSorter /> },
   { path: '/remove-punctuation', element: <RemovePunctuation /> },
   { path: '/html-editor', element: <HtmlEditor /> },
-  { path: '/lua-minifier', element: <LuaMinifier /> },
-  { path: '/lua-beautifier', element: <LuaBeautifier /> },
+  { path: '/lua-formatter', element: <LuaFormatter /> },
+  { path: '/lua-minifier', element: <LuaFormatter /> },  // Redirect to unified LuaFormatter
+  { path: '/lua-beautifier', element: <LuaFormatter /> },  // Redirect to unified LuaFormatter
   { path: '/php-formatter', element: <PhpFormatter /> },
   { path: '/wordpress-password-hash', element: <WordpressPasswordHash /> },
   { path: '/image-to-ascii', element: <ImageToAscii /> },

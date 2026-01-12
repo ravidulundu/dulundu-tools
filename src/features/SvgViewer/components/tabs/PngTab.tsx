@@ -54,7 +54,7 @@ export const PngTab: React.FC<PngTabProps> = ({
           {pngDataUri ? (
             <img src={pngDataUri} alt="Preview" className="block shadow-sm" draggable={false} />
           ) : (
-            <div className="flex items-center justify-center text-xs text-gray-400">
+            <div className="flex items-center justify-center text-xs text-foreground-muted">
               Generating...
             </div>
           )}

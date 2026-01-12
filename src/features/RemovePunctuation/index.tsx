@@ -42,7 +42,7 @@ export const RemovePunctuation: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Eraser}
           title="Remove Punctuation"
@@ -50,17 +50,17 @@ export const RemovePunctuation: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
-          <div className="flex bg-slate-100 p-1 rounded-lg">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
+          <div className="flex bg-background-secondary p-1 rounded-lg">
             <button
               onClick={() => setMode('all')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${mode === 'all' ? 'bg-white shadow-sm text-primary' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${mode === 'all' ? 'bg-card shadow-sm text-primary' : 'text-foreground-muted hover:text-foreground-secondary'}`}
             >
               Remove All Symbols
             </button>
             <button
               onClick={() => setMode('special')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${mode === 'special' ? 'bg-white shadow-sm text-primary' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${mode === 'special' ? 'bg-card shadow-sm text-primary' : 'text-foreground-muted hover:text-foreground-secondary'}`}
             >
               Keep Sentence Marks (.,?!)
             </button>
@@ -68,7 +68,7 @@ export const RemovePunctuation: React.FC = () => {
 
           <button
             onClick={handleClear}
-            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-foreground-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
             title="Clear All"
           >
             <Trash2 size={20} />
@@ -76,7 +76,7 @@ export const RemovePunctuation: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <CodeEditor
               value={input}

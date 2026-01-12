@@ -78,7 +78,7 @@ export const RsaGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Key}
           title="RSA Key Generator"
@@ -86,15 +86,15 @@ export const RsaGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-4 items-center justify-between">
+        <div className="p-3 bg-card border-b border-border flex flex-wrap gap-4 items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="text-sm font-bold text-slate-600">Key Size:</span>
-            <div className="flex bg-slate-100 p-1 rounded-lg">
+            <span className="text-sm font-bold text-foreground-secondary">Key Size:</span>
+            <div className="flex bg-background-secondary p-1 rounded-lg">
               {[1024, 2048, 4096].map(size => (
                 <button
                   key={size}
                   onClick={() => setKeySize(size)}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${keySize === size ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${keySize === size ? 'bg-card text-primary shadow-sm' : 'text-foreground-muted hover:text-foreground-secondary'}`}
                 >
                   {size} bits
                 </button>
@@ -105,7 +105,7 @@ export const RsaGenerator: React.FC = () => {
           <button
             onClick={generateKeys}
             disabled={loading}
-            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center disabled:opacity-70 text-sm"
+            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-sm flex items-center disabled:opacity-70 text-sm"
           >
             {loading ? (
               <RefreshCw size={16} className="animate-spin mr-2" />
@@ -117,7 +117,7 @@ export const RsaGenerator: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <CodeEditor
               value={publicKey}

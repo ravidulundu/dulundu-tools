@@ -122,7 +122,7 @@ export const JwtDecoder: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Shield}
           title="JWT Debugger"
@@ -130,14 +130,14 @@ export const JwtDecoder: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center">
-          <div className="flex bg-slate-100 p-1 rounded-lg">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center">
+          <div className="flex bg-background-secondary p-1 rounded-lg">
             <button
               onClick={() => setMode('decode')}
               className={`px-4 py-1.5 rounded-md text-sm font-bold transition-all ${
                 mode === 'decode'
-                  ? 'bg-white text-primary shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-card text-primary shadow-sm'
+                  : 'text-foreground-muted hover:text-foreground-secondary'
               }`}
             >
               Decode
@@ -146,8 +146,8 @@ export const JwtDecoder: React.FC = () => {
               onClick={() => setMode('encode')}
               className={`px-4 py-1.5 rounded-md text-sm font-bold transition-all ${
                 mode === 'encode'
-                  ? 'bg-white text-primary shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-card text-primary shadow-sm'
+                  : 'text-foreground-muted hover:text-foreground-secondary'
               }`}
             >
               Encode
@@ -158,7 +158,7 @@ export const JwtDecoder: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           {mode === 'decode' ? (
             <div className="grid md:grid-cols-2 gap-4 h-full">
               {/* Input */}
@@ -170,7 +170,7 @@ export const JwtDecoder: React.FC = () => {
                   placeholder="Paste JWT here (eyJ...)"
                   theme="light"
                 />
-                {error && <p className="mt-2 text-xs text-red-500 font-bold">{error}</p>}
+                {error && <p className="mt-2 text-xs text-danger font-bold">{error}</p>}
               </div>
 
               {/* Output */}
@@ -243,7 +243,7 @@ export const JwtDecoder: React.FC = () => {
                 <div className="h-24">
                   <label
                     htmlFor="secret-input"
-                    className="block text-xs font-bold text-slate-500 uppercase mb-1.5"
+                    className="block text-xs font-bold text-foreground-muted uppercase mb-1.5"
                   >
                     Secret (HMAC-SHA256)
                   </label>
@@ -253,12 +253,12 @@ export const JwtDecoder: React.FC = () => {
                     value={secret}
                     onChange={e => setSecret(e.target.value)}
                     placeholder="Enter secret to sign..."
-                    className="w-full p-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none font-mono text-sm"
+                    className="w-full p-3 rounded-lg border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none font-mono text-sm"
                   />
                 </div>
                 <button
                   onClick={encode}
-                  className="w-full py-2 bg-primary text-white rounded-lg font-bold hover:bg-blue-600 transition-colors"
+                  className="w-full py-2 bg-primary text-white rounded-lg font-bold hover:bg-primary-hover transition-colors"
                 >
                   Sign & Encode JWT
                 </button>
@@ -282,7 +282,7 @@ export const JwtDecoder: React.FC = () => {
                     )
                   }
                 />
-                {error && <p className="mt-2 text-xs text-red-500 font-bold">{error}</p>}
+                {error && <p className="mt-2 text-xs text-danger font-bold">{error}</p>}
               </div>
             </div>
           )}

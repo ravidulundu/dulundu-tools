@@ -50,7 +50,7 @@ export const IconGrid: React.FC<IconGridProps> = ({ icons, onSelectIcon }) => {
 
   if (icons.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-40 text-gray-500 dark:text-gray-500 text-sm">
+      <div className="flex flex-col items-center justify-center h-40 text-foreground-muted text-sm">
         <p>No icons found</p>
       </div>
     );
@@ -69,18 +69,18 @@ export const IconGrid: React.FC<IconGridProps> = ({ icons, onSelectIcon }) => {
             }
           }}
           onClick={() => loadedIcons[iconName] && onSelectIcon(loadedIcons[iconName])}
-          className="aspect-square flex items-center justify-center bg-gray-100 dark:bg-[#252526] hover:bg-gray-200 dark:hover:bg-[#2d2d2e] border border-transparent hover:border-blue-500/50 rounded transition-all group relative cursor-grab active:cursor-grabbing"
+          className="aspect-square flex items-center justify-center bg-background-secondary hover:bg-background-tertiary border border-transparent hover:border-primary/50 rounded transition-all group relative cursor-grab active:cursor-grabbing"
           title={iconName}
         >
           {loadedIcons[iconName] ? (
             <div
-              className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current pointer-events-none"
+              className="w-6 h-6 text-foreground-muted group-hover:text-foreground transition-colors [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current pointer-events-none"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(loadedIcons[iconName]),
               }}
             />
           ) : (
-            <div className="w-6 h-6 bg-gray-800/50 rounded animate-pulse" />
+            <div className="w-6 h-6 bg-background-tertiary rounded animate-pulse" />
           )}
         </button>
       ))}

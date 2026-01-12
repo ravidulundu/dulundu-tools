@@ -1,5 +1,5 @@
-import { Image, Upload, Download, RefreshCw, FileImage, Copy, Check } from 'lucide-react';
-import React, { useState, useRef } from 'react';
+import { Check, Copy, Download, FileImage, Image, RefreshCw, Upload } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
@@ -68,7 +68,7 @@ export const ImageConverter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Image}
           title="Image Tools"
@@ -76,14 +76,14 @@ export const ImageConverter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-center gap-4 overflow-x-auto">
-          <div className="flex bg-slate-100 p-1 rounded-lg whitespace-nowrap">
+        <div className="p-3 bg-card border-b border-border flex justify-center gap-4 overflow-x-auto">
+          <div className="flex bg-background-secondary p-1 rounded-lg whitespace-nowrap">
             <button
               onClick={() => setActiveTab('convert')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 activeTab === 'convert'
-                  ? 'bg-white text-primary shadow-sm'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-card text-primary shadow-sm'
+                  : 'text-foreground-muted hover:text-foreground'
               }`}
             >
               Format Converter
@@ -92,8 +92,8 @@ export const ImageConverter: React.FC = () => {
               onClick={() => setActiveTab('base64')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 activeTab === 'base64'
-                  ? 'bg-white text-primary shadow-sm'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-card text-primary shadow-sm'
+                  : 'text-foreground-muted hover:text-foreground'
               }`}
             >
               Image to Base64
@@ -102,8 +102,8 @@ export const ImageConverter: React.FC = () => {
               onClick={() => setActiveTab('decode')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 activeTab === 'decode'
-                  ? 'bg-white text-primary shadow-sm'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-card text-primary shadow-sm'
+                  : 'text-foreground-muted hover:text-foreground'
               }`}
             >
               Base64 to Image
@@ -111,7 +111,7 @@ export const ImageConverter: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 overflow-y-auto">
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Upload Area - Only for Convert and Encode tabs */}
             {activeTab !== 'decode' && (
@@ -123,7 +123,7 @@ export const ImageConverter: React.FC = () => {
                     fileInputRef.current?.click();
                   }
                 }}
-                className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-slate-50 transition-all cursor-pointer bg-white"
+                className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:bg-background-secondary transition-all cursor-pointer bg-card"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <input
@@ -140,8 +140,8 @@ export const ImageConverter: React.FC = () => {
                       alt="Preview"
                       className="h-48 object-contain mb-4 rounded-lg shadow-sm"
                     />
-                    <p className="font-medium text-slate-800">{fileInfo?.name}</p>
-                    <p className="text-sm text-slate-500">
+                    <p className="font-medium text-foreground">{fileInfo?.name}</p>
+                    <p className="text-sm text-foreground-muted">
                       {((fileInfo?.size || 0) / 1024).toFixed(2)} KB
                     </p>
                     <button className="mt-4 text-sm text-primary hover:underline">
@@ -149,9 +149,11 @@ export const ImageConverter: React.FC = () => {
                     </button>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center text-slate-400">
+                  <div className="flex flex-col items-center text-foreground-muted">
                     <Upload size={48} className="mb-4" />
-                    <p className="text-lg font-medium text-slate-600">Click to Upload Image</p>
+                    <p className="text-lg font-medium text-foreground-secondary">
+                      Click to Upload Image
+                    </p>
                     <p className="text-sm">Supports JPG, PNG, WEBP, BMP</p>
                   </div>
                 )}
@@ -160,12 +162,12 @@ export const ImageConverter: React.FC = () => {
 
             {/* Format Converter UI */}
             {selectedImage && activeTab === 'convert' && (
-              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="bg-card rounded-xl p-6 border border-border shadow-sm">
                 <div className="flex flex-col md:flex-row items-end gap-4 mb-6">
                   <div className="flex-1 w-full">
                     <label
                       htmlFor="output-format"
-                      className="block text-sm font-medium text-slate-700 mb-2"
+                      className="block text-sm font-medium text-foreground-secondary mb-2"
                     >
                       Convert To
                     </label>
@@ -173,7 +175,7 @@ export const ImageConverter: React.FC = () => {
                       id="output-format"
                       value={outputFormat}
                       onChange={e => setOutputFormat(e.target.value)}
-                      className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/50 bg-white"
+                      className="w-full p-3 border border-border rounded-lg outline-none focus:ring-2 focus:ring-primary/50 bg-card"
                     >
                       <option value="image/png">PNG</option>
                       <option value="image/jpeg">JPG</option>
@@ -182,7 +184,7 @@ export const ImageConverter: React.FC = () => {
                   </div>
                   <button
                     onClick={convertImage}
-                    className="w-full md:w-auto px-8 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium flex items-center justify-center"
+                    className="w-full md:w-auto px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium flex items-center justify-center"
                   >
                     <RefreshCw size={20} className="mr-2" /> Convert
                   </button>
@@ -211,7 +213,7 @@ export const ImageConverter: React.FC = () => {
 
             {/* Image to Base64 UI */}
             {selectedImage && activeTab === 'base64' && (
-              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="bg-card rounded-xl p-6 border border-border shadow-sm">
                 <CodeEditor
                   value={base64Output}
                   label="Base64 Output"
@@ -241,50 +243,78 @@ export const ImageConverter: React.FC = () => {
                     theme="light"
                   />
                 </div>
-                <div className="flex flex-col h-full bg-white rounded-xl border border-gray-200 overflow-hidden">
-                  <div className="px-4 py-2 bg-slate-100 border-b border-gray-200 text-xs font-bold text-slate-500 uppercase">
+                <div className="flex flex-col h-full bg-card rounded-xl border border-border overflow-hidden">
+                  <div className="px-4 py-2 bg-background-secondary border-b border-border text-xs font-bold text-foreground-muted uppercase">
                     Preview
                   </div>
-                  <div className="flex-1 flex items-center justify-center p-4 bg-slate-50/50 overflow-hidden relative">
+                  <div className="flex-1 flex items-center justify-center p-4 bg-background-secondary/50 overflow-hidden relative">
                     {base64Input ? (
-                      <img
-                        src={
-                          base64Input.startsWith('data:')
-                            ? base64Input
-                            : `data:image/png;base64,${base64Input}`
+                      (() => {
+                        // XSS Protection: Validate base64 input format
+                        const isValidDataUri =
+                          base64Input.startsWith('data:image/') ||
+                          /^[A-Za-z0-9+/=]+$/.test(base64Input.trim());
+
+                        if (!isValidDataUri) {
+                          return (
+                            <div className="text-danger flex flex-col items-center">
+                              <p className="text-sm font-medium">Invalid base64 format</p>
+                              <p className="text-xs text-foreground-muted mt-1">
+                                Must be a valid data URI or base64 string
+                              </p>
+                            </div>
+                          );
                         }
-                        alt="Preview"
-                        className="max-w-full max-h-full object-contain rounded-lg shadow-sm"
-                        onError={e => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                          // Could add error state here
-                        }}
-                        onLoad={e => {
-                          (e.target as HTMLImageElement).style.display = 'block';
-                        }}
-                      />
+
+                        const imgSrc = base64Input.startsWith('data:')
+                          ? base64Input
+                          : `data:image/png;base64,${base64Input}`;
+
+                        return (
+                          <img
+                            src={imgSrc}
+                            alt="Preview"
+                            className="max-w-full max-h-full object-contain rounded-lg shadow-sm"
+                            onError={e => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                            onLoad={e => {
+                              (e.target as HTMLImageElement).style.display = 'block';
+                            }}
+                          />
+                        );
+                      })()
                     ) : (
-                      <div className="text-slate-400 flex flex-col items-center">
+                      <div className="text-foreground-muted flex flex-col items-center">
                         <Image size={48} className="mb-2 opacity-50" />
                         <p>Image preview will appear here</p>
                       </div>
                     )}
                   </div>
-                  {base64Input && (
-                    <div className="p-4 border-t border-gray-100 bg-white flex justify-end">
-                      <a
-                        href={
-                          base64Input.startsWith('data:')
-                            ? base64Input
-                            : `data:image/png;base64,${base64Input}`
-                        }
-                        download="decoded-image.png"
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center text-sm font-medium"
-                      >
-                        <Download size={16} className="mr-2" /> Download Image
-                      </a>
-                    </div>
-                  )}
+                  {base64Input &&
+                    (() => {
+                      const isValidDataUri =
+                        base64Input.startsWith('data:image/') ||
+                        /^[A-Za-z0-9+/=]+$/.test(base64Input.trim());
+
+                      if (!isValidDataUri) return null;
+
+                      const downloadSrc = base64Input.startsWith('data:')
+                        ? base64Input
+                        : `data:image/png;base64,${base64Input}`;
+
+                      return (
+                        <div className="p-4 border-t border-border bg-card flex justify-end">
+                          <a
+                            href={downloadSrc}
+                            download="decoded-image.png"
+                            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center text-sm font-medium"
+                          >
+                            <Download size={16} className="mr-2" /> Download Image
+                          </a>
+                        </div>
+                      );
+                    })()}
                 </div>
               </div>
             )}

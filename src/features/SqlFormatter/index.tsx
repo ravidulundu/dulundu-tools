@@ -99,17 +99,17 @@ export const SqlFormatter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Database}
           title="SQL Formatter"
           description="Beautify complex SQL queries"
-          iconBgColor="bg-blue-100"
-          iconColor="text-blue-600"
+          iconBgColor="bg-primary-light"
+          iconColor="text-primary"
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-end space-x-2">
+        <div className="p-3 bg-card border-b border-border flex justify-end space-x-2">
           <input
             ref={fileInputRef}
             type="file"
@@ -127,14 +127,14 @@ export const SqlFormatter: React.FC = () => {
           <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
           <button
             onClick={() => formatSql()}
-            className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md flex items-center"
+            className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors shadow-md flex items-center"
           >
             <Play size={16} className="md:mr-2" /> <span className="hidden md:inline">Format</span>
           </button>
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <CodeEditor
               value={input}

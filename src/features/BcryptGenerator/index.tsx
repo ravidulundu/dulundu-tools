@@ -69,7 +69,7 @@ export const BcryptGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Lock}
           title="Bcrypt Generator"
@@ -79,12 +79,12 @@ export const BcryptGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex items-center gap-2">
             <button
               onClick={generateHash}
               disabled={loading || !password}
-              className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors font-medium disabled:opacity-50 text-sm flex items-center"
+              className="px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground-secondary transition-colors font-medium disabled:opacity-50 text-sm flex items-center"
             >
               {loading ? (
                 <RefreshCw className="animate-spin mr-1.5" size={16} />
@@ -94,8 +94,8 @@ export const BcryptGenerator: React.FC = () => {
               {loading ? 'Hashing...' : 'Hash Password'}
             </button>
 
-            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              <label className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase">
+            <div className="flex items-center gap-2 bg-background-secondary px-3 py-1.5 rounded-lg border border-border">
+              <label className="flex items-center gap-2 text-xs font-bold text-foreground-muted uppercase">
                 Rounds:
                 <input
                   type="number"
@@ -103,7 +103,7 @@ export const BcryptGenerator: React.FC = () => {
                   max="15"
                   value={rounds}
                   onChange={e => setRounds(parseInt(e.target.value))}
-                  className="w-12 bg-transparent text-sm font-bold text-slate-700 outline-none text-center"
+                  className="w-12 bg-transparent text-sm font-bold text-foreground-secondary outline-none text-center"
                 />
               </label>
             </div>
@@ -111,7 +111,7 @@ export const BcryptGenerator: React.FC = () => {
 
           <button
             onClick={handleClear}
-            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-foreground-muted hover:text-danger hover:bg-danger-light rounded-lg transition-colors"
             title="Clear All"
           >
             <Trash2 size={20} />
@@ -119,7 +119,7 @@ export const BcryptGenerator: React.FC = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 overflow-y-auto">
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Generator Section */}
             <div className="grid md:grid-cols-2 gap-6">
@@ -151,21 +151,21 @@ export const BcryptGenerator: React.FC = () => {
             </div>
 
             {/* Verifier Section */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mt-6">
-              <h3 className="font-bold text-slate-800 mb-4 flex items-center border-b border-gray-100 pb-2">
-                <Check size={18} className="mr-2 text-green-600" /> Verify Hash
+            <div className="bg-card p-6 rounded-xl border border-border shadow-sm mt-6">
+              <h3 className="font-bold text-foreground mb-4 flex items-center border-b border-border pb-2">
+                <Check size={18} className="mr-2 text-success" /> Verify Hash
               </h3>
               <div className="space-y-4">
                 <div>
                   <label className="block">
-                    <span className="block text-xs font-bold text-slate-500 uppercase mb-2">
+                    <span className="block text-xs font-bold text-foreground-muted uppercase mb-2">
                       Hash to check
                     </span>
                     <input
                       type="text"
                       value={compareHash}
                       onChange={e => setCompareHash(e.target.value)}
-                      className="w-full p-3 bg-slate-50 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm"
+                      className="w-full p-3 bg-background-secondary border border-border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm"
                       placeholder="$2a$10$..."
                     />
                   </label>
@@ -175,7 +175,7 @@ export const BcryptGenerator: React.FC = () => {
                   <button
                     onClick={checkMatch}
                     disabled={!password || !compareHash}
-                    className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium disabled:opacity-50 text-sm"
+                    className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors font-medium disabled:opacity-50 text-sm"
                   >
                     Compare with Password
                   </button>
@@ -183,7 +183,7 @@ export const BcryptGenerator: React.FC = () => {
                   {matchResult !== null && (
                     <div
                       className={`px-4 py-2 rounded-lg flex items-center font-bold text-sm animate-in fade-in slide-in-from-right-2 ${
-                        matchResult ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        matchResult ? 'bg-success-light text-success' : 'bg-danger-light text-danger'
                       }`}
                     >
                       {matchResult ? (

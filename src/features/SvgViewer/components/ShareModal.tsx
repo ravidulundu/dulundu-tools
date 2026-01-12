@@ -69,34 +69,34 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
 
   return (
     <div className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#252526] rounded-lg shadow-xl w-full max-w-md overflow-hidden border border-gray-200 dark:border-gray-700">
+      <div className="bg-card rounded-lg shadow-xl w-full max-w-md overflow-hidden border border-border">
         {shareStep === 'SAVE' ? (
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 Save before you share it
               </h3>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+                className="text-foreground-muted hover:text-foreground-secondary"
               >
                 <span className="text-2xl leading-none">&times;</span>
               </button>
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-foreground-muted mb-4">
               Save SVG to access it later and share it with others
             </p>
             <input
               type="text"
               value={svgName}
               onChange={e => setSvgName(e.target.value)}
-              className="w-full px-3 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-300 dark:border-gray-700 rounded-md text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+              className="w-full px-3 py-2 bg-background-secondary border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary mb-4"
               placeholder="Untitled SVG"
             />
             <div className="flex items-center gap-4 mb-6">
               <label
                 htmlFor="expiration-select"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-sm font-medium text-foreground-secondary"
               >
                 Link expires
               </label>
@@ -104,7 +104,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
                 id="expiration-select"
                 value={expiration}
                 onChange={e => setExpiration(e.target.value)}
-                className="flex-1 px-3 py-2 bg-white dark:bg-[#1e1e1e] border border-gray-300 dark:border-gray-700 rounded-md text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-3 py-2 bg-background-secondary border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               >
                 <option value="1 Hour">1 Hour</option>
                 <option value="24 Hours">24 Hours</option>
@@ -115,14 +115,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
             <div className="flex gap-3">
               <button
                 onClick={onClose}
-                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors"
+                className="flex-1 px-4 py-2 text-sm font-medium text-foreground-secondary bg-background-secondary hover:bg-background-tertiary rounded-md transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveAndShare}
                 disabled={isSaving}
-                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSaving ? 'Saving...' : 'Save'}
               </button>
@@ -131,17 +131,17 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
         ) : (
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 Share &quot;{svgName}&quot;
               </h3>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+                className="text-foreground-muted hover:text-foreground-secondary"
               >
                 <span className="text-2xl leading-none">&times;</span>
               </button>
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            <p className="text-sm text-foreground-muted mb-6">
               Anyone with the link below will be able to view and duplicate the file
             </p>
             <div className="flex gap-2">
@@ -149,11 +149,11 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
                 type="text"
                 readOnly
                 value={shareUrl}
-                className="flex-1 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md text-sm text-gray-900 dark:text-white focus:outline-none"
+                className="flex-1 px-3 py-2 bg-accent/10 border border-accent/30 rounded-md text-sm text-foreground focus:outline-none"
               />
               <button
                 onClick={handleCopyUrl}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors min-w-[80px]"
+                className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-md transition-colors min-w-[80px]"
               >
                 {isUrlCopied ? 'Copied!' : 'Copy'}
               </button>

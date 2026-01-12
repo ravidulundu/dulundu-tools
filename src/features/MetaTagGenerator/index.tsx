@@ -44,7 +44,7 @@ export const MetaTagGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={FileSearch}
           title="Meta Tag Generator"
@@ -52,21 +52,21 @@ export const MetaTagGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
+        <div className="p-3 bg-card border-b border-border flex justify-end">
           <button
             onClick={fillExample}
-            className="text-sm text-primary font-medium hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors flex items-center"
+            className="text-sm text-primary font-medium hover:bg-primary-light px-3 py-1.5 rounded-lg transition-colors flex items-center"
           >
             <RefreshCw size={14} className="mr-1.5" /> Load Example
           </button>
         </div>
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             {/* Form Area - Scrollable */}
             <div className="overflow-y-auto pr-2 space-y-4">
               <div>
-                <label htmlFor="page-title" className="block text-sm font-bold text-slate-700 mb-2">
+                <label htmlFor="page-title" className="block text-sm font-bold text-foreground-secondary mb-2">
                   Page Title
                 </label>
                 <input
@@ -74,10 +74,10 @@ export const MetaTagGenerator: React.FC = () => {
                   type="text"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
-                  className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full p-3 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                   placeholder="e.g. My Awesome Website"
                 />
-                <p className="text-xs text-slate-400 mt-1 flex justify-between">
+                <p className="text-xs text-foreground-muted mt-1 flex justify-between">
                   <span>Recommended length: 60 chars</span>
                   <span className={title.length > 60 ? 'text-red-500' : ''}>{title.length}/60</span>
                 </p>
@@ -86,7 +86,7 @@ export const MetaTagGenerator: React.FC = () => {
               <div>
                 <label
                   htmlFor="description"
-                  className="block text-sm font-bold text-slate-700 mb-2"
+                  className="block text-sm font-bold text-foreground-secondary mb-2"
                 >
                   Description
                 </label>
@@ -94,10 +94,10 @@ export const MetaTagGenerator: React.FC = () => {
                   id="description"
                   value={description}
                   onChange={e => setDescription(e.target.value)}
-                  className="w-full p-3 h-24 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all"
+                  className="w-full p-3 h-24 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none transition-all"
                   placeholder="Brief summary of your page content..."
                 />
-                <p className="text-xs text-slate-400 mt-1 flex justify-between">
+                <p className="text-xs text-foreground-muted mt-1 flex justify-between">
                   <span>Recommended length: 160 chars</span>
                   <span className={description.length > 160 ? 'text-red-500' : ''}>
                     {description.length}/160
@@ -106,7 +106,7 @@ export const MetaTagGenerator: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="keywords" className="block text-sm font-bold text-slate-700 mb-2">
+                <label htmlFor="keywords" className="block text-sm font-bold text-foreground-secondary mb-2">
                   Keywords
                 </label>
                 <input
@@ -114,14 +114,14 @@ export const MetaTagGenerator: React.FC = () => {
                   type="text"
                   value={keywords}
                   onChange={e => setKeywords(e.target.value)}
-                  className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full p-3 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                   placeholder="comma, separated, keywords"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="author" className="block text-sm font-bold text-slate-700 mb-2">
+                  <label htmlFor="author" className="block text-sm font-bold text-foreground-secondary mb-2">
                     Author
                   </label>
                   <input
@@ -129,18 +129,18 @@ export const MetaTagGenerator: React.FC = () => {
                     type="text"
                     value={author}
                     onChange={e => setAuthor(e.target.value)}
-                    className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    className="w-full p-3 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                   />
                 </div>
                 <div>
-                  <label htmlFor="robots" className="block text-sm font-bold text-slate-700 mb-2">
+                  <label htmlFor="robots" className="block text-sm font-bold text-foreground-secondary mb-2">
                     Robots
                   </label>
                   <select
                     id="robots"
                     value={robots}
                     onChange={e => setRobots(e.target.value)}
-                    className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    className="w-full p-3 bg-card border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                   >
                     <option value="index, follow">Index, Follow</option>
                     <option value="noindex, follow">No Index, Follow</option>

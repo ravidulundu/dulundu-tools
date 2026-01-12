@@ -76,17 +76,17 @@ export const QrcodeGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
-        <ToolHeader icon={QrCode} title="QR Code Tool" description="Generate and Scan QR codes" />
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
+        <ToolHeader icon={QrCode} title="QR Code Generator" description="Generate and Scan QR codes" />
 
         {/* Tabs */}
-        <div className="flex border-b border-gray-100">
+        <div className="flex border-b border-border">
           <button
             onClick={() => setMode('generate')}
             className={`flex-1 py-3 text-sm font-medium transition-colors ${
               mode === 'generate'
-                ? 'text-primary border-b-2 border-primary bg-blue-50/50'
-                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                ? 'text-primary border-b-2 border-primary bg-primary-light/50'
+                : 'text-foreground-muted hover:text-foreground-secondary hover:bg-background-secondary'
             }`}
           >
             Generate QR
@@ -95,22 +95,22 @@ export const QrcodeGenerator: React.FC = () => {
             onClick={() => setMode('scan')}
             className={`flex-1 py-3 text-sm font-medium transition-colors ${
               mode === 'scan'
-                ? 'text-primary border-b-2 border-primary bg-blue-50/50'
-                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                ? 'text-primary border-b-2 border-primary bg-primary-light/50'
+                : 'text-foreground-muted hover:text-foreground-secondary hover:bg-background-secondary'
             }`}
           >
             Scan QR (Decode)
           </button>
         </div>
 
-        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30 flex flex-col items-center">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-background-secondary/30 flex flex-col items-center">
           {mode === 'generate' ? (
             <div className="max-w-4xl w-full grid md:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="space-y-6">
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                   <label
                     htmlFor="qr-content"
-                    className="block text-sm font-bold text-slate-700 mb-2"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
                   >
                     Content
                   </label>
@@ -119,17 +119,17 @@ export const QrcodeGenerator: React.FC = () => {
                       id="qr-content"
                       value={text}
                       onChange={e => setText(e.target.value)}
-                      className="w-full p-4 bg-slate-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-inner min-h-[120px] resize-none transition-all"
+                      className="w-full p-4 bg-background-secondary border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-inner min-h-[120px] resize-none transition-all"
                       placeholder="Enter URL or text..."
                     />
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm grid gap-6">
+                <div className="bg-card p-6 rounded-xl border border-border shadow-sm grid gap-6">
                   <div>
                     <label
                       htmlFor="qr-size"
-                      className="block text-sm font-bold text-slate-700 mb-2"
+                      className="block text-sm font-bold text-foreground-secondary mb-2"
                     >
                       Size (px)
                     </label>
@@ -140,18 +140,18 @@ export const QrcodeGenerator: React.FC = () => {
                       onChange={e => setSize(Number(e.target.value))}
                       min="100"
                       max="1000"
-                      className="w-full p-3 bg-slate-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                      className="w-full p-3 bg-background-secondary border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label
                         htmlFor="qr-fg-color"
-                        className="block text-sm font-bold text-slate-700 mb-2"
+                        className="block text-sm font-bold text-foreground-secondary mb-2"
                       >
                         Foreground
                       </label>
-                      <div className="flex items-center space-x-2 bg-slate-50 p-2 rounded-xl border border-gray-200">
+                      <div className="flex items-center space-x-2 bg-background-secondary p-2 rounded-xl border border-border">
                         <input
                           id="qr-fg-color"
                           type="color"
@@ -170,11 +170,11 @@ export const QrcodeGenerator: React.FC = () => {
                     <div>
                       <label
                         htmlFor="qr-bg-color"
-                        className="block text-sm font-bold text-slate-700 mb-2"
+                        className="block text-sm font-bold text-foreground-secondary mb-2"
                       >
                         Background
                       </label>
-                      <div className="flex items-center space-x-2 bg-slate-50 p-2 rounded-xl border border-gray-200">
+                      <div className="flex items-center space-x-2 bg-background-secondary p-2 rounded-xl border border-border">
                         <input
                           id="qr-bg-color"
                           type="color"
@@ -194,8 +194,8 @@ export const QrcodeGenerator: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center justify-center p-8 bg-white rounded-2xl border border-gray-200 shadow-sm h-full min-h-[400px]">
-                <div className="bg-white p-4 rounded-xl shadow-lg mb-8 border border-gray-100">
+              <div className="flex flex-col items-center justify-center p-8 bg-card rounded-2xl border border-border shadow-sm h-full min-h-[400px]">
+                <div className="bg-card p-4 rounded-xl shadow-lg mb-8 border border-border">
                   <img
                     src={qrUrl}
                     alt="QR Code"
@@ -211,7 +211,7 @@ export const QrcodeGenerator: React.FC = () => {
 
                 <button
                   onClick={downloadQr}
-                  className="flex items-center px-6 py-3 bg-primary text-white rounded-xl hover:bg-blue-600 transition-colors font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  className="flex items-center px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                 >
                   <Download size={20} className="mr-2" /> Download PNG
                 </button>
@@ -219,13 +219,13 @@ export const QrcodeGenerator: React.FC = () => {
             </div>
           ) : (
             <div className="max-w-2xl w-full flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="w-full bg-white p-8 rounded-2xl border border-gray-200 shadow-sm text-center">
+              <div className="w-full bg-card p-8 rounded-2xl border border-border shadow-sm text-center">
                 <div className="mb-8">
-                  <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
+                  <div className="w-20 h-20 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
                     <ScanLine size={40} />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">Upload QR Code Image</h3>
-                  <p className="text-slate-500">
+                  <h3 className="text-xl font-bold text-foreground mb-2">Upload QR Code Image</h3>
+                  <p className="text-foreground-muted">
                     Select an image file containing a QR code to decode it.
                   </p>
                 </div>
@@ -241,7 +241,7 @@ export const QrcodeGenerator: React.FC = () => {
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isScanning}
-                  className="w-full py-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-primary hover:bg-blue-50 transition-all flex flex-col items-center justify-center text-slate-500 hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-primary-light transition-all flex flex-col items-center justify-center text-foreground-muted hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isScanning ? (
                     <>
@@ -257,7 +257,7 @@ export const QrcodeGenerator: React.FC = () => {
                 </button>
 
                 {scanError && (
-                  <div className="mt-6 p-4 bg-red-50 text-red-600 rounded-xl border border-red-100 flex items-center text-left">
+                  <div className="mt-6 p-4 bg-danger-light text-danger rounded-xl border border-danger/20 flex items-center text-left">
                     <AlertCircle size={20} className="mr-3 flex-shrink-0" />
                     <p className="text-sm font-medium">{scanError}</p>
                   </div>
@@ -265,10 +265,10 @@ export const QrcodeGenerator: React.FC = () => {
 
                 {scanResult && (
                   <div className="mt-8 text-left animate-in fade-in zoom-in duration-300">
-                    <span className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide">
+                    <span className="block text-xs font-bold text-foreground-muted uppercase mb-2 tracking-wide">
                       Decoded Content
                     </span>
-                    <div className="p-4 bg-green-50 border border-green-200 rounded-xl break-all font-mono text-slate-800 shadow-sm">
+                    <div className="p-4 bg-green-50 border border-green-200 rounded-xl break-all font-mono text-foreground shadow-sm">
                       {scanResult}
                     </div>
                     <div className="mt-4 flex justify-center">
@@ -277,7 +277,7 @@ export const QrcodeGenerator: React.FC = () => {
                           navigator.clipboard.writeText(scanResult);
                           alert('Copied to clipboard!');
                         }}
-                        className="text-sm font-medium text-primary hover:text-blue-700 hover:underline"
+                        className="text-sm font-medium text-primary hover:text-primary/80 hover:underline"
                       >
                         Copy Content
                       </button>

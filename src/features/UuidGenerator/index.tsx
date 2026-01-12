@@ -1,9 +1,10 @@
 import { Shuffle, RefreshCw, Copy, Check, Trash2, Download } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { useToolShortcuts } from '@/hooks/useToolShortcuts';
 
 export const UuidGenerator: React.FC = () => {
   const [uuids, setUuids] = useState<string[]>([]);
@@ -15,18 +16,19 @@ export const UuidGenerator: React.FC = () => {
       if (typeof crypto !== 'undefined' && crypto.randomUUID) {
         return crypto.randomUUID();
       }
-      // Fallback for older browsers
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = (Math.random() * 16) | 0,
-          v = c == 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      });
+      // Secure fallback using crypto.getRandomValues()
+      const bytes = new Uint8Array(16);
+      crypto.getRandomValues(bytes);
+      bytes[6] = (bytes[6] & 0x0f) | 0x40; // Version 4
+      bytes[8] = (bytes[8] & 0x3f) | 0x80; // Variant 10
+      const hex = [...bytes].map(b => b.toString(16).padStart(2, '0'));
+      return `${hex.slice(0, 4).join('')}-${hex.slice(4, 6).join('')}-${hex.slice(6, 8).join('')}-${hex.slice(8, 10).join('')}-${hex.slice(10).join('')}`;
     } catch (_e) {
       return 'Error generating UUID';
     }
   };
 
-  const handleGenerate = React.useCallback(() => {
+  const handleGenerate = useCallback(() => {
     const newUuids = Array(count)
       .fill(null)
       .map(() => generateUUID());
@@ -34,17 +36,23 @@ export const UuidGenerator: React.FC = () => {
     setCopied(false);
   }, [count]);
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (uuids.length === 0) return;
     navigator.clipboard.writeText(uuids.join('\n'));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
+  }, [uuids]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setUuids([]);
     setCopied(false);
-  };
+  }, []);
+
+  useToolShortcuts({
+    onExecute: handleGenerate,
+    onCopy: handleCopy,
+    onClear: handleClear,
+  });
 
   // Generate on first load
   React.useEffect(() => {
@@ -53,7 +61,7 @@ export const UuidGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Shuffle}
           title="UUID Generator"
@@ -61,23 +69,23 @@ export const UuidGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-between items-center flex-wrap gap-2">
+        <div className="p-3 bg-card border-b border-border flex justify-between items-center flex-wrap gap-2">
           <div className="flex items-center gap-3">
-            <div className="flex items-center bg-slate-50 border border-gray-200 rounded-lg px-3 py-1">
-              <span className="text-sm text-slate-500 font-medium mr-2">Count:</span>
+            <div className="flex items-center bg-background-secondary border border-border rounded-lg px-3 py-1">
+              <span className="text-sm text-foreground-muted font-medium mr-2">Count:</span>
               <input
                 type="number"
                 min="1"
                 max="100"
                 value={count}
                 onChange={e => setCount(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
-                className="w-16 bg-transparent font-bold text-slate-700 outline-none text-center"
+                className="w-16 bg-transparent font-bold text-foreground outline-none text-center"
               />
             </div>
 
             <button
               onClick={handleGenerate}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-sm flex items-center text-sm"
             >
               <RefreshCw size={16} className="mr-1.5" />
               Generate
@@ -88,7 +96,7 @@ export const UuidGenerator: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="h-full">
             <CodeEditor
               value={uuids.join('\n')}

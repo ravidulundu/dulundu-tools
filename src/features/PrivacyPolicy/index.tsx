@@ -10,10 +10,10 @@ export const PrivacyPolicy: React.FC = () => {
         description="Privacy Policy explaining how Dulundu.tools handles your data and protects your privacy."
       />
 
-      <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
+      <h1 className="text-4xl font-bold mb-8 text-foreground">Privacy Policy</h1>
 
-      <div className="prose prose-slate max-w-none">
-        <p className="text-sm text-gray-500 mb-8">Last Updated: December 2, 2024</p>
+      <div className="max-w-none text-foreground-secondary [&_h2]:text-foreground [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:text-foreground [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_p]:mb-4 [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ul]:space-y-2 [&_li]:leading-relaxed [&_strong]:text-foreground [&_strong]:font-semibold [&_a]:text-primary [&_a]:hover:underline">
+        <p className="text-sm text-foreground-muted mb-8">Last Updated: December 28, 2025</p>
 
         <h2>1. Introduction</h2>
         <p>
@@ -59,10 +59,10 @@ export const PrivacyPolicy: React.FC = () => {
         <h3>2.3 AI Features (Optional)</h3>
         <p>When you use AI-powered features:</p>
         <ul>
-          <li>Your prompt is sent to Google Gemini AI for processing</li>
+          <li>Your prompt is sent to our AI providers for processing</li>
           <li>Responses are generated and returned to you</li>
           <li>We do NOT store prompts or responses</li>
-          <li>Google&apos;s AI may process data according to their privacy policy</li>
+          <li>AI providers may process data according to their privacy policies</li>
         </ul>
 
         <h2>3. Data We DON&apos;T Collect</h2>
@@ -148,7 +148,7 @@ export const PrivacyPolicy: React.FC = () => {
         </ul>
         <p>
           To exercise these rights, contact:{' '}
-          <a href="mailto:privacy@dulundu.tools" className="text-blue-600">
+          <a href="mailto:privacy@dulundu.tools" className="text-primary hover:text-primary/80">
             privacy@dulundu.tools
           </a>
         </p>
@@ -165,7 +165,7 @@ export const PrivacyPolicy: React.FC = () => {
         </ul>
         <p>
           Contact:{' '}
-          <a href="mailto:privacy@dulundu.tools" className="text-blue-600">
+          <a href="mailto:privacy@dulundu.tools" className="text-primary hover:text-primary/80">
             privacy@dulundu.tools
           </a>
         </p>
@@ -200,7 +200,7 @@ export const PrivacyPolicy: React.FC = () => {
         <h2>11. Third-Party Services</h2>
         <table className="min-w-full border">
           <thead>
-            <tr className="bg-gray-50">
+            <tr className="bg-background-secondary">
               <th className="border p-2">Service</th>
               <th className="border p-2">Purpose</th>
               <th className="border p-2">Data Shared</th>
@@ -223,7 +223,7 @@ export const PrivacyPolicy: React.FC = () => {
               <td className="border p-2">Font requests</td>
             </tr>
             <tr>
-              <td className="border p-2">Google Gemini AI</td>
+              <td className="border p-2">AI Providers</td>
               <td className="border p-2">AI features (optional)</td>
               <td className="border p-2">Your prompts (not stored)</td>
             </tr>
@@ -248,7 +248,7 @@ export const PrivacyPolicy: React.FC = () => {
         <p>For privacy-related questions or to exercise your rights:</p>
         <p>
           <strong>Email:</strong>{' '}
-          <a href="mailto:privacy@dulundu.tools" className="text-blue-600">
+          <a href="mailto:privacy@dulundu.tools" className="text-primary hover:text-primary/80">
             privacy@dulundu.tools
           </a>
           <br />

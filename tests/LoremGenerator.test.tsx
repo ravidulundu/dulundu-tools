@@ -1,21 +1,34 @@
-import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { describe, it, expect } from 'vitest';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { ThemeProvider } from '@/contexts/ThemeProvider';
 import { LoremGenerator } from '@/features/LoremGenerator';
 
-const renderWithProviders = (component) => {
-  return render(
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <ThemeProvider>{component}</ThemeProvider>
-    </BrowserRouter>
-  );
-};
+import { renderWithProviders } from './utils/testHelpers';
 
 describe('LoremGenerator', () => {
-  it('renders without crashing', () => {
-    renderWithProviders(<LoremGenerator />);
-    expect(document.body).toBeDefined();
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('Rendering', () => {
+    it('renders without crashing', () => {
+      renderWithProviders(<LoremGenerator />);
+      expect(document.body).toBeDefined();
+    });
+  });
+
+  describe('Functional Tests', () => {
+    it('output contains expected value (case 1)', async () => {
+      const { container } = renderWithProviders(<LoremGenerator />);
+      const user = userEvent.setup();
+
+      
+
+      await waitFor(() => {
+        expect(container.textContent?.toLowerCase()).toContain('lorem');
+      }, { timeout: 3000 });
+    });
+
   });
 });

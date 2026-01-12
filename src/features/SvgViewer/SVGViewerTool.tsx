@@ -40,33 +40,33 @@ const SVGViewerTool = () => {
   return (
     <SVGProvider>
       <UrlHandler />
-      <div className="h-[calc(100vh-64px)] w-full bg-white dark:bg-gray-950 flex flex-col">
+      <div className="h-[calc(100vh-64px)] w-full bg-card flex flex-col">
         <PanelGroup direction="horizontal" className="flex-1">
           {/* Left Panel: Icon Library */}
           <Panel
             defaultSize={20}
             minSize={15}
             maxSize={30}
-            className="flex flex-col border-r border-gray-200 dark:border-gray-800"
+            className="flex flex-col border-r border-border"
           >
             <Sidebar />
           </Panel>
 
-          <PanelResizeHandle className="w-1 bg-gray-100 dark:bg-gray-900 hover:bg-blue-500 transition-colors flex items-center justify-center group">
-            <GripVertical className="h-4 w-4 text-gray-400 group-hover:text-white" />
+          <PanelResizeHandle className="w-1 bg-background-secondary hover:bg-primary transition-colors flex items-center justify-center group">
+            <GripVertical className="h-4 w-4 text-foreground-muted group-hover:text-white" />
           </PanelResizeHandle>
 
           {/* Middle Panel: Editor */}
           <Panel
             defaultSize={40}
             minSize={30}
-            className="flex flex-col border-r border-gray-200 dark:border-gray-800"
+            className="flex flex-col border-r border-border"
           >
             <EditorPanel />
           </Panel>
 
-          <PanelResizeHandle className="w-1 bg-gray-100 dark:bg-gray-900 hover:bg-blue-500 transition-colors flex items-center justify-center group">
-            <GripVertical className="h-4 w-4 text-gray-400 group-hover:text-white" />
+          <PanelResizeHandle className="w-1 bg-background-secondary hover:bg-primary transition-colors flex items-center justify-center group">
+            <GripVertical className="h-4 w-4 text-foreground-muted group-hover:text-white" />
           </PanelResizeHandle>
 
           {/* Right Panel: Preview */}

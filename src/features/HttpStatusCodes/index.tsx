@@ -112,16 +112,16 @@ export const HttpStatusCodes: React.FC = () => {
   );
 
   const getColor = (code: number) => {
-    if (code < 200) return 'bg-blue-100 text-blue-700 border-blue-200';
-    if (code < 300) return 'bg-green-100 text-green-700 border-green-200';
-    if (code < 400) return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-    if (code < 500) return 'bg-orange-100 text-orange-700 border-orange-200';
-    return 'bg-red-100 text-red-700 border-red-200';
+    if (code < 200) return 'bg-primary-light text-primary border-primary/20';
+    if (code < 300) return 'bg-success-light text-success border-success/20';
+    if (code < 400) return 'bg-warning-light text-warning border-warning/20';
+    if (code < 500) return 'bg-warning-light text-warning border-warning/20';
+    return 'bg-danger-light text-danger border-danger/20';
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Globe}
           title="HTTP Status Codes"
@@ -130,29 +130,29 @@ export const HttpStatusCodes: React.FC = () => {
 
         <div className="flex-1 overflow-hidden flex flex-col">
           {/* Search Bar */}
-          <div className="p-4 md:p-6 border-b border-gray-100 bg-white">
+          <div className="p-4 md:p-6 border-b border-border bg-card">
             <div className="relative max-w-2xl mx-auto">
               <input
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search by code, title, or description..."
-                className="w-full p-4 pl-12 bg-slate-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-sm transition-all"
+                className="w-full p-4 pl-12 bg-background-secondary border border-border rounded-xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-sm transition-all"
               />
               <Search
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground-muted"
                 size={20}
               />
             </div>
           </div>
 
           {/* Grid Content */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50/30">
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-background-secondary/30">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
               {filtered.map(item => (
                 <div
                   key={item.code}
-                  className="p-5 border border-gray-200 rounded-xl hover:shadow-md transition-all bg-white flex flex-col h-full group"
+                  className="p-5 border border-border rounded-xl hover:shadow-md transition-all bg-card flex flex-col h-full group"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <span
@@ -162,10 +162,10 @@ export const HttpStatusCodes: React.FC = () => {
                     </span>
                     {item.code === 418 && <span className="text-xl animate-bounce">🫖</span>}
                   </div>
-                  <h3 className="font-bold text-slate-800 text-lg mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="font-bold text-foreground text-lg mb-2 group-hover:text-primary transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-slate-500 leading-relaxed flex-1 flex items-start">
+                  <p className="text-sm text-foreground-muted leading-relaxed flex-1 flex items-start">
                     <Info size={14} className="mr-1.5 mt-0.5 flex-shrink-0 opacity-50" />
                     {item.desc}
                   </p>
@@ -174,7 +174,7 @@ export const HttpStatusCodes: React.FC = () => {
             </div>
 
             {filtered.length === 0 && (
-              <div className="text-center py-12 text-slate-400">
+              <div className="text-center py-12 text-foreground-muted">
                 <p>No status codes found matching &quot;{search}&quot;</p>
               </div>
             )}

@@ -51,10 +51,10 @@ export const EditorBottomBar: React.FC<EditorBottomBarProps> = ({
   };
 
   return (
-    <div className="h-12 bg-gray-50 dark:bg-[#1e1e1e] border-t border-gray-200 dark:border-gray-800 flex items-center justify-between px-4">
+    <div className="h-12 bg-background-secondary border-t border-border flex items-center justify-between px-4">
       <button
         onClick={handleUpload}
-        className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors"
+        className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-white bg-primary hover:bg-primary-hover rounded transition-colors"
       >
         <Upload className="w-3.5 h-3.5" />
         Upload
@@ -65,8 +65,8 @@ export const EditorBottomBar: React.FC<EditorBottomBarProps> = ({
           onClick={handleCopy}
           className={`flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded transition-colors border ${
             isCopied
-              ? 'text-green-600 dark:text-green-400 border-green-600 dark:border-green-500 bg-green-50 dark:bg-green-900/10'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300 dark:border-gray-700'
+              ? 'text-success border-success bg-success-light'
+              : 'text-foreground-secondary hover:bg-background-tertiary border-border'
           }`}
         >
           {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -74,14 +74,14 @@ export const EditorBottomBar: React.FC<EditorBottomBarProps> = ({
         </button>
         <button
           onClick={handleDownload}
-          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors border border-gray-300 dark:border-gray-700"
+          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-foreground-secondary hover:bg-background-tertiary rounded transition-colors border border-border"
         >
           <Download className="w-3.5 h-3.5" />
           Download
         </button>
         <button
           onClick={onShare}
-          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors border border-gray-300 dark:border-gray-700"
+          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-foreground-secondary hover:bg-background-tertiary rounded transition-colors border border-border"
         >
           <Share2 className="w-3.5 h-3.5" />
           Share

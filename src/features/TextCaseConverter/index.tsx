@@ -49,7 +49,7 @@ export const TextCaseConverter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Type}
           title="Text Case Converter"
@@ -57,7 +57,7 @@ export const TextCaseConverter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex flex-wrap gap-2 justify-center">
+        <div className="p-3 bg-card border-b border-border flex flex-wrap gap-2 justify-center">
           {[
             { id: 'camel', label: 'camelCase' },
             { id: 'pascal', label: 'PascalCase' },
@@ -71,12 +71,12 @@ export const TextCaseConverter: React.FC = () => {
             <button
               key={btn.id}
               onClick={() => convert(btn.id)}
-              className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-slate-600 font-medium hover:border-primary hover:text-primary hover:shadow-sm transition-all text-xs"
+              className="px-3 py-1.5 bg-card border border-border rounded-lg text-foreground-secondary font-medium hover:border-primary hover:text-primary hover:shadow-sm transition-all text-xs"
             >
               {btn.label}
             </button>
           ))}
-          <div className="w-px h-6 bg-gray-200 mx-2 hidden md:block"></div>
+          <div className="w-px h-6 bg-border mx-2 hidden md:block"></div>
           <button
             onClick={handleClear}
             className="px-3 py-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors text-xs font-medium flex items-center"
@@ -86,7 +86,7 @@ export const TextCaseConverter: React.FC = () => {
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <CodeEditor
               value={input}

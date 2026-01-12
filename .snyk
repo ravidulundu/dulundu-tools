@@ -1,0 +1,49 @@
+# Snyk (https://snyk.io) policy file
+# Security review completed: 2026-01-12
+# Reviewed by: Code security audit
+
+version: v1.25.0
+
+# Ignore rules for false positives and accepted risks
+ignore:
+  # SSRF in server.js - PROTECTED via isPrivateUrl() function
+  # Private IP ranges, localhost, and internal domains are blocked
+  SNYK-JS-FETCH-174687:
+    - '*':
+        reason: 'SSRF protection implemented via isPrivateUrl() function that blocks private IPs, localhost, and internal domains'
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T00:00:00.000Z
+
+  # ReDoS in RegexTester - PROTECTED via timeout and length limits
+  # Pattern length limit: 500 chars, Text limit: 50000 chars, Timeout: 3 seconds
+  SNYK-JS-REGEXP-174686:
+    - '*':
+        reason: 'ReDoS protection implemented with pattern/text length limits and 3-second execution timeout'
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T00:00:00.000Z
+
+  # DOM XSS warnings - FALSE POSITIVES (safe patterns)
+  # These use Blob URLs, DOMPurify sanitization, or hardcoded trusted APIs
+  SNYK-JS-DOMXSS-174688:
+    - '*':
+        reason: 'False positives: Blob URLs for downloads are safe, DOMPurify is used for SVG, QR API is hardcoded trusted source'
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T00:00:00.000Z
+
+  # elliptic vulnerability - ACCEPTED RISK (low severity, transitive dependency)
+  # From vite-plugin-node-polyfills, only used at build time
+  SNYK-JS-ELLIPTIC-7577916:
+    - '*':
+        reason: 'Low severity, transitive dependency from vite-plugin-node-polyfills (build-time only). No fix available without breaking changes.'
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T00:00:00.000Z
+
+  # Path Traversal in generate-functional-tests.mjs - ACCEPTED (dev script only)
+  SNYK-JS-PATHTRAV-174689:
+    - '*':
+        reason: 'Development script only, not exposed in production. Input is from developer CLI, not untrusted users.'
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T00:00:00.000Z
+
+# Patch section (empty - no patches needed)
+patch: {}

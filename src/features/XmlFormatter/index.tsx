@@ -96,7 +96,7 @@ export const XmlFormatter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={FileCode}
           title="XML Formatter"
@@ -122,23 +122,23 @@ export const XmlFormatter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-center gap-3">
+        <div className="p-3 bg-card border-b border-border flex justify-center gap-3">
           <button
             onClick={() => process('beautify')}
-            className="flex items-center px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md"
+            className="flex items-center px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors font-medium shadow-md"
           >
             <Maximize2 size={18} className="mr-2" /> Beautify
           </button>
           <button
             onClick={() => process('minify')}
-            className="flex items-center px-6 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium border border-slate-200"
+            className="flex items-center px-6 py-2 bg-background-secondary text-foreground-secondary rounded-lg hover:bg-background transition-colors font-medium border border-border"
           >
             <Minimize2 size={18} className="mr-2" /> Minify
           </button>
         </div>
 
         {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
           <div className="grid md:grid-cols-2 gap-4 h-full">
             <div className="flex flex-col h-full">
               <CodeEditor
@@ -150,7 +150,7 @@ export const XmlFormatter: React.FC = () => {
                 theme="light"
               />
               {error && (
-                <div className="mt-2 flex items-center text-red-600 text-sm font-medium bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 animate-pulse">
+                <div className="mt-2 flex items-center text-danger text-sm font-medium bg-danger-light px-3 py-1.5 rounded-lg border border-danger/20 animate-pulse">
                   <AlertCircle size={16} className="mr-2" /> {error}
                 </div>
               )}

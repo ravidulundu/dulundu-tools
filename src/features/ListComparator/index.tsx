@@ -49,7 +49,7 @@ export const ListComparator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={ArrowRightLeft}
           title="List Comparator"
@@ -57,19 +57,19 @@ export const ListComparator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
+        <div className="p-3 bg-card border-b border-border flex justify-end">
           <button
             onClick={handleClear}
-            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-foreground-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
             title="Clear All"
           >
             <Trash2 size={20} />
           </button>
         </div>
 
-        <div className="flex-1 overflow-hidden grid md:grid-cols-3 bg-gray-50/30">
+        <div className="flex-1 overflow-hidden grid md:grid-cols-3 bg-background-secondary/30">
           {/* Inputs Column */}
-          <div className="col-span-1 p-4 md:p-6 border-r border-gray-200 flex flex-col gap-4 overflow-y-auto">
+          <div className="col-span-1 p-4 md:p-6 border-r border-border flex flex-col gap-4 overflow-y-auto">
             <div className="flex-1 flex flex-col min-h-[200px]">
               <CodeEditor
                 value={listA}

@@ -139,7 +139,7 @@ export const ColorConverter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Palette}
           title="Color Converter"
@@ -147,38 +147,38 @@ export const ColorConverter: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
+        <div className="p-3 bg-card border-b border-border flex justify-end">
           <button
             onClick={handleReset}
-            className="flex items-center space-x-2 px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-sm font-medium hover:bg-slate-100 text-slate-600 transition-colors"
+            className="flex items-center space-x-2 px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-sm font-medium hover:bg-background-tertiary text-foreground-secondary transition-colors"
           >
             <RefreshCw size={16} /> <span>Reset Default</span>
           </button>
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex items-center justify-center overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 flex items-center justify-center overflow-y-auto">
           <div className="max-w-4xl w-full flex flex-col md:flex-row gap-8 md:gap-12 items-center">
             {/* Color Preview */}
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
                 <div
-                  className="relative w-48 h-48 md:w-64 md:h-64 rounded-full shadow-lg border-8 border-white ring-1 ring-gray-100 transition-all transform group-hover:scale-105"
+                  className="relative w-48 h-48 md:w-64 md:h-64 rounded-full shadow-lg border-8 border-card ring-1 ring-border transition-all transform group-hover:scale-105"
                   style={{ backgroundColor: hex }}
                 ></div>
               </div>
-              <p className="font-mono text-slate-500 text-sm font-medium bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
+              <p className="font-mono text-foreground-muted text-sm font-medium bg-card px-3 py-1 rounded-full shadow-sm border border-border">
                 Preview
               </p>
             </div>
 
             {/* Inputs */}
-            <div className="flex-1 w-full space-y-6 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+            <div className="flex-1 w-full space-y-6 bg-card p-8 rounded-2xl border border-border shadow-sm">
               <div>
                 <label
                   htmlFor="input-hex"
-                  className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide"
+                  className="block text-xs font-bold text-foreground-muted uppercase mb-2 tracking-wide"
                 >
                   HEX Color
                 </label>
@@ -188,11 +188,11 @@ export const ColorConverter: React.FC = () => {
                     type="text"
                     value={hex}
                     onChange={handleHexChange}
-                    className="w-full p-4 pl-12 border border-gray-200 rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none uppercase bg-slate-50 text-slate-800 transition-all"
+                    className="w-full p-4 pl-12 border border-border rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none uppercase bg-background-secondary text-foreground transition-all"
                     maxLength={7}
                   />
                   <div
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border border-gray-300 shadow-sm"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border border-border shadow-sm"
                     style={{ backgroundColor: hex }}
                   ></div>
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -210,7 +210,7 @@ export const ColorConverter: React.FC = () => {
               <div>
                 <label
                   htmlFor="input-rgb"
-                  className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide"
+                  className="block text-xs font-bold text-foreground-muted uppercase mb-2 tracking-wide"
                 >
                   RGB Color
                 </label>
@@ -220,7 +220,7 @@ export const ColorConverter: React.FC = () => {
                     type="text"
                     value={rgb}
                     onChange={e => handleRgbChange(e.target.value)}
-                    className="w-full p-4 border border-gray-200 rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-slate-50 text-slate-800 transition-all"
+                    className="w-full p-4 border border-border rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-background-secondary text-foreground transition-all"
                     placeholder="rgb(0, 0, 0)"
                   />
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -238,7 +238,7 @@ export const ColorConverter: React.FC = () => {
               <div>
                 <label
                   htmlFor="input-hsl"
-                  className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-wide"
+                  className="block text-xs font-bold text-foreground-muted uppercase mb-2 tracking-wide"
                 >
                   HSL Color
                 </label>
@@ -248,7 +248,7 @@ export const ColorConverter: React.FC = () => {
                     type="text"
                     value={hsl}
                     onChange={e => handleHslChange(e.target.value)}
-                    className="w-full p-4 border border-gray-200 rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-slate-50 text-slate-800 transition-all"
+                    className="w-full p-4 border border-border rounded-xl font-mono text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-background-secondary text-foreground transition-all"
                     placeholder="hsl(0, 0%, 0%)"
                   />
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">

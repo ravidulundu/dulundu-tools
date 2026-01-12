@@ -76,7 +76,7 @@ const EditorPanel = () => {
   }, [svgCode, setOptimizationStats]);
 
   return (
-    <div className="h-full w-full bg-white dark:bg-[#1e1e1e] flex flex-col relative">
+    <div className="h-full w-full bg-card flex flex-col relative">
       <ShareModal
         isOpen={showShareModal}
         onClose={() => setShowShareModal(false)}
@@ -97,7 +97,7 @@ const EditorPanel = () => {
         aria-label="Code Editor Drop Zone"
         className={clsx(
           'flex-1 overflow-hidden transition-colors relative',
-          isDragOver && 'bg-blue-50/10 ring-2 ring-inset ring-blue-500'
+          isDragOver && 'bg-primary/10 ring-2 ring-inset ring-primary'
         )}
         onDragOver={e => {
           e.preventDefault();

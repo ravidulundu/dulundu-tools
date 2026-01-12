@@ -26,16 +26,16 @@ export const UaParser: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Monitor}
           title="User Agent Parser"
           description="Decode browser user agent strings"
         />
 
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 flex flex-col">
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6">
-            <label htmlFor="ua-input" className="block text-sm font-bold text-slate-700 mb-2">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 flex flex-col">
+          <div className="bg-card p-6 rounded-xl border border-border shadow-sm mb-6">
+            <label htmlFor="ua-input" className="block text-sm font-bold text-foreground-secondary mb-2">
               User Agent String
             </label>
             <div className="flex gap-2">
@@ -44,19 +44,19 @@ export const UaParser: React.FC = () => {
                 type="text"
                 value={uaString}
                 onChange={e => setUaString(e.target.value)}
-                className="flex-1 p-3 bg-slate-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm text-slate-700"
+                className="flex-1 p-3 bg-background-secondary border border-border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-sm text-foreground-secondary"
                 placeholder="Paste User Agent string here..."
               />
               <button
                 onClick={parse}
-                className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 font-bold shadow-sm flex items-center"
+                className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 font-bold shadow-sm flex items-center"
               >
                 <Search size={18} className="mr-2" /> Parse
               </button>
             </div>
             <button
               onClick={setToCurrent}
-              className="mt-2 text-xs font-medium text-primary hover:text-blue-700 hover:underline flex items-center"
+              className="mt-2 text-xs font-medium text-primary hover:text-primary/80 hover:underline flex items-center"
             >
               <RefreshCw size={12} className="mr-1" /> Use my current User Agent
             </button>
@@ -93,24 +93,24 @@ export const UaParser: React.FC = () => {
                   ]}
                 />
 
-                <div className="col-span-full bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <h3 className="font-bold text-slate-700 mb-4 border-b border-gray-100 pb-2 flex items-center">
-                    <Monitor size={18} className="mr-2 text-slate-400" /> Engine Details
+                <div className="col-span-full bg-card rounded-xl p-6 border border-border shadow-sm">
+                  <h3 className="font-bold text-foreground-secondary mb-4 border-b border-border pb-2 flex items-center">
+                    <Monitor size={18} className="mr-2 text-foreground-muted" /> Engine Details
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span className="text-xs text-slate-500 uppercase font-bold tracking-wider">
+                      <span className="text-xs text-foreground-muted uppercase font-bold tracking-wider">
                         Name
                       </span>
-                      <p className="font-mono text-slate-800 mt-1 bg-slate-50 p-2 rounded border border-gray-100">
+                      <p className="font-mono text-foreground mt-1 bg-background-secondary p-2 rounded border border-border">
                         {result.engine.name || 'N/A'}
                       </p>
                     </div>
                     <div>
-                      <span className="text-xs text-slate-500 uppercase font-bold tracking-wider">
+                      <span className="text-xs text-foreground-muted uppercase font-bold tracking-wider">
                         Version
                       </span>
-                      <p className="font-mono text-slate-800 mt-1 bg-slate-50 p-2 rounded border border-gray-100">
+                      <p className="font-mono text-foreground mt-1 bg-background-secondary p-2 rounded border border-border">
                         {result.engine.version || 'N/A'}
                       </p>
                     </div>
@@ -130,18 +130,18 @@ const InfoCard: React.FC<{
   title: string;
   data: { label: string; value: string }[];
 }> = ({ icon: Icon, title, data }) => (
-  <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-    <div className="flex items-center space-x-2 mb-4 border-b border-gray-100 pb-2">
-      <div className="p-1.5 bg-slate-100 rounded-lg text-slate-500">
+  <div className="bg-card rounded-xl p-6 border border-border shadow-sm hover:shadow-md transition-shadow">
+    <div className="flex items-center space-x-2 mb-4 border-b border-border pb-2">
+      <div className="p-1.5 bg-background-secondary rounded-lg text-foreground-muted">
         <Icon size={18} />
       </div>
-      <h3 className="font-bold text-slate-700">{title}</h3>
+      <h3 className="font-bold text-foreground-secondary">{title}</h3>
     </div>
     <div className="space-y-3">
       {data.map((item, i) => (
         <div key={i} className="flex justify-between items-center">
-          <span className="text-sm text-slate-500 font-medium">{item.label}</span>
-          <span className="text-sm font-bold text-slate-800 bg-slate-50 px-2 py-0.5 rounded border border-gray-100">
+          <span className="text-sm text-foreground-muted font-medium">{item.label}</span>
+          <span className="text-sm font-bold text-foreground bg-background-secondary px-2 py-0.5 rounded border border-border">
             {item.value || 'N/A'}
           </span>
         </div>

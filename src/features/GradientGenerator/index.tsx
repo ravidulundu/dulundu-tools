@@ -38,7 +38,7 @@ export const GradientGenerator: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Palette}
           title="CSS Gradient Generator"
@@ -46,31 +46,31 @@ export const GradientGenerator: React.FC = () => {
         />
 
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
+        <div className="p-3 bg-card border-b border-border flex justify-end">
           <button
             onClick={handleRandom}
-            className="flex items-center space-x-2 px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-sm font-medium hover:bg-slate-100 text-slate-600 transition-colors"
+            className="flex items-center space-x-2 px-3 py-1.5 bg-background-secondary border border-border rounded-lg text-sm font-medium hover:bg-background-secondary text-foreground-secondary transition-colors"
           >
             <RotateCcw size={16} /> <span>Randomize</span>
           </button>
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-gray-50/30 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 overflow-y-auto">
           <div className="max-w-4xl mx-auto space-y-8">
             {/* Preview Box */}
             <div
-              className="w-full h-48 md:h-64 rounded-2xl shadow-inner transition-all duration-300 border border-gray-200"
+              className="w-full h-48 md:h-64 rounded-2xl shadow-inner transition-all duration-300 border border-border"
               style={{ background: gradient }}
             ></div>
 
             <div className="grid md:grid-cols-2 gap-8">
               {/* Controls */}
-              <div className="space-y-6 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+              <div className="space-y-6 bg-card p-6 rounded-xl border border-border shadow-sm">
                 <div>
                   <label
                     htmlFor="color-1"
-                    className="block text-sm font-medium text-slate-700 mb-2"
+                    className="block text-sm font-medium text-foreground-secondary mb-2"
                   >
                     Color 1
                   </label>
@@ -86,7 +86,7 @@ export const GradientGenerator: React.FC = () => {
                       type="text"
                       value={color1}
                       onChange={e => setColor1(e.target.value)}
-                      className="flex-1 p-3 bg-slate-50 border border-gray-200 rounded-lg font-mono text-sm uppercase outline-none focus:ring-2 focus:ring-primary/50 text-slate-800"
+                      className="flex-1 p-3 bg-background-secondary border border-border rounded-lg font-mono text-sm uppercase outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
                     />
                   </div>
                 </div>
@@ -94,7 +94,7 @@ export const GradientGenerator: React.FC = () => {
                 <div>
                   <label
                     htmlFor="color-2"
-                    className="block text-sm font-medium text-slate-700 mb-2"
+                    className="block text-sm font-medium text-foreground-secondary mb-2"
                   >
                     Color 2
                   </label>
@@ -110,7 +110,7 @@ export const GradientGenerator: React.FC = () => {
                       type="text"
                       value={color2}
                       onChange={e => setColor2(e.target.value)}
-                      className="flex-1 p-3 bg-slate-50 border border-gray-200 rounded-lg font-mono text-sm uppercase outline-none focus:ring-2 focus:ring-primary/50 text-slate-800"
+                      className="flex-1 p-3 bg-background-secondary border border-border rounded-lg font-mono text-sm uppercase outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
                     />
                   </div>
                 </div>
@@ -118,7 +118,7 @@ export const GradientGenerator: React.FC = () => {
                 <div>
                   <label
                     htmlFor="angle-input"
-                    className="block text-sm font-medium text-slate-700 mb-2"
+                    className="block text-sm font-medium text-foreground-secondary mb-2"
                   >
                     Angle ({angle}°)
                   </label>
@@ -129,7 +129,7 @@ export const GradientGenerator: React.FC = () => {
                     max="360"
                     value={angle}
                     onChange={e => setAngle(parseInt(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                    className="w-full h-2 bg-background-secondary rounded-lg appearance-none cursor-pointer accent-primary"
                   />
                 </div>
               </div>

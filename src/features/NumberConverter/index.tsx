@@ -56,18 +56,18 @@ export const NumberConverter: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Binary}
           title="Number Base Converter"
           description="Real-time conversion between Decimal, Binary, Hex, and Octal"
         />
         {/* Toolbar */}
-        <div className="p-3 bg-white border-b border-gray-100 flex justify-end">
+        <div className="p-3 bg-card border-b border-border flex justify-end">
           <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
         </div>
-        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50/30 flex flex-col items-center justify-center">
-          <div className="max-w-3xl w-full bg-white p-8 rounded-2xl shadow-sm border border-gray-200 grid gap-6">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto bg-background-secondary/30 flex flex-col items-center justify-center">
+          <div className="max-w-3xl w-full bg-card p-8 rounded-2xl shadow-sm border border-border grid gap-6">
             {[
               { label: 'Decimal', val: dec, type: 'dec', ph: '10' },
               { label: 'Binary', val: bin, type: 'bin', ph: '1010' },
@@ -78,7 +78,7 @@ export const NumberConverter: React.FC = () => {
                 key={item.label}
                 className="flex flex-col md:flex-row md:items-center group gap-2 md:gap-0"
               >
-                <div className="w-32 font-semibold text-slate-600 group-hover:text-primary transition-colors">
+                <div className="w-32 font-semibold text-foreground-secondary group-hover:text-primary transition-colors">
                   {item.label}
                 </div>
                 <div className="flex-1 relative">
@@ -88,10 +88,10 @@ export const NumberConverter: React.FC = () => {
                     onChange={e =>
                       update(e.target.value, item.type as 'dec' | 'bin' | 'hex' | 'oct')
                     }
-                    className="w-full p-4 bg-white text-slate-900 border border-gray-200 rounded-xl font-mono outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm"
+                    className="w-full p-4 bg-card text-foreground border border-border rounded-xl font-mono outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm"
                     placeholder={item.ph}
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 bg-gray-50 px-2 py-1 rounded border border-gray-200">
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-foreground-muted bg-background-secondary px-2 py-1 rounded border border-border">
                     Base{' '}
                     {item.type === 'dec'
                       ? 10

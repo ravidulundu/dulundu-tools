@@ -112,18 +112,18 @@ export const ReadmeGenerator = () => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-64px)] bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 overflow-hidden">
+    <div className="flex h-[calc(100vh-64px)] bg-background-secondary text-foreground overflow-hidden">
       <SEO
         title="Readme Generator - Create Professional GitHub Readmes"
         description="Create beautiful, professional GitHub README.md files in seconds. Use our drag-and-drop editor with pre-built templates for badges, tech stack, and more."
         keywords="readme generator, github readme, markdown editor, developer tools, documentation generator"
       />
       {/* Unified Sidebar */}
-      <div className="w-64 flex-none border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-900 flex flex-col">
-        <div className="p-2 border-b border-gray-200 dark:border-gray-800">
+      <div className="w-64 flex-none border-r border-border bg-background-secondary flex flex-col">
+        <div className="p-2 border-b border-border">
           <button
             onClick={handleAddCustomSection}
-            className="w-full text-left px-3 py-2 rounded-md bg-blue-50 dark:bg-blue-600/10 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-600/20 transition-colors flex items-center gap-2 border border-blue-200 dark:border-blue-600/20"
+            className="w-full text-left px-3 py-2 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors flex items-center gap-2 border border-primary/20"
           >
             <span>➕</span>
             <span className="font-medium text-sm">Custom Section</span>
@@ -149,11 +149,11 @@ export const ReadmeGenerator = () => {
               tabIndex={0}
               className={`
                 group relative flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer select-none transition-all
-                hover:bg-gray-100 dark:hover:bg-gray-800/50
+                hover:bg-background-secondary/80
                 ${draggedSectionId === section.id ? 'opacity-50' : ''}
               `}
             >
-              <span className="cursor-grab active:cursor-grabbing opacity-30 hover:opacity-100 text-gray-400">
+              <span className="cursor-grab active:cursor-grabbing opacity-30 hover:opacity-100 text-foreground-muted">
                 ⋮⋮
               </span>
 
@@ -166,7 +166,7 @@ export const ReadmeGenerator = () => {
                   ${
                     section.isIncluded
                       ? 'bg-green-500 border-green-500 text-white'
-                      : 'border-gray-400 text-transparent hover:border-gray-500'
+                      : 'border-border text-transparent hover:border-foreground-muted'
                   }
                 `}
                 onClick={e => {
@@ -199,8 +199,8 @@ export const ReadmeGenerator = () => {
               <span
                 className={`text-sm font-medium truncate flex-1 ${
                   section.isIncluded
-                    ? 'text-slate-900 dark:text-slate-100'
-                    : 'text-gray-500 dark:text-gray-400'
+                    ? 'text-foreground'
+                    : 'text-foreground-muted'
                 }`}
               >
                 {section.name}
@@ -209,10 +209,10 @@ export const ReadmeGenerator = () => {
           ))}
         </div>
 
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-900">
+        <div className="p-4 border-t border-border bg-background-secondary">
           <button
             onClick={handleReset}
-            className="w-full px-3 py-2 text-sm text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors border border-transparent hover:border-red-200 dark:hover:border-red-900/30"
+            className="w-full px-3 py-2 text-sm text-destructive hover:bg-destructive/10 rounded-md transition-colors border border-transparent hover:border-destructive/20"
           >
             Reset / Clear All
           </button>
@@ -222,16 +222,16 @@ export const ReadmeGenerator = () => {
       {/* Middle & Right: Editor and Preview/Raw side by side */}
       <div className="flex-1 flex">
         {/* Left: Markdown Editor Only */}
-        <div className="w-1/2 bg-gray-50 dark:bg-slate-900 h-full flex flex-col border-r border-gray-200 dark:border-gray-800">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900 flex justify-between items-center">
-            <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wide">
+        <div className="w-1/2 bg-background-secondary h-full flex flex-col border-r border-border">
+          <div className="p-4 border-b border-border bg-background-secondary flex justify-between items-center">
+            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
               Markdown Editor
             </h2>
             <a
               href="https://www.markdownguide.org/basic-syntax/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+              className="text-xs text-primary hover:underline flex items-center gap-1"
               title="View Markdown Syntax Guide"
             >
               <HelpCircle size={14} />

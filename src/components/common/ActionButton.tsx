@@ -1,11 +1,14 @@
 import { LucideIcon } from 'lucide-react';
-import React from 'react';
+import React, { useMemo } from 'react';
+
+import { formatShortcut } from '@/hooks/useKeyboardShortcuts';
 
 interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: LucideIcon;
   label?: string;
   variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'ghost';
   size?: 'sm' | 'md';
+  shortcut?: string;
 }
 
 export const ActionButton: React.FC<ActionButtonProps> = ({
@@ -13,9 +16,19 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   label,
   variant = 'primary',
   size = 'sm',
+  shortcut,
   className = '',
   ...props
 }) => {
+  const tooltipText = useMemo(() => {
+    if (props.title) return props.title;
+    if (!label && !shortcut) return undefined;
+
+    const parts: string[] = [];
+    if (label) parts.push(label);
+    if (shortcut) parts.push(`(${formatShortcut(shortcut)})`);
+    return parts.join(' ');
+  }, [label, shortcut, props.title]);
   // Base classes for layout and interaction
   const baseClasses =
     'inline-flex items-center justify-center font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
@@ -26,22 +39,24 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     md: 'text-sm px-4 py-2.5 rounded-lg',
   };
 
-  // Color variants (Tailwind v3 compatible)
+  // Color variants using semantic theme colors
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm',
+    primary: 'bg-primary text-primary-foreground hover:bg-primary-hover focus:ring-primary shadow-sm',
     secondary:
-      'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 focus:ring-slate-500 shadow-sm',
-    success: 'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500 shadow-sm',
+      'bg-card text-foreground-secondary border border-border hover:bg-background-secondary focus:ring-secondary shadow-sm',
+    success: 'bg-success text-white hover:opacity-90 focus:ring-success shadow-sm',
     danger:
-      'bg-white text-red-600 border border-red-200 hover:bg-red-50 focus:ring-red-500 shadow-sm',
+      'bg-card text-danger border border-danger/30 hover:bg-danger-light focus:ring-danger shadow-sm',
     ghost:
-      'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus:ring-slate-500',
+      'bg-transparent text-foreground-secondary hover:bg-background-secondary hover:text-foreground focus:ring-secondary',
   };
+
+  const formattedShortcut = shortcut ? formatShortcut(shortcut) : null;
 
   return (
     <button
       className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
-      title={props.title || label}
+      title={tooltipText}
       {...props}
     >
       <Icon
@@ -49,6 +64,11 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         className={label ? (size === 'sm' ? 'mr-1.5' : 'mr-2') : ''}
       />
       {label}
+      {formattedShortcut && (
+        <kbd className="hidden sm:inline-flex ml-2 px-1.5 py-0.5 text-[10px] font-medium bg-black/10 dark:bg-white/10 rounded opacity-70">
+          {formattedShortcut}
+        </kbd>
+      )}
     </button>
   );
 };
