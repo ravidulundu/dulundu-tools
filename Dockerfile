@@ -41,10 +41,18 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/server.js ./
 # Copy public folder if needed (usually handled by build/dist, but checking just in case)
-# COPY --from=builder /app/public ./public 
+# COPY --from=builder /app/public ./public
 
 # Create data directory for shares
 RUN mkdir -p data/shares
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 -G nodejs && \
+    chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
 
 # Expose port
 EXPOSE 3000

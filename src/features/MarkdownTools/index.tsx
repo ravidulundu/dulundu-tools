@@ -1,4 +1,4 @@
-import { FileText, ArrowLeftRight, Copy, Check, Code, Trash2 } from 'lucide-react';
+import { ArrowLeftRight, Check, Code, Copy, FileText, Trash2 } from 'lucide-react';
 import { marked } from 'marked';
 import React, { useState } from 'react';
 
@@ -30,10 +30,10 @@ export const MarkdownTools: React.FC = () => {
       .replace(/<[^>]+>/gim, '') // Remove remaining tags
       .trim();
 
-    // Decode entities
-    const textarea = document.createElement('textarea');
-    textarea.innerHTML = md;
-    md = textarea.value;
+    // Decode HTML entities safely using DOMParser instead of innerHTML
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(`<!DOCTYPE html><body>${md}</body>`, 'text/html');
+    md = doc.body.textContent || '';
 
     return md;
   };

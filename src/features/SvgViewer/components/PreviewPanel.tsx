@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import DOMPurify from 'dompurify';
-import { ZoomIn, ZoomOut, Maximize2, Download } from 'lucide-react';
+import { Download, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { useSVG } from '../hooks/useSVG';
-import { svgToReact, svgToPng, svgToReactNative } from '../utils/svgExporter';
+import { svgToPng, svgToReact, svgToReactNative } from '../utils/svgExporter';
 import { CodeTab } from './tabs/CodeTab';
 import { DataUriTab } from './tabs/DataUriTab';
 import { PngTab } from './tabs/PngTab';
@@ -195,7 +195,9 @@ export const PreviewPanel = () => {
             onClick={() => setActiveTab(tab)}
             className={clsx(
               'px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap',
-              activeTab === tab ? 'bg-primary/10 text-primary' : 'text-foreground-muted hover:bg-background-secondary'
+              activeTab === tab
+                ? 'bg-primary/10 text-primary'
+                : 'text-foreground-muted hover:bg-background-secondary'
             )}
           >
             {tab}
@@ -367,7 +369,9 @@ export const PreviewPanel = () => {
                 >
                   {bg === 'white' && <div className="w-full h-full bg-white rounded-sm" />}
                   {bg === 'black' && <div className="w-full h-full bg-black rounded-sm" />}
-                  {bg === 'transparent' && <div className="w-full h-full bg-background-secondary rounded-sm" />}
+                  {bg === 'transparent' && (
+                    <div className="w-full h-full bg-background-secondary rounded-sm" />
+                  )}
                   {bg === 'checkerboard' && (
                     <div
                       className="w-full h-full rounded-sm"
@@ -492,7 +496,7 @@ export const PreviewPanel = () => {
             }}
             onFocus={e => {
               // Remove % sign on focus for easier editing
-              const val = e.target.value.replace('%', '');
+              const val = e.target.value.replaceAll('%', '');
               setZoomInputValue(val);
               e.target.select();
             }}

@@ -1,4 +1,4 @@
-import { ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
+import { Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import React from 'react';
 
 interface ZoomControlsProps {
@@ -57,7 +57,7 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
           }
         }}
         onFocus={e => {
-          const val = e.target.value.replace('%', '');
+          const val = e.target.value.replaceAll('%', '');
           setZoomInputValue(val);
           e.target.select();
         }}
