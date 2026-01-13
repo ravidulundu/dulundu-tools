@@ -24,20 +24,31 @@ let cachedIndexHtml = null;
 const INDEX_PATH = path.join(__dirname, 'dist', 'index.html');
 
 // ========== LOGGER SETUP ==========
+// 2025/2026 Best Practice: Structured JSON in Prod, Readable in Dev
+const { combine, timestamp, json, colorize, printf, errors } = winston.format;
+
+// Dev format: readable, colored
+const devFormat = combine(
+  colorize(),
+  printf(({ level, message, timestamp: _timestamp, correlationId, ...meta }) => {
+    const cid = correlationId ? ` [${correlationId}]` : '';
+    const metaStr = Object.keys(meta).length ? `\n${JSON.stringify(meta, null, 2)}` : '';
+    return `${level}${cid}: ${message}${metaStr}`;
+  })
+);
+
+// Prod format: structured JSON with correlation ID
+const prodFormat = combine(
+  timestamp(),
+  errors({ stack: true }), // Include stack trace
+  json()
+);
+
 const logger = winston.createLogger({
   level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-  format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.printf(({ level, message, timestamp: _ts, ...meta }) => {
-          const metaStr = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : '';
-          return `${level}: ${typeof message === 'object' ? JSON.stringify(message) : message}${metaStr}`;
-        })
-      ),
-    }),
-  ],
+  format: process.env.NODE_ENV === 'production' ? prodFormat : devFormat,
+  defaultMeta: { service: 'dulundu-tools' }, // Add service name to all logs
+  transports: [new winston.transports.Console()],
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -283,6 +294,17 @@ app.use(
   })
 );
 
+// ========== MIDDLEWARE ==========
+
+// Correlation ID Middleware
+// Tracks requests across services for debugging
+app.use((req, res, next) => {
+  const correlationId = req.headers['x-correlation-id'] || uuidv4();
+  req.correlationId = correlationId;
+  res.setHeader('x-correlation-id', correlationId);
+  next();
+});
+
 // Request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
@@ -291,12 +313,18 @@ app.use((req, res, next) => {
     if (req._blocked) return;
 
     const duration = Date.now() - start;
+
+    // 2025/2026 Best Practice: Structured format with Correlation ID
     logger.info({
+      message: 'Incoming request',
       method: req.method,
       path: req.path,
       status: res.statusCode,
       duration: `${duration}ms`,
+      correlationId: req.correlationId,
       ip: req.ip,
+      userAgent: req.get('user-agent'),
+      // PII Redaction: Don't log full headers or body
     });
   });
   next();
@@ -974,11 +1002,20 @@ app.get('*', (req, res) => {
 });
 
 // Error handling middleware
-app.use((_error, req, res, _next) => {
-  logger.error('Unhandled error:', _error);
+app.use((err, req, res, _next) => {
+  logger.error({
+    message: 'Unhandled application error',
+    error: err.message,
+    stack: err.stack,
+    correlationId: req.correlationId,
+    path: req.path,
+    method: req.method,
+  });
+
   res.status(500).json({
     error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'development' ? _error.message : undefined,
+    correlationId: req.correlationId, // Provide ID to user for support
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined,
   });
 });
 
@@ -993,4 +1030,24 @@ process.on('SIGTERM', () => {
   server.close(() => {
     logger.info('HTTP server closed');
   });
+});
+
+// Global Error Safety Nets
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error({
+    message: 'Unhandled Rejection at Promise',
+    reason: reason,
+    promise: promise,
+  });
+  // Best practice: don't exit purely on unhandled rejection in modern Node, but log it critical
+});
+
+process.on('uncaughtException', error => {
+  logger.error({
+    message: 'Uncaught Exception thrown',
+    error: error.message,
+    stack: error.stack,
+  });
+  // Critical failure - process is in definition state
+  process.exit(1);
 });
