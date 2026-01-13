@@ -7,7 +7,7 @@ import { ToolHeader } from '@/components/common/ToolHeader';
 import { useToolLogic } from '@/hooks/useToolLogic';
 import { useToolShortcuts } from '@/hooks/useToolShortcuts';
 
-interface EncoderDecoderConfig {
+export interface EncoderDecoderConfig {
   /** Tool icon */
   icon: LucideIcon;
   /** Tool title */
@@ -59,8 +59,8 @@ export const EncoderDecoderLayout: React.FC<EncoderDecoderLayoutProps> = ({ conf
           const decoded = decodeURIComponent(inputParam);
           return config.shouldDecodeOnHashInput?.(decoded) ? 'decode' : 'encode';
         }
-      } catch {
-        // Ignore
+      } catch (e) {
+        console.warn('Failed to parse hash for initial mode:', e);
       }
     }
     return 'encode';
@@ -86,7 +86,8 @@ export const EncoderDecoderLayout: React.FC<EncoderDecoderLayoutProps> = ({ conf
         } else {
           setOutput(config.decode(text));
         }
-      } catch (_e) {
+      } catch (e) {
+        console.warn(`Error during ${currentMode}:`, e);
         setOutput(config.decodeErrorMessage);
       }
     },
@@ -109,8 +110,8 @@ export const EncoderDecoderLayout: React.FC<EncoderDecoderLayoutProps> = ({ conf
           process(decoded, mode);
           window.history.replaceState(null, '', window.location.pathname);
         }
-      } catch (_e) {
-        // Ignore parsing errors
+      } catch (e) {
+        console.warn('Failed to parse hash input:', e);
       }
     }
   }, [setInput, process, mode]);
