@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import Groq from 'groq-sdk';
+import helmet from 'helmet';
 import winston from 'winston';
 
 dotenv.config();
@@ -486,8 +487,8 @@ app.post(
 
     const systemPrompt = `You are an expert professional writer. Write an email based on the following details:
 
-Recipient: ${recipient || 'General'}
-Tone: ${tone || 'Professional'}
+Recipient: ${sanitizeForPrompt(recipient) || 'General'}
+Tone: ${sanitizeForPrompt(tone) || 'Professional'}
 
 Topic details:
 <user_topic>

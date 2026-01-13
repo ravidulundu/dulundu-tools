@@ -38,7 +38,7 @@ export const JsValidator: React.FC = () => {
     try {
       // Use acorn parser for static analysis (SAFE: No code execution)
       acorn.parse(code, {
-        ecmaVersion: 2020,
+        ecmaVersion: 'latest',
         sourceType: 'module', // Allows import/export
       });
       setResult({ valid: true, message: 'Valid JavaScript syntax!' });

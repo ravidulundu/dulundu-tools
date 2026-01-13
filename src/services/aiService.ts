@@ -114,8 +114,14 @@ const callAiApi = async (endpoint: string, body: object): Promise<string> => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `Failed request to ${endpoint}`);
+      let errorMessage: string;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || `Request to ${endpoint} failed with status ${response.status}`;
+      } catch {
+        errorMessage = `Request to ${endpoint} failed with status ${response.status}: ${response.statusText}`;
+      }
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();

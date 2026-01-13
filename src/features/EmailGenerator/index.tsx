@@ -7,6 +7,8 @@ import { ToolHeader } from '@/components/common/ToolHeader';
 import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { generateEmail } from '@/services/aiService';
 
+const TONE_OPTIONS = ['Professional', 'Friendly', 'Urgent', 'Apologetic', 'Persuasive'];
+
 export const EmailGenerator: React.FC = () => {
   const [recipient, setRecipient] = useState('');
   const [topic, setTopic] = useState('');
@@ -63,11 +65,11 @@ export const EmailGenerator: React.FC = () => {
                 onChange={e => setTone(e.target.value)}
                 className="bg-transparent text-sm font-medium text-foreground outline-none cursor-pointer p-1"
               >
-                <option value="Professional">Professional</option>
-                <option value="Friendly">Friendly</option>
-                <option value="Urgent">Urgent</option>
-                <option value="Apologetic">Apologetic</option>
-                <option value="Persuasive">Persuasive</option>
+                {TONE_OPTIONS.map(t => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
