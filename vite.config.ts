@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(() => {
@@ -22,14 +21,6 @@ export default defineConfig(() => {
     },
     plugins: [
       react(),
-      nodePolyfills({
-        include: ['buffer', 'stream', 'util', 'events'],
-        globals: {
-          Buffer: true,
-          global: true,
-          process: true,
-        },
-      }),
       // Gzip compression
       viteCompression({
         algorithm: 'gzip',

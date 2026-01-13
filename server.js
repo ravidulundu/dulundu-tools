@@ -338,6 +338,41 @@ const checkAiConfig = (req, res, next) => {
   next();
 };
 
+// ========== VULNERABILITY SCANNER BLOCK ==========
+// Return 404 for common attack paths to stop bots from scanning
+// This runs before SPA fallback to avoid returning index.html for .php etc.
+const BLOCKED_PATTERNS = [
+  /\.php$/i, // PHP files
+  /\.asp$/i, // ASP files
+  /\.aspx$/i, // ASPX files
+  /\.jsp$/i, // JSP files
+  /\.cgi$/i, // CGI scripts
+  /^\/wp-/i, // WordPress paths
+  /^\/wordpress\//i, // WordPress directory
+  /^\/xmlrpc/i, // XML-RPC
+  /^\/admin\.php/i, // Admin PHP
+  /^\/cgi-bin\//i, // CGI bin
+  /\.env$/i, // Environment files
+  /\/\.git\//i, // Git directory
+  /\/\.svn\//i, // SVN directory
+  /\/\.htaccess/i, // Apache config
+  /\/\.htpasswd/i, // Apache password
+  /\/web\.config/i, // IIS config
+];
+
+app.use((req, res, next) => {
+  const path = req.path;
+
+  // Check if path matches any blocked pattern
+  for (const pattern of BLOCKED_PATTERNS) {
+    if (pattern.test(path)) {
+      // Don't log these to reduce noise (attackers will fill logs)
+      return res.status(404).send('Not Found');
+    }
+  }
+  next();
+});
+
 // ========== HEALTH CHECK ==========
 app.get('/health', (req, res) => {
   res.json({
@@ -553,11 +588,9 @@ app.post(
         return res.status(400).json({ error: 'Recipient must be a string.' });
       }
       if (recipient.length > AI_INPUT_LIMITS.RECIPIENT_MAX) {
-        return res
-          .status(400)
-          .json({
-            error: `Recipient is too long (max ${AI_INPUT_LIMITS.RECIPIENT_MAX} characters).`,
-          });
+        return res.status(400).json({
+          error: `Recipient is too long (max ${AI_INPUT_LIMITS.RECIPIENT_MAX} characters).`,
+        });
       }
     }
 
@@ -603,11 +636,9 @@ app.post(
     }
 
     if (text.length > AI_INPUT_LIMITS.SUMMARY_TEXT_MAX) {
-      return res
-        .status(400)
-        .json({
-          error: `Text too long (max ${AI_INPUT_LIMITS.SUMMARY_TEXT_MAX} characters). Please shorten your input.`,
-        });
+      return res.status(400).json({
+        error: `Text too long (max ${AI_INPUT_LIMITS.SUMMARY_TEXT_MAX} characters). Please shorten your input.`,
+      });
     }
 
     // Validate summary length against allowed values
