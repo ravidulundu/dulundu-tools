@@ -1,10 +1,11 @@
-import { Shuffle, RefreshCw, Copy, Check, Trash2, Download } from 'lucide-react';
-import React, { useState, useCallback } from 'react';
+import { Check, Copy, Download, RefreshCw, Shuffle, Trash2 } from 'lucide-react';
+import React, { useCallback, useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
 import { useToolShortcuts } from '@/hooks/useToolShortcuts';
+import { downloadContent } from '@/utils/downloadUtils';
 
 export const UuidGenerator: React.FC = () => {
   const [uuids, setUuids] = useState<string[]>([]);
@@ -111,17 +112,7 @@ export const UuidGenerator: React.FC = () => {
                       icon={Download}
                       label="Download"
                       onClick={() => {
-                        const blob = new Blob([uuids.join('\n')], {
-                          type: 'text/plain',
-                        });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'uuids.txt';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
+                        downloadContent(uuids.join('\n'), 'uuids.txt');
                       }}
                       variant="secondary"
                     />

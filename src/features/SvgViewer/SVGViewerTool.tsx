@@ -57,11 +57,7 @@ const SVGViewerTool = () => {
           </PanelResizeHandle>
 
           {/* Middle Panel: Editor */}
-          <Panel
-            defaultSize={40}
-            minSize={30}
-            className="flex flex-col border-r border-border"
-          >
+          <Panel defaultSize={40} minSize={30} className="flex flex-col border-r border-border">
             <EditorPanel />
           </Panel>
 

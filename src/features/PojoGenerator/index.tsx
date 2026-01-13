@@ -110,7 +110,10 @@ export const PojoGenerator: React.FC = () => {
         <div className="p-3 bg-card border-b border-border flex flex-wrap gap-4 items-center justify-between">
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center space-x-2 bg-background-secondary p-1 rounded-lg border border-border">
-              <label htmlFor="class-name" className="text-xs font-medium text-foreground-muted pl-2">
+              <label
+                htmlFor="class-name"
+                className="text-xs font-medium text-foreground-muted pl-2"
+              >
                 Class:
               </label>
               <input
@@ -122,7 +125,10 @@ export const PojoGenerator: React.FC = () => {
               />
             </div>
             <div className="flex items-center space-x-2 bg-background-secondary p-1 rounded-lg border border-border">
-              <label htmlFor="package-name" className="text-xs font-medium text-foreground-muted pl-2">
+              <label
+                htmlFor="package-name"
+                className="text-xs font-medium text-foreground-muted pl-2"
+              >
                 Package:
               </label>
               <input

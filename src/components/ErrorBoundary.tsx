@@ -29,9 +29,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         this.props.fallback || (
           <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 text-center">
-            <h1 className="mb-4 text-2xl font-bold text-foreground">
-              Something went wrong
-            </h1>
+            <h1 className="mb-4 text-2xl font-bold text-foreground">Something went wrong</h1>
             <p className="mb-6 text-foreground-secondary">
               We apologize for the inconvenience. Please try refreshing the page.
             </p>

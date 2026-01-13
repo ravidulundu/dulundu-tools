@@ -107,7 +107,9 @@ export const PaletteExtractor: React.FC = () => {
                   <div className="p-4 bg-background-secondary rounded-full mb-4">
                     <ImageIcon size={32} className="text-foreground-muted" />
                   </div>
-                  <p className="text-lg font-medium text-foreground-secondary">Click to Upload Image</p>
+                  <p className="text-lg font-medium text-foreground-secondary">
+                    Click to Upload Image
+                  </p>
                   <p className="text-sm">JPG, PNG, WEBP supported</p>
                 </div>
               )}
@@ -166,7 +168,10 @@ const ColorCard: React.FC<{ hex: string }> = ({ hex }) => {
         {copied ? (
           <Check size={16} className="text-green-500" />
         ) : (
-          <Copy size={16} className="text-foreground-muted group-hover:text-primary transition-colors" />
+          <Copy
+            size={16}
+            className="text-foreground-muted group-hover:text-primary transition-colors"
+          />
         )}
       </div>
     </div>

@@ -73,9 +73,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
         {shareStep === 'SAVE' ? (
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-foreground">
-                Save before you share it
-              </h3>
+              <h3 className="text-lg font-semibold text-foreground">Save before you share it</h3>
               <button
                 onClick={onClose}
                 className="text-foreground-muted hover:text-foreground-secondary"
@@ -131,9 +129,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, svgCode
         ) : (
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-foreground">
-                Share &quot;{svgName}&quot;
-              </h3>
+              <h3 className="text-lg font-semibold text-foreground">Share &quot;{svgName}&quot;</h3>
               <button
                 onClick={onClose}
                 className="text-foreground-muted hover:text-foreground-secondary"

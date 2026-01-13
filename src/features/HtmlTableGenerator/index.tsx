@@ -116,7 +116,9 @@ export const HtmlTableGenerator: React.FC = () => {
                     onChange={e => setHeader(e.target.checked)}
                     className="w-5 h-5 text-primary rounded focus:ring-primary/50 border-border"
                   />
-                  <span className="ml-3 text-sm text-foreground-secondary font-medium">Include Header</span>
+                  <span className="ml-3 text-sm text-foreground-secondary font-medium">
+                    Include Header
+                  </span>
                 </label>
                 <label className="flex items-center p-3 bg-card rounded-lg border border-border cursor-pointer hover:border-primary transition-colors">
                   <input
@@ -125,7 +127,9 @@ export const HtmlTableGenerator: React.FC = () => {
                     onChange={e => setBorder(e.target.checked)}
                     className="w-5 h-5 text-primary rounded focus:ring-primary/50 border-border"
                   />
-                  <span className="ml-3 text-sm text-foreground-secondary font-medium">Add Borders</span>
+                  <span className="ml-3 text-sm text-foreground-secondary font-medium">
+                    Add Borders
+                  </span>
                 </label>
               </div>
             </div>

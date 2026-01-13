@@ -275,8 +275,13 @@ export const LoanCalculator: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-border">
                       {schedule.map(row => (
-                        <tr key={row.year} className="hover:bg-background-secondary transition-colors">
-                          <td className="px-4 py-3 font-medium text-foreground-secondary">Year {row.year}</td>
+                        <tr
+                          key={row.year}
+                          className="hover:bg-background-secondary transition-colors"
+                        >
+                          <td className="px-4 py-3 font-medium text-foreground-secondary">
+                            Year {row.year}
+                          </td>
                           <td className="px-4 py-3 text-right text-foreground-muted">
                             {fmt(row.interest)}
                           </td>

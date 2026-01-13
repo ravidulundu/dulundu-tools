@@ -1,6 +1,7 @@
+import { ArrowRight, Clock, Command, History, Search, Sparkles, Star } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+
 import { ALL_TOOLS } from '@/constants';
-import { Search, Command, Sparkles, ArrowRight, Clock, Star, History } from 'lucide-react';
-import React, { useState, useMemo, useEffect } from 'react';
 
 // Helper to detect content type (Same as before)
 const detectContent = (text: string) => {
@@ -49,6 +50,16 @@ interface Tool {
 
 const Popup = () => {
   const [search, setSearch] = useState('');
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Focus input on mount for better UX
+    const timer = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   const [smartAction, setSmartAction] = useState<{
     type: string;
     label: string;
@@ -235,9 +246,8 @@ const Popup = () => {
             placeholder="Search tools (e.g. JSON, Base64)..."
             className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border-none rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 transition-all"
             value={search}
+            ref={inputRef}
             onChange={e => setSearch(e.target.value)}
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
           />
         </div>
       </div>

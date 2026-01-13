@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "overrides": {
+    "elliptic": "^6.6.1"
+  },
   "scripts": {
     "dev": "vite",
     "server": "PORT=3001 node server.js",

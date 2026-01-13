@@ -131,12 +131,12 @@ export const MirrorOnline: React.FC = () => {
                 >
                   <div className="flex items-center space-x-3">
                     {result.online ? <CheckCircle size={24} /> : <XCircle size={24} />}
-                    <span className="font-bold text-lg">{result.online ? 'Online' : 'Offline'}</span>
+                    <span className="font-bold text-lg">
+                      {result.online ? 'Online' : 'Offline'}
+                    </span>
                   </div>
                   <span className="text-sm opacity-80">{getStatusMessage()}</span>
-                  {result.url && (
-                    <span className="text-xs opacity-60 font-mono">{result.url}</span>
-                  )}
+                  {result.url && <span className="text-xs opacity-60 font-mono">{result.url}</span>}
                 </div>
               )}
             </div>

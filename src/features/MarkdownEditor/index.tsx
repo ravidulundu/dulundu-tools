@@ -159,10 +159,7 @@ This web site is using \`markedjs/marked\`.`);
           >
             Reset
           </button>
-          <button
-            onClick={handleCopy}
-            className="hover:text-primary transition-colors"
-          >
+          <button onClick={handleCopy} className="hover:text-primary transition-colors">
             {copied ? 'Copied!' : 'Copy'}
           </button>
         </div>

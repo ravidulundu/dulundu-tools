@@ -73,6 +73,9 @@ export const KeyboardShortcutsHelp: React.FC<KeyboardShortcutsHelpProps> = ({
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
+        onKeyDown={e => e.key === 'Escape' && onClose()}
+        role="button"
+        tabIndex={0}
       />
 
       {/* Modal */}
@@ -124,7 +127,11 @@ export const KeyboardShortcutsHelp: React.FC<KeyboardShortcutsHelpProps> = ({
         {/* Footer */}
         <div className="px-6 py-3 border-t border-border bg-background-secondary/50">
           <p className="text-xs text-foreground-muted text-center">
-            Press <kbd className="px-1.5 py-0.5 bg-background border border-border rounded text-[10px]">ESC</kbd> to close
+            Press{' '}
+            <kbd className="px-1.5 py-0.5 bg-background border border-border rounded text-[10px]">
+              ESC
+            </kbd>{' '}
+            to close
           </p>
         </div>
       </div>

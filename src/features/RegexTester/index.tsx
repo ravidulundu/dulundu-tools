@@ -20,76 +20,77 @@ export const RegexTester: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // ReDoS Protection Constants
-  const MAX_PATTERN_LENGTH = 500;
-  const MAX_TEXT_LENGTH = 50000;
-  const MAX_MATCHES = 1000;
-  const REGEX_TIMEOUT_MS = 3000;
+  const workerRef = React.useRef<Worker | null>(null);
+
+  // Initialize worker once
+  useEffect(() => {
+    workerRef.current = new Worker(new URL('./regex.worker.ts', import.meta.url), {
+      type: 'module',
+    });
+
+    return () => {
+      workerRef.current?.terminate();
+    };
+  }, []);
 
   useEffect(() => {
-    const testRegex = () => {
-      try {
-        if (!pattern) {
-          setMatches([]);
-          setError(null);
-          return;
-        }
+    const worker = workerRef.current;
+    if (!worker) return;
 
-        // ReDoS Protection: Pattern length limit
-        if (pattern.length > MAX_PATTERN_LENGTH) {
-          setError(`Pattern too long (max ${MAX_PATTERN_LENGTH} characters)`);
-          setMatches([]);
-          return;
-        }
+    let timeoutId: NodeJS.Timeout;
 
-        // ReDoS Protection: Text length limit
-        if (text.length > MAX_TEXT_LENGTH) {
-          setError(`Text too long (max ${MAX_TEXT_LENGTH} characters)`);
-          setMatches([]);
-          return;
-        }
+    const handleMessage = (e: MessageEvent) => {
+      clearTimeout(timeoutId);
+      const { matches: newMatches, error: workerError } = e.data;
 
-        const regex = new RegExp(pattern, flags);
-        const newMatches: Match[] = [];
-
-        // Execute regex with timeout protection
-        const startTime = performance.now();
-
-        if (!regex.global && text.match(regex)) {
-          const m = text.match(regex);
-          if (m && m.index !== undefined) {
-            newMatches.push({ index: m.index, value: m[0], groups: m.slice(1) });
-          }
-        } else {
-          let match;
-          let limit = MAX_MATCHES;
-          while ((match = regex.exec(text)) !== null) {
-            // ReDoS Protection: Timeout check
-            if (performance.now() - startTime > REGEX_TIMEOUT_MS) {
-              setError('Regex execution timeout - pattern may be too complex');
-              setMatches([]);
-              return;
-            }
-
-            newMatches.push({
-              index: match.index,
-              value: match[0],
-              groups: match.slice(1),
-            });
-            if (match.index === regex.lastIndex) regex.lastIndex++;
-            if (--limit < 0) break;
-          }
-        }
-
-        setMatches(newMatches);
-        setError(null);
-      } catch (e) {
-        setError((e as Error).message);
+      if (workerError) {
+        setError(workerError);
         setMatches([]);
+      } else {
+        setError(null);
+        setMatches(newMatches);
       }
     };
 
-    testRegex();
+    worker.onmessage = handleMessage;
+    worker.onerror = err => {
+      clearTimeout(timeoutId);
+      setError('Worker error: ' + err.message);
+      setMatches([]);
+    };
+
+    // Send data to worker with timeout protection
+    if (pattern && text) {
+      // ReDoS Protection: 3 second timeout for main thread safety
+      timeoutId = setTimeout(() => {
+        worker.terminate();
+        setError('Regex execution timed out (ReDoS protection)');
+        setMatches([]);
+        // Restart worker for next input
+        workerRef.current = new Worker(new URL('./regex.worker.ts', import.meta.url), {
+          type: 'module',
+        });
+        // We need to re-attach the listener to the new worker if we want it to work for *subsequent* calls
+        // but this effect runs on [pattern, flags, text], so next change will re-attach.
+        // However, if the user doesn't change anything, it's just dead.
+        // The previous code had a complex recreation logic inside the effect that recreated it every time.
+      }, 3000);
+
+      worker.postMessage({ pattern, flags, text });
+    } else {
+      // Defer state update to avoid synchronous render warning
+      const timer = setTimeout(() => {
+        setMatches([]);
+        setError(null);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      // Do NOT terminate worker here, we want to reuse it.
+      // Only clean up the timeout.
+    };
   }, [pattern, flags, text]);
 
   const highlightText = () => {

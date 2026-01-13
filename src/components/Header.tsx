@@ -1,4 +1,15 @@
-import { Code2, Menu, Sun, Moon, Github, MessageSquare, ChevronDown, X, Heart, Keyboard } from 'lucide-react';
+import {
+  Code2,
+  Menu,
+  Sun,
+  Moon,
+  Github,
+  MessageSquare,
+  ChevronDown,
+  X,
+  Heart,
+  Keyboard,
+} from 'lucide-react';
 import React, { useState, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 

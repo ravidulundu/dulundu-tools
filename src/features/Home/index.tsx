@@ -31,7 +31,10 @@ export const Home: React.FC = () => {
 
   // Map recent tool IDs to tool objects
   const recentTools = useMemo(
-    () => recentToolIds.map(t => ALL_TOOLS.find(tool => tool.id === t.id)).filter(Boolean) as typeof ALL_TOOLS,
+    () =>
+      recentToolIds
+        .map(t => ALL_TOOLS.find(tool => tool.id === t.id))
+        .filter(Boolean) as typeof ALL_TOOLS,
     [recentToolIds]
   );
 

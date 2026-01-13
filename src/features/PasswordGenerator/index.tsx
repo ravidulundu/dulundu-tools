@@ -28,7 +28,8 @@ export const PasswordGenerator: React.FC = () => {
   });
   const [copied, setCopied] = useState(false);
 
-  const { presets, addPreset, deletePreset } = useToolPresets<PasswordSettings>('password-generator');
+  const { presets, addPreset, deletePreset } =
+    useToolPresets<PasswordSettings>('password-generator');
 
   const handlePresetSelect = useCallback((preset: Preset<PasswordSettings>) => {
     setLength(preset.settings.length);

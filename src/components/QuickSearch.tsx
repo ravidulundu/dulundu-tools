@@ -1,5 +1,5 @@
-import { Search, ArrowRight, Command } from 'lucide-react';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ArrowRight, Command, Search } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ALL_TOOLS } from '@/config/allTools';
@@ -10,7 +10,9 @@ interface QuickSearchProps {
   onClose: () => void;
 }
 
-export const QuickSearch: React.FC<QuickSearchProps> = ({ isOpen, onClose }) => {
+// Internal component that handles the search logic
+// This component is only mounted when isOpen is true, guaranteeing fresh state
+const QuickSearchContent: React.FC<Pick<QuickSearchProps, 'onClose'>> = ({ onClose }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,17 +32,13 @@ export const QuickSearch: React.FC<QuickSearchProps> = ({ isOpen, onClose }) => 
       }).slice(0, 8)
     : ALL_TOOLS.filter(t => t.popular).slice(0, 8);
 
-  // Reset state when opened
+  // Focus input on mount
   useEffect(() => {
-    if (isOpen) {
-      setQuery('');
-      setSelectedIndex(0);
-      // Small delay to ensure the modal is rendered
-      requestAnimationFrame(() => {
-        inputRef.current?.focus();
-      });
-    }
-  }, [isOpen]);
+    // Small delay to ensure the modal is rendered and transition started
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+  }, []);
 
   // Keep selected item in view
   useEffect(() => {
@@ -84,14 +82,15 @@ export const QuickSearch: React.FC<QuickSearchProps> = ({ isOpen, onClose }) => 
     }
   };
 
-  if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] px-4">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
+        onKeyDown={e => e.key === 'Escape' && onClose()}
+        role="button"
+        tabIndex={0}
       />
 
       {/* Modal */}
@@ -138,9 +137,7 @@ export const QuickSearch: React.FC<QuickSearchProps> = ({ isOpen, onClose }) => 
                 >
                   <div
                     className={`p-2 rounded-lg flex-shrink-0 ${
-                      index === selectedIndex
-                        ? 'bg-white/20'
-                        : 'bg-background-secondary'
+                      index === selectedIndex ? 'bg-white/20' : 'bg-background-secondary'
                     }`}
                   >
                     <tool.icon size={18} />
@@ -149,9 +146,7 @@ export const QuickSearch: React.FC<QuickSearchProps> = ({ isOpen, onClose }) => 
                     <div className="font-medium truncate">{tool.name}</div>
                     <div
                       className={`text-sm truncate ${
-                        index === selectedIndex
-                          ? 'text-white/70'
-                          : 'text-foreground-muted'
+                        index === selectedIndex ? 'text-white/70' : 'text-foreground-muted'
                       }`}
                     >
                       {tool.description}
@@ -169,7 +164,7 @@ export const QuickSearch: React.FC<QuickSearchProps> = ({ isOpen, onClose }) => 
           ) : (
             <div className="px-4 py-12 text-center text-foreground-muted">
               <Search size={32} className="mx-auto mb-3 opacity-50" />
-              <p>No tools found for "{query}"</p>
+              <p>No tools found for &quot;{query}&quot;</p>
             </div>
           )}
         </div>
@@ -198,4 +193,9 @@ export const QuickSearch: React.FC<QuickSearchProps> = ({ isOpen, onClose }) => 
       </div>
     </div>
   );
+};
+
+export const QuickSearch: React.FC<QuickSearchProps> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+  return <QuickSearchContent onClose={onClose} />;
 };

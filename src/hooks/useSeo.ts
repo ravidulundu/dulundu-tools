@@ -23,7 +23,14 @@ const updateMeta = (property: string, content: string, isProperty = false) => {
   }
 };
 
-export const useSeo = ({ title, description, keywords, canonicalUrl, ogImage, ogType }: SeoProps) => {
+export const useSeo = ({
+  title,
+  description,
+  keywords,
+  canonicalUrl,
+  ogImage,
+  ogType,
+}: SeoProps) => {
   useEffect(() => {
     const siteName = 'Dulundu.tools';
     const siteUrl = 'https://dulundu.tools';

@@ -44,9 +44,7 @@ const BottomBar = () => {
           onClick={() => setBackground('transparent')}
           className={clsx(
             'w-6 h-6 rounded border transition-all bg-background-secondary',
-            background === 'transparent'
-              ? 'border-primary ring-2 ring-primary/20'
-              : 'border-border'
+            background === 'transparent' ? 'border-primary ring-2 ring-primary/20' : 'border-border'
           )}
           title="Transparent Background"
         />

@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, useRoutes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import { Analytics } from './components/Analytics';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -9,12 +9,7 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { SeoManager } from './components/SeoManager';
 import { ThemeProvider } from './contexts/ThemeProvider';
 import { ToolHistoryProvider } from './contexts/ToolHistoryContext';
-import { routes } from './routes';
-
-const AppRoutes = () => {
-  const element = useRoutes(routes);
-  return element;
-};
+import { AppRoutes } from './routes';
 
 const App: React.FC = () => {
   return (

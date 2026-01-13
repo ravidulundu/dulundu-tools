@@ -117,7 +117,10 @@ export const LuaFormatter: React.FC = () => {
             {/* Mode Toggle */}
             <div className="flex bg-background-secondary rounded-lg p-1 border border-border">
               <button
-                onClick={() => { setMode('beautify'); setOutput(''); }}
+                onClick={() => {
+                  setMode('beautify');
+                  setOutput('');
+                }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                   mode === 'beautify'
                     ? 'bg-primary text-white shadow-sm'
@@ -128,7 +131,10 @@ export const LuaFormatter: React.FC = () => {
                 Beautify
               </button>
               <button
-                onClick={() => { setMode('minify'); setOutput(''); }}
+                onClick={() => {
+                  setMode('minify');
+                  setOutput('');
+                }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                   mode === 'minify'
                     ? 'bg-primary text-white shadow-sm'

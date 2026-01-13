@@ -35,7 +35,10 @@ export const UaParser: React.FC = () => {
 
         <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30 flex flex-col">
           <div className="bg-card p-6 rounded-xl border border-border shadow-sm mb-6">
-            <label htmlFor="ua-input" className="block text-sm font-bold text-foreground-secondary mb-2">
+            <label
+              htmlFor="ua-input"
+              className="block text-sm font-bold text-foreground-secondary mb-2"
+            >
               User Agent String
             </label>
             <div className="flex gap-2">

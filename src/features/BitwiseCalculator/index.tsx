@@ -119,10 +119,14 @@ export const BitwiseCalculator: React.FC = () => {
                     className="p-4 bg-card border border-border rounded-xl shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-bold text-foreground-muted uppercase">{op.label}</span>
+                      <span className="text-xs font-bold text-foreground-muted uppercase">
+                        {op.label}
+                      </span>
                       <op.icon size={16} className="text-foreground-secondary" />
                     </div>
-                    <div className="text-2xl font-bold text-foreground mb-2 font-mono">{op.val}</div>
+                    <div className="text-2xl font-bold text-foreground mb-2 font-mono">
+                      {op.val}
+                    </div>
                     <div className="text-[10px] font-mono text-foreground-secondary break-all bg-background-secondary p-1.5 rounded">
                       {toBin(op.val)}
                     </div>

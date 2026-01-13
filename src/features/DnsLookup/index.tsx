@@ -182,7 +182,9 @@ export const DnsLookup: React.FC = () => {
                               'SMIMEA',
                             ][record.type] || record.type}
                           </td>
-                          <td className="px-6 py-3 text-sm text-foreground-secondary">{record.name}</td>
+                          <td className="px-6 py-3 text-sm text-foreground-secondary">
+                            {record.name}
+                          </td>
                           <td className="px-6 py-3 text-sm text-foreground-muted">{record.TTL}</td>
                           <td className="px-6 py-3 text-sm font-mono text-foreground break-all">
                             {record.data}

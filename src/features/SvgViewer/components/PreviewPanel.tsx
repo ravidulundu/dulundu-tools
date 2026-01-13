@@ -3,6 +3,7 @@ import DOMPurify from 'dompurify';
 import { Download, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { downloadContent, downloadFile } from '../../../utils/downloadUtils';
 import { useSVG } from '../hooks/useSVG';
 import { svgToPng, svgToReact, svgToReactNative } from '../utils/svgExporter';
 import { CodeTab } from './tabs/CodeTab';
@@ -408,49 +409,23 @@ export const PreviewPanel = () => {
           )}
 
           {/* Download Button */}
+          {/* Download Button */}
           <button
             onClick={() => {
-              if (activeTab === 'PNG' && pngDataUri) {
-                const a = document.createElement('a');
-                a.href = pngDataUri;
-                a.download = `image@${pngScale}x.png`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+              if (activeTab === 'PNG') {
+                // Snyk mitigation: Ensure data URI is strictly verified before sink
+                if (pngDataUri && pngDataUri.startsWith('data:image/png;base64,')) {
+                  downloadFile(pngDataUri, `image@${pngScale}x.png`);
+                }
               } else if (activeTab === 'React') {
-                const blob = new Blob([svgToReact(svgCode)], {
-                  type: 'text/plain',
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'Icon.tsx';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                const sanitized = DOMPurify.sanitize(svgCode);
+                downloadContent(svgToReact(sanitized), 'Icon.tsx');
               } else if (activeTab === 'React Native') {
-                const blob = new Blob([svgToReactNative(svgCode)], {
-                  type: 'text/plain',
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'Icon.tsx';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                const sanitized = DOMPurify.sanitize(svgCode);
+                downloadContent(svgToReactNative(sanitized), 'Icon.tsx');
               } else {
-                const blob = new Blob([svgCode], { type: 'image/svg+xml' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'image.svg';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                const sanitized = DOMPurify.sanitize(svgCode);
+                downloadContent(sanitized, 'image.svg', 'image/svg+xml');
               }
             }}
             className="flex items-center gap-2 px-4 py-1.5 text-xs font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded transition-colors whitespace-nowrap"

@@ -54,9 +54,7 @@ export function useToolHistory() {
       if (existing) {
         // Update existing entry
         const updated = prev
-          .map(t =>
-            t.id === toolId ? { ...t, lastUsed: now, useCount: t.useCount + 1 } : t
-          )
+          .map(t => (t.id === toolId ? { ...t, lastUsed: now, useCount: t.useCount + 1 } : t))
           .sort((a, b) => b.lastUsed - a.lastUsed);
         return updated.slice(0, HISTORY_LIMIT);
       }
@@ -73,10 +71,7 @@ export function useToolHistory() {
     );
   }, []);
 
-  const isFavorite = useCallback(
-    (toolId: string) => favorites.includes(toolId),
-    [favorites]
-  );
+  const isFavorite = useCallback((toolId: string) => favorites.includes(toolId), [favorites]);
 
   const clearHistory = useCallback(() => {
     setHistory([]);
@@ -87,10 +82,7 @@ export function useToolHistory() {
   }, []);
 
   // Recent tools sorted by last used
-  const recentTools = useMemo(
-    () => history.slice(0, HISTORY_LIMIT),
-    [history]
-  );
+  const recentTools = useMemo(() => history.slice(0, HISTORY_LIMIT), [history]);
 
   // Most used tools
   const mostUsedTools = useMemo(

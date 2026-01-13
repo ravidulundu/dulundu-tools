@@ -176,7 +176,10 @@ export const CssUnitConverter: React.FC = () => {
           <div className="flex flex-wrap items-center gap-4">
             {/* Base Size */}
             <div className="flex items-center gap-2">
-              <label htmlFor="base-size" className="text-sm font-medium text-foreground-secondary whitespace-nowrap">
+              <label
+                htmlFor="base-size"
+                className="text-sm font-medium text-foreground-secondary whitespace-nowrap"
+              >
                 Base:
               </label>
               <div className="relative">
@@ -187,7 +190,9 @@ export const CssUnitConverter: React.FC = () => {
                   onChange={e => handleBaseChange(e.target.value)}
                   className="w-20 px-3 py-1.5 pr-8 bg-background-secondary border border-border rounded-lg text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-foreground-muted">px</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-foreground-muted">
+                  px
+                </span>
               </div>
             </div>
 
@@ -195,7 +200,10 @@ export const CssUnitConverter: React.FC = () => {
 
             {/* Viewport */}
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-foreground-secondary whitespace-nowrap">
+              <label
+                htmlFor="viewport-width"
+                className="text-sm font-medium text-foreground-secondary whitespace-nowrap"
+              >
                 Viewport:
               </label>
               <input

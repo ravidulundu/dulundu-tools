@@ -1,9 +1,8 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const PRESETS_KEY = 'dulundu-tool-presets';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface Preset<T = any> {
+export interface Preset<T = unknown> {
   id: string;
   name: string;
   toolId: string;
@@ -11,8 +10,7 @@ export interface Preset<T = any> {
   createdAt: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PresetsStore = Record<string, Preset<any>[]>;
+type PresetsStore = Record<string, Preset<unknown>[]>;
 
 function loadPresets(): PresetsStore {
   try {
@@ -35,7 +33,7 @@ export function useToolPresets<T>(toolId: string) {
   const [allPresets, setAllPresets] = useState<PresetsStore>(loadPresets);
 
   // Get presets for this tool
-  const presets = (allPresets[toolId] || []) as Preset<T>[];
+  const presets = useMemo(() => (allPresets[toolId] || []) as Preset<T>[], [allPresets, toolId]);
 
   // Persist on change
   useEffect(() => {
@@ -66,9 +64,7 @@ export function useToolPresets<T>(toolId: string) {
     (presetId: string, settings: T) => {
       setAllPresets(prev => ({
         ...prev,
-        [toolId]: (prev[toolId] || []).map(p =>
-          p.id === presetId ? { ...p, settings } : p
-        ),
+        [toolId]: (prev[toolId] || []).map(p => (p.id === presetId ? { ...p, settings } : p)),
       }));
     },
     [toolId]
@@ -88,9 +84,7 @@ export function useToolPresets<T>(toolId: string) {
     (presetId: string, name: string) => {
       setAllPresets(prev => ({
         ...prev,
-        [toolId]: (prev[toolId] || []).map(p =>
-          p.id === presetId ? { ...p, name } : p
-        ),
+        [toolId]: (prev[toolId] || []).map(p => (p.id === presetId ? { ...p, name } : p)),
       }));
     },
     [toolId]
