@@ -287,6 +287,9 @@ app.use(
 app.use((req, res, next) => {
   const start = Date.now();
   res.on('finish', () => {
+    // Skip logging for blocked scanner requests (reduces noise)
+    if (req._blocked) return;
+
     const duration = Date.now() - start;
     logger.info({
       method: req.method,
@@ -411,7 +414,8 @@ app.use((req, res, next) => {
   // Check if path matches any blocked pattern
   for (const pattern of BLOCKED_PATTERNS) {
     if (pattern.test(path)) {
-      // Don't log these to reduce noise (attackers will fill logs)
+      // Mark request as blocked so logger skips it
+      req._blocked = true;
       return res.status(404).send('Not Found');
     }
   }
