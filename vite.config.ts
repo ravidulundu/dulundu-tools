@@ -61,7 +61,7 @@ export default defineConfig(() => {
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
           // Skip API routes from precaching
           navigateFallback: '/index.html',
-          navigateFallbackDenylist: [/^\/api\//],
+          navigateFallbackDenylist: [/^\/api\//, /^\/sitemap\.xml$/, /^\/robots\.txt$/],
           runtimeCaching: [
             // Google Fonts - cache first (rarely changes)
             {
