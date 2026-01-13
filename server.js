@@ -250,7 +250,7 @@ app.use(
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       }
       // Operational files (sitemap, robots, manifest) - Short cache or no cache
-      else if (filePath.match(/\.(xml|txt|json)$/)) {
+      else if (filePath.match(/(sitemap\.xml|robots\.txt|manifest\.json)$/)) {
         res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
       }
     },
