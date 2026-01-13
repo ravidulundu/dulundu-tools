@@ -5,6 +5,7 @@ import { ActionButton } from '@/components/common/ActionButton';
 import { Button } from '@/components/common/Button';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const DiffViewer: React.FC = () => {
   const [oldText, setOldText] = useState('');
@@ -94,7 +95,7 @@ export const DiffViewer: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden flex flex-col h-full">
         <ToolHeader
           icon={ArrowRightLeft}
@@ -181,6 +182,6 @@ export const DiffViewer: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

@@ -2,6 +2,7 @@ import { AlertCircle, Download, Loader2, QrCode, ScanLine, Upload } from 'lucide
 import React, { useMemo, useRef, useState } from 'react';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { downloadFile } from '@/utils/downloadUtils';
 
 export const QrcodeGenerator: React.FC = () => {
@@ -87,7 +88,7 @@ export const QrcodeGenerator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={QrCode}
@@ -210,7 +211,7 @@ export const QrcodeGenerator: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center justify-center p-8 bg-card rounded-2xl border border-border shadow-sm h-full min-h-[400px]">
+              <div className="flex flex-col items-center justify-center p-8 bg-card rounded-2xl border border-border shadow-sm h-full min-h-96">
                 <div className="bg-card p-4 rounded-xl shadow-lg mb-8 border border-border">
                   <img
                     src={safeQrUrl}
@@ -305,6 +306,6 @@ export const QrcodeGenerator: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

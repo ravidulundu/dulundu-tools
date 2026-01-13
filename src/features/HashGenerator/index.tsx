@@ -4,6 +4,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolShortcuts } from '@/hooks/useToolShortcuts';
 import { md5 } from '@/utils/md5';
 
@@ -156,7 +157,7 @@ export const HashGenerator: React.FC = () => {
       : ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={ShieldCheck}
@@ -323,6 +324,6 @@ export const HashGenerator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

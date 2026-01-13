@@ -1,4 +1,4 @@
-import { Code2, Heart, Github } from 'lucide-react';
+import { Code2, Github, Heart } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -121,7 +121,7 @@ export const Footer: React.FC = () => {
                   onClick={() => window.umami?.track('Donate Footer Click')}
                   className="inline-flex items-center space-x-2 bg-foreground text-background px-4 py-2 rounded-lg hover:opacity-90 transition-colors text-sm"
                 >
-                  <Heart size={16} className="text-red-400 fill-red-400" />
+                  <Heart size={16} className="text-danger fill-current" />
                   <span>Donate via Stripe</span>
                 </a>
               </li>
@@ -164,7 +164,7 @@ export const Footer: React.FC = () => {
             <span className="flex items-center">
               Made with{' '}
               <span className="inline-flex items-center justify-center w-4 h-4 mx-1">
-                <Heart size={14} className="text-red-500 fill-current animate-pulse" />
+                <Heart size={14} className="text-danger fill-current animate-pulse" />
               </span>{' '}
               by Developers
             </span>

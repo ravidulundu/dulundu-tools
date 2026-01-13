@@ -1,4 +1,4 @@
-import { Home, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Home } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -34,8 +34,7 @@ const NotFound: React.FC = () => {
             textAnchor="middle"
             fontSize="60"
             fontWeight="bold"
-            fill="#3B82F6"
-            className="font-sans"
+            className="font-sans fill-primary"
           >
             404
           </text>

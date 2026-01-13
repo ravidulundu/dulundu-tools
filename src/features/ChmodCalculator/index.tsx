@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 type PermissionSet = { r: boolean; w: boolean; x: boolean };
 type Permissions = { owner: PermissionSet; group: PermissionSet; public: PermissionSet };
@@ -60,14 +61,14 @@ export const ChmodCalculator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Lock}
           title="Chmod Calculator"
           description="Calculate Linux file permissions"
-          iconBgColor="bg-orange-100"
-          iconColor="text-orange-600"
+          iconBgColor="bg-accent-orange/10"
+          iconColor="text-accent-orange"
         />
 
         {/* Toolbar */}
@@ -96,14 +97,14 @@ export const ChmodCalculator: React.FC = () => {
                   id: 'group',
                   label: 'Group',
                   icon: Users,
-                  color: 'text-green-600',
-                  bg: 'bg-green-50',
+                  color: 'text-success',
+                  bg: 'bg-success-light',
                 },
                 {
                   id: 'public',
                   label: 'Public',
                   icon: Globe,
-                  color: 'text-purple-600',
+                  color: 'text-accent-purple',
                   bg: 'bg-purple-50',
                 },
               ].map(scope => (
@@ -178,7 +179,7 @@ export const ChmodCalculator: React.FC = () => {
                 <p className="text-foreground-muted text-sm uppercase font-bold tracking-wider mb-2">
                   Symbolic Value
                 </p>
-                <div className="text-4xl font-mono font-bold text-green-400 tracking-wider">
+                <div className="text-4xl font-mono font-bold text-success tracking-wider">
                   {getSymbolic()}
                 </div>
               </div>
@@ -201,6 +202,6 @@ export const ChmodCalculator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

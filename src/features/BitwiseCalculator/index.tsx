@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const BitwiseCalculator: React.FC = () => {
   const [a, setA] = useState<number>(0);
@@ -34,14 +35,14 @@ export const BitwiseCalculator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Cpu}
           title="Bitwise Calculator"
           description="Perform low-level bitwise operations"
-          iconBgColor="bg-indigo-100"
-          iconColor="text-indigo-600"
+          iconBgColor="bg-accent-indigo/10"
+          iconColor="text-accent-indigo"
         />
         {/* Toolbar */}
         <div className="p-3 bg-card border-b border-border flex justify-end">
@@ -127,7 +128,7 @@ export const BitwiseCalculator: React.FC = () => {
                     <div className="text-2xl font-bold text-foreground mb-2 font-mono">
                       {op.val}
                     </div>
-                    <div className="text-[10px] font-mono text-foreground-secondary break-all bg-background-secondary p-1.5 rounded">
+                    <div className="text-xxs font-mono text-foreground-secondary break-all bg-background-secondary p-1.5 rounded">
                       {toBin(op.val)}
                     </div>
                   </div>
@@ -137,6 +138,6 @@ export const BitwiseCalculator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

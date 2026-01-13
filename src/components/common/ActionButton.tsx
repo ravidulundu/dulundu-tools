@@ -66,7 +66,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
       />
       {label}
       {formattedShortcut && (
-        <kbd className="hidden sm:inline-flex ml-2 px-1.5 py-0.5 text-[10px] font-medium bg-black/10 dark:bg-white/10 rounded opacity-70">
+        <kbd className="hidden sm:inline-flex ml-2 px-1.5 py-0.5 text-xxs font-medium bg-black/10 dark:bg-white/10 rounded opacity-70">
           {formattedShortcut}
         </kbd>
       )}

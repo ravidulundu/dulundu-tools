@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const MetaTagGenerator: React.FC = () => {
   const [title, setTitle] = useState('Dulundu.tools - Developer Utilities');
@@ -43,7 +44,7 @@ export const MetaTagGenerator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={FileSearch}
@@ -82,7 +83,7 @@ export const MetaTagGenerator: React.FC = () => {
                 />
                 <p className="text-xs text-foreground-muted mt-1 flex justify-between">
                   <span>Recommended length: 60 chars</span>
-                  <span className={title.length > 60 ? 'text-red-500' : ''}>{title.length}/60</span>
+                  <span className={title.length > 60 ? 'text-danger' : ''}>{title.length}/60</span>
                 </p>
               </div>
 
@@ -102,7 +103,7 @@ export const MetaTagGenerator: React.FC = () => {
                 />
                 <p className="text-xs text-foreground-muted mt-1 flex justify-between">
                   <span>Recommended length: 160 chars</span>
-                  <span className={description.length > 160 ? 'text-red-500' : ''}>
+                  <span className={description.length > 160 ? 'text-danger' : ''}>
                     {description.length}/160
                   </span>
                 </p>
@@ -185,6 +186,6 @@ export const MetaTagGenerator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

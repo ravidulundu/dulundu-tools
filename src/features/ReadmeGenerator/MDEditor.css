@@ -2,10 +2,10 @@
 html.dark [data-color-mode='dark'] .w-md-editor,
 .dark [data-color-mode='dark'] .w-md-editor,
 [data-color-mode='dark'] .w-md-editor {
-  --md-editor-bgcolor: rgb(15 23 42) !important; /* slate-900 */
-  --md-editor-color: rgb(241 245 249) !important; /* slate-100 */
-  background-color: rgb(15 23 42) !important;
-  color: rgb(241 245 249) !important;
+  --md-editor-bgcolor: rgb(var(--background)) !important;
+  --md-editor-color: rgb(var(--foreground)) !important;
+  background-color: rgb(var(--background)) !important;
+  color: rgb(var(--foreground)) !important;
 }
 
 /* Ensure inner elements are transparent so container background shows */
@@ -20,17 +20,17 @@ html.dark [data-color-mode='dark'] .w-md-editor code {
 /* Textarea specific - keep text transparent for syntax highlighting, but cursor visible */
 html.dark [data-color-mode='dark'] .w-md-editor textarea {
   color: transparent !important;
-  caret-color: rgb(241 245 249) !important;
+  caret-color: rgb(var(--foreground)) !important;
 }
 
 /* LIGHT MODE */
 html:not(.dark) [data-color-mode='light'] .w-md-editor,
 [data-color-mode='light'] .w-md-editor,
 .w-md-editor:not([data-color-mode='dark']) {
-  --md-editor-bgcolor: rgb(249 250 251) !important; /* gray-50 */
-  --md-editor-color: rgb(15 23 42) !important; /* slate-900 */
-  background-color: rgb(249 250 251) !important;
-  color: rgb(15 23 42) !important;
+  --md-editor-bgcolor: rgb(var(--background)) !important;
+  --md-editor-color: rgb(var(--foreground)) !important;
+  background-color: rgb(var(--background)) !important;
+  color: rgb(var(--foreground)) !important;
 }
 
 /* Ensure inner elements are transparent */
@@ -45,7 +45,7 @@ html:not(.dark) [data-color-mode='light'] .w-md-editor code {
 /* Textarea specific */
 html:not(.dark) [data-color-mode='light'] .w-md-editor textarea {
   color: transparent !important;
-  caret-color: rgb(15 23 42) !important;
+  caret-color: rgb(var(--foreground)) !important;
 }
 
 /* Fix for bold text appearing smaller */

@@ -59,6 +59,11 @@
   --code-bg: 30 41 59; /* slate-800 */
   --code-fg: 248 250 252; /* slate-50 */
 
+  /* Missing Accent Colors */
+  --accent-purple: 147 51 234; /* purple-600 */
+  --accent-indigo: 79 70 229; /* indigo-600 */
+  --accent-orange: 249 115 22; /* orange-600 */
+
   /* Scrollbar */
   --scrollbar-thumb: 148 163 184; /* slate-400 */
   --scrollbar-track: 241 245 249; /* slate-100 */
@@ -113,6 +118,11 @@
   /* Code editor colors */
   --code-bg: 15 23 42; /* slate-900 */
   --code-fg: 248 250 252; /* slate-50 */
+
+  /* Missing Accent Colors */
+  --accent-purple: 168 85 247; /* purple-500 */
+  --accent-indigo: 99 102 241; /* indigo-500 */
+  --accent-orange: 251 146 60; /* indigo-500 */
 
   /* Scrollbar */
   --scrollbar-thumb: 100 116 139; /* slate-500 */

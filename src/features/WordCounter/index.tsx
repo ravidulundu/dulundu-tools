@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const WordCounter: React.FC = () => {
@@ -52,7 +53,7 @@ export const WordCounter: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Type}
@@ -107,7 +108,7 @@ export const WordCounter: React.FC = () => {
               <div className="text-xl md:text-2xl font-bold text-foreground">
                 {stat.value.toLocaleString()}
               </div>
-              <div className="text-[10px] md:text-xs font-bold text-foreground-muted uppercase tracking-wider">
+              <div className="text-xxs md:text-xs font-bold text-foreground-muted uppercase tracking-wider">
                 {stat.label}
               </div>
             </div>
@@ -133,6 +134,6 @@ export const WordCounter: React.FC = () => {
           />
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

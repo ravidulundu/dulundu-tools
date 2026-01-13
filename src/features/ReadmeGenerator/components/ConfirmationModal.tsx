@@ -52,7 +52,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md shadow-sm transition-colors"
+            className="px-4 py-2 text-sm font-medium text-white bg-danger hover:bg-danger/90 rounded-md shadow-sm transition-colors"
           >
             Confirm
           </button>

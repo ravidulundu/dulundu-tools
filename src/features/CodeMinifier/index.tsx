@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
 type Lang = 'html' | 'css' | 'js';
@@ -74,7 +75,7 @@ export const CodeMinifier: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Minimize2}
@@ -162,7 +163,7 @@ export const CodeMinifier: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <span>Minified Output</span>
                   {stats && (
-                    <span className="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded border border-green-200">
+                    <span className="text-xxs font-bold text-success bg-success-light px-2 py-0.5 rounded border border-success-light">
                       Saved {stats.savings}
                     </span>
                   )}
@@ -198,6 +199,6 @@ export const CodeMinifier: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

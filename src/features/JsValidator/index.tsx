@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
 type Lang = 'js' | 'jsx' | 'ts' | 'tsx';
@@ -46,7 +47,7 @@ export const JsValidator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={ShieldCheck}
@@ -148,6 +149,6 @@ export const JsValidator: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

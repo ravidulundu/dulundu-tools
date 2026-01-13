@@ -4,6 +4,7 @@ import React, { useState, useCallback } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { PresetSelector } from '@/components/common/PresetSelector';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolPresets, Preset } from '@/hooks/useToolPresets';
 import { useToolShortcuts } from '@/hooks/useToolShortcuts';
 
@@ -91,7 +92,7 @@ export const PasswordGenerator: React.FC = () => {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Lock}
@@ -186,6 +187,6 @@ export const PasswordGenerator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

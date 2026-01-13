@@ -50,7 +50,7 @@ export const WordToHtml: React.FC = () => {
               ref={editorRef}
               contentEditable
               onInput={handleInput}
-              className="flex-1 w-full p-4 bg-card border border-border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all overflow-y-auto min-h-[400px] prose max-w-none"
+              className="flex-1 w-full p-4 bg-card border border-border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all overflow-y-auto min-h-96 prose max-w-none"
               data-placeholder="Paste your Word content here..."
             />
           </div>
@@ -67,7 +67,7 @@ export const WordToHtml: React.FC = () => {
                 id="html-output"
                 readOnly
                 value={html}
-                className="w-full h-full p-4 font-mono text-sm bg-background-dark text-foreground-inverse border border-border rounded-xl resize-none outline-none min-h-[400px]"
+                className="w-full h-full p-4 font-mono text-sm bg-background-dark text-foreground-inverse border border-border rounded-xl resize-none outline-none min-h-96"
                 placeholder="HTML code will appear here..."
               />
               {html && (

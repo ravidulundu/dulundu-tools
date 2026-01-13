@@ -12,6 +12,7 @@ import React, { useRef, useState } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { downloadFile } from '@/utils/downloadUtils';
 
 export const ImageConverter: React.FC = () => {
@@ -76,7 +77,7 @@ export const ImageConverter: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={ImageIcon}
@@ -200,12 +201,12 @@ export const ImageConverter: React.FC = () => {
                 </div>
 
                 {convertedImage && (
-                  <div className="flex items-center justify-between p-4 bg-green-50 border border-green-100 rounded-lg animate-fade-in">
+                  <div className="flex items-center justify-between p-4 bg-success-light border border-green-100 rounded-lg animate-fade-in">
                     <div className="flex items-center space-x-3">
-                      <FileImage className="text-green-600" size={24} />
+                      <FileImage className="text-success" size={24} />
                       <div>
-                        <p className="font-semibold text-green-800">Conversion Complete</p>
-                        <p className="text-xs text-green-600">Ready to download</p>
+                        <p className="font-semibold text-success">Conversion Complete</p>
+                        <p className="text-xs text-success">Ready to download</p>
                       </div>
                     </div>
 
@@ -216,7 +217,7 @@ export const ImageConverter: React.FC = () => {
                           `converted-image.${getFormatExt(outputFormat)}`
                         )
                       }
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center text-sm font-medium"
+                      className="px-4 py-2 bg-success text-white rounded-lg hover:bg-success/90 transition-colors flex items-center text-sm font-medium"
                     >
                       <Download size={16} className="mr-2" /> Download
                     </button>
@@ -247,7 +248,7 @@ export const ImageConverter: React.FC = () => {
 
             {/* Base64 to Image UI */}
             {activeTab === 'decode' && (
-              <div className="grid md:grid-cols-2 gap-6 h-[600px]">
+              <div className="grid md:grid-cols-2 gap-6 min-h-[36rem]">
                 <div className="flex flex-col h-full">
                   <CodeEditor
                     value={base64Input}
@@ -335,6 +336,6 @@ export const ImageConverter: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

@@ -1,9 +1,10 @@
-import { ArrowRightLeft, Copy, Check, Trash2 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { ArrowRightLeft, Check, Copy, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const ListComparator: React.FC = () => {
   const [listA, setListA] = useState('Apple\nBanana\nCherry\nDate');
@@ -48,7 +49,7 @@ export const ListComparator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={ArrowRightLeft}
@@ -60,7 +61,7 @@ export const ListComparator: React.FC = () => {
         <div className="p-3 bg-card border-b border-border flex justify-end">
           <button
             onClick={handleClear}
-            className="p-2 text-foreground-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-foreground-muted hover:text-danger hover:bg-danger-light rounded-lg transition-colors"
             title="Clear All"
           >
             <Trash2 size={20} />
@@ -70,7 +71,7 @@ export const ListComparator: React.FC = () => {
         <div className="flex-1 overflow-hidden grid md:grid-cols-3 bg-background-secondary/30">
           {/* Inputs Column */}
           <div className="col-span-1 p-4 md:p-6 border-r border-border flex flex-col gap-4 overflow-y-auto">
-            <div className="flex-1 flex flex-col min-h-[200px]">
+            <div className="flex-1 flex flex-col min-h-52">
               <CodeEditor
                 value={listA}
                 onChange={setListA}
@@ -79,7 +80,7 @@ export const ListComparator: React.FC = () => {
                 theme="light"
               />
             </div>
-            <div className="flex-1 flex flex-col min-h-[200px]">
+            <div className="flex-1 flex flex-col min-h-52">
               <CodeEditor
                 value={listB}
                 onChange={setListB}
@@ -105,7 +106,7 @@ export const ListComparator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };
 
@@ -122,7 +123,7 @@ const ResultBox: React.FC<{ title: string; count: number; data: string[] }> = ({
   };
 
   return (
-    <div className="flex flex-col h-full min-h-[200px]">
+    <div className="flex flex-col h-full min-h-52">
       <CodeEditor
         value={data.join('\n')}
         label={`${title} (${count})`}

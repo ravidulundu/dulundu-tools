@@ -1,7 +1,8 @@
-import { Palette, Upload, Image as ImageIcon, Copy, Check } from 'lucide-react';
-import React, { useState, useRef } from 'react';
+import { Check, Copy, Image as ImageIcon, Palette, Upload } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const PaletteExtractor: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -61,7 +62,7 @@ export const PaletteExtractor: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Palette}
@@ -131,7 +132,7 @@ export const PaletteExtractor: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };
 
@@ -166,7 +167,7 @@ const ColorCard: React.FC<{ hex: string }> = ({ hex }) => {
       <div className="p-3 flex justify-between items-center">
         <span className="font-mono font-bold text-foreground-secondary uppercase">{hex}</span>
         {copied ? (
-          <Check size={16} className="text-green-500" />
+          <Check size={16} className="text-success" />
         ) : (
           <Copy
             size={16}

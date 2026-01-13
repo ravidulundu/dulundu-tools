@@ -1,8 +1,9 @@
-import { Wifi, Monitor, Globe, Smartphone, RefreshCw, Copy, Check } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { Check, Copy, Globe, Monitor, RefreshCw, Smartphone, Wifi } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 interface IpData {
   ip: string;
@@ -62,7 +63,7 @@ export const MyIp: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 min-h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col">
         <ToolHeader
           icon={Wifi}
@@ -141,7 +142,7 @@ export const MyIp: React.FC = () => {
 
                 <div className="bg-card p-6 rounded-xl border border-border shadow-sm">
                   <div className="flex items-center space-x-3 mb-4">
-                    <div className="p-2 bg-purple-500/10 text-purple-600 rounded-lg">
+                    <div className="p-2 bg-accent-purple/10 text-accent-purple rounded-lg">
                       <Smartphone size={20} />
                     </div>
                     <h3 className="font-bold text-foreground-secondary">System Info</h3>
@@ -178,6 +179,6 @@ export const MyIp: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

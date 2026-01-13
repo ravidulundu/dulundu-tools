@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 interface PngTabProps {
@@ -27,16 +28,12 @@ export const PngTab: React.FC<PngTabProps> = ({
         role="button"
         aria-label="PNG Preview"
         tabIndex={0}
-        className="flex-1 w-full h-full flex items-center justify-center overflow-hidden relative cursor-grab active:cursor-grabbing"
+        className={clsx(
+          'flex-1 w-full h-full flex items-center justify-center overflow-hidden relative cursor-grab active:cursor-grabbing',
+          background === 'checkerboard' && 'bg-checkerboard'
+        )}
         style={{
-          ...(background === 'checkerboard'
-            ? {
-                backgroundImage: `linear-gradient(45deg, #e5e7eb 25%, transparent 25%), linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e7eb 75%), linear-gradient(-45deg, transparent 75%, #e5e7eb 75%)`,
-                backgroundSize: '20px 20px',
-                backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
-                backgroundColor: '#ffffff',
-              }
-            : { backgroundColor: background }),
+          ...(background !== 'checkerboard' ? { backgroundColor: background } : {}),
         }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}

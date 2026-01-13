@@ -223,17 +223,11 @@ export const PreviewPanel = () => {
               }}
               className={clsx(
                 'flex-1 flex items-center justify-center overflow-hidden relative outline-none',
-                isDragging ? 'cursor-grabbing' : 'cursor-grab'
+                isDragging ? 'cursor-grabbing' : 'cursor-grab',
+                background === 'checkerboard' && 'bg-checkerboard'
               )}
               style={{
-                ...(background === 'checkerboard'
-                  ? {
-                      backgroundImage: `linear-gradient(45deg, #e5e7eb 25%, transparent 25%), linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e7eb 75%), linear-gradient(-45deg, transparent 75%, #e5e7eb 75%)`,
-                      backgroundSize: '20px 20px',
-                      backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
-                      backgroundColor: '#ffffff',
-                    }
-                  : { backgroundColor: background }),
+                ...(background !== 'checkerboard' ? { backgroundColor: background } : {}),
               }}
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
@@ -249,16 +243,12 @@ export const PreviewPanel = () => {
                   }}
                 >
                   <div
-                    className="shadow-sm svg-preview-wrapper"
+                    className={clsx(
+                      'shadow-sm svg-preview-wrapper',
+                      background === 'checkerboard' && 'bg-checkerboard'
+                    )}
                     style={{
-                      ...(background === 'checkerboard'
-                        ? {
-                            backgroundImage: `linear-gradient(45deg, #e5e7eb 25%, transparent 25%), linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e7eb 75%), linear-gradient(-45deg, transparent 75%, #e5e7eb 75%)`,
-                            backgroundSize: '20px 20px',
-                            backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
-                            backgroundColor: '#ffffff',
-                          }
-                        : { backgroundColor: background }),
+                      ...(background !== 'checkerboard' ? { backgroundColor: background } : {}),
                       width: 'fit-content',
                       height: 'fit-content',
                     }}
@@ -338,9 +328,9 @@ export const PreviewPanel = () => {
               left: highlightBox.left,
               width: highlightBox.width,
               height: highlightBox.height,
-              border: '2px solid #3b82f6', // Tailwind blue-500
-              backgroundColor: 'rgba(59, 130, 246, 0.2)', // Semi-transparent blue
-              boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.2)', // Subtle inner light border
+              border: '2px solid rgb(var(--primary))',
+              backgroundColor: 'rgb(var(--primary) / 0.2)',
+              boxShadow: '0 0 0 1px rgb(255 255 255 / 0.2)',
               borderRadius: '2px',
               transition: 'all 0.1s ease-out',
             }}
@@ -374,14 +364,7 @@ export const PreviewPanel = () => {
                     <div className="w-full h-full bg-background-secondary rounded-sm" />
                   )}
                   {bg === 'checkerboard' && (
-                    <div
-                      className="w-full h-full rounded-sm"
-                      style={{
-                        backgroundImage: `linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)`,
-                        backgroundSize: '6px 6px',
-                        backgroundPosition: '0 0, 0 3px, 3px -3px, -3px 0px',
-                      }}
-                    />
+                    <div className="w-full h-full rounded-sm bg-checkerboard" />
                   )}
                 </button>
               ))}
@@ -448,7 +431,7 @@ export const PreviewPanel = () => {
 
         {/* Right: Zoom */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-foreground-muted mr-2 hidden sm:inline-block whitespace-nowrap">
+          <span className="text-xxs text-foreground-muted mr-2 hidden sm:inline-block whitespace-nowrap">
             Use Ctrl + Scroll to zoom
           </span>
           <button
@@ -460,7 +443,7 @@ export const PreviewPanel = () => {
           </button>
           <input
             type="text"
-            className="text-xs font-mono text-foreground-secondary w-[50px] text-center bg-transparent border border-transparent hover:border-border rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+            className="text-xs font-mono text-foreground-secondary w-12 text-center bg-transparent border border-transparent hover:border-border rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
             value={zoomInputValue}
             onChange={e => setZoomInputValue(e.target.value)}
             onKeyDown={e => {

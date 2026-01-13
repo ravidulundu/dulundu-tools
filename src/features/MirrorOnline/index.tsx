@@ -1,7 +1,8 @@
-import { Globe, RefreshCw, CheckCircle, XCircle, Server } from 'lucide-react';
+import { CheckCircle, Globe, RefreshCw, Server, XCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 interface CheckResult {
   online: boolean;
@@ -81,7 +82,7 @@ export const MirrorOnline: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Globe}
@@ -125,8 +126,8 @@ export const MirrorOnline: React.FC = () => {
                 <div
                   className={`mt-6 p-4 rounded-xl border flex flex-col items-center justify-center space-y-2 animate-in fade-in slide-in-from-top-2 ${
                     result.online
-                      ? 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
-                      : 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
+                      ? 'bg-success-light border-success-light text-success'
+                      : 'bg-danger-light border-danger-light text-danger'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
@@ -152,6 +153,6 @@ export const MirrorOnline: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

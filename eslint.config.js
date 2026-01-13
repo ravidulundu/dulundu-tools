@@ -109,7 +109,7 @@ export default tseslint.config(
 
   prettier,
 
-  // Test dosyaları için gevşetilmiş kurallar
+  // Relaxed rules for test files
   {
     files: ['tests/**/*.{ts,tsx}', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
     rules: {

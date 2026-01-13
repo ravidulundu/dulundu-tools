@@ -28,6 +28,7 @@ dist-ssr
 *.md
 !README.md
 !API.md
+!docs/*.md
 
 # Temporary files
 lint_report*.txt

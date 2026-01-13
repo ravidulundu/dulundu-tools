@@ -15,13 +15,17 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
   title,
   description,
   actions,
+  iconBgColor,
+  iconColor,
 }) => {
   return (
     <div className="mb-6 bg-card p-6 rounded-2xl border border-border shadow-sm">
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-primary-light rounded-xl border border-primary/20 shrink-0">
-            <Icon className="w-8 h-8 text-primary" />
+          <div
+            className={`p-3 rounded-xl border border-primary/20 shrink-0 ${iconBgColor || 'bg-primary-light'}`}
+          >
+            <Icon className={`w-8 h-8 ${iconColor || 'text-primary'}`} />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-foreground tracking-tight">{title}</h1>

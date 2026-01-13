@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
 type FormatMode = 'beautify' | 'minify';
@@ -98,7 +99,7 @@ export const LuaFormatter: React.FC = () => {
   }, [mode, input, beautifyLua, minifyLua, setOutput]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Code2}
@@ -143,7 +144,7 @@ export const LuaFormatter: React.FC = () => {
 
             <button
               onClick={handleFormat}
-              className="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-600 transition-colors font-medium shadow-sm flex items-center text-sm"
+              className="px-4 py-2 bg-success text-white rounded-lg hover:bg-success transition-colors font-medium shadow-sm flex items-center text-sm"
             >
               {mode === 'beautify' ? 'Format' : 'Compress'}
             </button>
@@ -166,7 +167,7 @@ export const LuaFormatter: React.FC = () => {
             </button>
             <button
               onClick={handleClear}
-              className="p-2 text-foreground-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-2 text-foreground-muted hover:text-danger hover:bg-danger-light rounded-lg transition-colors"
               title="Clear All"
             >
               <Trash2 size={20} />
@@ -220,6 +221,6 @@ export const LuaFormatter: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

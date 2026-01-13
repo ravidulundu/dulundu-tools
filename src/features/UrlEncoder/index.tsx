@@ -10,8 +10,8 @@ const URL_ENCODER_CONFIG: EncoderDecoderConfig = {
   icon: LinkIcon,
   title: 'URL Encoder / Decoder',
   description: 'Encode special characters or decode URL entities',
-  iconBgColor: 'bg-indigo-100',
-  iconColor: 'text-indigo-600',
+  iconBgColor: 'bg-accent-indigo/10',
+  iconColor: 'text-accent-indigo',
   encodeLabels: {
     inputLabel: 'Decoded URL',
     outputLabel: 'Encoded Result',

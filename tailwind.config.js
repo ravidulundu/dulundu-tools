@@ -70,9 +70,17 @@ export default {
                     bg: 'rgb(var(--code-bg) / <alpha-value>)',
                     fg: 'rgb(var(--code-fg) / <alpha-value>)',
                 },
+                accent: {
+                    purple: 'rgb(var(--accent-purple) / <alpha-value>)',
+                    indigo: 'rgb(var(--accent-indigo) / <alpha-value>)',
+                    orange: 'rgb(var(--accent-orange) / <alpha-value>)',
+                },
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
+            },
+            fontSize: {
+                xxs: '10px',
             },
             borderColor: {
                 DEFAULT: 'rgb(var(--border) / <alpha-value>)',

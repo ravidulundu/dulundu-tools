@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/common/Button';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 interface Match {
   index: number;
@@ -110,7 +111,7 @@ export const RegexTester: React.FC = () => {
       parts.push(
         <span
           key={`match-${i}`}
-          className="bg-yellow-200 text-yellow-800 rounded px-0.5 font-bold border-b-2 border-yellow-400"
+          className="bg-warning-light text-foreground border-b-2 border-warning rounded px-0.5 font-bold"
           title={`Match ${i + 1}`}
         >
           {m.value}
@@ -132,7 +133,7 @@ export const RegexTester: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Regex}
@@ -275,6 +276,6 @@ export const RegexTester: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };
