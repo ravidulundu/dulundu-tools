@@ -557,8 +557,15 @@ app.post(
         .json({ error: 'Text too long (max 5000 characters). Please shorten your input.' });
     }
 
-    const lengthInstruction =
-      SUMMARY_LENGTH_INSTRUCTIONS[summaryLength] || SUMMARY_LENGTH_INSTRUCTIONS.medium;
+    // Validate summary length against allowed values
+    const allowedLengths = Object.keys(SUMMARY_LENGTH_INSTRUCTIONS);
+    if (summaryLength && !allowedLengths.includes(summaryLength)) {
+      return res
+        .status(400)
+        .json({ error: `Invalid length. Allowed values: ${allowedLengths.join(', ')}` });
+    }
+
+    const lengthInstruction = SUMMARY_LENGTH_INSTRUCTIONS[summaryLength] || SUMMARY_LENGTH_INSTRUCTIONS.medium;
 
     const systemPrompt = `You are an expert synthesizer. Summarize the following text.
 ${lengthInstruction}
