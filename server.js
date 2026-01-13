@@ -17,6 +17,11 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// ========== HTML TEMPLATE CACHE ==========
+// Cache index.html in memory to avoid disk I/O on every request
+let cachedIndexHtml = null;
+const INDEX_PATH = path.join(__dirname, 'dist', 'index.html');
+
 // ========== LOGGER SETUP ==========
 const logger = winston.createLogger({
   level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
@@ -38,6 +43,20 @@ if (process.env.NODE_ENV === 'production') {
   logger.add(new winston.transports.File({ filename: 'error.log', level: 'error' }));
   logger.add(new winston.transports.File({ filename: 'combined.log' }));
 }
+
+// Load and cache index.html template
+const loadIndexHtml = () => {
+  try {
+    cachedIndexHtml = fs.readFileSync(INDEX_PATH, 'utf8');
+    logger.info('index.html template cached successfully');
+  } catch (err) {
+    // In development, dist might not exist yet
+    logger.warn('Could not cache index.html:', err.message);
+  }
+};
+
+// Initial load attempt
+loadIndexHtml();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -777,9 +796,22 @@ app.get(
 // ========== SPA FALLBACK ==========
 // Handle React Routing (SPA) - Send all other requests to index.html with nonce injection
 app.get('*', (req, res) => {
-  const indexPath = path.join(__dirname, 'dist', 'index.html');
+  // Use cached template if available, otherwise read from disk (fallback for dev)
+  const getHtml = callback => {
+    if (cachedIndexHtml) {
+      callback(null, cachedIndexHtml);
+    } else {
+      // Fallback: try to load and cache on first request (useful in dev)
+      fs.readFile(INDEX_PATH, 'utf8', (err, html) => {
+        if (!err) {
+          cachedIndexHtml = html; // Cache for future requests
+        }
+        callback(err, html);
+      });
+    }
+  };
 
-  fs.readFile(indexPath, 'utf8', (err, html) => {
+  getHtml((err, html) => {
     if (err) {
       logger.error('Failed to read index.html:', err);
       return res.status(500).send('Internal Server Error');
@@ -790,6 +822,7 @@ app.get('*', (req, res) => {
     const htmlWithNonce = html.replace(/__CSP_NONCE__/g, nonce);
 
     res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.send(htmlWithNonce);
   });
 });

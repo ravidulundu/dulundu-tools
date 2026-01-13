@@ -1,4 +1,5 @@
 import * as acorn from 'acorn';
+import jsx from 'acorn-jsx';
 import { AlertCircle, CheckCircle, Play, ShieldCheck, Trash2, Upload } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -36,12 +37,18 @@ export const JsValidator: React.FC = () => {
     }
 
     try {
+      // Create parser with JSX support for .jsx files
+      const useJsx = lang === 'jsx' || lang === 'tsx';
+      const Parser = useJsx ? acorn.Parser.extend(jsx()) : acorn.Parser;
+
       // Use acorn parser for static analysis (SAFE: No code execution)
-      acorn.parse(code, {
+      Parser.parse(code, {
         ecmaVersion: 'latest',
         sourceType: 'module', // Allows import/export
       });
-      setResult({ valid: true, message: 'Valid JavaScript syntax!' });
+
+      const langLabel = useJsx ? 'JavaScript/JSX' : 'JavaScript';
+      setResult({ valid: true, message: `Valid ${langLabel} syntax!` });
     } catch (error) {
       const e = error as AcornError;
       // Acorn throws nice syntax errors with location
@@ -159,10 +166,10 @@ export const JsValidator: React.FC = () => {
                   </p>
                 )}
 
-                {(lang === 'ts' || lang === 'tsx' || lang === 'jsx') && (
+                {(lang === 'ts' || lang === 'tsx') && (
                   <p className="text-xs mt-2 opacity-75">
-                    Note: Standard JS parser used. TypeScript specific syntax might be flagged as
-                    error.
+                    Note: TypeScript type annotations are not supported. Only JavaScript/JSX syntax
+                    is validated.
                   </p>
                 )}
               </div>
