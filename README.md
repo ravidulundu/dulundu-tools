@@ -126,6 +126,16 @@ Contributions are welcome! If you have an idea for a new tool or want to improve
 4.  Push to the branch.
 5.  Open a Pull Request.
 
+## 📏 Coding Standards
+
+To maintain a clean and consistent codebase, please adhere to the following guidelines:
+
+1.  **Strict Linting:** We use a strict ESLint configuration. Run `npm run lint` before committing to ensure there are no errors or warnings.
+2.  **Semantic CSS:** Avoid hardcoded colors (e.g., `text-blue-500`). Use our semantic tokens defined in `src/index.css` (e.g., `text-primary`, `bg-background-secondary`, `border-border`).
+3.  **Components & Layouts:**
+    - New tools should use the `ToolPageLayout` component for consistency.
+    - Use shared UI components from `src/components/common` whenever possible.
+
 ## ☕ Support the Project
 
 If you find these tools useful, please consider supporting the development. Your donations help keep the project alive, ad-free, and constantly updated!
