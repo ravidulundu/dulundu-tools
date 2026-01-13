@@ -256,6 +256,15 @@ const urlCheckLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Middleware to check AI service configuration
+const checkAiConfig = (req, res, next) => {
+  if (!groq && !gemini) {
+    logger.error('AI service configuration missing');
+    return res.status(503).json({ error: 'AI service currently unavailable' });
+  }
+  next();
+};
+
 // ========== HEALTH CHECK ==========
 app.get('/health', (req, res) => {
   res.json({
@@ -356,12 +365,8 @@ const asyncHandler = fn => (req, res, next) => {
 app.post(
   '/api/ai/generate',
   aiLimiter,
+  checkAiConfig,
   asyncHandler(async (req, res) => {
-    if (!groq && !gemini) {
-      logger.error('AI service configuration missing');
-      return res.status(503).json({ error: 'AI service currently unavailable' });
-    }
-
     const { prompt, language } = req.body;
 
     if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
@@ -395,12 +400,8 @@ Provide a clean, well-commented code solution or explanation. If generating code
 app.post(
   '/api/ai/paraphrase',
   aiLimiter,
+  checkAiConfig,
   asyncHandler(async (req, res) => {
-    if (!groq && !gemini) {
-      logger.error('AI service configuration missing');
-      return res.status(503).json({ error: 'AI service currently unavailable' });
-    }
-
     const { text, tone } = req.body;
 
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
@@ -432,12 +433,8 @@ Output only the paraphrased text.`;
 app.post(
   '/api/ai/email',
   aiLimiter,
+  checkAiConfig,
   asyncHandler(async (req, res) => {
-    if (!groq && !gemini) {
-      logger.error('AI service configuration missing');
-      return res.status(503).json({ error: 'AI service currently unavailable' });
-    }
-
     const { recipient, topic, tone } = req.body;
 
     if (!topic || typeof topic !== 'string' || topic.trim().length === 0) {
@@ -446,6 +443,14 @@ app.post(
 
     if (topic.length > 2000) {
       return res.status(400).json({ error: 'Topic is too long (max 2000 characters).' });
+    }
+
+    if (recipient && recipient.length > 200) {
+      return res.status(400).json({ error: 'Recipient is too long (max 200 characters).' });
+    }
+
+    if (tone && tone.length > 50) {
+      return res.status(400).json({ error: 'Tone is too long (max 50 characters).' });
     }
 
     const systemPrompt = `You are an expert professional writer. Write an email based on the following details:
@@ -470,12 +475,8 @@ Output only the email body (subject line optional but recommended). Keep it clea
 app.post(
   '/api/ai/summarize',
   aiLimiter,
+  checkAiConfig,
   asyncHandler(async (req, res) => {
-    if (!groq && !gemini) {
-      logger.error('AI service configuration missing');
-      return res.status(503).json({ error: 'AI service currently unavailable' });
-    }
-
     const { text, length: summaryLength } = req.body;
 
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
