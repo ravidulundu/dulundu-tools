@@ -7,13 +7,6 @@ import { ToolHeader } from '@/components/common/ToolHeader';
 import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { summarizeText } from '@/services/aiService';
 
-const LENGTH_OPTIONS = [
-  { value: 'medium', label: 'Medium Paragraph' },
-  { value: 'short', label: 'Short (1-2 Sentences)' },
-  { value: 'bullets', label: 'Bullet Points' },
-  { value: 'long', label: 'Detailed Summary' },
-];
-
 export const Summarizer: React.FC = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -67,7 +60,7 @@ export const Summarizer: React.FC = () => {
               onChange={e => setLength(e.target.value)}
               className="bg-transparent text-sm font-medium text-foreground outline-none cursor-pointer p-1"
             >
-              {LENGTH_OPTIONS.map(opt => (
+              {SUMMARY_LENGTH_OPTIONS.map(opt => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>

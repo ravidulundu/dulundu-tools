@@ -10,6 +10,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import Groq from 'groq-sdk';
 import helmet from 'helmet';
+import { Address4, Address6 } from 'ip-address';
 import winston from 'winston';
 
 dotenv.config();
@@ -68,36 +69,69 @@ app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
 // SSRF Protection: Check if URL points to private/internal networks
+// Uses ip-address library for robust IPv4/IPv6 validation
 const isPrivateUrl = urlString => {
   try {
     const url = new URL(urlString);
-    const hostname = url.hostname.toLowerCase();
+    let hostname = url.hostname.toLowerCase();
 
     // Block localhost variants
-    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+    if (hostname === 'localhost') {
       return true;
     }
-
-    // Block private IP ranges
-    const ipMatch = hostname.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
-    if (ipMatch) {
-      const [, a, b] = ipMatch.map(Number);
-      // 10.x.x.x, 172.16-31.x.x, 192.168.x.x
-      if (a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168)) {
-        return true;
-      }
-      // 127.x.x.x (Loopback)
-      if (a === 127) return true;
-      // 169.254.x.x (Link-Local / Cloud Metadata)
-      if (a === 169 && b === 254) return true;
-    }
-
-    // IPv6 checks
-    if (hostname === '[::1]' || hostname === '::1') return true;
 
     // Block internal domains
     if (hostname.endsWith('.local') || hostname.endsWith('.internal')) {
       return true;
+    }
+
+    // Remove IPv6 brackets if present
+    if (hostname.startsWith('[') && hostname.endsWith(']')) {
+      hostname = hostname.slice(1, -1);
+    }
+
+    // Try parsing as IPv4
+    try {
+      const ipv4 = new Address4(hostname);
+      if (ipv4.isValid()) {
+        // Check for private, loopback, link-local ranges
+        const privateRanges = [
+          '10.0.0.0/8', // Class A private
+          '172.16.0.0/12', // Class B private
+          '192.168.0.0/16', // Class C private
+          '127.0.0.0/8', // Loopback
+          '169.254.0.0/16', // Link-local / Cloud metadata
+          '0.0.0.0/8', // Current network
+        ];
+        for (const range of privateRanges) {
+          if (ipv4.isInSubnet(new Address4(range))) {
+            return true;
+          }
+        }
+      }
+    } catch {
+      // Not a valid IPv4, try IPv6
+    }
+
+    // Try parsing as IPv6
+    try {
+      const ipv6 = new Address6(hostname);
+      if (ipv6.isValid()) {
+        // Check for loopback (::1), link-local (fe80::/10), ULA (fc00::/7)
+        const privateRanges = [
+          '::1/128', // Loopback
+          'fe80::/10', // Link-local
+          'fc00::/7', // Unique Local Address (ULA)
+          '::ffff:0:0/96', // IPv4-mapped IPv6
+        ];
+        for (const range of privateRanges) {
+          if (ipv6.isInSubnet(new Address6(range))) {
+            return true;
+          }
+        }
+      }
+    } catch {
+      // Not a valid IPv6 either
     }
 
     return false;
@@ -407,6 +441,7 @@ const sanitizeForPrompt = str => {
 };
 
 // Summary length instructions (defined at module scope for performance)
+// IMPORTANT: Keep values in sync with src/shared/aiConstants.ts
 const SUMMARY_LENGTH_INSTRUCTIONS = {
   short: 'Provide a very concise, 1-2 sentence summary.',
   bullets: 'Provide a summary as a list of bullet points.',
@@ -414,7 +449,17 @@ const SUMMARY_LENGTH_INSTRUCTIONS = {
   medium: 'Provide a medium length summary.',
 };
 
-// Allowed tone values for email generation (must match frontend TONE_OPTIONS)
+// Input length limits for AI endpoints (centralized for maintainability)
+const AI_INPUT_LIMITS = {
+  PROMPT_MAX: 3000, // /api/ai/generate
+  TEXT_MAX: 2000, // /api/ai/paraphrase
+  TOPIC_MAX: 2000, // /api/ai/email
+  RECIPIENT_MAX: 200, // /api/ai/email
+  SUMMARY_TEXT_MAX: 5000, // /api/ai/summarize
+};
+
+// Allowed tone values for email generation
+// IMPORTANT: Keep in sync with src/shared/aiConstants.ts (single source of truth)
 const ALLOWED_EMAIL_TONES = ['Professional', 'Friendly', 'Urgent', 'Apologetic', 'Persuasive'];
 
 // ========== AI ENDPOINTS ==========
@@ -429,10 +474,10 @@ app.post(
       return res.status(400).json({ error: 'Valid prompt is required' });
     }
 
-    if (prompt.length > 3000) {
-      return res
-        .status(400)
-        .json({ error: 'Prompt too long (max 3000 characters). Keep it focused on code help.' });
+    if (prompt.length > AI_INPUT_LIMITS.PROMPT_MAX) {
+      return res.status(400).json({
+        error: `Prompt too long (max ${AI_INPUT_LIMITS.PROMPT_MAX} characters). Keep it focused on code help.`,
+      });
     }
 
     logger.debug(`AI generate request: ${language || 'code'}`);
@@ -464,10 +509,10 @@ app.post(
       return res.status(400).json({ error: 'Valid text is required' });
     }
 
-    if (text.length > 2000) {
-      return res
-        .status(400)
-        .json({ error: 'Text too long (max 2000 characters). Keep it to a paragraph.' });
+    if (text.length > AI_INPUT_LIMITS.TEXT_MAX) {
+      return res.status(400).json({
+        error: `Text too long (max ${AI_INPUT_LIMITS.TEXT_MAX} characters). Keep it to a paragraph.`,
+      });
     }
 
     const systemPrompt = `You are an expert writer. Paraphrase the following text to be more ${tone || 'professional'}. Keep the meaning the same but improve clarity and flow.
@@ -497,16 +542,22 @@ app.post(
       return res.status(400).json({ error: 'Valid topic is required' });
     }
 
-    if (topic.length > 2000) {
-      return res.status(400).json({ error: 'Topic is too long (max 2000 characters).' });
+    if (topic.length > AI_INPUT_LIMITS.TOPIC_MAX) {
+      return res
+        .status(400)
+        .json({ error: `Topic is too long (max ${AI_INPUT_LIMITS.TOPIC_MAX} characters).` });
     }
 
     if (recipient) {
       if (typeof recipient !== 'string') {
         return res.status(400).json({ error: 'Recipient must be a string.' });
       }
-      if (recipient.length > 200) {
-        return res.status(400).json({ error: 'Recipient is too long (max 200 characters).' });
+      if (recipient.length > AI_INPUT_LIMITS.RECIPIENT_MAX) {
+        return res
+          .status(400)
+          .json({
+            error: `Recipient is too long (max ${AI_INPUT_LIMITS.RECIPIENT_MAX} characters).`,
+          });
       }
     }
 
@@ -551,10 +602,12 @@ app.post(
       return res.status(400).json({ error: 'Valid text is required' });
     }
 
-    if (text.length > 5000) {
+    if (text.length > AI_INPUT_LIMITS.SUMMARY_TEXT_MAX) {
       return res
         .status(400)
-        .json({ error: 'Text too long (max 5000 characters). Please shorten your input.' });
+        .json({
+          error: `Text too long (max ${AI_INPUT_LIMITS.SUMMARY_TEXT_MAX} characters). Please shorten your input.`,
+        });
     }
 
     // Validate summary length against allowed values
@@ -565,7 +618,8 @@ app.post(
         .json({ error: `Invalid length. Allowed values: ${allowedLengths.join(', ')}` });
     }
 
-    const lengthInstruction = SUMMARY_LENGTH_INSTRUCTIONS[summaryLength] || SUMMARY_LENGTH_INSTRUCTIONS.medium;
+    const lengthInstruction =
+      SUMMARY_LENGTH_INSTRUCTIONS[summaryLength] || SUMMARY_LENGTH_INSTRUCTIONS.medium;
 
     const systemPrompt = `You are an expert synthesizer. Summarize the following text.
 ${lengthInstruction}
