@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -159,7 +160,16 @@ app.use(
 
 app.use(express.json({ limit: '10mb' })); // Limit payload size for security
 
-// Security headers middleware
+// Generate cryptographically secure nonce for CSP
+const generateNonce = () => crypto.randomBytes(16).toString('base64');
+
+// Nonce middleware - generates nonce for each request
+app.use((req, res, next) => {
+  res.locals.cspNonce = generateNonce();
+  next();
+});
+
+// Security headers middleware with nonce-based CSP
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -167,10 +177,8 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
-          // Note: 'unsafe-inline' required for Vite HMR and analytics scripts.
-          // Nonce-based approach would require build pipeline changes.
-          "'unsafe-inline'",
-          // 'unsafe-eval' removed: JsValidator now uses static analysis (acorn)
+          // Nonce-based approach: 'unsafe-inline' removed for better XSS protection
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
           'https://cdn.jsdelivr.net',
           'https://umami.dulundu.tools',
           'https://stats.dulundu.tools',
@@ -180,9 +188,8 @@ app.use(
         childSrc: ["'self'", 'blob:'],
         styleSrc: [
           "'self'",
-          // Note: 'unsafe-inline' required for Tailwind CSS and dynamic styling.
-          // Moving to nonces would require significant frontend refactoring.
-          "'unsafe-inline'",
+          // Nonce-based approach: 'unsafe-inline' removed for better XSS protection
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
           'https://fonts.googleapis.com',
           'https://cdn.jsdelivr.net',
         ],
@@ -281,18 +288,17 @@ app.get('/health', (req, res) => {
 
 // ========== STATIC FILES ==========
 // Serve static files from the dist directory with caching
+// Note: index: false prevents express.static from serving index.html directly,
+// allowing our SPA fallback handler to inject CSP nonces
 app.use(
   express.static(path.join(__dirname, 'dist'), {
     maxAge: '1y', // Cache assets for 1 year (they have hashed filenames)
     etag: true,
     lastModified: true,
+    index: false, // Don't serve index.html automatically (handled by SPA fallback with nonce injection)
     setHeaders: (res, filePath) => {
-      // HTML files should not be cached (SPA routing)
-      if (filePath.endsWith('.html')) {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      }
       // JS and CSS files with hash can be cached long-term
-      else if (filePath.match(/\.(js|css)$/)) {
+      if (filePath.match(/\.(js|css)$/)) {
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       }
       // Images and fonts
@@ -763,9 +769,23 @@ app.get(
 );
 
 // ========== SPA FALLBACK ==========
-// Handle React Routing (SPA) - Send all other requests to index.html
+// Handle React Routing (SPA) - Send all other requests to index.html with nonce injection
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  const indexPath = path.join(__dirname, 'dist', 'index.html');
+
+  fs.readFile(indexPath, 'utf8', (err, html) => {
+    if (err) {
+      logger.error('Failed to read index.html:', err);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    // Inject nonce into HTML (replace placeholder with actual nonce)
+    const nonce = res.locals.cspNonce;
+    const htmlWithNonce = html.replace(/__CSP_NONCE__/g, nonce);
+
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlWithNonce);
+  });
 });
 
 // Error handling middleware
