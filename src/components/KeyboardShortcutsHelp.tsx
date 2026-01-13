@@ -128,7 +128,7 @@ export const KeyboardShortcutsHelp: React.FC<KeyboardShortcutsHelpProps> = ({
         <div className="px-6 py-3 border-t border-border bg-background-secondary/50">
           <p className="text-xs text-foreground-muted text-center">
             Press{' '}
-            <kbd className="px-1.5 py-0.5 bg-background border border-border rounded text-[10px]">
+            <kbd className="px-1.5 py-0.5 bg-background border border-border rounded text-xxs">
               ESC
             </kbd>{' '}
             to close

@@ -4,6 +4,7 @@ import React from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const TextCaseConverter: React.FC = () => {
@@ -48,7 +49,7 @@ export const TextCaseConverter: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Type}
@@ -79,7 +80,7 @@ export const TextCaseConverter: React.FC = () => {
           <div className="w-px h-6 bg-border mx-2 hidden md:block"></div>
           <button
             onClick={handleClear}
-            className="px-3 py-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors text-xs font-medium flex items-center"
+            className="px-3 py-1.5 text-danger hover:bg-danger-light rounded-lg transition-colors text-xs font-medium flex items-center"
           >
             <Trash2 size={14} className="mr-1" /> Clear
           </button>
@@ -116,6 +117,6 @@ export const TextCaseConverter: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

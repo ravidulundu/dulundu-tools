@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const SharelinkGenerator: React.FC = () => {
   const [url, setUrl] = useState('');
@@ -58,7 +59,7 @@ export const SharelinkGenerator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Share2}
@@ -113,7 +114,7 @@ export const SharelinkGenerator: React.FC = () => {
                     </label>
                     <button
                       onClick={handleClear}
-                      className="text-xs text-red-500 hover:text-red-600 flex items-center"
+                      className="text-xs text-danger hover:text-danger flex items-center"
                     >
                       <Trash2 size={12} className="mr-1" /> Clear
                     </button>
@@ -184,6 +185,6 @@ export const SharelinkGenerator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

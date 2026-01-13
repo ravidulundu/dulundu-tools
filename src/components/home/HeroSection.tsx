@@ -1,4 +1,4 @@
-import { Zap, Search } from 'lucide-react';
+import { Search, Zap } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 interface HeroSectionProps {
@@ -18,13 +18,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ searchTerm, setSearchT
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         {/* Simple Grid Background */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-5"
           style={{
             backgroundImage: 'radial-gradient(rgb(var(--primary)) 1px, transparent 1px)',
             backgroundSize: '24px 24px',
           }}
         ></div>
-        <div className="absolute left-0 right-0 top-0 m-auto h-[310px] w-[310px] rounded-full bg-primary/20 opacity-20 blur-[100px]"></div>
+        <div className="absolute left-0 right-0 top-0 m-auto h-80 w-80 rounded-full bg-primary/20 opacity-20 blur-3xl"></div>
       </div>
 
       <div className="container mx-auto px-4 py-16 text-center max-w-4xl relative z-10">

@@ -50,19 +50,19 @@ export default tseslint.config(
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react/jsx-uses-react': 'off',
-      
+
       // React Hooks Rules
       ...reactHooks.configs.recommended.rules,
-      
+
       // React Refresh Rules
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      
+
       // Accessibility Rules
       ...jsxA11y.configs.recommended.rules,
       'jsx-a11y/anchor-is-valid': 'warn',
       'jsx-a11y/click-events-have-key-events': 'warn',
       'jsx-a11y/no-static-element-interactions': 'warn',
-      
+
       // TypeScript Rules
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
@@ -75,7 +75,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
-      
+
       // Import Rules
       'import/order': [
         'warn',
@@ -98,7 +98,7 @@ export default tseslint.config(
       ],
       'import/no-duplicates': 'warn',
       'import/no-unresolved': 'off',
-      
+
       // General Best Practices
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'warn',
@@ -107,5 +107,14 @@ export default tseslint.config(
     },
   },
 
-  prettier
+  prettier,
+
+  // Relaxed rules for test files
+  {
+    files: ['tests/**/*.{ts,tsx}', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      'react-refresh/only-export-components': 'off',
+    },
+  }
 );

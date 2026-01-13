@@ -1,14 +1,15 @@
 import {
+  Calendar,
+  CircleDollarSign,
   DollarSign,
   PieChart,
-  Calendar,
-  TrendingUp,
   TrendingDown,
-  CircleDollarSign,
+  TrendingUp,
 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 interface AmortizationYear {
   year: number;
@@ -85,7 +86,7 @@ export const LoanCalculator: React.FC = () => {
     }).format(num);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={DollarSign}
@@ -203,7 +204,7 @@ export const LoanCalculator: React.FC = () => {
                   <div
                     className="relative w-40 h-40 rounded-full flex items-center justify-center"
                     style={{
-                      background: `conic-gradient(#3b82f6 ${100 - interestPercentage}%, #cbd5e1 0)`,
+                      background: `conic-gradient(rgb(var(--primary)) ${100 - interestPercentage}%, rgb(var(--background-tertiary)) 0)`,
                     }}
                   >
                     <div className="w-28 h-28 bg-card rounded-full flex flex-col items-center justify-center shadow-inner">
@@ -301,6 +302,6 @@ export const LoanCalculator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

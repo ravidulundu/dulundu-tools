@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const RsaGenerator: React.FC = () => {
   const [keySize, setKeySize] = useState(2048);
@@ -77,7 +78,7 @@ export const RsaGenerator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Key}
@@ -173,6 +174,6 @@ export const RsaGenerator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import { Minus, Plus, Download, Copy } from 'lucide-react';
-import React from 'react';
+import { Copy, Download, Minus, Plus } from 'lucide-react';
 
 import { useSVG } from '../hooks/useSVG';
 
@@ -59,16 +58,12 @@ const BottomBar = () => {
         <button
           onClick={() => setBackground('checkerboard')}
           className={clsx(
-            'w-6 h-6 rounded border transition-all',
+            'w-6 h-6 rounded border transition-all bg-checkerboard',
             background === 'checkerboard'
               ? 'border-primary ring-2 ring-primary/20'
               : 'border-border'
           )}
-          style={{
-            backgroundImage: `linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)`,
-            backgroundSize: '8px 8px',
-            backgroundColor: 'white',
-          }}
+          /* Checkerboard pattern from global CSS */
           title="Checkerboard Background"
         />
       </div>

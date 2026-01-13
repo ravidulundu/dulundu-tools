@@ -39,12 +39,8 @@ export const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
           )}
           {bg === 'checkerboard' && (
             <div
-              className="w-full h-full rounded-sm"
-              style={{
-                backgroundImage: `linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)`,
-                backgroundSize: '6px 6px',
-                backgroundPosition: '0 0, 0 3px, 3px -3px, -3px 0px',
-              }}
+              className="w-full h-full rounded-sm bg-checkerboard"
+              /* Checkerboard pattern from global CSS */
             />
           )}
         </button>

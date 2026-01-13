@@ -1,8 +1,9 @@
-import { Calendar, Clock, Copy, Check } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { Calendar, Check, Clock, Copy } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const DateConverter: React.FC = () => {
   const [timestamp, setTimestamp] = useState<number>(() => {
@@ -77,7 +78,7 @@ export const DateConverter: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Calendar}
@@ -170,7 +171,7 @@ export const DateConverter: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };
 
@@ -192,7 +193,7 @@ const ResultRow: React.FC<{ label: string; value: string }> = ({ label, value })
           onClick={handleCopy}
           icon={copied ? Check : Copy}
           variant="ghost"
-          className={copied ? 'text-green-500' : 'text-foreground-muted hover:text-primary'}
+          className={copied ? 'text-success' : 'text-foreground-muted hover:text-primary'}
           title="Copy"
         />
       </div>

@@ -35,7 +35,7 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[10px] text-foreground-muted mr-2 hidden sm:inline-block whitespace-nowrap">
+      <span className="text-xxs text-foreground-muted mr-2 hidden sm:inline-block whitespace-nowrap">
         Use Ctrl + Scroll to zoom
       </span>
       <button
@@ -47,7 +47,7 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
       </button>
       <input
         type="text"
-        className="text-xs font-mono text-foreground-secondary w-[50px] text-center bg-transparent border border-transparent hover:border-border rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
+        className="text-xs font-mono text-foreground-secondary w-12 text-center bg-transparent border border-transparent hover:border-border rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
         value={zoomInputValue}
         onChange={e => setZoomInputValue(e.target.value)}
         onKeyDown={e => {

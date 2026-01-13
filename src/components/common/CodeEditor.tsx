@@ -155,7 +155,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full min-h-[300px]">
+    <div className="flex flex-col h-full min-h-72">
       {(label || actions || showCopyButton) && (
         <div className="flex justify-between items-center mb-2">
           {label && (

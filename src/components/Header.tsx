@@ -1,16 +1,16 @@
 import {
-  Code2,
-  Menu,
-  Sun,
-  Moon,
-  Github,
-  MessageSquare,
   ChevronDown,
-  X,
+  Code2,
+  Github,
   Heart,
   Keyboard,
+  Menu,
+  MessageSquare,
+  Moon,
+  Sun,
+  X,
 } from 'lucide-react';
-import React, { useState, Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { formatShortcut } from '@/hooks/useKeyboardShortcuts';
@@ -107,7 +107,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme, onShortcu
             className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-sm"
             title="Support the project"
           >
-            <Heart size={16} className="text-red-500 fill-red-500" />
+            <Heart size={16} className="text-danger fill-current" />
             <span>Sponsor</span>
           </a>
 

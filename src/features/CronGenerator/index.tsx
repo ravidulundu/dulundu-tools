@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const CronGenerator: React.FC = () => {
   const [minute, setMinute] = useState('*');
@@ -49,14 +50,14 @@ export const CronGenerator: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Clock}
           title="Cron Generator"
           description="Schedule tasks visually"
-          iconBgColor="bg-green-100"
-          iconColor="text-green-600"
+          iconBgColor="bg-success-light"
+          iconColor="text-success"
         />
 
         {/* Toolbar */}
@@ -163,7 +164,7 @@ export const CronGenerator: React.FC = () => {
                     onChange={e => field.set(e.target.value)}
                     className="w-full text-center p-3 bg-background-secondary border border-border rounded-lg font-mono font-bold text-xl text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all mb-auto"
                   />
-                  <p className="text-[10px] text-center text-foreground-muted mt-3 font-medium bg-background-secondary py-1 rounded-md">
+                  <p className="text-xxs text-center text-foreground-muted mt-3 font-medium bg-background-secondary py-1 rounded-md">
                     {field.range}
                   </p>
                 </div>
@@ -172,6 +173,6 @@ export const CronGenerator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

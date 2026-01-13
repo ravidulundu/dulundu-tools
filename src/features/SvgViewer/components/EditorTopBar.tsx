@@ -204,7 +204,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
           {/* Dimensions Popover */}
           {showDimensions && (
             <div className="absolute top-full left-0 mt-2 w-48 bg-card border border-border rounded-md shadow-xl p-3 z-50">
-              <div className="text-[10px] font-bold text-foreground-secondary mb-2 tracking-wider">
+              <div className="text-xxs font-bold text-foreground-secondary mb-2 tracking-wider">
                 DIMENSIONS
               </div>
               <div className="flex gap-2">
@@ -276,7 +276,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
           {isOptimized && <Check className="w-3.5 h-3.5" />}
           {isOptimized ? 'Optimized' : 'Optimize'}
           {!isOptimized && optimizationStats && optimizationStats.percentage > 0 && (
-            <span className="ml-1 text-[10px] bg-success/10 text-success px-1.5 py-0.5 rounded-full">
+            <span className="ml-1 text-xxs bg-success/10 text-success px-1.5 py-0.5 rounded-full">
               -{optimizationStats.percentage}%
             </span>
           )}
@@ -284,7 +284,7 @@ export const EditorTopBar: React.FC<EditorTopBarProps> = ({
 
         {/* Optimization Stats Display - Compact */}
         {optimizationStats && optimizationStats.percentage > 0 && (
-          <div className="flex items-center gap-1 px-2 py-0.5 bg-success/10 border border-success/20 rounded text-[10px] whitespace-nowrap">
+          <div className="flex items-center gap-1 px-2 py-0.5 bg-success/10 border border-success/20 rounded text-xxs whitespace-nowrap">
             <span className="text-foreground-secondary">{optimizationStats.originalSize}b</span>
             <span className="text-success">→</span>
             <span className="text-foreground-secondary">{optimizationStats.optimizedSize}b</span>

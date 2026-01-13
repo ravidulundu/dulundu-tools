@@ -2,6 +2,7 @@ import { Globe, Search, Info } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 const CODES = [
   { code: 100, title: 'Continue', desc: 'The client should continue with its request.' },
@@ -120,7 +121,7 @@ export const HttpStatusCodes: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Globe}
@@ -181,6 +182,6 @@ export const HttpStatusCodes: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

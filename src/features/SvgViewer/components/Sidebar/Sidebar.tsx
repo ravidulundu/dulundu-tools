@@ -92,7 +92,7 @@ export const Sidebar = () => {
         )}
       </div>
 
-      <div className="p-3 border-t border-border text-[10px] text-foreground-muted text-center">
+      <div className="p-3 border-t border-border text-xxs text-foreground-muted text-center">
         Powered by Iconify
       </div>
     </div>

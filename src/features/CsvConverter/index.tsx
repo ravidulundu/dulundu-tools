@@ -5,6 +5,7 @@ import { ActionButton } from '@/components/common/ActionButton';
 import { Button } from '@/components/common/Button';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
 export const CsvConverter: React.FC = () => {
@@ -56,7 +57,7 @@ export const CsvConverter: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Table}
@@ -128,12 +129,12 @@ export const CsvConverter: React.FC = () => {
             />
           </div>
           {error && (
-            <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm font-medium border border-red-100 animate-in fade-in slide-in-from-bottom-2">
+            <div className="mt-4 p-3 bg-danger-light text-danger rounded-lg text-sm font-medium border border-danger-light animate-in fade-in slide-in-from-bottom-2">
               {error}
             </div>
           )}
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

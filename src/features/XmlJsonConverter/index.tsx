@@ -15,6 +15,7 @@ import { ActionButton } from '@/components/common/ActionButton';
 import { Button } from '@/components/common/Button';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
 type Mode = 'xml-json' | 'json-xml';
@@ -142,7 +143,7 @@ export const XmlJsonConverter: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         {/* Header */}
         <ToolHeader
@@ -229,7 +230,7 @@ export const XmlJsonConverter: React.FC = () => {
                 theme="light"
               />
               {error && (
-                <p className="mt-2 text-xs text-red-600 font-medium bg-red-50 p-2 rounded border border-red-100 animate-pulse">
+                <p className="mt-2 text-xs text-danger font-medium bg-danger-light p-2 rounded border border-danger-light animate-pulse">
                   {error}
                 </p>
               )}
@@ -269,6 +270,6 @@ export const XmlJsonConverter: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

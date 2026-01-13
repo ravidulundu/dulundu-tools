@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 
 export const TextStyler: React.FC = () => {
   const [text, setText] = useState('Dulundu.tools');
@@ -87,7 +88,7 @@ export const TextStyler: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
+    <ToolPageLayout>
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
           icon={Type}
@@ -127,7 +128,7 @@ export const TextStyler: React.FC = () => {
                       variant="ghost"
                       className={
                         copiedIndex === index
-                          ? 'text-green-500'
+                          ? 'text-success'
                           : 'text-foreground-muted hover:text-primary'
                       }
                       title="Copy"
@@ -139,6 +140,6 @@ export const TextStyler: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ToolPageLayout>
   );
 };

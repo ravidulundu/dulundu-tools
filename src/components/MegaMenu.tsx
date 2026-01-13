@@ -1,26 +1,26 @@
 import {
-  Braces,
+  ArrowRightLeft,
   Binary,
-  Key,
-  Hash,
-  Link2,
-  Regex,
-  KeyRound,
-  GitCompare,
-  Palette,
+  Braces,
   Clock,
   Code,
-  QrCode,
-  Lock,
-  FileText,
-  FileJson,
   Database,
   FileCode,
-  Globe,
+  FileJson,
+  FileText,
   Fingerprint,
-  ArrowRightLeft,
-  Sparkles,
+  GitCompare,
+  Globe,
   Grid,
+  Hash,
+  Key,
+  KeyRound,
+  Link2,
+  Lock,
+  Palette,
+  QrCode,
+  Regex,
+  Sparkles,
 } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -71,7 +71,7 @@ const developerTools = {
 const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   return (
     <div
-      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-[820px] bg-card rounded-xl shadow-2xl border border-border transition-all duration-200 transform p-5 z-50 ${
+      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[90vw] max-w-4xl bg-card rounded-xl shadow-2xl border border-border transition-all duration-200 transform p-5 z-50 ${
         isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'
       }`}
     >
@@ -95,7 +95,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
       <div className="grid grid-cols-5 gap-4">
         {Object.entries(developerTools).map(([groupName, tools]) => (
           <div key={groupName}>
-            <h4 className="text-[11px] font-bold text-foreground-muted uppercase tracking-wide mb-2 px-1">
+            <h4 className="text-[10px] whitespace-nowrap font-bold text-foreground-muted uppercase tracking-wide mb-2 px-1">
               {groupName}
             </h4>
             <div className="flex flex-col">
@@ -103,7 +103,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                 <Link
                   key={tool.path}
                   to={tool.path}
-                  className="flex items-center gap-2 text-[13px] text-foreground-secondary hover:text-primary hover:bg-primary-light px-2 py-1.5 rounded-lg transition-colors group"
+                  className="flex items-center gap-2 text-sm text-foreground-secondary hover:text-primary hover:bg-primary-light px-2 py-1.5 rounded-lg transition-colors group"
                   onClick={onClose}
                 >
                   <tool.icon

@@ -82,4 +82,20 @@ ignore:
         reason: False positive - Hardcoded trusted API
         expires: 2027-01-12T00:00:00.000Z
         created: 2026-01-12T16:53:19.896Z
+  # QrcodeGenerator XSS - False positive: URL origin validated against hardcoded api.qrserver.com
+  9b3dc667.4773f344.607187b5.d7919eeb.3333445f.e930b2ad.df7e59ba.c33fa564.cea094a2.277c621c.a6cd86c9.00769fbb.6dfcb177.74b8c825.50e07b35.070be06a:
+    - '*':
+        reason: >-
+          False positive - QR URL origin validated against hardcoded trusted
+          domain (api.qrserver.com) in safeQrUrl useMemo
+        expires: 2027-01-13T00:00:00.000Z
+        created: 2026-01-13T00:00:00.000Z
+  # PreviewPanel XSS - False positive: pngDataUri validated to start with data:image/png;base64
+  cf7733e4.4773f344.35620648.6483b32f.40cf7895.9c29a00e.cd61fc56.545e9171.06f04705.b6e32c83.07a962cc.c559ebce.3f452f8c.5fce695c.1c6449b5.9db4f876:
+    - '*':
+        reason: >-
+          False positive - pngDataUri validated with startsWith check for
+          data:image/png;base64 before passing to downloadFile
+        expires: 2027-01-13T00:00:00.000Z
+        created: 2026-01-13T00:00:00.000Z
 patch: {}

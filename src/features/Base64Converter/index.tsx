@@ -1,134 +1,31 @@
-import { ArrowLeftRight, Binary, Copy, Check, Trash2 } from 'lucide-react';
-import React, { useState } from 'react';
+import { Binary } from 'lucide-react';
+import React from 'react';
 
-import { ActionButton } from '@/components/common/ActionButton';
-import { CodeEditor } from '@/components/common/CodeEditor';
-import { ToolHeader } from '@/components/common/ToolHeader';
-import { useToolLogic } from '@/hooks/useToolLogic';
-import { useToolShortcuts } from '@/hooks/useToolShortcuts';
+import {
+  EncoderDecoderConfig,
+  EncoderDecoderLayout,
+} from '@/components/layouts/EncoderDecoderLayout';
+
+const BASE64_CONFIG: EncoderDecoderConfig = {
+  icon: Binary,
+  title: 'Base64 Converter',
+  description: 'Encode and decode text to Base64 format',
+  encodeLabels: {
+    inputLabel: 'Text Source',
+    outputLabel: 'Base64 Result',
+    inputPlaceholder: 'Type text here to encode...',
+  },
+  decodeLabels: {
+    inputLabel: 'Base64 String',
+    outputLabel: 'Decoded Text',
+    inputPlaceholder: 'Paste Base64 string here to decode...',
+  },
+  encode: (text: string) => btoa(text),
+  decode: (text: string) => atob(text),
+  decodeErrorMessage: 'Error: Invalid input for decoding',
+  shouldDecodeOnHashInput: () => true,
+};
 
 export const Base64Converter: React.FC = () => {
-  const { input, setInput, output, setOutput, copied, handleCopy, handleClear } = useToolLogic();
-  const [mode, setMode] = useState<'encode' | 'decode'>('encode');
-
-  useToolShortcuts({
-    onClear: handleClear,
-    onCopy: handleCopy,
-  });
-
-  const process = React.useCallback(
-    (text: string, currentMode: 'encode' | 'decode') => {
-      try {
-        if (!text) {
-          setOutput('');
-          return;
-        }
-        if (currentMode === 'encode') {
-          setOutput(btoa(text));
-        } else {
-          setOutput(atob(text));
-        }
-      } catch (_e) {
-        setOutput('Error: Invalid input for decoding');
-      }
-    },
-    [setOutput]
-  );
-
-  // Check for input in URL hash (from extension)
-  React.useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes('input=')) {
-      try {
-        const params = new URLSearchParams(hash.substring(1));
-        const inputParam = params.get('input');
-        if (inputParam) {
-          const decoded = decodeURIComponent(inputParam);
-          // Auto-detect: if it looks like base64, we probably want to decode it
-          // But the extension sends the raw text.
-          // If the raw text IS base64, we want to decode it.
-          setInput(decoded);
-          setMode('decode');
-          process(decoded, 'decode');
-
-          window.history.replaceState(null, '', window.location.pathname);
-        }
-      } catch (_e) {
-        // Ignore parsing errors
-      }
-    }
-  }, [setInput, process]);
-
-  const handleInputChange = (newVal: string) => {
-    setInput(newVal);
-    process(newVal, mode);
-  };
-
-  const toggleMode = () => {
-    const newMode = mode === 'encode' ? 'decode' : 'encode';
-    setMode(newMode);
-    setInput(output);
-    setOutput(input);
-  };
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
-        <ToolHeader
-          icon={Binary}
-          title="Base64 Converter"
-          description="Encode and decode text to Base64 format"
-        />
-
-        {/* Toolbar */}
-        <div className="p-3 bg-card border-b border-border flex justify-between items-center">
-          <button
-            onClick={toggleMode}
-            className="flex items-center space-x-2 px-6 py-2 bg-background-secondary hover:bg-background-tertiary rounded-full text-foreground-secondary font-medium transition-colors border border-border"
-          >
-            <span className={mode === 'encode' ? 'text-primary font-bold' : ''}>Encode</span>
-            <ArrowLeftRight size={16} className="text-foreground-muted" />
-            <span className={mode === 'decode' ? 'text-primary font-bold' : ''}>Decode</span>
-          </button>
-
-          <ActionButton onClick={handleClear} icon={Trash2} label="Clear" variant="danger" />
-        </div>
-
-        {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
-          <div className="grid md:grid-cols-2 gap-4 h-full">
-            <CodeEditor
-              value={input}
-              onChange={handleInputChange}
-              label={mode === 'encode' ? 'Text Source' : 'Base64 String'}
-              placeholder={
-                mode === 'encode'
-                  ? 'Type text here to encode...'
-                  : 'Paste Base64 string here to decode...'
-              }
-              theme="light"
-            />
-
-            <CodeEditor
-              value={output}
-              label={mode === 'encode' ? 'Base64 Result' : 'Decoded Text'}
-              placeholder="Result will appear here..."
-              readOnly
-              theme="dark"
-              actions={
-                output && (
-                  <ActionButton
-                    icon={copied ? Check : Copy}
-                    label={copied ? 'Copied' : 'Copy'}
-                    onClick={handleCopy}
-                    variant={copied ? 'success' : 'primary'}
-                  />
-                )
-              }
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <EncoderDecoderLayout config={BASE64_CONFIG} />;
 };

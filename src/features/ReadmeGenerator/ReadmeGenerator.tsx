@@ -164,7 +164,7 @@ export const ReadmeGenerator = () => {
                 className={`w-4 h-4 rounded border flex items-center justify-center transition-colors
                   ${
                     section.isIncluded
-                      ? 'bg-green-500 border-green-500 text-white'
+                      ? 'bg-success border-success text-white'
                       : 'border-border text-transparent hover:border-foreground-muted'
                   }
                 `}

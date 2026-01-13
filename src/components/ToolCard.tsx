@@ -39,7 +39,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           {tool.name}
         </span>
         {isToolNew(tool) && (
-          <span className="ml-2 text-[10px] font-bold bg-success-light text-success px-2 py-0.5 rounded-full uppercase flex-shrink-0 tracking-wide">
+          <span className="ml-2 text-xxs font-bold bg-success-light text-success px-2 py-0.5 rounded-full uppercase flex-shrink-0 tracking-wide">
             New
           </span>
         )}
@@ -90,7 +90,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
             </div>
           )}
           {isToolNew(tool) && (
-            <span className="bg-success-light text-success text-[10px] font-bold px-2.5 py-1 rounded-full tracking-wide backdrop-blur-sm">
+            <span className="bg-success-light text-success text-xxs font-bold px-2.5 py-1 rounded-full tracking-wide backdrop-blur-sm">
               NEW
             </span>
           )}
@@ -112,7 +112,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         </div>
 
         <div className="mt-5 pt-4 border-t border-border flex items-center justify-between">
-          <span className="text-[10px] font-bold text-foreground-secondary uppercase tracking-wider bg-background-secondary px-2 py-1 rounded-md">
+          <span className="text-xxs font-bold text-foreground-secondary uppercase tracking-wider bg-background-secondary px-2 py-1 rounded-md">
             {tool.category}
           </span>
           <div className="flex items-center text-primary text-xs font-semibold opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
