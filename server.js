@@ -166,6 +166,8 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
+          // Note: 'unsafe-inline' required for Vite HMR and analytics scripts.
+          // Nonce-based approach would require build pipeline changes.
           "'unsafe-inline'",
           // 'unsafe-eval' removed: JsValidator now uses static analysis (acorn)
           'https://cdn.jsdelivr.net',
@@ -177,6 +179,8 @@ app.use(
         childSrc: ["'self'", 'blob:'],
         styleSrc: [
           "'self'",
+          // Note: 'unsafe-inline' required for Tailwind CSS and dynamic styling.
+          // Moving to nonces would require significant frontend refactoring.
           "'unsafe-inline'",
           'https://fonts.googleapis.com',
           'https://cdn.jsdelivr.net',
@@ -205,6 +209,8 @@ app.use(
         upgradeInsecureRequests: null, // Disable this if not running strictly on https locally
       },
     },
+    // Note: COEP disabled to allow cross-origin resources (analytics, fonts, CDN).
+    // Enabling require-corp would break third-party integrations.
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
@@ -368,6 +374,14 @@ const sanitizeForPrompt = str => {
   return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 };
 
+// Summary length instructions (defined at module scope for performance)
+const SUMMARY_LENGTH_INSTRUCTIONS = {
+  short: 'Provide a very concise, 1-2 sentence summary.',
+  bullets: 'Provide a summary as a list of bullet points.',
+  long: 'Provide a detailed, comprehensive summary.',
+  medium: 'Provide a medium length summary.',
+};
+
 // ========== AI ENDPOINTS ==========
 app.post(
   '/api/ai/generate',
@@ -452,12 +466,22 @@ app.post(
       return res.status(400).json({ error: 'Topic is too long (max 2000 characters).' });
     }
 
-    if (recipient && typeof recipient === 'string' && recipient.length > 200) {
-      return res.status(400).json({ error: 'Recipient is too long (max 200 characters).' });
+    if (recipient) {
+      if (typeof recipient !== 'string') {
+        return res.status(400).json({ error: 'Recipient must be a string.' });
+      }
+      if (recipient.length > 200) {
+        return res.status(400).json({ error: 'Recipient is too long (max 200 characters).' });
+      }
     }
 
-    if (tone && typeof tone === 'string' && tone.length > 50) {
-      return res.status(400).json({ error: 'Tone is too long (max 50 characters).' });
+    if (tone) {
+      if (typeof tone !== 'string') {
+        return res.status(400).json({ error: 'Tone must be a string.' });
+      }
+      if (tone.length > 50) {
+        return res.status(400).json({ error: 'Tone is too long (max 50 characters).' });
+      }
     }
 
     const systemPrompt = `You are an expert professional writer. Write an email based on the following details:
@@ -496,13 +520,8 @@ app.post(
         .json({ error: 'Text too long (max 5000 characters). Please shorten your input.' });
     }
 
-    const lengthInstructions = {
-      short: 'Provide a very concise, 1-2 sentence summary.',
-      bullets: 'Provide a summary as a list of bullet points.',
-      long: 'Provide a detailed, comprehensive summary.',
-      medium: 'Provide a medium length summary.',
-    };
-    const lengthInstruction = lengthInstructions[summaryLength] || lengthInstructions.medium;
+    const lengthInstruction =
+      SUMMARY_LENGTH_INSTRUCTIONS[summaryLength] || SUMMARY_LENGTH_INSTRUCTIONS.medium;
 
     const systemPrompt = `You are an expert synthesizer. Summarize the following text.
 ${lengthInstruction}
