@@ -6,6 +6,7 @@ import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
 import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { summarizeText } from '@/services/aiService';
+import { SUMMARY_LENGTH_OPTIONS } from '@/shared/aiConstants';
 
 export const Summarizer: React.FC = () => {
   const [input, setInput] = useState('');
