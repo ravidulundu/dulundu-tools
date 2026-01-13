@@ -414,6 +414,9 @@ const SUMMARY_LENGTH_INSTRUCTIONS = {
   medium: 'Provide a medium length summary.',
 };
 
+// Allowed tone values for email generation (must match frontend TONE_OPTIONS)
+const ALLOWED_EMAIL_TONES = ['Professional', 'Friendly', 'Urgent', 'Apologetic', 'Persuasive'];
+
 // ========== AI ENDPOINTS ==========
 app.post(
   '/api/ai/generate',
@@ -511,8 +514,10 @@ app.post(
       if (typeof tone !== 'string') {
         return res.status(400).json({ error: 'Tone must be a string.' });
       }
-      if (tone.length > 50) {
-        return res.status(400).json({ error: 'Tone is too long (max 50 characters).' });
+      if (!ALLOWED_EMAIL_TONES.includes(tone)) {
+        return res
+          .status(400)
+          .json({ error: `Invalid tone. Allowed values: ${ALLOWED_EMAIL_TONES.join(', ')}` });
       }
     }
 
