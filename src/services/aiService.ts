@@ -156,3 +156,63 @@ export const paraphraseText = async (
     return `Error: ${error instanceof Error ? error.message : String(error)}`;
   }
 };
+
+export const generateEmail = async (
+  topic: string,
+  recipient: string,
+  tone: string
+): Promise<string> => {
+  const securityCheck = checkRateLimit();
+  if (!securityCheck.allowed) {
+    return securityCheck.error || 'Access denied.';
+  }
+
+  try {
+    const response = await fetch('/api/ai/email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ topic, recipient, tone }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to generate email');
+    }
+
+    const data = await response.json();
+    return data.text;
+  } catch (error) {
+    console.error('AI Service Error:', error);
+    return `Error: ${error instanceof Error ? error.message : String(error)}`;
+  }
+};
+
+export const summarizeText = async (text: string, length: string): Promise<string> => {
+  const securityCheck = checkRateLimit();
+  if (!securityCheck.allowed) {
+    return securityCheck.error || 'Access denied.';
+  }
+
+  try {
+    const response = await fetch('/api/ai/summarize', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text, length }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to summarize text');
+    }
+
+    const data = await response.json();
+    return data.text;
+  } catch (error) {
+    console.error('AI Service Error:', error);
+    return `Error: ${error instanceof Error ? error.message : String(error)}`;
+  }
+};

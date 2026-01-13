@@ -1,5 +1,5 @@
-import { Copy, Check } from 'lucide-react';
-import React, { useState, useRef } from 'react';
+import { Check, Copy } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
@@ -96,8 +96,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     }
 
     // Default textarea with optional line numbers
-    if (showLineNumbers && value) {
-      const lines = value.split('\n');
+    if (showLineNumbers) {
+      const lines = value ? value.split('\n') : [''];
       return (
         <div className="flex h-full">
           {/* Line numbers */}

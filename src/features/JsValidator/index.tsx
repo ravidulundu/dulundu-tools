@@ -1,4 +1,5 @@
-import { ShieldCheck, Play, Trash2, AlertTriangle, CheckCircle, Upload } from 'lucide-react';
+import * as acorn from 'acorn';
+import { AlertCircle, CheckCircle, Play, ShieldCheck, Trash2, Upload } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { CodeEditor } from '@/components/common/CodeEditor';
@@ -7,6 +8,10 @@ import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { useToolLogic } from '@/hooks/useToolLogic';
 
 type Lang = 'js' | 'jsx' | 'ts' | 'tsx';
+
+type AcornError = Error & {
+  loc?: { line: number; column: number };
+};
 
 export const JsValidator: React.FC = () => {
   const {
@@ -20,6 +25,7 @@ export const JsValidator: React.FC = () => {
   const [result, setResult] = useState<{
     valid: boolean;
     message: string;
+    details?: string;
   } | null>(null);
   const [lang, setLang] = useState<Lang>('js');
 
@@ -30,14 +36,22 @@ export const JsValidator: React.FC = () => {
     }
 
     try {
-      // Note: This only validates standard JS syntax.
-      // For TS/JSX, we would need a heavier parser like Babel in the browser.
-      // For now, we just check if it compiles as JS, which covers a lot of basic syntax errors.
-      // We might want to add a disclaimer for TS/JSX.
-      new Function(code);
+      // Use acorn parser for static analysis (SAFE: No code execution)
+      acorn.parse(code, {
+        ecmaVersion: 2020,
+        sourceType: 'module', // Allows import/export
+      });
       setResult({ valid: true, message: 'Valid JavaScript syntax!' });
-    } catch (e) {
-      setResult({ valid: false, message: (e as Error).toString() });
+    } catch (error) {
+      const e = error as AcornError;
+      // Acorn throws nice syntax errors with location
+      const message = e.message.replace(/\s*\(\d+:\d+\)/, ''); // Clean up position for main message
+      const loc = e.loc ? `Line ${e.loc.line}, Column ${e.loc.column}` : '';
+      setResult({
+        valid: false,
+        message: message,
+        details: loc,
+      });
     }
   };
 
@@ -52,7 +66,7 @@ export const JsValidator: React.FC = () => {
         <ToolHeader
           icon={ShieldCheck}
           title="JS Validator"
-          description="Check JavaScript syntax correctness"
+          description="Check JavaScript syntax correctness (Secure Static Analysis)"
         />
 
         {/* Toolbar */}
@@ -115,6 +129,7 @@ export const JsValidator: React.FC = () => {
               placeholder={`Paste your ${lang.toUpperCase()} code here...`}
               language={lang === 'js' || lang === 'jsx' ? 'javascript' : 'typescript'}
               theme="light"
+              showLineNumbers={true}
             />
           </div>
 
@@ -131,17 +146,23 @@ export const JsValidator: React.FC = () => {
                   result.valid ? 'bg-success-light text-success' : 'bg-danger-light text-danger'
                 }`}
               >
-                {result.valid ? <CheckCircle size={20} /> : <AlertTriangle size={20} />}
+                {result.valid ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
               </div>
               <div>
                 <h3 className="font-bold text-lg">
                   {result.valid ? 'Syntax Valid' : 'Syntax Error'}
                 </h3>
-                <p className="font-mono text-sm mt-1">{result.message}</p>
+                <p className="font-medium text-sm mt-1">{result.message}</p>
+                {result.details && (
+                  <p className="font-mono text-xs mt-1 opacity-75 bg-black/5 inline-block px-1.5 py-0.5 rounded">
+                    {result.details}
+                  </p>
+                )}
+
                 {(lang === 'ts' || lang === 'tsx' || lang === 'jsx') && (
                   <p className="text-xs mt-2 opacity-75">
-                    Note: Validation is limited to standard JS syntax. TS/JSX specific syntax might
-                    show as errors.
+                    Note: Standard JS parser used. TypeScript specific syntax might be flagged as
+                    error.
                   </p>
                 )}
               </div>

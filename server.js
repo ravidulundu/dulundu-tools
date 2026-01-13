@@ -59,9 +59,14 @@ const isPrivateUrl = urlString => {
       if (a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168)) {
         return true;
       }
-      // 127.x.x.x
+      // 127.x.x.x (Loopback)
       if (a === 127) return true;
+      // 169.254.x.x (Link-Local / Cloud Metadata)
+      if (a === 169 && b === 254) return true;
     }
+
+    // IPv6 checks
+    if (hostname === '[::1]' || hostname === '::1') return true;
 
     // Block internal domains
     if (hostname.endsWith('.local') || hostname.endsWith('.internal')) {
@@ -154,27 +159,56 @@ app.use(
 app.use(express.json({ limit: '10mb' })); // Limit payload size for security
 
 // Security headers middleware
-app.use((req, res, next) => {
-  // Content Security Policy
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; " +
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://umami.dulundu.tools https://stats.dulundu.tools https://static.cloudflareinsights.com; " +
-      "worker-src 'self' blob:; " +
-      "child-src 'self' blob:; " +
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; " +
-      "font-src 'self' data: https://fonts.gstatic.com; " +
-      "img-src 'self' data: https: https://api.qrserver.com https://images.unsplash.com; " +
-      "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools https://stats.dulundu.tools https://cdn.jsdelivr.net https://api.ipify.org https://api64.ipify.org https://api.db-ip.com https://rdap.org https://dns.google https://api.qrserver.com;"
-  );
-  // Additional security headers
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-  next();
-});
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
+          'https://cdn.jsdelivr.net',
+          'https://umami.dulundu.tools',
+          'https://stats.dulundu.tools',
+          'https://static.cloudflareinsights.com',
+        ],
+        workerSrc: ["'self'", 'blob:'],
+        childSrc: ["'self'", 'blob:'],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://fonts.googleapis.com',
+          'https://cdn.jsdelivr.net',
+        ],
+        fontSrc: ["'self'", 'data:', 'https://fonts.gstatic.com'],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'https:',
+          'https://api.qrserver.com',
+          'https://images.unsplash.com',
+        ],
+        connectSrc: [
+          "'self'",
+          'https://api.iconify.design',
+          'https://umami.dulundu.tools',
+          'https://stats.dulundu.tools',
+          'https://cdn.jsdelivr.net',
+          'https://api.ipify.org',
+          'https://api64.ipify.org',
+          'https://api.db-ip.com',
+          'https://rdap.org',
+          'https://dns.google',
+          'https://api.qrserver.com',
+        ],
+        upgradeInsecureRequests: null, // Disable this if not running strictly on https locally
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -379,6 +413,75 @@ app.post(
 Text: "${text}"
 
 Output only the paraphrased text.`;
+
+    const result = await callAI(systemPrompt);
+    logger.debug(`AI response from: ${result.provider}`);
+
+    res.json({ text: result.text });
+  })
+);
+
+app.post(
+  '/api/ai/email',
+  aiLimiter,
+  asyncHandler(async (req, res) => {
+    if (!groq && !gemini) {
+      throw new Error('AI service not configured');
+    }
+
+    const { recipient, topic, tone } = req.body;
+
+    if (!topic || typeof topic !== 'string' || topic.trim().length === 0) {
+      return res.status(400).json({ error: 'Valid topic is required' });
+    }
+
+    const systemPrompt = `You are an expert professional writer. Write an email based on the following details:
+
+Recipient: ${recipient || 'General'}
+Topic: ${topic}
+Tone: ${tone || 'Professional'}
+
+Output only the email body (subject line optional but recommended). Keep it clear and effective.`;
+
+    const result = await callAI(systemPrompt);
+    logger.debug(`AI response from: ${result.provider}`);
+
+    res.json({ text: result.text });
+  })
+);
+
+app.post(
+  '/api/ai/summarize',
+  aiLimiter,
+  asyncHandler(async (req, res) => {
+    if (!groq && !gemini) {
+      throw new Error('AI service not configured');
+    }
+
+    const { text, length: summaryLength } = req.body;
+
+    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+      return res.status(400).json({ error: 'Valid text is required' });
+    }
+
+    if (text.length > 5000) {
+      return res.status(400).json({ error: 'Text too long (max 5000 characters).' });
+    }
+
+    let lengthInstruction = 'Provide a medium length summary.';
+    if (summaryLength === 'short')
+      lengthInstruction = 'Provide a very concise, 1-2 sentence summary.';
+    else if (summaryLength === 'bullets')
+      lengthInstruction = 'Provide a summary as a list of bullet points.';
+    else if (summaryLength === 'long')
+      lengthInstruction = 'Provide a detailed, comprehensive summary.';
+
+    const systemPrompt = `You are an expert synthesizer. Summarize the following text.
+${lengthInstruction}
+
+Text: "${text}"
+
+Output only the summary.`;
 
     const result = await callAI(systemPrompt);
     logger.debug(`AI response from: ${result.provider}`);
