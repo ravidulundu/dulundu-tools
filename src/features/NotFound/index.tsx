@@ -7,7 +7,11 @@ import { SEO } from '@/components/SEO';
 const NotFound: React.FC = () => {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center p-4 text-center">
-      <SEO title="Page Not Found" description="The page you are looking for does not exist." />
+      <SEO
+        title="Page Not Found"
+        description="The page you are looking for does not exist."
+        noindex={true}
+      />
       <div className="w-full max-w-md mb-8">
         <svg
           viewBox="0 0 400 300"

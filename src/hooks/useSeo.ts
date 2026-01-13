@@ -7,6 +7,7 @@ interface SeoProps {
   canonicalUrl?: string;
   ogImage?: string;
   ogType?: string;
+  noindex?: boolean;
 }
 
 const updateMeta = (property: string, content: string, isProperty = false) => {
@@ -30,6 +31,7 @@ export const useSeo = ({
   canonicalUrl,
   ogImage,
   ogType,
+  noindex,
 }: SeoProps) => {
   useEffect(() => {
     const siteName = 'Dulundu.tools';
@@ -52,6 +54,17 @@ export const useSeo = ({
     // Basic Meta
     updateMeta('description', finalDescription);
     updateMeta('keywords', keywords || defaultKeywords);
+
+    // Robots (noindex check)
+    if (noindex) {
+      updateMeta('robots', 'noindex, nofollow');
+    } else {
+      // Remove robots tag if it exists (for valid pages) to allow default 'index, follow'
+      const robotsMeta = document.querySelector('meta[name="robots"]');
+      if (robotsMeta) {
+        robotsMeta.setAttribute('content', 'index, follow');
+      }
+    }
 
     // Canonical URL
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -77,5 +90,5 @@ export const useSeo = ({
     updateMeta('twitter:title', fullTitle);
     updateMeta('twitter:description', finalDescription);
     updateMeta('twitter:image', finalOgImage);
-  }, [title, description, keywords, canonicalUrl, ogImage, ogType]);
+  }, [title, description, keywords, canonicalUrl, ogImage, ogType, noindex]);
 };
