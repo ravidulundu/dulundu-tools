@@ -38,10 +38,9 @@ COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
 # Copy built assets and server
+# Copy built assets and server
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/server.js ./
-# Copy public folder if needed (usually handled by build/dist, but checking just in case)
-# COPY --from=builder /app/public ./public
+COPY --from=builder /app/server ./server
 
 # Create data directory for shares
 RUN mkdir -p data/shares
@@ -58,4 +57,4 @@ USER nodejs
 EXPOSE 3000
 
 # Start the server
-CMD ["node", "server.js"]
+CMD ["node", "server/index.js"]
