@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -8,6 +9,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import Groq from 'groq-sdk';
+import helmet from 'helmet';
+import { Address4, Address6 } from 'ip-address';
 import winston from 'winston';
 
 dotenv.config();
@@ -15,13 +18,24 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// ========== HTML TEMPLATE CACHE ==========
+// Cache index.html in memory to avoid disk I/O on every request
+let cachedIndexHtml = null;
+const INDEX_PATH = path.join(__dirname, 'dist', 'index.html');
+
 // ========== LOGGER SETUP ==========
 const logger = winston.createLogger({
   level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
   format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
   transports: [
     new winston.transports.Console({
-      format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.printf(({ level, message, timestamp: _ts, ...meta }) => {
+          const metaStr = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : '';
+          return `${level}: ${typeof message === 'object' ? JSON.stringify(message) : message}${metaStr}`;
+        })
+      ),
     }),
   ],
 });
@@ -30,6 +44,20 @@ if (process.env.NODE_ENV === 'production') {
   logger.add(new winston.transports.File({ filename: 'error.log', level: 'error' }));
   logger.add(new winston.transports.File({ filename: 'combined.log' }));
 }
+
+// Load and cache index.html template
+const loadIndexHtml = () => {
+  try {
+    cachedIndexHtml = fs.readFileSync(INDEX_PATH, 'utf8');
+    logger.info('index.html template cached successfully');
+  } catch (err) {
+    // In development, dist might not exist yet
+    logger.warn('Could not cache index.html:', err.message);
+  }
+};
+
+// Initial load attempt
+loadIndexHtml();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,31 +69,69 @@ app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
 // SSRF Protection: Check if URL points to private/internal networks
+// Uses ip-address library for robust IPv4/IPv6 validation
 const isPrivateUrl = urlString => {
   try {
     const url = new URL(urlString);
-    const hostname = url.hostname.toLowerCase();
+    let hostname = url.hostname.toLowerCase();
 
     // Block localhost variants
-    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+    if (hostname === 'localhost') {
       return true;
-    }
-
-    // Block private IP ranges
-    const ipMatch = hostname.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
-    if (ipMatch) {
-      const [, a, b] = ipMatch.map(Number);
-      // 10.x.x.x, 172.16-31.x.x, 192.168.x.x
-      if (a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168)) {
-        return true;
-      }
-      // 127.x.x.x
-      if (a === 127) return true;
     }
 
     // Block internal domains
     if (hostname.endsWith('.local') || hostname.endsWith('.internal')) {
       return true;
+    }
+
+    // Remove IPv6 brackets if present
+    if (hostname.startsWith('[') && hostname.endsWith(']')) {
+      hostname = hostname.slice(1, -1);
+    }
+
+    // Try parsing as IPv4
+    try {
+      const ipv4 = new Address4(hostname);
+      if (ipv4.isValid()) {
+        // Check for private, loopback, link-local ranges
+        const privateRanges = [
+          '10.0.0.0/8', // Class A private
+          '172.16.0.0/12', // Class B private
+          '192.168.0.0/16', // Class C private
+          '127.0.0.0/8', // Loopback
+          '169.254.0.0/16', // Link-local / Cloud metadata
+          '0.0.0.0/8', // Current network
+        ];
+        for (const range of privateRanges) {
+          if (ipv4.isInSubnet(new Address4(range))) {
+            return true;
+          }
+        }
+      }
+    } catch {
+      // Not a valid IPv4, try IPv6
+    }
+
+    // Try parsing as IPv6
+    try {
+      const ipv6 = new Address6(hostname);
+      if (ipv6.isValid()) {
+        // Check for loopback (::1), link-local (fe80::/10), ULA (fc00::/7)
+        const privateRanges = [
+          '::1/128', // Loopback
+          'fe80::/10', // Link-local
+          'fc00::/7', // Unique Local Address (ULA)
+          '::ffff:0:0/96', // IPv4-mapped IPv6
+        ];
+        for (const range of privateRanges) {
+          if (ipv6.isInSubnet(new Address6(range))) {
+            return true;
+          }
+        }
+      }
+    } catch {
+      // Not a valid IPv6 either
     }
 
     return false;
@@ -153,28 +219,69 @@ app.use(
 
 app.use(express.json({ limit: '10mb' })); // Limit payload size for security
 
-// Security headers middleware
+// Generate cryptographically secure nonce for CSP
+const generateNonce = () => crypto.randomBytes(16).toString('base64');
+
+// Nonce middleware - generates nonce for each request
 app.use((req, res, next) => {
-  // Content Security Policy
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; " +
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://umami.dulundu.tools https://stats.dulundu.tools https://static.cloudflareinsights.com; " +
-      "worker-src 'self' blob:; " +
-      "child-src 'self' blob:; " +
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; " +
-      "font-src 'self' data: https://fonts.gstatic.com; " +
-      "img-src 'self' data: https: https://api.qrserver.com https://images.unsplash.com; " +
-      "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools https://stats.dulundu.tools https://cdn.jsdelivr.net https://api.ipify.org https://api64.ipify.org https://api.db-ip.com https://rdap.org https://dns.google https://api.qrserver.com;"
-  );
-  // Additional security headers
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.locals.cspNonce = generateNonce();
   next();
 });
+
+// Security headers middleware with nonce-based CSP
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          // Nonce-based approach: 'unsafe-inline' removed for better XSS protection
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
+          'https://cdn.jsdelivr.net',
+          'https://umami.dulundu.tools',
+          'https://stats.dulundu.tools',
+          'https://static.cloudflareinsights.com',
+        ],
+        workerSrc: ["'self'", 'blob:'],
+        childSrc: ["'self'", 'blob:'],
+        styleSrc: [
+          "'self'",
+          // Nonce-based approach: 'unsafe-inline' removed for better XSS protection
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
+          'https://fonts.googleapis.com',
+          'https://cdn.jsdelivr.net',
+        ],
+        fontSrc: ["'self'", 'data:', 'https://fonts.gstatic.com'],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'blob:',
+          'https://api.qrserver.com',
+          'https://images.unsplash.com',
+        ],
+        connectSrc: [
+          "'self'",
+          'https://api.iconify.design',
+          'https://umami.dulundu.tools',
+          'https://stats.dulundu.tools',
+          'https://cdn.jsdelivr.net',
+          'https://api.ipify.org',
+          'https://api64.ipify.org',
+          'https://api.db-ip.com',
+          'https://rdap.org',
+          'https://dns.google',
+          'https://api.qrserver.com',
+        ],
+        upgradeInsecureRequests: null, // Disable this if not running strictly on https locally
+      },
+    },
+    // Note: COEP disabled to allow cross-origin resources (analytics, fonts, CDN).
+    // Enabling require-corp would break third-party integrations.
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -222,6 +329,15 @@ const urlCheckLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Middleware to check AI service configuration
+const checkAiConfig = (req, res, next) => {
+  if (!groq && !gemini) {
+    logger.error('AI service configuration missing');
+    return res.status(503).json({ error: 'AI service currently unavailable' });
+  }
+  next();
+};
+
 // ========== HEALTH CHECK ==========
 app.get('/health', (req, res) => {
   res.json({
@@ -231,18 +347,17 @@ app.get('/health', (req, res) => {
 
 // ========== STATIC FILES ==========
 // Serve static files from the dist directory with caching
+// Note: index: false prevents express.static from serving index.html directly,
+// allowing our SPA fallback handler to inject CSP nonces
 app.use(
   express.static(path.join(__dirname, 'dist'), {
     maxAge: '1y', // Cache assets for 1 year (they have hashed filenames)
     etag: true,
     lastModified: true,
+    index: false, // Don't serve index.html automatically (handled by SPA fallback with nonce injection)
     setHeaders: (res, filePath) => {
-      // HTML files should not be cached (SPA routing)
-      if (filePath.endsWith('.html')) {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      }
       // JS and CSS files with hash can be cached long-term
-      else if (filePath.match(/\.(js|css)$/)) {
+      if (filePath.match(/\.(js|css)$/)) {
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       }
       // Images and fonts
@@ -318,32 +433,61 @@ const asyncHandler = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
+// Sanitize user input for prompt injection prevention
+// Escapes < and > to prevent XML tag breakout attacks
+const sanitizeForPrompt = str => {
+  if (!str || typeof str !== 'string') return str;
+  return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+};
+
+// Summary length instructions (defined at module scope for performance)
+// IMPORTANT: Keep values in sync with src/shared/aiConstants.ts
+const SUMMARY_LENGTH_INSTRUCTIONS = {
+  short: 'Provide a very concise, 1-2 sentence summary.',
+  bullets: 'Provide a summary as a list of bullet points.',
+  long: 'Provide a detailed, comprehensive summary.',
+  medium: 'Provide a medium length summary.',
+};
+
+// Input length limits for AI endpoints (centralized for maintainability)
+const AI_INPUT_LIMITS = {
+  PROMPT_MAX: 3000, // /api/ai/generate
+  TEXT_MAX: 2000, // /api/ai/paraphrase
+  TOPIC_MAX: 2000, // /api/ai/email
+  RECIPIENT_MAX: 200, // /api/ai/email
+  SUMMARY_TEXT_MAX: 5000, // /api/ai/summarize
+};
+
+// Allowed tone values for email generation
+// IMPORTANT: Keep in sync with src/shared/aiConstants.ts (single source of truth)
+const ALLOWED_EMAIL_TONES = ['Professional', 'Friendly', 'Urgent', 'Apologetic', 'Persuasive'];
+
 // ========== AI ENDPOINTS ==========
 app.post(
   '/api/ai/generate',
   aiLimiter,
+  checkAiConfig,
   asyncHandler(async (req, res) => {
-    if (!groq && !gemini) {
-      throw new Error('AI service not configured');
-    }
-
     const { prompt, language } = req.body;
 
     if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
       return res.status(400).json({ error: 'Valid prompt is required' });
     }
 
-    if (prompt.length > 3000) {
-      return res
-        .status(400)
-        .json({ error: 'Prompt too long (max 3000 characters). Keep it focused on code help.' });
+    if (prompt.length > AI_INPUT_LIMITS.PROMPT_MAX) {
+      return res.status(400).json({
+        error: `Prompt too long (max ${AI_INPUT_LIMITS.PROMPT_MAX} characters). Keep it focused on code help.`,
+      });
     }
 
     logger.debug(`AI generate request: ${language || 'code'}`);
 
     const systemPrompt = `You are an expert developer assistant. The user needs help with ${language || 'code'}.
 
-Task: ${prompt}
+Task:
+<user_input>
+${sanitizeForPrompt(prompt)}
+</user_input>
 
 Provide a clean, well-commented code solution or explanation. If generating code, wrap it in markdown code blocks. Keep the text concise.`;
 
@@ -357,28 +501,135 @@ Provide a clean, well-commented code solution or explanation. If generating code
 app.post(
   '/api/ai/paraphrase',
   aiLimiter,
+  checkAiConfig,
   asyncHandler(async (req, res) => {
-    if (!groq && !gemini) {
-      throw new Error('AI service not configured');
-    }
-
     const { text, tone } = req.body;
 
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
       return res.status(400).json({ error: 'Valid text is required' });
     }
 
-    if (text.length > 2000) {
-      return res
-        .status(400)
-        .json({ error: 'Text too long (max 2000 characters). Keep it to a paragraph.' });
+    if (text.length > AI_INPUT_LIMITS.TEXT_MAX) {
+      return res.status(400).json({
+        error: `Text too long (max ${AI_INPUT_LIMITS.TEXT_MAX} characters). Keep it to a paragraph.`,
+      });
     }
 
     const systemPrompt = `You are an expert writer. Paraphrase the following text to be more ${tone || 'professional'}. Keep the meaning the same but improve clarity and flow.
 
-Text: "${text}"
+Text:
+<user_text>
+${sanitizeForPrompt(text)}
+</user_text>
 
 Output only the paraphrased text.`;
+
+    const result = await callAI(systemPrompt);
+    logger.debug(`AI response from: ${result.provider}`);
+
+    res.json({ text: result.text });
+  })
+);
+
+app.post(
+  '/api/ai/email',
+  aiLimiter,
+  checkAiConfig,
+  asyncHandler(async (req, res) => {
+    const { recipient, topic, tone } = req.body;
+
+    if (!topic || typeof topic !== 'string' || topic.trim().length === 0) {
+      return res.status(400).json({ error: 'Valid topic is required' });
+    }
+
+    if (topic.length > AI_INPUT_LIMITS.TOPIC_MAX) {
+      return res
+        .status(400)
+        .json({ error: `Topic is too long (max ${AI_INPUT_LIMITS.TOPIC_MAX} characters).` });
+    }
+
+    if (recipient) {
+      if (typeof recipient !== 'string') {
+        return res.status(400).json({ error: 'Recipient must be a string.' });
+      }
+      if (recipient.length > AI_INPUT_LIMITS.RECIPIENT_MAX) {
+        return res
+          .status(400)
+          .json({
+            error: `Recipient is too long (max ${AI_INPUT_LIMITS.RECIPIENT_MAX} characters).`,
+          });
+      }
+    }
+
+    if (tone) {
+      if (typeof tone !== 'string') {
+        return res.status(400).json({ error: 'Tone must be a string.' });
+      }
+      if (!ALLOWED_EMAIL_TONES.includes(tone)) {
+        return res
+          .status(400)
+          .json({ error: `Invalid tone. Allowed values: ${ALLOWED_EMAIL_TONES.join(', ')}` });
+      }
+    }
+
+    const systemPrompt = `You are an expert professional writer. Write an email based on the following details:
+
+Recipient: ${sanitizeForPrompt(recipient) || 'General'}
+Tone: ${sanitizeForPrompt(tone) || 'Professional'}
+
+Topic details:
+<user_topic>
+${sanitizeForPrompt(topic)}
+</user_topic>
+
+Output only the email body (subject line optional but recommended). Keep it clear and effective.`;
+
+    const result = await callAI(systemPrompt);
+    logger.debug(`AI response from: ${result.provider}`);
+
+    res.json({ text: result.text });
+  })
+);
+
+app.post(
+  '/api/ai/summarize',
+  aiLimiter,
+  checkAiConfig,
+  asyncHandler(async (req, res) => {
+    const { text, length: summaryLength } = req.body;
+
+    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+      return res.status(400).json({ error: 'Valid text is required' });
+    }
+
+    if (text.length > AI_INPUT_LIMITS.SUMMARY_TEXT_MAX) {
+      return res
+        .status(400)
+        .json({
+          error: `Text too long (max ${AI_INPUT_LIMITS.SUMMARY_TEXT_MAX} characters). Please shorten your input.`,
+        });
+    }
+
+    // Validate summary length against allowed values
+    const allowedLengths = Object.keys(SUMMARY_LENGTH_INSTRUCTIONS);
+    if (summaryLength && !allowedLengths.includes(summaryLength)) {
+      return res
+        .status(400)
+        .json({ error: `Invalid length. Allowed values: ${allowedLengths.join(', ')}` });
+    }
+
+    const lengthInstruction =
+      SUMMARY_LENGTH_INSTRUCTIONS[summaryLength] || SUMMARY_LENGTH_INSTRUCTIONS.medium;
+
+    const systemPrompt = `You are an expert synthesizer. Summarize the following text.
+${lengthInstruction}
+
+Text:
+<user_text>
+${sanitizeForPrompt(text)}
+</user_text>
+
+Output only the summary.`;
 
     const result = await callAI(systemPrompt);
     logger.debug(`AI response from: ${result.provider}`);
@@ -609,9 +860,37 @@ app.get(
 );
 
 // ========== SPA FALLBACK ==========
-// Handle React Routing (SPA) - Send all other requests to index.html
+// Handle React Routing (SPA) - Send all other requests to index.html with nonce injection
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  // Use cached template if available, otherwise read from disk (fallback for dev)
+  const getHtml = callback => {
+    if (cachedIndexHtml) {
+      callback(null, cachedIndexHtml);
+    } else {
+      // Fallback: try to load and cache on first request (useful in dev)
+      fs.readFile(INDEX_PATH, 'utf8', (err, html) => {
+        if (!err) {
+          cachedIndexHtml = html; // Cache for future requests
+        }
+        callback(err, html);
+      });
+    }
+  };
+
+  getHtml((err, html) => {
+    if (err) {
+      logger.error('Failed to read index.html:', err);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    // Inject nonce into HTML (replace placeholder with actual nonce)
+    const nonce = res.locals.cspNonce;
+    const htmlWithNonce = html.replace(/__CSP_NONCE__/g, nonce);
+
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.send(htmlWithNonce);
+  });
 });
 
 // Error handling middleware

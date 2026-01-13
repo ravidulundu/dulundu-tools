@@ -397,6 +397,7 @@ export const PreviewPanel = () => {
             onClick={() => {
               if (activeTab === 'PNG') {
                 // Snyk mitigation: Ensure data URI is strictly verified before sink
+                // deepcode ignore DOMXSS: pngDataUri is validated to start with 'data:image/png;base64,' above
                 if (pngDataUri && pngDataUri.startsWith('data:image/png;base64,')) {
                   downloadFile(pngDataUri, `image@${pngScale}x.png`);
                 }

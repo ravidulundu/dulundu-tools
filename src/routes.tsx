@@ -136,6 +136,8 @@ const ReadmeGenerator = lazyLoad(
   'ReadmeGenerator'
 );
 const SvgViewer = lazyLoad(() => import('./features/SvgViewer/index'), 'SvgViewer');
+const EmailGenerator = lazyLoad(() => import('./features/EmailGenerator'), 'EmailGenerator');
+const Summarizer = lazyLoad(() => import('./features/Summarizer'), 'Summarizer');
 
 // Home Component
 const Home = lazyLoad(() => import('./features/Home'), 'Home');
@@ -146,6 +148,8 @@ const routes = [
   { path: '/json-formatter', element: <JsonFormatter /> },
   { path: '/base64-converter', element: <Base64Converter /> },
   { path: '/ai-assistant', element: <AiAssistant /> },
+  { path: '/email-generator', element: <EmailGenerator /> },
+  { path: '/text-summarizer', element: <Summarizer /> },
   { path: '/word-counter', element: <WordCounter /> },
   { path: '/uuid-generator', element: <UuidGenerator /> },
   { path: '/lorem-ipsum', element: <LoremGenerator /> },
