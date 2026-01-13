@@ -361,6 +361,13 @@ const asyncHandler = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
+// Sanitize user input for prompt injection prevention
+// Escapes < and > to prevent XML tag breakout attacks
+const sanitizeForPrompt = str => {
+  if (!str || typeof str !== 'string') return str;
+  return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+};
+
 // ========== AI ENDPOINTS ==========
 app.post(
   '/api/ai/generate',
@@ -385,7 +392,7 @@ app.post(
 
 Task:
 <user_input>
-${prompt}
+${sanitizeForPrompt(prompt)}
 </user_input>
 
 Provide a clean, well-commented code solution or explanation. If generating code, wrap it in markdown code blocks. Keep the text concise.`;
@@ -418,7 +425,7 @@ app.post(
 
 Text:
 <user_text>
-${text}
+${sanitizeForPrompt(text)}
 </user_text>
 
 Output only the paraphrased text.`;
@@ -460,7 +467,7 @@ Tone: ${tone || 'Professional'}
 
 Topic details:
 <user_topic>
-${topic}
+${sanitizeForPrompt(topic)}
 </user_topic>
 
 Output only the email body (subject line optional but recommended). Keep it clear and effective.`;
@@ -502,7 +509,7 @@ ${lengthInstruction}
 
 Text:
 <user_text>
-${text}
+${sanitizeForPrompt(text)}
 </user_text>
 
 Output only the summary.`;
