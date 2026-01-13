@@ -1,9 +1,18 @@
-import { Check, Copy, Download, FileImage, Image, RefreshCw, Upload } from 'lucide-react';
+import {
+  Check,
+  Copy,
+  Download,
+  FileImage,
+  Image as ImageIcon,
+  RefreshCw,
+  Upload,
+} from 'lucide-react';
 import React, { useRef, useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { downloadFile } from '@/utils/downloadUtils';
 
 export const ImageConverter: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'convert' | 'base64' | 'decode'>('convert');
@@ -70,9 +79,9 @@ export const ImageConverter: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
         <ToolHeader
-          icon={Image}
-          title="Image Tools"
-          description="Convert formats, Encode to Base64, and Decode Base64"
+          icon={ImageIcon}
+          title="Image Converter"
+          description="Convert images between formats (PNG, JPG, WEBP) and Base64"
         />
 
         {/* Toolbar */}
@@ -199,13 +208,18 @@ export const ImageConverter: React.FC = () => {
                         <p className="text-xs text-green-600">Ready to download</p>
                       </div>
                     </div>
-                    <a
-                      href={convertedImage}
-                      download={`converted-image.${getFormatExt(outputFormat)}`}
+
+                    <button
+                      onClick={() =>
+                        downloadFile(
+                          convertedImage,
+                          `converted-image.${getFormatExt(outputFormat)}`
+                        )
+                      }
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center text-sm font-medium"
                     >
                       <Download size={16} className="mr-2" /> Download
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>
@@ -286,7 +300,7 @@ export const ImageConverter: React.FC = () => {
                       })()
                     ) : (
                       <div className="text-foreground-muted flex flex-col items-center">
-                        <Image size={48} className="mb-2 opacity-50" />
+                        <ImageIcon size={48} className="mb-2 opacity-50" />
                         <p>Image preview will appear here</p>
                       </div>
                     )}

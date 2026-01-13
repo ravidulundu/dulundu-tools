@@ -1,7 +1,8 @@
-import { QrCode, Download, Upload, ScanLine, AlertCircle, Loader2 } from 'lucide-react';
-import React, { useState, useRef } from 'react';
+import { AlertCircle, Download, Loader2, QrCode, ScanLine, Upload } from 'lucide-react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { downloadFile } from '@/utils/downloadUtils';
 
 export const QrcodeGenerator: React.FC = () => {
   const [mode, setMode] = useState<'generate' | 'scan'>('generate');
@@ -23,18 +24,29 @@ export const QrcodeGenerator: React.FC = () => {
     text
   )}&color=${color}&bgcolor=${bgColor}&margin=10`;
 
+  // Validate and memoize safe URL for QR image
+  // deepcode ignore DOMXSS: URL origin is validated against hardcoded trusted domain (api.qrserver.com)
+  const safeQrUrl = useMemo(() => {
+    try {
+      const parsed = new URL(qrUrl);
+      // Only allow our trusted QR API domain
+      if (parsed.origin === 'https://api.qrserver.com') {
+        return parsed.href;
+      }
+    } catch {
+      // Invalid URL
+    }
+    return undefined;
+  }, [qrUrl]);
+
   const downloadQr = async () => {
     try {
       const response = await fetch(qrUrl);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'qrcode.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      downloadFile(url, 'qrcode.png');
+      // Delay revoke to ensure download completes
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
     } catch (_e) {
       alert("Could not download image. Please try right-clicking the image and 'Save Image As'.");
     }
@@ -77,7 +89,11 @@ export const QrcodeGenerator: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
       <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
-        <ToolHeader icon={QrCode} title="QR Code Generator" description="Generate and Scan QR codes" />
+        <ToolHeader
+          icon={QrCode}
+          title="QR Code Generator"
+          description="Generate and Scan QR codes"
+        />
 
         {/* Tabs */}
         <div className="flex border-b border-border">
@@ -197,7 +213,7 @@ export const QrcodeGenerator: React.FC = () => {
               <div className="flex flex-col items-center justify-center p-8 bg-card rounded-2xl border border-border shadow-sm h-full min-h-[400px]">
                 <div className="bg-card p-4 rounded-xl shadow-lg mb-8 border border-border">
                   <img
-                    src={qrUrl}
+                    src={safeQrUrl}
                     alt="QR Code"
                     className="max-w-full h-auto"
                     style={{
@@ -268,7 +284,7 @@ export const QrcodeGenerator: React.FC = () => {
                     <span className="block text-xs font-bold text-foreground-muted uppercase mb-2 tracking-wide">
                       Decoded Content
                     </span>
-                    <div className="p-4 bg-green-50 border border-green-200 rounded-xl break-all font-mono text-foreground shadow-sm">
+                    <div className="p-4 bg-success-light border border-success/30 rounded-xl break-all font-mono text-foreground shadow-sm">
                       {scanResult}
                     </div>
                     <div className="mt-4 flex justify-center">

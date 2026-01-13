@@ -89,7 +89,9 @@ export const ExcelViewer: React.FC = () => {
           ) : (
             <div className="h-full flex flex-col animate-in fade-in slide-in-from-bottom-4">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-foreground-secondary">Table View ({data.length} rows)</h3>
+                <h3 className="font-bold text-foreground-secondary">
+                  Table View ({data.length} rows)
+                </h3>
               </div>
               <div className="flex-1 overflow-auto border border-border rounded-xl bg-card shadow-sm">
                 <table className="w-full text-sm text-left text-foreground-secondary">

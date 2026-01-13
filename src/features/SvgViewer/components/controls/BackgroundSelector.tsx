@@ -34,7 +34,9 @@ export const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
         >
           {bg === 'white' && <div className="w-full h-full bg-white rounded-sm" />}
           {bg === 'black' && <div className="w-full h-full bg-black rounded-sm" />}
-          {bg === 'transparent' && <div className="w-full h-full bg-background-secondary rounded-sm" />}
+          {bg === 'transparent' && (
+            <div className="w-full h-full bg-background-secondary rounded-sm" />
+          )}
           {bg === 'checkerboard' && (
             <div
               className="w-full h-full rounded-sm"

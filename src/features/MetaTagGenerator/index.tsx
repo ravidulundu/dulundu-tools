@@ -66,7 +66,10 @@ export const MetaTagGenerator: React.FC = () => {
             {/* Form Area - Scrollable */}
             <div className="overflow-y-auto pr-2 space-y-4">
               <div>
-                <label htmlFor="page-title" className="block text-sm font-bold text-foreground-secondary mb-2">
+                <label
+                  htmlFor="page-title"
+                  className="block text-sm font-bold text-foreground-secondary mb-2"
+                >
                   Page Title
                 </label>
                 <input
@@ -106,7 +109,10 @@ export const MetaTagGenerator: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="keywords" className="block text-sm font-bold text-foreground-secondary mb-2">
+                <label
+                  htmlFor="keywords"
+                  className="block text-sm font-bold text-foreground-secondary mb-2"
+                >
                   Keywords
                 </label>
                 <input
@@ -121,7 +127,10 @@ export const MetaTagGenerator: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="author" className="block text-sm font-bold text-foreground-secondary mb-2">
+                  <label
+                    htmlFor="author"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
+                  >
                     Author
                   </label>
                   <input
@@ -133,7 +142,10 @@ export const MetaTagGenerator: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="robots" className="block text-sm font-bold text-foreground-secondary mb-2">
+                  <label
+                    htmlFor="robots"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
+                  >
                     Robots
                   </label>
                   <select

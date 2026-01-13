@@ -183,7 +183,9 @@ export const BcryptGenerator: React.FC = () => {
                   {matchResult !== null && (
                     <div
                       className={`px-4 py-2 rounded-lg flex items-center font-bold text-sm animate-in fade-in slide-in-from-right-2 ${
-                        matchResult ? 'bg-success-light text-success' : 'bg-danger-light text-danger'
+                        matchResult
+                          ? 'bg-success-light text-success'
+                          : 'bg-danger-light text-danger'
                       }`}
                     >
                       {matchResult ? (

@@ -56,7 +56,10 @@ export const WordToHtml: React.FC = () => {
           </div>
 
           <div className="flex flex-col h-full">
-            <label htmlFor="html-output" className="block text-sm font-medium text-foreground-secondary mb-2">
+            <label
+              htmlFor="html-output"
+              className="block text-sm font-medium text-foreground-secondary mb-2"
+            >
               HTML Output
             </label>
             <div className="relative flex-1">

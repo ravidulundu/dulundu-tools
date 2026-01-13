@@ -104,12 +104,26 @@ export const ALL_TOOLS: ToolDef[] = [
   {
     id: 'hash-generator',
     name: 'Hash & HMAC Generator',
-    description: 'Free online hash generator for MD5, SHA-256, SHA-512 and HMAC signatures. Generate secure checksums and message authentication codes instantly.',
+    description:
+      'Free online hash generator for MD5, SHA-256, SHA-512 and HMAC signatures. Generate secure checksums and message authentication codes instantly.',
     category: ToolCategory.CRYPTO,
     path: '/hash-generator',
     icon: Hash,
     popular: true,
-    tags: ['hash', 'md5', 'sha', 'sha256', 'sha512', 'sha384', 'hmac', 'checksum', 'crypto', 'signature', 'message authentication', 'file hash'],
+    tags: [
+      'hash',
+      'md5',
+      'sha',
+      'sha256',
+      'sha512',
+      'sha384',
+      'hmac',
+      'checksum',
+      'crypto',
+      'signature',
+      'message authentication',
+      'file hash',
+    ],
   },
   {
     id: 'uuid-generator',
@@ -828,13 +842,24 @@ export const ALL_TOOLS: ToolDef[] = [
   {
     id: 'lua-formatter',
     name: 'Lua Formatter',
-    description: 'Free online Lua code formatter. Beautify or minify Lua scripts with proper indentation, formatting and compression.',
+    description:
+      'Free online Lua code formatter. Beautify or minify Lua scripts with proper indentation, formatting and compression.',
     category: ToolCategory.FORMATTER,
     path: '/lua-formatter',
     icon: Code2,
-    tags: ['lua', 'format', 'beautify', 'minify', 'lua beautifier', 'lua minifier', 'code formatter', 'lua script', 'game scripting'],
+    tags: [
+      'lua',
+      'format',
+      'beautify',
+      'minify',
+      'lua beautifier',
+      'lua minifier',
+      'code formatter',
+      'lua script',
+      'game scripting',
+    ],
   },
-    {
+  {
     id: 'php-formatter',
     name: 'PHP Formatter',
     description: 'Beautify PHP code.',

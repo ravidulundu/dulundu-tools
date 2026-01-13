@@ -25,7 +25,9 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({
           </div>
           <div>
             <h1 className="text-2xl font-bold text-foreground tracking-tight">{title}</h1>
-            <p className="text-foreground-muted mt-1 text-sm leading-relaxed max-w-2xl">{description}</p>
+            <p className="text-foreground-muted mt-1 text-sm leading-relaxed max-w-2xl">
+              {description}
+            </p>
           </div>
         </div>
         {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}

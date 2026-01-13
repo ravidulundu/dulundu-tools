@@ -38,10 +38,7 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
     <main className="flex-1 min-w-0 px-2 lg:px-0">
       {/* Favorites & Recent Section (Only on 'All' view) */}
       {isDirectoryView && (
-        <FavoritesSection
-          favoriteTools={favoriteTools}
-          recentTools={recentTools}
-        />
+        <FavoritesSection favoriteTools={favoriteTools} recentTools={recentTools} />
       )}
 
       {/* Popular Section (Only on 'All' view) */}
@@ -105,9 +102,7 @@ export const ToolGrid: React.FC<ToolGridProps> = ({
             <div className="inline-block p-6 bg-background-secondary rounded-full mb-4">
               <Search size={40} className="text-foreground-muted" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">
-              No tools found
-            </h3>
+            <h3 className="text-xl font-bold text-foreground mb-2">No tools found</h3>
             <p className="text-foreground-muted">
               No tools found matching &quot;{searchTerm}&quot;
             </p>

@@ -50,9 +50,7 @@ export function useKeyboardShortcuts(
       // Skip if user is typing in an input/textarea (unless it's Escape)
       const target = event.target as HTMLElement;
       const isInputField =
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA' ||
-        target.isContentEditable;
+        target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
 
       // Build the key combination string
       const parts: string[] = [];

@@ -1,14 +1,13 @@
-/* eslint-disable import/order */
 import MDEditor from '@uiw/react-md-editor';
 import { HelpCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
-// Components
 import { SEO } from '@/components/SEO';
+import { useTheme } from '@/hooks/useTheme';
+
 import { ConfirmationModal } from './components/ConfirmationModal';
 import { PreviewAndRaw } from './components/PreviewAndRaw';
 import { SECTIONS, Section } from './data/sections';
-import { useTheme } from '@/hooks/useTheme';
 
 import './MDEditor.css';
 
@@ -198,9 +197,7 @@ export const ReadmeGenerator = () => {
               <span className="text-lg">{section.emoji}</span>
               <span
                 className={`text-sm font-medium truncate flex-1 ${
-                  section.isIncluded
-                    ? 'text-foreground'
-                    : 'text-foreground-muted'
+                  section.isIncluded ? 'text-foreground' : 'text-foreground-muted'
                 }`}
               >
                 {section.name}

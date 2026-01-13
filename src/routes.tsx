@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRoutes } from 'react-router-dom';
 
 // Helper to lazy load named exports
 const lazyLoad = (importPath: () => Promise<Record<string, unknown>>, componentName: string) => {
@@ -140,7 +141,7 @@ const SvgViewer = lazyLoad(() => import('./features/SvgViewer/index'), 'SvgViewe
 const Home = lazyLoad(() => import('./features/Home'), 'Home');
 const NotFound = lazyLoad(() => import('./features/NotFound'), 'NotFound');
 
-export const routes = [
+const routes = [
   { path: '/', element: <Home /> },
   { path: '/json-formatter', element: <JsonFormatter /> },
   { path: '/base64-converter', element: <Base64Converter /> },
@@ -197,7 +198,7 @@ export const routes = [
   { path: '/markdown-editor', element: <MarkdownEditor /> },
   { path: '/bitwise-calculator', element: <BitwiseCalculator /> },
   { path: '/bcrypt-generator', element: <BcryptGenerator /> },
-  { path: '/hmac-generator', element: <HashGenerator /> },  // Redirect to unified HashGenerator
+  { path: '/hmac-generator', element: <HashGenerator /> }, // Redirect to unified HashGenerator
   { path: '/slug-generator', element: <SlugGenerator /> },
   { path: '/rsa-generator', element: <RsaGenerator /> },
   { path: '/token-generator', element: <TokenGenerator /> },
@@ -208,8 +209,8 @@ export const routes = [
   { path: '/remove-punctuation', element: <RemovePunctuation /> },
   { path: '/html-editor', element: <HtmlEditor /> },
   { path: '/lua-formatter', element: <LuaFormatter /> },
-  { path: '/lua-minifier', element: <LuaFormatter /> },  // Redirect to unified LuaFormatter
-  { path: '/lua-beautifier', element: <LuaFormatter /> },  // Redirect to unified LuaFormatter
+  { path: '/lua-minifier', element: <LuaFormatter /> }, // Redirect to unified LuaFormatter
+  { path: '/lua-beautifier', element: <LuaFormatter /> }, // Redirect to unified LuaFormatter
   { path: '/php-formatter', element: <PhpFormatter /> },
   { path: '/wordpress-password-hash', element: <WordpressPasswordHash /> },
   { path: '/image-to-ascii', element: <ImageToAscii /> },
@@ -227,3 +228,8 @@ export const routes = [
   { path: '/s/:id', element: <SvgViewer /> },
   { path: '*', element: <NotFound /> },
 ];
+
+export const AppRoutes = () => {
+  const element = useRoutes(routes);
+  return element;
+};

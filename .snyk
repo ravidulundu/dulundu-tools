@@ -30,6 +30,14 @@ ignore:
           (build-time only). No fix available without breaking changes.
         expires: 2027-01-12T00:00:00.000Z
         created: 2026-01-12T00:00:00.000Z
+  SNYK-JS-ELLIPTIC-8187303:
+    - '*':
+        reason: >-
+          Improper Verification of Cryptographic Signature - transitive dependency
+          from vite-plugin-node-polyfills (build-time only). Not used in runtime.
+          No remediation available without breaking changes.
+        expires: 2027-01-12T00:00:00.000Z
+        created: 2026-01-12T00:00:00.000Z
   SNYK-JS-PATHTRAV-174689:
     - '*':
         reason: >-

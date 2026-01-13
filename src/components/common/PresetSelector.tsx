@@ -10,12 +10,7 @@ interface PresetSelectorProps<T> {
   onDelete: (presetId: string) => void;
 }
 
-export function PresetSelector<T>({
-  presets,
-  onSelect,
-  onSave,
-  onDelete,
-}: PresetSelectorProps<T>) {
+export function PresetSelector<T>({ presets, onSelect, onSave, onDelete }: PresetSelectorProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [showSaveInput, setShowSaveInput] = useState(false);
   const [newPresetName, setNewPresetName] = useState('');

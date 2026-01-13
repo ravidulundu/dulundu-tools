@@ -1,9 +1,10 @@
-import { FileText, RefreshCw, Copy, Check, Download } from 'lucide-react';
+import { Check, Copy, Download, FileText, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
+import { downloadContent } from '@/utils/downloadUtils';
 
 const LOREM_TEXT = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
@@ -90,15 +91,7 @@ export const LoremGenerator: React.FC = () => {
                   icon={Download}
                   label="Download"
                   onClick={() => {
-                    const blob = new Blob([output], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'lorem-ipsum.txt';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    downloadContent(output, 'lorem-ipsum.txt');
                   }}
                   variant="secondary"
                 />

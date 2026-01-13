@@ -40,46 +40,49 @@ export const HashGenerator: React.FC = () => {
   });
 
   // Regular Hash generation
-  const generateHash = useCallback(async (text: string, fileInput: File | null, algorithm: string) => {
-    if (!text && !fileInput) {
+  const generateHash = useCallback(
+    async (text: string, fileInput: File | null, algorithm: string) => {
+      if (!text && !fileInput) {
+        setHash('');
+        return;
+      }
+
+      setLoading(true);
       setHash('');
-      return;
-    }
 
-    setLoading(true);
-    setHash('');
+      try {
+        if (fileInput) {
+          if (algorithm === 'MD5') {
+            setHash('MD5 not supported for files. Use SHA algorithms.');
+            setLoading(false);
+            return;
+          }
 
-    try {
-      if (fileInput) {
-        if (algorithm === 'MD5') {
-          setHash('MD5 not supported for files. Use SHA algorithms.');
-          setLoading(false);
-          return;
-        }
-
-        const buffer = await fileInput.arrayBuffer();
-        const hashBuffer = await crypto.subtle.digest(algorithm, buffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        setHash(hashHex);
-      } else {
-        if (algorithm === 'MD5') {
-          setHash(md5(text));
-        } else {
-          const encoder = new TextEncoder();
-          const data = encoder.encode(text);
-          const hashBuffer = await crypto.subtle.digest(algorithm, data);
+          const buffer = await fileInput.arrayBuffer();
+          const hashBuffer = await crypto.subtle.digest(algorithm, buffer);
           const hashArray = Array.from(new Uint8Array(hashBuffer));
           const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
           setHash(hashHex);
+        } else {
+          if (algorithm === 'MD5') {
+            setHash(md5(text));
+          } else {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            const hashBuffer = await crypto.subtle.digest(algorithm, data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            setHash(hashHex);
+          }
         }
+      } catch (e) {
+        setHash('Error: ' + (e as Error).message);
+      } finally {
+        setLoading(false);
       }
-    } catch (e) {
-      setHash('Error: ' + (e as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   // HMAC generation
   const generateHmac = useCallback(async (text: string, secretKey: string, algorithm: string) => {
@@ -147,9 +150,10 @@ export const HashGenerator: React.FC = () => {
     }
   };
 
-  const algorithms = mode === 'hash'
-    ? ['MD5', 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512']
-    : ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
+  const algorithms =
+    mode === 'hash'
+      ? ['MD5', 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512']
+      : ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
@@ -217,7 +221,10 @@ export const HashGenerator: React.FC = () => {
               {/* HMAC Secret Key Input */}
               {mode === 'hmac' && (
                 <div className="bg-card p-4 rounded-xl border border-border shadow-sm">
-                  <label htmlFor="secret-key" className="block text-xs font-bold text-foreground-muted uppercase mb-2">
+                  <label
+                    htmlFor="secret-key"
+                    className="block text-xs font-bold text-foreground-muted uppercase mb-2"
+                  >
                     Secret Key
                   </label>
                   <div className="relative">
@@ -264,7 +271,9 @@ export const HashGenerator: React.FC = () => {
                       }
                     }}
                     className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors cursor-pointer ${
-                      file ? 'border-primary bg-primary-light' : 'border-border hover:bg-background-secondary'
+                      file
+                        ? 'border-primary bg-primary-light'
+                        : 'border-border hover:bg-background-secondary'
                     }`}
                     onClick={() => fileInputRef.current?.click()}
                   >
@@ -281,7 +290,9 @@ export const HashGenerator: React.FC = () => {
                         <p className="text-foreground-muted">{(file.size / 1024).toFixed(2)} KB</p>
                       </div>
                     ) : (
-                      <p className="text-sm text-foreground-muted font-medium">Click to select a file</p>
+                      <p className="text-sm text-foreground-muted font-medium">
+                        Click to select a file
+                      </p>
                     )}
                   </div>
                 </div>
@@ -291,11 +302,15 @@ export const HashGenerator: React.FC = () => {
             <CodeEditor
               value={loading ? 'Calculating...' : hash}
               label={mode === 'hash' ? `${algo} Hash` : `HMAC-${algo}`}
-              placeholder={mode === 'hash' ? 'Hash will appear here...' : 'HMAC signature will appear here...'}
+              placeholder={
+                mode === 'hash' ? 'Hash will appear here...' : 'HMAC signature will appear here...'
+              }
               readOnly
               theme="dark"
               actions={
-                hash && !hash.startsWith('Error') && !hash.startsWith('MD5 not') && (
+                hash &&
+                !hash.startsWith('Error') &&
+                !hash.startsWith('MD5 not') && (
                   <ActionButton
                     icon={copied ? Check : Copy}
                     label={copied ? 'Copied' : 'Copy'}

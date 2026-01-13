@@ -86,9 +86,7 @@ export const Sidebar = () => {
 
       <div className="flex-1 overflow-y-auto p-3 custom-scrollbar">
         {!hasSearched && !isLoading && icons.length === 0 ? (
-          <div className="text-center text-foreground-muted text-xs mt-10">
-            Search for icons...
-          </div>
+          <div className="text-center text-foreground-muted text-xs mt-10">Search for icons...</div>
         ) : (
           <IconGrid icons={icons} onSelectIcon={handleSelectIcon} />
         )}

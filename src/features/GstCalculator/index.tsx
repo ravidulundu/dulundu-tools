@@ -81,7 +81,10 @@ export const GstCalculator: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="gst-rate" className="block text-sm font-bold text-foreground-secondary mb-2">
+                <label
+                  htmlFor="gst-rate"
+                  className="block text-sm font-bold text-foreground-secondary mb-2"
+                >
                   GST Rate (%)
                 </label>
                 <div className="grid grid-cols-4 gap-2 mb-3">
@@ -110,7 +113,10 @@ export const GstCalculator: React.FC = () => {
               </div>
 
               <div>
-                <span id="calc-type-label" className="block text-sm font-bold text-foreground-secondary mb-2">
+                <span
+                  id="calc-type-label"
+                  className="block text-sm font-bold text-foreground-secondary mb-2"
+                >
                   Calculation Type
                 </span>
                 <div
@@ -138,7 +144,9 @@ export const GstCalculator: React.FC = () => {
             <div className="bg-card rounded-2xl p-6 border border-border shadow-sm flex flex-col justify-center space-y-6 h-full">
               <div className="flex justify-between items-center pb-4 border-b border-border">
                 <span className="text-foreground-muted font-medium">Net Amount</span>
-                <span className="text-lg font-bold text-foreground-secondary">{fmt(result.net)}</span>
+                <span className="text-lg font-bold text-foreground-secondary">
+                  {fmt(result.net)}
+                </span>
               </div>
               <div className="flex justify-between items-center pb-4 border-b border-border">
                 <span className="text-foreground-muted font-medium">GST Amount ({rate}%)</span>

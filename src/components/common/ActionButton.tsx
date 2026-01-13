@@ -41,7 +41,8 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
 
   // Color variants using semantic theme colors
   const variantClasses = {
-    primary: 'bg-primary text-primary-foreground hover:bg-primary-hover focus:ring-primary shadow-sm',
+    primary:
+      'bg-primary text-primary-foreground hover:bg-primary-hover focus:ring-primary shadow-sm',
     secondary:
       'bg-card text-foreground-secondary border border-border hover:bg-background-secondary focus:ring-secondary shadow-sm',
     success: 'bg-success text-white hover:opacity-90 focus:ring-success shadow-sm',

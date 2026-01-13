@@ -12,11 +12,7 @@ interface ToolHistoryProviderProps {
 export function ToolHistoryProvider({ children }: ToolHistoryProviderProps) {
   const toolHistory = useToolHistory();
 
-  return (
-    <ToolHistoryContext.Provider value={toolHistory}>
-      {children}
-    </ToolHistoryContext.Provider>
-  );
+  return <ToolHistoryContext.Provider value={toolHistory}>{children}</ToolHistoryContext.Provider>;
 }
 
 export function useToolHistoryContext() {

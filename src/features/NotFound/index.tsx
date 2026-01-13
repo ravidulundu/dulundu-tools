@@ -20,18 +20,8 @@ const NotFound: React.FC = () => {
             className="fill-background-secondary"
           />
           <circle cx="200" cy="200" r="150" className="fill-background-tertiary" />
-          <circle
-            cx="150"
-            cy="180"
-            r="15"
-            className="fill-foreground-muted animate-pulse"
-          />
-          <circle
-            cx="250"
-            cy="180"
-            r="15"
-            className="fill-foreground-muted animate-pulse"
-          />
+          <circle cx="150" cy="180" r="15" className="fill-foreground-muted animate-pulse" />
+          <circle cx="250" cy="180" r="15" className="fill-foreground-muted animate-pulse" />
           <path
             d="M170 240C170 240 180 230 200 230C220 230 230 240 230 240"
             strokeWidth="8"
@@ -51,9 +41,7 @@ const NotFound: React.FC = () => {
           </text>
         </svg>
       </div>
-      <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-        Lost in Space?
-      </h1>
+      <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Lost in Space?</h1>
       The page you&apos;re looking for seems to have drifted away into the digital void.
       <div className="flex flex-col sm:flex-row gap-4">
         <Link

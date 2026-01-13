@@ -72,7 +72,9 @@ export const SharelinkGenerator: React.FC = () => {
             <div className="bg-card p-6 rounded-xl border border-border shadow-sm h-fit overflow-y-auto max-h-full">
               <div className="space-y-6">
                 <div>
-                  <span className="block text-sm font-bold text-foreground-secondary mb-2">Platform</span>
+                  <span className="block text-sm font-bold text-foreground-secondary mb-2">
+                    Platform
+                  </span>
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       'twitter',
@@ -103,7 +105,10 @@ export const SharelinkGenerator: React.FC = () => {
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label htmlFor="url-input" className="block text-sm font-bold text-foreground-secondary">
+                    <label
+                      htmlFor="url-input"
+                      className="block text-sm font-bold text-foreground-secondary"
+                    >
                       URL to Share
                     </label>
                     <button

@@ -133,7 +133,10 @@ export const RandomGenerator: React.FC = () => {
                 )}
 
                 <div>
-                  <label htmlFor="quantity" className="block text-sm font-bold text-foreground-secondary mb-2">
+                  <label
+                    htmlFor="quantity"
+                    className="block text-sm font-bold text-foreground-secondary mb-2"
+                  >
                     Quantity to Generate
                   </label>
                   <input
