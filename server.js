@@ -249,6 +249,10 @@ app.use(
       else if (filePath.match(/\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       }
+      // Operational files (sitemap, robots, manifest) - Short cache or no cache
+      else if (filePath.match(/\.(xml|txt|json)$/)) {
+        res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+      }
     },
   })
 );
