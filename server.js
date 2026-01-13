@@ -445,11 +445,11 @@ app.post(
       return res.status(400).json({ error: 'Topic is too long (max 2000 characters).' });
     }
 
-    if (recipient && recipient.length > 200) {
+    if (recipient && typeof recipient === 'string' && recipient.length > 200) {
       return res.status(400).json({ error: 'Recipient is too long (max 200 characters).' });
     }
 
-    if (tone && tone.length > 50) {
+    if (tone && typeof tone === 'string' && tone.length > 50) {
       return res.status(400).json({ error: 'Tone is too long (max 50 characters).' });
     }
 
