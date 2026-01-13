@@ -6,6 +6,7 @@ import { CodeEditor } from '@/components/common/CodeEditor';
 import { ToolHeader } from '@/components/common/ToolHeader';
 import { ToolPageLayout } from '@/components/layouts/ToolPageLayout';
 import { generateEmail } from '@/services/aiService';
+import { EMAIL_TONE_OPTIONS } from '@/shared/aiConstants';
 
 export const EmailGenerator: React.FC = () => {
   const [recipient, setRecipient] = useState('');
