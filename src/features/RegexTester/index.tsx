@@ -20,21 +20,23 @@ export const RegexTester: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const workerRef = React.useRef<Worker | null>(null);
+  // Use state instead of ref so component re-renders when worker is recreated
+  const [worker, setWorker] = useState<Worker | null>(null);
 
-  // Initialize worker once
+  // Initialize worker on mount
   useEffect(() => {
-    workerRef.current = new Worker(new URL('./regex.worker.ts', import.meta.url), {
+    const newWorker = new Worker(new URL('./regex.worker.ts', import.meta.url), {
       type: 'module',
     });
+    setWorker(newWorker);
 
     return () => {
-      workerRef.current?.terminate();
+      newWorker.terminate();
     };
   }, []);
 
+  // Handle worker communication - re-runs when worker changes (including after timeout recreation)
   useEffect(() => {
-    const worker = workerRef.current;
     if (!worker) return;
 
     let timeoutId: NodeJS.Timeout;
@@ -52,12 +54,14 @@ export const RegexTester: React.FC = () => {
       }
     };
 
-    worker.onmessage = handleMessage;
-    worker.onerror = err => {
+    const handleError = (err: ErrorEvent) => {
       clearTimeout(timeoutId);
       setError('Worker error: ' + err.message);
       setMatches([]);
     };
+
+    worker.onmessage = handleMessage;
+    worker.onerror = handleError;
 
     // Send data to worker with timeout protection
     if (pattern && text) {
@@ -66,14 +70,11 @@ export const RegexTester: React.FC = () => {
         worker.terminate();
         setError('Regex execution timed out (ReDoS protection)');
         setMatches([]);
-        // Restart worker for next input
-        workerRef.current = new Worker(new URL('./regex.worker.ts', import.meta.url), {
+        // Create new worker - setWorker triggers re-render and this effect re-runs
+        const newWorker = new Worker(new URL('./regex.worker.ts', import.meta.url), {
           type: 'module',
         });
-        // We need to re-attach the listener to the new worker if we want it to work for *subsequent* calls
-        // but this effect runs on [pattern, flags, text], so next change will re-attach.
-        // However, if the user doesn't change anything, it's just dead.
-        // The previous code had a complex recreation logic inside the effect that recreated it every time.
+        setWorker(newWorker);
       }, 3000);
 
       worker.postMessage({ pattern, flags, text });
@@ -88,10 +89,8 @@ export const RegexTester: React.FC = () => {
 
     return () => {
       clearTimeout(timeoutId);
-      // Do NOT terminate worker here, we want to reuse it.
-      // Only clean up the timeout.
     };
-  }, [pattern, flags, text]);
+  }, [worker, pattern, flags, text]);
 
   const highlightText = () => {
     if (!text || matches.length === 0) return text;
