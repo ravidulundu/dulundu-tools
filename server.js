@@ -164,8 +164,8 @@ app.use((req, res, next) => {
       "child-src 'self' blob:; " +
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; " +
       "font-src 'self' data: https://fonts.gstatic.com; " +
-      "img-src 'self' data: https:; " +
-      "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools https://stats.dulundu.tools https://cdn.jsdelivr.net;"
+      "img-src 'self' data: https: https://api.qrserver.com https://images.unsplash.com; " +
+      "connect-src 'self' https://api.iconify.design https://umami.dulundu.tools https://stats.dulundu.tools https://cdn.jsdelivr.net https://api.ipify.org https://api64.ipify.org https://api.db-ip.com https://rdap.org https://dns.google https://api.qrserver.com;"
   );
   // Additional security headers
   res.setHeader('X-Content-Type-Options', 'nosniff');
