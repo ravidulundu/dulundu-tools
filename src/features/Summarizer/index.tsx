@@ -21,8 +21,11 @@ export const Summarizer: React.FC = () => {
     try {
       const result = await summarizeText(input, length);
       setOutput(result);
-    } catch (_error) {
-      setOutput('Error: Failed to summarize text. Please try again.');
+    } catch (error) {
+      console.error('Failed to summarize text:', error);
+      const message =
+        error instanceof Error ? error.message : 'Failed to summarize text. Please try again.';
+      setOutput(`Error: ${message}`);
     } finally {
       setLoading(false);
     }

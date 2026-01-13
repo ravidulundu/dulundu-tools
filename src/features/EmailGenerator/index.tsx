@@ -22,8 +22,11 @@ export const EmailGenerator: React.FC = () => {
     try {
       const result = await generateEmail(topic, recipient, tone);
       setOutput(result);
-    } catch (_error) {
-      setOutput('Error: Failed to generate email. Please try again.');
+    } catch (error) {
+      console.error('Failed to generate email:', error);
+      const message =
+        error instanceof Error ? error.message : 'Failed to generate email. Please try again.';
+      setOutput(`Error: ${message}`);
     } finally {
       setLoading(false);
     }

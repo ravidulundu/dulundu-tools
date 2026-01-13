@@ -185,7 +185,7 @@ app.use(
         imgSrc: [
           "'self'",
           'data:',
-          'https:',
+          'blob:',
           'https://api.qrserver.com',
           'https://images.unsplash.com',
         ],
@@ -358,7 +358,8 @@ app.post(
   aiLimiter,
   asyncHandler(async (req, res) => {
     if (!groq && !gemini) {
-      throw new Error('AI service not configured');
+      logger.error('AI service configuration missing');
+      return res.status(503).json({ error: 'AI service currently unavailable' });
     }
 
     const { prompt, language } = req.body;
@@ -396,7 +397,8 @@ app.post(
   aiLimiter,
   asyncHandler(async (req, res) => {
     if (!groq && !gemini) {
-      throw new Error('AI service not configured');
+      logger.error('AI service configuration missing');
+      return res.status(503).json({ error: 'AI service currently unavailable' });
     }
 
     const { text, tone } = req.body;
@@ -432,13 +434,18 @@ app.post(
   aiLimiter,
   asyncHandler(async (req, res) => {
     if (!groq && !gemini) {
-      throw new Error('AI service not configured');
+      logger.error('AI service configuration missing');
+      return res.status(503).json({ error: 'AI service currently unavailable' });
     }
 
     const { recipient, topic, tone } = req.body;
 
     if (!topic || typeof topic !== 'string' || topic.trim().length === 0) {
       return res.status(400).json({ error: 'Valid topic is required' });
+    }
+
+    if (topic.length > 2000) {
+      return res.status(400).json({ error: 'Topic is too long (max 2000 characters).' });
     }
 
     const systemPrompt = `You are an expert professional writer. Write an email based on the following details:
@@ -465,7 +472,8 @@ app.post(
   aiLimiter,
   asyncHandler(async (req, res) => {
     if (!groq && !gemini) {
-      throw new Error('AI service not configured');
+      logger.error('AI service configuration missing');
+      return res.status(503).json({ error: 'AI service currently unavailable' });
     }
 
     const { text, length: summaryLength } = req.body;
@@ -475,16 +483,18 @@ app.post(
     }
 
     if (text.length > 5000) {
-      return res.status(400).json({ error: 'Text too long (max 5000 characters).' });
+      return res
+        .status(400)
+        .json({ error: 'Text too long (max 5000 characters). Please shorten your input.' });
     }
 
-    let lengthInstruction = 'Provide a medium length summary.';
-    if (summaryLength === 'short')
-      lengthInstruction = 'Provide a very concise, 1-2 sentence summary.';
-    else if (summaryLength === 'bullets')
-      lengthInstruction = 'Provide a summary as a list of bullet points.';
-    else if (summaryLength === 'long')
-      lengthInstruction = 'Provide a detailed, comprehensive summary.';
+    const lengthInstructions = {
+      short: 'Provide a very concise, 1-2 sentence summary.',
+      bullets: 'Provide a summary as a list of bullet points.',
+      long: 'Provide a detailed, comprehensive summary.',
+      medium: 'Provide a medium length summary.',
+    };
+    const lengthInstruction = lengthInstructions[summaryLength] || lengthInstructions.medium;
 
     const systemPrompt = `You are an expert synthesizer. Summarize the following text.
 ${lengthInstruction}

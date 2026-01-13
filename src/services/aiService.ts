@@ -95,66 +95,49 @@ const checkRateLimit = (): { allowed: boolean; error?: string; remaining?: numbe
   }
 };
 
-export const generateCodeHelp = async (
-  prompt: string,
-  language: string = 'javascript'
-): Promise<string> => {
+// Helper to handle API calls with rate limiting and error handling
+const callAiApi = async (endpoint: string, body: object): Promise<string> => {
+  // 1. Rate Limit Check
   const securityCheck = checkRateLimit();
   if (!securityCheck.allowed) {
-    return securityCheck.error || 'Access denied.';
+    throw new Error(securityCheck.error || 'Access denied.');
   }
 
   try {
-    const response = await fetch('/api/ai/generate', {
+    // 2. API Call
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt, language }),
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to generate code');
+      throw new Error(errorData.error || `Failed request to ${endpoint}`);
     }
 
     const data = await response.json();
     return data.text;
   } catch (error) {
-    console.error('AI Service Error:', error);
-    return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    console.error(`AI Service Error (${endpoint}):`, error);
+    throw error; // Propagate error to UI
   }
+};
+
+export const generateCodeHelp = async (
+  prompt: string,
+  language: string = 'javascript'
+): Promise<string> => {
+  return callAiApi('/api/ai/generate', { prompt, language });
 };
 
 export const paraphraseText = async (
   text: string,
   tone: string = 'professional'
 ): Promise<string> => {
-  const securityCheck = checkRateLimit();
-  if (!securityCheck.allowed) {
-    return securityCheck.error || 'Access denied.';
-  }
-
-  try {
-    const response = await fetch('/api/ai/paraphrase', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text, tone }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to paraphrase text');
-    }
-
-    const data = await response.json();
-    return data.text;
-  } catch (error) {
-    console.error('AI Service Error:', error);
-    return `Error: ${error instanceof Error ? error.message : String(error)}`;
-  }
+  return callAiApi('/api/ai/paraphrase', { text, tone });
 };
 
 export const generateEmail = async (
@@ -162,57 +145,9 @@ export const generateEmail = async (
   recipient: string,
   tone: string
 ): Promise<string> => {
-  const securityCheck = checkRateLimit();
-  if (!securityCheck.allowed) {
-    return securityCheck.error || 'Access denied.';
-  }
-
-  try {
-    const response = await fetch('/api/ai/email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ topic, recipient, tone }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to generate email');
-    }
-
-    const data = await response.json();
-    return data.text;
-  } catch (error) {
-    console.error('AI Service Error:', error);
-    return `Error: ${error instanceof Error ? error.message : String(error)}`;
-  }
+  return callAiApi('/api/ai/email', { topic, recipient, tone });
 };
 
 export const summarizeText = async (text: string, length: string): Promise<string> => {
-  const securityCheck = checkRateLimit();
-  if (!securityCheck.allowed) {
-    return securityCheck.error || 'Access denied.';
-  }
-
-  try {
-    const response = await fetch('/api/ai/summarize', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text, length }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to summarize text');
-    }
-
-    const data = await response.json();
-    return data.text;
-  } catch (error) {
-    console.error('AI Service Error:', error);
-    return `Error: ${error instanceof Error ? error.message : String(error)}`;
-  }
+  return callAiApi('/api/ai/summarize', { text, length });
 };
