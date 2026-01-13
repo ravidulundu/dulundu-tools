@@ -1,5 +1,5 @@
-import { Code2, Wand2, Minimize2, Copy, Check, Trash2, Upload, Download } from 'lucide-react';
-import React, { useState, useCallback } from 'react';
+import { Check, Code2, Copy, Download, Minimize2, Trash2, Upload, Wand2 } from 'lucide-react';
+import React, { useCallback, useState } from 'react';
 
 import { ActionButton } from '@/components/common/ActionButton';
 import { CodeEditor } from '@/components/common/CodeEditor';
@@ -97,7 +97,7 @@ export const LuaFormatter: React.FC = () => {
     }
   }, [mode, input, beautifyLua, minifyLua, setOutput]);
 
-  const toggleMode = () => {
+  const _toggleMode = () => {
     setMode(prev => (prev === 'beautify' ? 'minify' : 'beautify'));
     setOutput('');
   };

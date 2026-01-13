@@ -1,8 +1,8 @@
 import { Grid } from 'lucide-react';
 import React from 'react';
 
-import { ALL_TOOLS } from '@/config/allTools';
 import { NavButton } from '@/components/common/NavButton';
+import { ALL_TOOLS } from '@/config/allTools';
 
 interface SidebarProps {
   activeCategory: string;

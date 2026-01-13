@@ -1,8 +1,8 @@
-import { TrendingUp, Grid, Zap, Search } from 'lucide-react';
+import { Grid, Search, TrendingUp, Zap } from 'lucide-react';
 import React from 'react';
 import { SetURLSearchParams } from 'react-router-dom';
 
-import { useToolHistoryContext } from '@/contexts/ToolHistoryContext';
+import { useToolHistoryContext } from '@/contexts/useToolHistoryContext';
 
 import { ToolDef } from '../../types';
 import { ToolCard } from '../ToolCard';

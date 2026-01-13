@@ -1,7 +1,7 @@
-import { Star, Clock, Heart } from 'lucide-react';
+import { Clock, Heart, Star } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { useToolHistoryContext } from '@/contexts/ToolHistoryContext';
+import { useToolHistoryContext } from '@/contexts/useToolHistoryContext';
 
 import { ToolDef } from '../../types';
 import { ToolCard } from '../ToolCard';

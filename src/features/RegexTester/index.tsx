@@ -1,5 +1,5 @@
 import { AlertCircle, CheckCircle, Flag, Regex } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/common/Button';
 import { CodeEditor } from '@/components/common/CodeEditor';
@@ -20,23 +20,30 @@ export const RegexTester: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // Use state instead of ref so component re-renders when worker is recreated
-  const [worker, setWorker] = useState<Worker | null>(null);
+  // Use ref for worker to avoid lint error about modifying state directly
+  const workerRef = useRef<Worker | null>(null);
+  const [workerVersion, setWorkerVersion] = useState(0);
 
-  // Initialize worker on mount
-  useEffect(() => {
+  // Create worker function
+  const createWorker = useCallback(() => {
     const newWorker = new Worker(new URL('./regex.worker.ts', import.meta.url), {
       type: 'module',
     });
-    setWorker(newWorker);
-
-    return () => {
-      newWorker.terminate();
-    };
+    workerRef.current = newWorker;
+    return newWorker;
   }, []);
 
-  // Handle worker communication - re-runs when worker changes (including after timeout recreation)
+  // Initialize worker on mount
   useEffect(() => {
+    const worker = createWorker();
+    return () => {
+      worker.terminate();
+    };
+  }, [createWorker]);
+
+  // Handle worker communication
+  useEffect(() => {
+    const worker = workerRef.current;
     if (!worker) return;
 
     let timeoutId: NodeJS.Timeout;
@@ -70,11 +77,9 @@ export const RegexTester: React.FC = () => {
         worker.terminate();
         setError('Regex execution timed out (ReDoS protection)');
         setMatches([]);
-        // Create new worker - setWorker triggers re-render and this effect re-runs
-        const newWorker = new Worker(new URL('./regex.worker.ts', import.meta.url), {
-          type: 'module',
-        });
-        setWorker(newWorker);
+        // Create new worker
+        createWorker();
+        setWorkerVersion(v => v + 1);
       }, 3000);
 
       worker.postMessage({ pattern, flags, text });
@@ -90,7 +95,7 @@ export const RegexTester: React.FC = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [worker, pattern, flags, text]);
+  }, [workerVersion, pattern, flags, text, createWorker]);
 
   const highlightText = () => {
     if (!text || matches.length === 0) return text;

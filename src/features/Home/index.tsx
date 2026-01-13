@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { HeroSection } from '@/components/home/HeroSection';
 import { Sidebar } from '@/components/home/Sidebar';
 import { ToolGrid } from '@/components/home/ToolGrid';
 import { ALL_TOOLS } from '@/config/allTools';
-import { useToolHistoryContext } from '@/contexts/ToolHistoryContext';
+import { useToolHistoryContext } from '@/contexts/useToolHistoryContext';
 import { useCategoryInfo } from '@/hooks/useCategoryInfo';
 import { useToolFiltering } from '@/hooks/useToolFiltering';
 

@@ -1,146 +1,39 @@
-import { ArrowLeftRight, Link as LinkIcon, Copy, Check, Trash2 } from 'lucide-react';
-import React, { useState } from 'react';
+import { Link as LinkIcon } from 'lucide-react';
+import React from 'react';
 
-import { ActionButton } from '@/components/common/ActionButton';
-import { CodeEditor } from '@/components/common/CodeEditor';
-import { ToolHeader } from '@/components/common/ToolHeader';
-import { useToolLogic } from '@/hooks/useToolLogic';
-import { useToolShortcuts } from '@/hooks/useToolShortcuts';
+import { EncoderDecoderLayout } from '@/components/layouts/EncoderDecoderLayout';
 
 export const UrlEncoder: React.FC = () => {
-  const { input, setInput, output, setOutput, copied, handleCopy, handleClear } = useToolLogic();
-  const [mode, setMode] = useState<'encode' | 'decode'>('encode');
-
-  useToolShortcuts({
-    onCopy: handleCopy,
-    onClear: handleClear,
-  });
-
-  const process = React.useCallback(
-    (text: string, currentMode: 'encode' | 'decode') => {
-      try {
-        if (!text) {
-          setOutput('');
-          return;
-        }
-        if (currentMode === 'encode') {
-          setOutput(encodeURIComponent(text));
-        } else {
-          setOutput(decodeURIComponent(text));
-        }
-      } catch (_e) {
-        setOutput('Error: Invalid URL format for decoding');
-      }
-    },
-    [setOutput]
-  );
-
-  // Check for input in URL hash (from extension)
-  React.useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes('input=')) {
-      try {
-        const params = new URLSearchParams(hash.substring(1));
-        const inputParam = params.get('input');
-        if (inputParam) {
-          const decoded = decodeURIComponent(inputParam);
-          setInput(decoded);
-          // Default to encode, but if it looks encoded, maybe decode?
-          // For now, let's just set input and process as encode (default)
-          // Or we could check if decodeURIComponent(decoded) !== decoded
-          if (decodeURIComponent(decoded) !== decoded) {
-            setMode('decode');
-            process(decoded, 'decode');
-          } else {
-            process(decoded, 'encode');
-          }
-
-          window.history.replaceState(null, '', window.location.pathname);
-        }
-      } catch (_e) {
-        // Ignore parsing errors from hash
-      }
-    }
-  }, [setInput, process]);
-
-  const handleInputChange = (newVal: string) => {
-    setInput(newVal);
-    process(newVal, mode);
-  };
-
-  const toggleMode = () => {
-    const newMode = mode === 'encode' ? 'decode' : 'encode';
-    setMode(newMode);
-    setInput(output);
-    setOutput(input);
-  };
-
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-card rounded-2xl shadow-sm border border-border flex flex-col h-full overflow-hidden">
-        <ToolHeader
-          icon={LinkIcon}
-          title="URL Encoder / Decoder"
-          description="Encode special characters or decode URL entities"
-          iconBgColor="bg-indigo-100"
-          iconColor="text-indigo-600"
-        />
-
-        {/* Toolbar */}
-        <div className="p-3 bg-card border-b border-border flex justify-between items-center">
-          <button
-            onClick={toggleMode}
-            className="flex items-center space-x-2 px-6 py-2 bg-background-secondary hover:bg-background rounded-full text-foreground-secondary font-medium transition-colors border border-border"
-          >
-            <span className={mode === 'encode' ? 'text-primary font-bold' : ''}>Encode</span>
-            <ArrowLeftRight size={16} className="text-foreground-muted" />
-            <span className={mode === 'decode' ? 'text-primary font-bold' : ''}>Decode</span>
-          </button>
-
-          <button
-            onClick={handleClear}
-            className="p-2 text-foreground-muted hover:text-danger hover:bg-danger-light rounded-lg transition-colors"
-            title="Clear All"
-          >
-            <Trash2 size={20} />
-          </button>
-        </div>
-
-        {/* Editor Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-hidden bg-background-secondary/30">
-          <div className="grid md:grid-cols-2 gap-4 h-full">
-            <CodeEditor
-              value={input}
-              onChange={handleInputChange}
-              label={mode === 'encode' ? 'Decoded URL' : 'Encoded URL'}
-              placeholder={
-                mode === 'encode'
-                  ? 'Paste URL here to encode...'
-                  : 'Paste encoded URL here to decode...'
-              }
-              theme="light"
-            />
-
-            <CodeEditor
-              value={output}
-              label={mode === 'encode' ? 'Encoded Result' : 'Decoded Result'}
-              placeholder="Result will appear here..."
-              readOnly
-              theme="dark"
-              actions={
-                output && (
-                  <ActionButton
-                    icon={copied ? Check : Copy}
-                    label={copied ? 'Copied' : 'Copy'}
-                    onClick={handleCopy}
-                    variant={copied ? 'success' : 'primary'}
-                  />
-                )
-              }
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <EncoderDecoderLayout
+      config={{
+        icon: LinkIcon,
+        title: 'URL Encoder / Decoder',
+        description: 'Encode special characters or decode URL entities',
+        iconBgColor: 'bg-indigo-100',
+        iconColor: 'text-indigo-600',
+        encodeLabels: {
+          inputLabel: 'Decoded URL',
+          outputLabel: 'Encoded Result',
+          inputPlaceholder: 'Paste URL here to encode...',
+        },
+        decodeLabels: {
+          inputLabel: 'Encoded URL',
+          outputLabel: 'Decoded Result',
+          inputPlaceholder: 'Paste encoded URL here to decode...',
+        },
+        encode: (text: string) => encodeURIComponent(text),
+        decode: (text: string) => decodeURIComponent(text),
+        decodeErrorMessage: 'Error: Invalid URL format for decoding',
+        // If input looks encoded, decode it
+        shouldDecodeOnHashInput: (input: string) => {
+          try {
+            return decodeURIComponent(input) !== input;
+          } catch {
+            return false;
+          }
+        },
+      }}
+    />
   );
 };

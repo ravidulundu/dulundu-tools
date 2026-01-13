@@ -5,6 +5,7 @@ import {
   Braces,
   BrainCircuit,
   Calculator,
+  CalendarClock,
   Clock,
   Code,
   Code2,
@@ -13,9 +14,13 @@ import {
   DollarSign,
   Eye,
   FileCode,
+  FileCode2,
   FileJson,
   FileSearch,
+  FileSpreadsheet,
   FileText,
+  Fingerprint,
+  GitCompare,
   Globe,
   Hash,
   Image,
@@ -29,24 +34,18 @@ import {
   Regex,
   Ruler,
   Search,
-  Shield,
+  Share2,
   ShieldCheck,
   Shuffle,
-  Share2,
+  Split,
   Table,
+  Terminal,
   Type,
   Wand2,
   Wifi,
-  GitCompare,
-  Fingerprint,
-  CalendarClock,
-  Split,
-  FileCode2,
-  Terminal,
-  FileSpreadsheet,
 } from 'lucide-react';
 
-import { ToolDef, ToolCategory } from '@/types';
+import { ToolCategory, ToolDef } from '@/types';
 
 export const ALL_TOOLS: ToolDef[] = [
   // --- ESSENTIAL DEVELOPER TOOLS ---
