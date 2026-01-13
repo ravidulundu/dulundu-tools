@@ -352,7 +352,7 @@ const BLOCKED_PATTERNS = [
   /^\/xmlrpc/i, // XML-RPC
   /^\/admin\.php/i, // Admin PHP
   /^\/cgi-bin\//i, // CGI bin
-  /\.env$/i, // Environment files
+  /\.env/i, // Environment files (.env, .env.production, .env.local, etc.)
   /\/\.git\//i, // Git directory
   /\/\.svn\//i, // SVN directory
   /\/\.htaccess/i, // Apache config
