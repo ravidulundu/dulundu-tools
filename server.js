@@ -167,7 +167,7 @@ app.use(
         scriptSrc: [
           "'self'",
           "'unsafe-inline'",
-          "'unsafe-eval'",
+          // 'unsafe-eval' removed: JsValidator now uses static analysis (acorn)
           'https://cdn.jsdelivr.net',
           'https://umami.dulundu.tools',
           'https://stats.dulundu.tools',
@@ -377,7 +377,10 @@ app.post(
 
     const systemPrompt = `You are an expert developer assistant. The user needs help with ${language || 'code'}.
 
-Task: ${prompt}
+Task:
+<user_input>
+${prompt}
+</user_input>
 
 Provide a clean, well-commented code solution or explanation. If generating code, wrap it in markdown code blocks. Keep the text concise.`;
 
@@ -410,7 +413,10 @@ app.post(
 
     const systemPrompt = `You are an expert writer. Paraphrase the following text to be more ${tone || 'professional'}. Keep the meaning the same but improve clarity and flow.
 
-Text: "${text}"
+Text:
+<user_text>
+${text}
+</user_text>
 
 Output only the paraphrased text.`;
 
@@ -438,8 +444,12 @@ app.post(
     const systemPrompt = `You are an expert professional writer. Write an email based on the following details:
 
 Recipient: ${recipient || 'General'}
-Topic: ${topic}
 Tone: ${tone || 'Professional'}
+
+Topic details:
+<user_topic>
+${topic}
+</user_topic>
 
 Output only the email body (subject line optional but recommended). Keep it clear and effective.`;
 
@@ -479,7 +489,10 @@ app.post(
     const systemPrompt = `You are an expert synthesizer. Summarize the following text.
 ${lengthInstruction}
 
-Text: "${text}"
+Text:
+<user_text>
+${text}
+</user_text>
 
 Output only the summary.`;
 
