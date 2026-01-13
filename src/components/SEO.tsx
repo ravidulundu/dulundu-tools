@@ -9,6 +9,7 @@ interface SEOProps {
   canonicalUrl?: string;
   ogImage?: string;
   ogType?: string;
+  noindex?: boolean;
 }
 
 export const SEO: React.FC<SEOProps & { structuredData?: Record<string, unknown> }> = ({
