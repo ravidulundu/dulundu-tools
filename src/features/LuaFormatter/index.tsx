@@ -144,7 +144,7 @@ export const LuaFormatter: React.FC = () => {
 
             <button
               onClick={handleFormat}
-              className="px-4 py-2 bg-success text-white rounded-lg hover:bg-success transition-colors font-medium shadow-sm flex items-center text-sm"
+              className="px-4 py-2 bg-success text-white rounded-lg hover:bg-success/90 transition-colors font-medium shadow-sm flex items-center text-sm"
             >
               {mode === 'beautify' ? 'Format' : 'Compress'}
             </button>
