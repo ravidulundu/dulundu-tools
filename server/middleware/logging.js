@@ -45,8 +45,6 @@ export const correlationMiddleware = (req, res, next) => {
   next();
 };
 
-import { getClientIp } from '../utils/ip.js';
-
 // Request logging middleware
 export const requestLogger = (req, res, next) => {
   const start = Date.now();
@@ -56,9 +54,6 @@ export const requestLogger = (req, res, next) => {
 
     const duration = Date.now() - start;
 
-    // Get real IP (Cloudflare support)
-    const ip = getClientIp(req);
-
     // 2025/2026 Best Practice: Structured format with Correlation ID
     logger.info({
       message: 'Incoming request',
@@ -67,7 +62,7 @@ export const requestLogger = (req, res, next) => {
       status: res.statusCode,
       duration: `${duration}ms`,
       correlationId: req.correlationId,
-      ip: ip,
+      ip: req.realIp, // IP from ipMiddleware
       userAgent: req.get('user-agent'),
       // PII Redaction: Don't log full headers or body
     });

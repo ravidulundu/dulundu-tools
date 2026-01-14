@@ -4,6 +4,7 @@ import { config } from './config/index.js';
 import { startCleanupTask } from './controllers/share.js';
 import { spaFallback, staticFilesMiddleware } from './controllers/static.js';
 import { scannerBlocker } from './middleware/blocker.js';
+import { ipMiddleware } from './middleware/ip.js';
 import { correlationMiddleware, logger, requestLogger } from './middleware/logging.js';
 import { corsMiddleware, nonceMiddleware, securityHeaders } from './middleware/security.js';
 import apiRoutes from './routes/index.js';
@@ -18,6 +19,9 @@ app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
 // ========== MIDDLEWARE ==========
+
+// IP Resolution Middleware (Must be early)
+app.use(ipMiddleware);
 
 // Security Middleware
 app.use(corsMiddleware);
