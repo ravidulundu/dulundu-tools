@@ -4,7 +4,6 @@ import express from 'express';
 
 import { config } from '../config/index.js';
 import { logger } from '../middleware/logging.js';
-
 import { getClientIp } from '../utils/ip.js';
 
 const { INDEX_PATH, DIST_DIR } = config;
