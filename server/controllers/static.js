@@ -5,6 +5,8 @@ import express from 'express';
 import { config } from '../config/index.js';
 import { logger } from '../middleware/logging.js';
 
+import { getClientIp } from '../utils/ip.js';
+
 const { INDEX_PATH, DIST_DIR } = config;
 
 // ========== HTML TEMPLATE CACHE ==========
@@ -58,7 +60,7 @@ export const spaFallback = (req, res) => {
   if (hasExtension) {
     logger.warn(`404 Not Found for static file request: ${path}`, {
       correlationId: req.correlationId,
-      ip: req.ip,
+      ip: getClientIp(req),
     });
     return res.status(404).send('Not Found');
   }
