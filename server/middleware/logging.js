@@ -54,6 +54,10 @@ export const requestLogger = (req, res, next) => {
 
     const duration = Date.now() - start;
 
+    // Get real IP (Cloudflare support)
+    const ip =
+      req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']?.split(',')[0] || req.ip;
+
     // 2025/2026 Best Practice: Structured format with Correlation ID
     logger.info({
       message: 'Incoming request',
@@ -62,7 +66,7 @@ export const requestLogger = (req, res, next) => {
       status: res.statusCode,
       duration: `${duration}ms`,
       correlationId: req.correlationId,
-      ip: req.ip,
+      ip: ip,
       userAgent: req.get('user-agent'),
       // PII Redaction: Don't log full headers or body
     });

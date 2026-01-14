@@ -4,10 +4,24 @@ import { fileURLToPath } from 'url';
 
 import dotenv from 'dotenv';
 
-dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
+// config/index.js -> server/config
+// We need project root, which is server/../.. -> ../../
 const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '../../');
+
+// Load .env explicitly from root
+const envPath = path.join(projectRoot, '.env');
+
+if (fs.existsSync(envPath)) {
+  const result = dotenv.config({ path: envPath });
+  if (result.error) {
+    console.error('Failed to parse .env file:', result.error);
+  }
+} else {
+  // Silent fallback to process.env in production or if no file
+  // console.log('.env file not found, skipping (using process env vars)');
+}
 
 export const config = {
   PORT: process.env.PORT || 3000,

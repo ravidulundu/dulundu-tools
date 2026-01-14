@@ -49,6 +49,19 @@ export const staticFilesMiddleware = express.static(DIST_DIR, {
 
 // SPA Fallback Handler
 export const spaFallback = (req, res) => {
+  // Fix Soft 404: If the request looks like a file (has extension) but wasn't handled by static middleware, it's a 404.
+  // Exception: Some routes might look like files but are valid (unlikely in standard SPA, but good to be safe).
+  // We explicitly check for common file extensions to fail fast.
+  const path = req.path;
+  const hasExtension = /\.[a-z0-9]+$/i.test(path);
+
+  if (hasExtension) {
+    logger.warn(`404 Not Found for static file request: ${path}`, {
+      correlationId: req.correlationId,
+      ip: req.ip,
+    });
+    return res.status(404).send('Not Found');
+  }
   // Use cached template if available, otherwise read from disk (fallback for dev)
   const getHtml = callback => {
     if (cachedIndexHtml) {
