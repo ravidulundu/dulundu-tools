@@ -62,7 +62,7 @@ export const requestLogger = (req, res, next) => {
       status: res.statusCode,
       duration: `${duration}ms`,
       correlationId: req.correlationId,
-      ip: req.ip,
+      ip: req.realIp, // IP from ipMiddleware
       userAgent: req.get('user-agent'),
       // PII Redaction: Don't log full headers or body
     });
