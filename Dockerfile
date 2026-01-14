@@ -42,8 +42,7 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/server ./server
 
-# Create data directory for shares
-RUN mkdir -p data/shares
+
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
