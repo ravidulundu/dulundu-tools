@@ -8,12 +8,11 @@ export const globalLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   // Use the IP resolved by ipMiddleware (handles Cloudflare/Proxy logic consistently)
-  keyGenerator: req => req.realIp || req.ip,
-  // Suppress IPv6 warning as we handle IP resolution manually with ipMiddleware
-  validate: {
-    ip: false,
-    trustProxy: false,
-  },
+  legacyHeaders: false,
+  // Use the IP resolved by ipMiddleware (guaranteed to be set)
+  keyGenerator: req => req.realIp,
+  // Disable all validations to prevent false positives with custom keyGenerator
+  validate: false,
 });
 
 // Rate Limiter for AI endpoints - strict limits (not a chatbot!)
