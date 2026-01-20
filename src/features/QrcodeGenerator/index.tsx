@@ -30,8 +30,8 @@ export const QrcodeGenerator: React.FC = () => {
   const safeQrUrl = useMemo(() => {
     try {
       const parsed = new URL(qrUrl);
-      // Only allow our trusted QR API domain
-      if (parsed.origin === 'https://api.qrserver.com') {
+      // Only allow our trusted QR API domain and strict https protocol
+      if (parsed.protocol === 'https:' && parsed.origin === 'https://api.qrserver.com') {
         return parsed.href;
       }
     } catch {

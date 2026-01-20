@@ -14,9 +14,13 @@ const BLOCKED_PATTERNS = [
   /\.py$/i, // Python scripts (web context)
 
   // WordPress (most common target)
-  /^\/wp-/i, // WordPress paths (wp-admin, wp-content, wp-includes)
+  /\/wp-admin/i, // wp-admin anywhere
+  /\/wp-content/i, // wp-content anywhere
+  /\/wp-includes/i, // wp-includes anywhere
+  /\/wlwmanifest\.xml/i, // Windows Live Writer manifest
+  /\/xmlrpc\.php/i, // XML-RPC anywhere (usually .php)
   /^\/wordpress\//i, // WordPress directory
-  /^\/xmlrpc/i, // XML-RPC endpoint
+  /^\/wp\//i, // Common WP directory
 
   // Other CMS/Frameworks probing
   /^\/admin/i, // Generic admin paths
@@ -65,10 +69,28 @@ const BLOCKED_PATTERNS = [
   /^\/trace/i, // Trace endpoints
   /^\/heapdump/i, // Java heap dump
   /^\/jolokia/i, // JMX over HTTP
+  // Cloud/SSH Credentials - CRITICAL
+  /^\/\.aws/i, // AWS CLI credentials
+  /^\/\.ssh/i, // SSH keys
+  /^\/\.gcloud/i, // Google Cloud CLI
+  /^\/\.azure/i, // Azure CLI
+  /^\/\.kube/i, // Kubernetes config
+  /^\/\.docker/i, // Docker config
+  /^\/\.npmrc/i, // NPM config
+  /^\/config\.json/i, // Generic config
+  /^\/config\.js/i, // Generic config
 ];
 
 export const scannerBlocker = (req, res, next) => {
   const path = req.path;
+
+  // Check for dotfiles (hidden files) - CRITICAL SECURITY
+  // Block any path starting with /., except /.well-known (SSL)
+  // This covers .env, .git, .aws, .ssh, .config, etc. automatically
+  if (path.startsWith('/.') && !path.startsWith('/.well-known')) {
+    req._blocked = true;
+    return res.status(404).send('Not Found');
+  }
 
   // Check if path matches any blocked pattern
   for (const pattern of BLOCKED_PATTERNS) {

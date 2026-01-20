@@ -8,9 +8,15 @@ const router = express.Router();
 
 router.use('/ai', aiRoutes);
 router.use('/share', shareRoutes);
-router.use('/', toolsRoutes); // toolsRoutes has /check-url defined in it? No, checking tools.js content.
-// In tools.js I wrote `router.post('/check-url', ...)`
-// So if I mount it at '/', it becomes '/api/check-url' (if this router is mounted at /api).
-// Correct.
+router.use('/', toolsRoutes);
+
+// API 404 - Catch all unhandled API routes and return JSON instead of falling through to SPA HTML
+router.use('*', (req, res) => {
+  res.status(404).json({
+    error: 'Not Found',
+    message: `API endpoint ${req.method} ${req.originalUrl} not found`,
+    correlationId: req.correlationId,
+  });
+});
 
 export default router;
