@@ -6,6 +6,7 @@ import { spaFallback, staticFilesMiddleware } from './controllers/static.js';
 import { scannerBlocker } from './middleware/blocker.js';
 import { ipMiddleware } from './middleware/ip.js';
 import { correlationMiddleware, logger, requestLogger } from './middleware/logging.js';
+import { globalLimiter } from './middleware/rateLimiter.js';
 import { corsMiddleware, nonceMiddleware, securityHeaders } from './middleware/security.js';
 import apiRoutes from './routes/index.js';
 
