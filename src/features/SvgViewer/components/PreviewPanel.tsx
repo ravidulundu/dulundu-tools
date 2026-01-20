@@ -180,7 +180,8 @@ export const PreviewPanel = () => {
   React.useEffect(() => {
     if (activeTab === 'PNG' && svgCode) {
       setPngDataUri(null); // Clear previous URI while generating
-      svgToPng(svgCode, pngScale)
+      const sanitizedSvg = DOMPurify.sanitize(svgCode);
+      svgToPng(sanitizedSvg, pngScale)
         .then(uri => setPngDataUri(uri))
         .catch(err => console.error('Failed to generate PNG', err));
     }

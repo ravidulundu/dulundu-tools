@@ -23,15 +23,24 @@ app.set('trust proxy', 1);
 // IP Resolution Middleware (Must be early)
 app.use(ipMiddleware);
 
-// Security Middleware
+// Logging (Correlation ID) - Early for tracing
+app.use(correlationMiddleware);
+
+// 1. SECURITY BLOCKER (Cheap, Regex-based, No I/O)
+// Block bots/scanners/dotfiles immediately before touching disk or DB
+app.use(scannerBlocker);
+
+// 2. STATIC FILES (Bypass rate limiter for assets, but AFTER blocker)
+app.use(staticFilesMiddleware);
+
+// 3. SECURITY & RATE LIMITING (For API and Dynamic Routes)
 app.use(corsMiddleware);
-app.use(express.json({ limit: '10mb' })); // Limit payload size for security
+app.use(globalLimiter); // Protect API/dynamic routes
+app.use(express.json({ limit: '10mb' }));
 app.use(nonceMiddleware);
 app.use(securityHeaders);
 
-// Logging Middleware
-app.use(correlationMiddleware);
-app.use(scannerBlocker); // Block bots before logging to reduce noise
+// Logging (Request Logger)
 app.use(requestLogger);
 
 // ========== ROUTES ==========
@@ -43,9 +52,6 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api', apiRoutes);
-
-// Static Files
-app.use(staticFilesMiddleware);
 
 // SPA Fallback
 app.get('*', spaFallback);

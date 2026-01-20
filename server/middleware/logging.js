@@ -55,7 +55,20 @@ export const requestLogger = (req, res, next) => {
     const duration = Date.now() - start;
 
     // 2025/2026 Best Practice: Structured format with Correlation ID
-    logger.info({
+    const logLevel = res.statusCode >= 500 ? 'error' : 'info';
+
+    // Reduce noise: Don't log 404s for common noisy files (favicon, etc.) if they are missing
+    if (
+      res.statusCode === 404 &&
+      (req.path.endsWith('.map') ||
+        req.path.includes('favicon') ||
+        req.path.includes('apple-touch-icon'))
+    ) {
+      return;
+    }
+
+    logger.log({
+      level: logLevel,
       message: 'Incoming request',
       method: req.method,
       path: req.path,

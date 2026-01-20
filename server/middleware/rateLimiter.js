@@ -1,5 +1,16 @@
 import rateLimit from 'express-rate-limit';
 
+// Global Rate Limiter (Basic DDoS protection)
+export const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 300, // 300 requests per 15 mins per IP
+  message: { error: 'Too many requests, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  // Use the IP resolved by ipMiddleware (handles Cloudflare/Proxy logic consistently)
+  keyGenerator: req => req.realIp || req.ip,
+});
+
 // Rate Limiter for AI endpoints - strict limits (not a chatbot!)
 export const aiLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
